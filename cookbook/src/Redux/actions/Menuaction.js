@@ -36,5 +36,26 @@ const  dropdown=(value) =>{
         })
    }
  }
+ const CreateFeature=(value)=>{
+   return dispatch => {
+      
+       dispatch({
+          type: "CREATE_FEATURE" , 
+          payload :{
+             id:true,
+             data:value
+          }
+       })
+  }
+}
+const Createremoved=(value)=>{
+   return dispatch => {
+      
+       dispatch({
+          type: "CREATE_REMOVED" , 
+          payload :false
+       })
+  }
+}
 
-export default {ActionMenu, dropdown, reloadAction}
+export default {ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved}

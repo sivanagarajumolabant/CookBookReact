@@ -76,6 +76,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
 function StyledTreeItem(props) {
   const history = useHistory();
   const classes = useTreeItemStyles();
+  const dispatch = useDispatch()
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const {
     labelText,
@@ -123,13 +124,14 @@ function StyledTreeItem(props) {
                 style={{ color: '#0BCD19' }}
 
                 onClick={() =>
-                  history.push({
-                    pathname: "/CreateModule",
-                    state: {
-                      data: { ...data, type: props.dropdown?.name },
+                  // history.push({
+                  //   pathname: "/CreateModule",
+                  //   state: {
+                  //     data: { ...data, type: props.dropdown?.name },
 
-                    },
-                  })
+                  //   },
+                  // })
+                  dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }}))
                 }
               />
             )}
@@ -229,7 +231,9 @@ export default function GmailTreeView({ menuList, dropdown, deleteitem, confirmD
                 <StyledTreeItem
                   style={{ color: "white" }}
                   sub={true}
-                  onClick={() => MenuSelected(data.Feature_Id)}
+                  onClick={() => {dispatch(ActionMenu.Createremoved())
+                    
+                  MenuSelected(data.Feature_Id)}}
                   nodeId={"S" + Index + index}
                   labelText={data.Feature_Name.substr(5)}
                   labelIcon={ViewModuleIcon}

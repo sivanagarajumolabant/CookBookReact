@@ -5,7 +5,9 @@ const initialState = {
 
   menuitem: null,
   headerValue: { title: "Oracle To Postgres" },
-  updatedValue: false
+  updatedValue: false,
+  createFeature:false,
+  details:{}
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -26,6 +28,25 @@ const dashboardReducer = (state = initialState, action) => {
         updatedValue: action.payload
       };
 
+
+      case "CREATE_FEATURE":
+        return {
+          ...state,
+          createFeature: action.payload?.id,
+          details:action.payload.data
+        };
+
+        case "CREATE_REMOVED":
+          return {
+            ...state,
+            createFeature: action.payload,
+            details:{}
+          };
+  
+
+
+        
+      
 
 
 

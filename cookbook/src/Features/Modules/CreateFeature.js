@@ -85,7 +85,7 @@ const StyledAutocompleteDrop = styled(Autocomplete)({
 
 
 export default function CreateFeature(props) {
-    var obj_type = props.location.state?.data?.Label
+    var obj_type = props.details?.data?.Label
     if (obj_type === 'Indexes') {
         obj_type = obj_type.slice(0, -2);
     } else {
@@ -94,7 +94,7 @@ export default function CreateFeature(props) {
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
 
-    const [formValues, setformvalues] = useState({ Migration_TypeId: props.location.state?.data?.type, Object_Type: props.location.state?.data?.Label })
+    const [formValues, setformvalues] = useState({ Migration_TypeId: props.details?.data?.type, Object_Type: props.details?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
     const { headerValue } = useSelector(state => state.dashboardReducer);
@@ -102,7 +102,7 @@ export default function CreateFeature(props) {
     const [drop, setDrop] = useState("Source Attachments");
     const [target_att, setTargetatt] = useState([])
     const [conver_att, setConveratt] = useState([])
-    const [isTable,setIsTable] = useState(false)
+    const [isTable, setIsTable] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     // const [migtypeid, setMigtypeid] = useState()
 
@@ -122,7 +122,7 @@ export default function CreateFeature(props) {
         }
     }
 
-    
+
 
     useEffect(() => {
         let body = {
@@ -131,10 +131,10 @@ export default function CreateFeature(props) {
         }
         let conf = {
             headers: {
-              'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
-          }
-        axios.post(`${config.API_BASE_URL()}/sequence`, body,conf).then(
+        }
+        axios.post(`${config.API_BASE_URL()}/sequence`, body, conf).then(
             (res) => {
                 //   console.log(res);
                 setPrerunval(res.data[0]);
@@ -215,7 +215,7 @@ export default function CreateFeature(props) {
     };
 
     const handleSubmit = (e) => {
-        let typeval = props.location.state?.data?.type
+        let typeval = props.details?.data?.type
         let val = 0
         e.preventDefault();
         if (typeval) {
@@ -246,9 +246,9 @@ export default function CreateFeature(props) {
         });
         let conf = {
             headers: {
-              'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
-          }
+        }
 
         axios.post(`${config.API_BASE_URL()}/create`, form, conf)
             .then(res => {
@@ -277,8 +277,8 @@ export default function CreateFeature(props) {
     const handleChange = (e) => {
         // console.log(e.target.name)
         // console.log(e.target.value)
-        if(e.target.value===null){
-            e.target.value=''
+        if (e.target.value === null) {
+            e.target.value = ''
         }
         setformvalues({
             ...formValues,
@@ -407,24 +407,24 @@ export default function CreateFeature(props) {
 
     const handleConvert = (e) => {
         e.preventDefault();
-    
+
         // console.log(formValues.Conversion_Code)
         // console.log(formValues.Source_Code)
         // console.log(formValues.Feature_Name)
-        
+
         let body = {
             "sourcecode": formValues.Source_Code,
-            "convcode": "r@rawstringstart'"+formValues.Conversion_Code+"'@rawstringend",
+            "convcode": "r@rawstringstart'" + formValues.Conversion_Code + "'@rawstringend",
             "featurename": formValues.Feature_Name,
-            "migration_typeid":formValues.Migration_TypeId ,
-            "object_type":obj_type
+            "migration_typeid": formValues.Migration_TypeId,
+            "object_type": obj_type
         }
         let conf = {
             headers: {
-              'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
-          }
-        axios.post(`${config.API_BASE_URL()}/convert_python_code1`, body,conf)
+        }
+        axios.post(`${config.API_BASE_URL()}/convert_python_code1`, body, conf)
             .then(res => {
                 // console.log("res",res.data)
                 setformvalues({
@@ -510,7 +510,7 @@ export default function CreateFeature(props) {
     // console.log(prerunval,'pre')
     return (
 
-        <MenuAppBar>
+        <>
             <Box py={4}>
                 <Grid container direction='row' justifyContent='center'>
                     <Grid item>
@@ -535,7 +535,7 @@ export default function CreateFeature(props) {
                                 { title: "Oracle To MYSQL" },
                             ]}
                             groupBy={""}
-                            defaultValue={{ title: props.location.state?.data?.type }}
+                            defaultValue={{ title:props.details?.data?.type }}
                             getOptionLabel={(option) => option.title}
                             name="Migration_TypeId"
                             onChange={(e, v) => handlechangedropdown(v)}
@@ -580,7 +580,7 @@ export default function CreateFeature(props) {
                             ]}
                             groupBy={""}
                             getOptionLabel={(option) => option.title}
-                            defaultValue={{ title: props.location.state?.data?.Label }}
+                            defaultValue={{ title:props.details?.data?.Label }}
                             name="Object_Type"
                             onChange={(e, v) => handlechangedropdownobj(v)}
                             renderInput={(params) => (
@@ -947,7 +947,7 @@ export default function CreateFeature(props) {
                         />
 
                     </Grid>
-                    
+
                     <Grid item>
                         <div className={classes.rootc}>
                             <input
@@ -958,7 +958,7 @@ export default function CreateFeature(props) {
                                 onChange={(e) => handleSubmitdrpm(e)}
                                 type="file"
                             />
-                            
+
                             <label htmlFor="contained-button-file3">
                                 <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
                                     Upload
@@ -1030,6 +1030,6 @@ export default function CreateFeature(props) {
 
 
 
-        </MenuAppBar >
+        </ >
     );
 }
