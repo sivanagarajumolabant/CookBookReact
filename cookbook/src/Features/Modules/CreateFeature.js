@@ -134,10 +134,10 @@ export default function CreateFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        axios.post(`${config.API_BASE_URL()}/sequence`, body, conf).then(
+        axios.post(`${config.API_BASE_URL()}/api/predessors`, body, conf).then(
             (res) => {
                 //   console.log(res);
-                setPrerunval(res.data[0]);
+                setPrerunval(res.data);
 
                 //   setIsdata(true);
             },
@@ -236,9 +236,9 @@ export default function CreateFeature(props) {
             ...formValues,
             Migration_TypeId: val,
             Object_Type: obj_type,
-            'Source_Attachment': source_att,
-            "Conversion_Attachment": target_att,
-            "Target_Attachment": conver_att
+            // 'Source_Attachment': source_att,
+            // "Conversion_Attachment": target_att,
+            // "Target_Attachment": conver_att
         }
         const form = new FormData();
         Object.keys(formData).forEach((key) => {
@@ -250,7 +250,7 @@ export default function CreateFeature(props) {
             }
         }
 
-        axios.post(`${config.API_BASE_URL()}/create`, form, conf)
+        axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf)
             .then(res => {
                 // console.log(res.data)
                 setNotify({
@@ -424,7 +424,7 @@ export default function CreateFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        axios.post(`${config.API_BASE_URL()}/convert_python_code1`, body, conf)
+        axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf)
             .then(res => {
                 // console.log("res",res.data)
                 setformvalues({
@@ -919,7 +919,7 @@ export default function CreateFeature(props) {
 
             </Grid>
 
-            <Box py={4}>
+            {/* <Box py={4}>
                 <Grid container direction='row' justifyContent='center'>
                     <Grid >
                         <Autocomplete
@@ -968,8 +968,8 @@ export default function CreateFeature(props) {
                         </div>
                     </Grid>
                 </Grid>
-            </Box>
-            {tabledata}
+            </Box> */}
+            {/* {tabledata} */}
 
 
 

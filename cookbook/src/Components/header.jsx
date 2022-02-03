@@ -233,7 +233,7 @@ export default function ClippedDrawer({ children }) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    const res = await axios.get(`${config.API_BASE_URL()}/fol/${value}`,conf);
+    const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`,conf);
     setmenuList(res.data);
     dispatch(Menuaction.reloadAction(false))
   };
@@ -261,7 +261,7 @@ export default function ClippedDrawer({ children }) {
       isOpen: false
     })
 
-    const res = await axios.delete(`${config.API_BASE_URL()}/delete/${data.Feature_Id}`,conf);
+    const res = await axios.delete(`${config.API_BASE_URL()}/api/fdelete/${data.Feature_Id}`,conf);
     getmenus(1);
 
 

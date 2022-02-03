@@ -71,6 +71,7 @@ function SignIn() {
     // localStorage.setItem('isAuth', true)
     // history.push("/dashboard");
     let loginurl = config.API_BASE_URL() + '/login/'
+    console.log(loginurl)
     axios.post(loginurl, user).then((res) => {
       if (res.status === 200 && res.data.access !== null) {
         localStorage.setItem('isAuth', true)

@@ -82,13 +82,13 @@ export default function EditFeature(props) {
 
     useEffect((e) => {
         if (editdata) {
-            setSource_FeatureDescription(editdata.detaildata[0].Source_FeatureDescription)
-            setTarget_FeatureDescription(editdata.detaildata[0].Target_FeatureDescription)
-            setSource_Code(editdata.detaildata[0].Source_Code)
-            setTarget_ActualCode(editdata.detaildata[0].Target_ActualCode)
-            setTarget_Expected_Output(editdata.detaildata[0].Target_Expected_Output)
-            setConversion_Code(editdata.detaildata[0].Conversion_Code)
-            setSequence(editdata.detaildata[0].Sequence)
+            setSource_FeatureDescription(editdata.detaildata.Source_FeatureDescription)
+            setTarget_FeatureDescription(editdata.detaildata.Target_FeatureDescription)
+            setSource_Code(editdata.detaildata.Source_Code)
+            setTarget_ActualCode(editdata.detaildata.Target_ActualCode)
+            setTarget_Expected_Output(editdata.detaildata.Target_Expected_Output)
+            setConversion_Code(editdata.detaildata.Conversion_Code)
+            setSequence(editdata.detaildata.Sequence)
         } else {
             history.push({
                 pathname: "/dashboard",
@@ -97,7 +97,7 @@ export default function EditFeature(props) {
 
     }, [editdata]);
 
-    var handle_featurename = editdata?.detaildata[0].Feature_Name.substr(5)
+    var handle_featurename = editdata?.detaildata.Feature_Name.substr(5)
     // useEffect(() => {
     //     if (editdata) {
     //         axios.put(`http://127.0.0.1:8000/api/update/${editdata.detaildata[0].Feature_Id}`, formData)
@@ -119,15 +119,15 @@ export default function EditFeature(props) {
         e.preventDefault();
 
         var val = 0;
-        if (editdata.detaildata[0]) {
-            if (editdata.detaildata[0].Migration_TypeId === 'Oracle To Postgres') {
+        if (editdata.detaildata) {
+            if (editdata.detaildata.Migration_TypeId === 'Oracle To Postgres') {
                 val = 1
             }
-            else if (editdata.detaildata[0].Migration_TypeId === 'Oracle TO SQLServer') {
+            else if (editdata.detaildata.Migration_TypeId === 'Oracle TO SQLServer') {
 
                 val = 2
             }
-            else if (editdata.detaildata[0].Migration_TypeId === 'Oracle To MYSQL') {
+            else if (editdata.detaildata.Migration_TypeId === 'Oracle To MYSQL') {
 
                 val = 3
             }
@@ -135,17 +135,17 @@ export default function EditFeature(props) {
         let formData = {
             ...formValues,
             Migration_TypeId: val,
-            Object_Type: editdata.detaildata[0].Object_Type,
-            Feature_Name: editdata.detaildata[0].Feature_Name.substr(5),
+            Object_Type: editdata.detaildata.Object_Type,
+            Feature_Name: editdata.detaildata.Feature_Name.substr(5),
             // Source_FeatureDescription, Target_FeatureDescription,
-            "Sequence": editdata.detaildata[0].Sequence,
+            "Sequence": editdata.detaildata.Sequence,
             "Source_FeatureDescription": Source_FeatureDescription,
             "Target_FeatureDescription": Target_FeatureDescription,
             "Target_Expected_Output": Target_Expected_Output,
             "Target_ActualCode": Target_ActualCode,
-            'Source_Attachment': source_att,
-            "Conversion_Attachment": conver_att,
-            "Target_Attachment": target_att,
+            // 'Source_Attachment': source_att,
+            // "Conversion_Attachment": conver_att,
+            // "Target_Attachment": target_att,
             "Source_Code": Source_Code,
             "Conversion_Code": Conversion_Code
         }
@@ -160,7 +160,7 @@ export default function EditFeature(props) {
               'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
           }
-        axios.put(`${config.API_BASE_URL()}/update/${editdata.detaildata[0].Feature_Id}`, form, conf)
+        axios.put(`${config.API_BASE_URL()}/api/fupdate/${editdata.detaildata.Feature_Id}`, form, conf)
             .then(res => {
                 console.log(res.data)
                 setNotify({
@@ -361,17 +361,17 @@ export default function EditFeature(props) {
     }
 
 
-    if (editdata?.detaildata[0]) {
-        if (editdata.detaildata[0].Migration_TypeId === '1') {
-            editdata.detaildata[0].Migration_TypeId = 'Oracle To Postgres'
+    if (editdata?.detaildata) {
+        if (editdata.detaildata.Migration_TypeId === '1') {
+            editdata.detaildata.Migration_TypeId = 'Oracle To Postgres'
             // setMigtypeid(1)
         }
-        else if (editdata.detaildata[0].Migration_TypeId === '2') {
-            editdata.detaildata[0].Migration_TypeId = 'Oracle TO SQLServer'
+        else if (editdata.detaildata.Migration_TypeId === '2') {
+            editdata.detaildata.Migration_TypeId = 'Oracle TO SQLServer'
             // setMigtypeid(2)
         }
-        else if (editdata.detaildata[0].Migration_TypeId === '3') {
-            editdata.detaildata[0].Migration_TypeId = 'Oracle To MYSQL'
+        else if (editdata.detaildata.Migration_TypeId === '3') {
+            editdata.detaildata.Migration_TypeId = 'Oracle To MYSQL'
             // setMigtypeid(3)
         }
     }
@@ -390,22 +390,22 @@ export default function EditFeature(props) {
         // console.log(formValues.Conversion_Code)
         // console.log(formValues.Source_Code)
         // console.log(formValues.Feature_Name)
-        let wout_prefix = (editdata.detaildata[0].Feature_Name).substr(5)
+        let wout_prefix = (editdata.detaildata.Feature_Name).substr(5)
         // "convcode": "r@rawstringstart'"+formValues.Conversion_Code+"'@rawstringend",
         let body = {
             "sourcecode": Source_Code,
             // "convcode": Conversion_Code,
             "convcode": "r@rawstringstart'"+Conversion_Code+"'@rawstringend",
             "featurename": wout_prefix,
-            "migration_typeid": editdata.detaildata[0].Migration_TypeId,
-            "object_type":editdata.detaildata[0].Object_Type
+            "migration_typeid": editdata.detaildata.Migration_TypeId,
+            "object_type":editdata.detaildata.Object_Type
         }
         let conf = {
             headers: {
               'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
           }
-        axios.post(`${config.API_BASE_URL()}/convert_python_code1`, body,conf)
+        axios.post(`${config.API_BASE_URL()}/api/autoconv`, body,conf)
             .then(res => {
                 // console.log("res",res.data)
                 setTarget_ActualCode(res.data)
@@ -583,7 +583,7 @@ export default function EditFeature(props) {
                         onChange={(e) => handleChange(e)}
                         label="Migration Type"
                         // defaultValue="Default Value"
-                        value={editdata?.detaildata[0].Migration_TypeId}
+                        value={editdata?.detaildata.Migration_TypeId}
                         variant="outlined"
                         required
                         disabled
@@ -602,7 +602,7 @@ export default function EditFeature(props) {
                         multiline
                         rows={1}
                         onChange={(e) => handleChange(e)}
-                        value={editdata?.detaildata[0].Object_Type}
+                        value={editdata?.detaildata.Object_Type}
                         name="Object_Type"
                         variant="outlined"
                         required
@@ -710,7 +710,7 @@ export default function EditFeature(props) {
                         <h2>{'Source Description'}</h2>
                         <CKEditor
                             editor={ClassicEditor}
-                            data={editdata?.detaildata[0].Source_FeatureDescription}
+                            data={editdata?.detaildata.Source_FeatureDescription}
                             // value ={detaildata[0].Source_FeatureDescription}
                             onReady={editor => {
                                 // You can store the "editor" and use when it is needed.
@@ -762,7 +762,7 @@ export default function EditFeature(props) {
                         <p>{'Target Description'}</p>
                         <CKEditor
                             editor={ClassicEditor}
-                            data={editdata?.detaildata[0].Target_FeatureDescription}
+                            data={editdata?.detaildata.Target_FeatureDescription}
                             onReady={editor => {
                                 // You can store the "editor" and use when it is needed.
                                 console.log('Editor is ready to use!', editor);

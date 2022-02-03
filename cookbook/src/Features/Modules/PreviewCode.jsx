@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PreviewCode(props) {
   const classes = useStyles();
-  const [detaildata, setDetaildata] = useState([]);
+  const [detaildata, setDetaildata] = useState();
   // const id = props.InfoId;
   let history = useHistory();
   const [isdata, setIsdata] = useState(false);
@@ -101,7 +101,7 @@ export default function PreviewCode(props) {
           'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
         }
       }
-      axios.get(`${config.API_BASE_URL()}/detail/${menuitem || null}`,conf).then(
+      axios.get(`${config.API_BASE_URL()}/api/fdetail/${menuitem || null}`, conf).then(
         (res) => {
           console.log(res);
           setDetaildata(res.data);
@@ -113,7 +113,7 @@ export default function PreviewCode(props) {
         }
       );
     } else {
-      setDetaildata([]);
+      setDetaildata();
     }
   }, [menuitem]);
 
@@ -143,9 +143,9 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/downloads/${dnfile}`, {
+    axios.get(`${config.API_BASE_URL()}/api/template/${dnfile}`, {
       responseType: 'blob',
-    },conf).then(res => {
+    }, conf).then(res => {
       // console.log(res)
       fileDownload(res.data, dnfile);
       // console.log(res);
@@ -156,12 +156,12 @@ export default function PreviewCode(props) {
 
   var data = null;
   let seq = null
-  if (detaildata.length > 0) {
-    if (detaildata[0].Sequence !== 'No Precision') {
-      seq = detaildata[0].Sequence.substr(5)
+  if (detaildata) {
+    if (detaildata.Sequence !== 'No Precision') {
+      seq = detaildata.Sequence.substr(5)
 
     } else {
-      seq = detaildata[0].Sequence
+      seq = detaildata.Sequence
     }
     data = (
       <>
@@ -184,7 +184,7 @@ export default function PreviewCode(props) {
                 startIcon={<EditSharpIcon />}
                 onClick={() =>
                   history.push({
-                    pathname: `/edit/${detaildata[0].Feature_Id}`,
+                    pathname: `/edit/${detaildata.Feature_Id}`,
                     data: { detaildata },
 
                   })
@@ -210,7 +210,7 @@ export default function PreviewCode(props) {
               {/* {detaildata[0].Object_Type.split("\n").map((i, key) => {
                 return <div key={key}>{i}</div>;
               })} */}
-              {detaildata[0].Object_Type}
+              {detaildata.Object_Type}
               {/* </Typography> */}
             </div>
           </Grid>
@@ -229,7 +229,7 @@ export default function PreviewCode(props) {
               {/* {detaildata[0].Feature_Name.split("\n").map((i, key) => {
                 return <div key={key}>{i}</div>;
               })} */}
-              {detaildata[0].Feature_Name.substr(5)}
+              {detaildata.Feature_Name.substr(5)}
               {/* </Typography> */}
             </div>
           </Grid>
@@ -244,7 +244,7 @@ export default function PreviewCode(props) {
             </Typography>
             {/* <Typography component="h2"> */}
             <div className={classes.Description}>
-              {detaildata[0].Level}
+              {detaildata.Level}
             </div>
           </Grid>
 
@@ -283,7 +283,7 @@ export default function PreviewCode(props) {
                 {/* <h2>{'Source Description'}</h2> */}
                 <CKEditor
                   editor={ClassicEditor}
-                  data={detaildata[0].Source_FeatureDescription}
+                  data={detaildata.Source_FeatureDescription}
                   // value ={detaildata[0].Source_FeatureDescription}
                   onReady={editor => {
                     // You can store the "editor" and use when it is needed.
@@ -321,7 +321,7 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {detaildata[0].Source_Code}
+                {detaildata.Source_Code}
               </Card>
             </div>
             {/* </Typography> */}
@@ -345,7 +345,7 @@ export default function PreviewCode(props) {
               )} */}
               <CKEditor
                 editor={ClassicEditor}
-                data={detaildata[0].Target_FeatureDescription}
+                data={detaildata.Target_FeatureDescription}
                 onReady={editor => {
                   // You can store the "editor" and use when it is needed.
                   console.log('Editor is ready to use!', editor);
@@ -381,7 +381,7 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {detaildata[0].Target_ActualCode}
+                {detaildata.Target_ActualCode}
               </Card>
             </div>
             {/* </Typography> */}
@@ -399,7 +399,7 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {detaildata[0].Target_Expected_Output}
+                {detaildata.Target_Expected_Output}
               </Card>
             </div>
             {/* </Typography> */}
@@ -418,82 +418,13 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {detaildata[0].Conversion_Code}
+                {detaildata.Conversion_Code}
               </Card>
             </div>
             {/* </Typography> */}
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Source Attachments
-            </Typography>
 
-
-            <Grid container direction='row' spacing={0}>
-              <Grid item spacing={3} >
-                {/* {detaildata.length>?} */}
-                {detaildata[0]?.Source_Attachment?.split('/')?.pop()}
-              </Grid>
-              {detaildata[0].Source_Attachment ?
-                <Grid item spacing={3} style={{ paddingLeft: 20 }}>
-                  <Link onClick={() => handleDownload(detaildata[0].Source_Attachment)} style={{ textDecoration: 'none' }}>Download</Link>
-
-                </Grid>
-                : null}
-            </Grid>
-
-
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Target Attachments
-            </Typography>
-            <Grid container direction='row' spacing={0}>
-              <Grid item spacing={3} >
-                {/* {detaildata.length>?} */}
-                {detaildata[0]?.Target_Attachment?.split('/')?.pop()}
-              </Grid>
-              {detaildata[0].Target_Attachment ?
-                <Grid item spacing={3} style={{ paddingLeft: 20 }}>
-                  <Link onClick={() => handleDownload(detaildata[0].Target_Attachment)} style={{ textDecoration: 'none' }}>Download</Link>
-
-                </Grid>
-                : null}
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Conversion Attachments
-            </Typography>
-            <Grid container direction='row' spacing={0}>
-              <Grid item spacing={3} >
-                {/* {detaildata.length>?} */}
-                {detaildata[0]?.Conversion_Attachment?.split('/')?.pop()}
-              </Grid>
-              {detaildata[0].Conversion_Attachment ?
-                <Grid item spacing={3} style={{ paddingLeft: 20 }}>
-                  <Link onClick={() => handleDownload(detaildata[0].Conversion_Attachment)} style={{ textDecoration: 'none' }}>Download</Link>
-
-                </Grid>
-                : null}
-            </Grid>
-          </Grid>
         </Grid>
 
 
@@ -508,7 +439,7 @@ export default function PreviewCode(props) {
               startIcon={<EditSharpIcon />}
               onClick={() =>
                 history.push({
-                  pathname: `/edit/${detaildata[0].Feature_Id}`,
+                  pathname: `/edit/${detaildata.Feature_Id}`,
                   data: { detaildata },
 
                 })
@@ -725,3 +656,85 @@ export default function PreviewCode(props) {
 //     </>
 //   );
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+// <Grid item xs={12} sm={12} md={12} lg={12}>
+//             <Typography
+//               gutterBottom
+//               variant="h5"
+//               component="h2"
+//               className={classes.Object_Type}
+//             >
+//               Source Attachments
+//             </Typography>
+
+
+//             <Grid container direction='row' spacing={0}>
+//               <Grid item spacing={3} >
+//                 {/* {detaildata.length>?} */}
+//                 {detaildata[0]?.Source_Attachment?.split('/')?.pop()}
+//               </Grid>
+//               {detaildata[0].Source_Attachment ?
+//                 <Grid item spacing={3} style={{ paddingLeft: 20 }}>
+//                   <Link onClick={() => handleDownload(detaildata[0].Source_Attachment)} style={{ textDecoration: 'none' }}>Download</Link>
+
+//                 </Grid>
+//                 : null}
+//             </Grid>
+
+
+//           </Grid>
+//           <Grid item xs={12} sm={12} md={12} lg={12}>
+//             <Typography
+//               gutterBottom
+//               variant="h5"
+//               component="h2"
+//               className={classes.Object_Type}
+//             >
+//               Target Attachments
+//             </Typography>
+//             <Grid container direction='row' spacing={0}>
+//               <Grid item spacing={3} >
+//                 {/* {detaildata.length>?} */}
+//                 {detaildata[0]?.Target_Attachment?.split('/')?.pop()}
+//               </Grid>
+//               {detaildata[0].Target_Attachment ?
+//                 <Grid item spacing={3} style={{ paddingLeft: 20 }}>
+//                   <Link onClick={() => handleDownload(detaildata[0].Target_Attachment)} style={{ textDecoration: 'none' }}>Download</Link>
+
+//                 </Grid>
+//                 : null}
+//             </Grid>
+//           </Grid>
+//           <Grid item xs={12} sm={12} md={12} lg={12}>
+//             <Typography
+//               gutterBottom
+//               variant="h5"
+//               component="h2"
+//               className={classes.Object_Type}
+//             >
+//               Conversion Attachments
+//             </Typography>
+//             <Grid container direction='row' spacing={0}>
+//               <Grid item spacing={3} >
+//                 {/* {detaildata.length>?} */}
+//                 {detaildata[0]?.Conversion_Attachment?.split('/')?.pop()}
+//               </Grid>
+//               {detaildata[0].Conversion_Attachment ?
+//                 <Grid item spacing={3} style={{ paddingLeft: 20 }}>
+//                   <Link onClick={() => handleDownload(detaildata[0].Conversion_Attachment)} style={{ textDecoration: 'none' }}>Download</Link>
+
+//                 </Grid>
+//                 : null}
+//             </Grid>
+//           </Grid>
