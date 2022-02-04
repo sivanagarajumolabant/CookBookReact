@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+import {
+    createMuiTheme,
+    ThemeProvider
+} from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -55,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
     input: {
         display: 'none',
     },
+    textField: {
+       
+        '& p':{
+          color:'red',
+        },
+      },
 }));
 
 const StyledAutocompleteDrop = styled(Autocomplete)({
@@ -104,6 +114,8 @@ export default function CreateFeature(props) {
     const [drop, setDrop] = useState("Source Attachments");
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [createdata, setCreatedata] = useState([])
+    const [fnlist, setFnlist] = useState([])
+    const [featurenamemsg, setFeaturenamemsg] = useState();
     // const [migtypeid, setMigtypeid] = useState()
 
     // const [seq, setSeq]=useState({})
@@ -152,8 +164,35 @@ export default function CreateFeature(props) {
     }, [formValues]);
 
 
+    useEffect(() => {
+        let body = {
+            "Object_Type": obj_type,
+            "Migration_TypeId": sval
+        }
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.post(`${config.API_BASE_URL()}/api/fnlist`, body, conf).then(
+            (res) => {
+                setFnlist(res.data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [formValues])
 
 
+
+    const theme = createMuiTheme({
+        palette: {
+            error: {
+                main: "#ff00ff", // change the error color to pink
+            }
+        }
+    });
 
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
@@ -216,29 +255,48 @@ export default function CreateFeature(props) {
                     type: 'error'
                 })
             })
-            // .then(()=>{
-            //     if (createdata.length > 0) {
-            //         history.push({
-            //             pathname: `/edit/${createdata.data.Feature_Id}`,
-            //             data: { createdata },
-        
-            //         })
-               
-            //     }
-            // })
+        // .then(()=>{
+        //     if (createdata.length > 0) {
+        //         history.push({
+        //             pathname: `/edit/${createdata.data.Feature_Id}`,
+        //             data: { createdata },
 
-      
+        //         })
+
+        //     }
+        // })
+
+
         dispatach(Menuaction.reloadAction(true))
     }
 
 
 
     const handleChange = (e) => {
-
         setformvalues({
             ...formValues,
             [e.target.name]: e.target.value
         })
+
+        if (e.target.name === 'Feature_Name') {
+            if (fnlist.length > 0) {
+                // let fnvalue = fnlist.Feature_Name.substr(5)
+                for (var counter = 0; counter < fnlist.length; counter++) {
+                    let val_mod = String(fnlist[counter].Feature_Name).substr(5)
+                    if (e.target.value === '') {
+                        setFeaturenamemsg("Please Enter feature Name");
+                        break;
+                    } else if (val_mod === e.target.value) {
+                        setFeaturenamemsg("Feature Already Exist!");
+                        break;
+                    } else if (val_mod !== e.target.value) {
+                        setFeaturenamemsg("Feature Avaialable");
+
+                    }
+                }
+
+            }
+        }
     }
 
     const handlechangedropdown = (v) => {
@@ -432,23 +490,27 @@ export default function CreateFeature(props) {
 
 
                 <Grid item xs={12} sm={4} md={4} xl={4}>
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Feature Name"
-                        multiline
-                        rows={1}
-                        onChange={(e) => handleChange(e)}
-                        name='Feature_Name'
-                        // defaultValue="Default Value"
+                    <ThemeProvider theme={theme}>
+                        <TextField
+                            id="outlined-multiline-static"
+                            label="Feature Name"
+                            multiline
+                            rows={1}
+                            onChange={(e) => handleChange(e)}
+                            name='Feature_Name'
+                            // defaultValue="Default Value"
+                            helperText={featurenamemsg}
+                            className={classes.textField}
+                            // helperText="Some important text"
+                            variant="outlined"
+                            required
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            fullWidth
 
-                        variant="outlined"
-                        required
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        fullWidth
-
-                    />
+                        />
+                    </ThemeProvider>
 
                 </Grid>
 
