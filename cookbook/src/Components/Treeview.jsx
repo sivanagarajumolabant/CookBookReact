@@ -86,11 +86,9 @@ function StyledTreeItem(props) {
     bgColor,
     mainheader,
     data,
-    deleteitem,
+    // deleteitem,
     datavalue,
     sub,
-    confirmDialog, 
-    setConfirmDialog,
     ...other
   } = props;
 
@@ -118,6 +116,7 @@ function StyledTreeItem(props) {
             </Typography>
 
             {mainheader && (
+              
               <AddIcon
                 color="inherit"
                 className={classes.labelIcon}
@@ -135,7 +134,7 @@ function StyledTreeItem(props) {
                 }
               />
             )}
-            {sub && (
+            {/* {sub && (
               <Delete
                 color="inherit"
                 style={{ color: '#FCBFD7' }}
@@ -154,7 +153,8 @@ function StyledTreeItem(props) {
                   // }
                 }}
               />
-            )}
+            )} */}
+            {sub }
 
 
           </div>

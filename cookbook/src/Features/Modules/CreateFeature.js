@@ -93,16 +93,14 @@ export default function CreateFeature(props) {
     }
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
+    const [featureslist,setFeatureslist] = useState(["ex1","Sample"])
 
     const [formValues, setformvalues] = useState({ Migration_TypeId: props.details?.data?.type, Object_Type: props.details?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
     const { headerValue } = useSelector(state => state.dashboardReducer);
-    const [source_att, setSourceatt] = useState([])
+
     const [drop, setDrop] = useState("Source Attachments");
-    const [target_att, setTargetatt] = useState([])
-    const [conver_att, setConveratt] = useState([])
-    const [isTable, setIsTable] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     // const [migtypeid, setMigtypeid] = useState()
 
@@ -154,65 +152,9 @@ export default function CreateFeature(props) {
 
 
 
-    const handleChangedrop = (v) => {
-        setDrop(v.title);
-        // console.log(v)
-    };
 
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
-    const handleSubmitdrpm = (e) => {
-        // console.log(drop);
-
-        if (drop === "Source Attachments") {
-            const { files } = e.target;
-            if (files.length > 0) {
-                const filesystem = [...file];
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-
-                    filesystem.push(file);
-                    setSourceatt(filesystem[0]);
-                    setIsTable(true)
-                }
-                // console.log(filesystem)
-            } else {
-                setSourceatt(null);
-            }
-        } else if (drop === "Conversion Attachments") {
-            const { files } = e.target;
-            if (files.length > 0) {
-                const filesystem = [...file];
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-
-                    filesystem.push(file);
-
-                    setConveratt(filesystem[0]);
-                    setIsTable(true)
-                }
-                // console.log(filesystem)
-            } else {
-                setConveratt(null);
-            }
-        } else {
-            const { files } = e.target;
-            if (files.length > 0) {
-                const filesystem = [...file];
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-
-                    filesystem.push(file);
-                    setTargetatt(filesystem[0]);
-                    setIsTable(true)
-                }
-                // console.log(filesystem)
-            } else {
-
-                setTargetatt(null);
-            }
-        }
-    };
 
     const handleSubmit = (e) => {
         let typeval = props.details?.data?.type
@@ -239,6 +181,12 @@ export default function CreateFeature(props) {
             // 'Source_Attachment': source_att,
             // "Conversion_Attachment": target_att,
             // "Target_Attachment": conver_att
+            "Source_FeatureDescription":'' ,
+            "Source_Code": "",
+            "Conversion_Code": "",
+            "Target_FeatureDescription": "",
+            "Target_Expected_Output": "",
+            "Target_ActualCode":""
         }
         const form = new FormData();
         Object.keys(formData).forEach((key) => {
@@ -273,13 +221,13 @@ export default function CreateFeature(props) {
     }
 
 
+    const handleChange_feature=(e)=>{
+
+    } 
+
 
     const handleChange = (e) => {
-        // console.log(e.target.name)
-        // console.log(e.target.value)
-        if (e.target.value === null) {
-            e.target.value = ''
-        }
+        
         setformvalues({
             ...formValues,
             [e.target.name]: e.target.value
@@ -305,71 +253,6 @@ export default function CreateFeature(props) {
     }
 
 
-
-
-    const handlechangedropdownobj = (v) => {
-        setformvalues({
-            ...formValues,
-            "Object_Type": v.code
-        })
-
-
-    }
-    const onchangefile_source = (e) => {
-
-        const { files } = e.target;
-        if (files.length > 0) {
-            const filesystem = [...file];
-            for (let i = 0; i < files.length; i++) {
-
-                const file = files[i];
-
-                filesystem.push(file);
-                setSourceatt(filesystem[0]);
-            }
-            // console.log(filesystem)
-        } else {
-            setSourceatt(null);
-        }
-    }
-
-
-    const onchangefile_target = (e) => {
-
-        const { files } = e.target;
-        if (files.length > 0) {
-            const filesystem = [...file];
-            for (let i = 0; i < files.length; i++) {
-
-                const file = files[i];
-
-                filesystem.push(file);
-                setTargetatt(filesystem[0]);
-            }
-            // console.log(filesystem)
-        } else {
-            setTargetatt(null);
-        }
-    }
-    const onchangefile_conver = (e) => {
-
-        const { files } = e.target;
-        if (files.length > 0) {
-            const filesystem = [...file];
-            for (let i = 0; i < files.length; i++) {
-
-                const file = files[i];
-
-                filesystem.push(file);
-                setConveratt(filesystem[0]);
-            }
-            // console.log(filesystem)
-        }
-        else {
-            setConveratt(null);
-        }
-    }
-
     const handledes = (data) => {
         setformvalues({
             ...formValues,
@@ -389,123 +272,45 @@ export default function CreateFeature(props) {
 
 
 
-    const handledetale_source = (value) => {
-        const data = file.filter((item) => item.name != value.name)
-        setSourceatt(data)
 
-    }
-    const handledetale_target = (value) => {
-        const data = file.filter((item) => item.name != value.name)
-        setTargetatt(data)
+    // const handleConvert = (e) => {
+    //     e.preventDefault();
 
-    }
-    const handledetale_conv = (value) => {
-        const data = file.filter((item) => item.name != value.name)
-        setConveratt(data)
+    //     let body = {
+    //         "sourcecode": formValues.Source_Code,
+    //         "convcode": "r@rawstringstart'" + formValues.Conversion_Code + "'@rawstringend",
+    //         "featurename": formValues.Feature_Name,
+    //         "migration_typeid": formValues.Migration_TypeId,
+    //         "object_type": obj_type
+    //     }
+    //     let conf = {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+    //         }
+    //     }
+    //     axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf)
+    //         .then(res => {
+    //             // console.log("res",res.data)
+    //             setformvalues({
+    //                 ...formValues,
+    //                 "Target_ActualCode": res.data
+    //             })
+    //             setNotify({
+    //                 isOpen: true,
+    //                 message: 'Conversion Completed Please Check The Output',
+    //                 type: 'success'
+    //             })
+    //         }, error => {
+    //             console.log(error);
+    //             setNotify({
+    //                 isOpen: true,
+    //                 message: 'Something Went Wrong! Please try Again',
+    //                 type: 'error'
+    //             })
+    //         })
 
-    }
+    // }
 
-    const handleConvert = (e) => {
-        e.preventDefault();
-
-        // console.log(formValues.Conversion_Code)
-        // console.log(formValues.Source_Code)
-        // console.log(formValues.Feature_Name)
-
-        let body = {
-            "sourcecode": formValues.Source_Code,
-            "convcode": "r@rawstringstart'" + formValues.Conversion_Code + "'@rawstringend",
-            "featurename": formValues.Feature_Name,
-            "migration_typeid": formValues.Migration_TypeId,
-            "object_type": obj_type
-        }
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf)
-            .then(res => {
-                // console.log("res",res.data)
-                setformvalues({
-                    ...formValues,
-                    "Target_ActualCode": res.data
-                })
-                setNotify({
-                    isOpen: true,
-                    message: 'Conversion Completed Please Check The Output',
-                    type: 'success'
-                })
-            }, error => {
-                console.log(error);
-                setNotify({
-                    isOpen: true,
-                    message: 'Something Went Wrong! Please try Again',
-                    type: 'error'
-                })
-            })
-
-    }
-
-    var tabledata = null
-    if (isTable) {
-        tabledata = <>
-            <Grid container justifyContent="center">
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>TYPE</TableCell>
-                            <TableCell >FILE</TableCell>
-
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Source
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {source_att?.name}
-                            </TableCell>
-                        </TableRow>
-
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Target
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {target_att?.name}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Conversion
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {conver_att.name}
-                            </TableCell>
-                        </TableRow>
-
-                    </TableBody>
-                    {/* <TableBody>
-                            {rows.map((row) => (
-                                <TableRow key={row.name}>
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">{row.calories}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
-                                    <TableCell align="right">{row.protein}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody> */}
-                </Table>
-
-
-            </Grid>
-        </>
-    }
 
     // console.log(prerunval,'pre')
     return (
@@ -515,7 +320,7 @@ export default function CreateFeature(props) {
                 <Grid container direction='row' justifyContent='center'>
                     <Grid item>
                         <Typography variant='h6'>
-                            Create Feature
+                            {obj_type} - Create Feature
                         </Typography>
                     </Grid>
 
@@ -557,7 +362,7 @@ export default function CreateFeature(props) {
                         rows={1}
                         onChange={(e) => handleChange(e)}
                         label="Migration Type"
-                        // defaultValue="Default Value"
+                        defaultValue="Default Value"
                         value={headerValue?.title}
                         variant="outlined"
                         required
@@ -603,7 +408,7 @@ export default function CreateFeature(props) {
                         rows={1}
                         onChange={(e) => handleChange(e)}
 
-                        // defaultValue="Default Value"
+                        defaultValue="Default Value"
                         value={obj_type}
                         variant="outlined"
                         required
@@ -631,7 +436,9 @@ export default function CreateFeature(props) {
 
                         variant="outlined"
                         required
-
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         fullWidth
 
                     />
@@ -658,8 +465,16 @@ export default function CreateFeature(props) {
                                 fullWidth
                                 label="Level"
                                 variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                required
                             />
                         )}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        required
                     />
 
 
@@ -686,109 +501,32 @@ export default function CreateFeature(props) {
                             native
                             // value={state.age}
                             onChange={handleChange}
-                            label="Precision"
+                            label="Predecessor"
                             name='Sequence'
-
-                        >   <option value="Select Precision" selected>Select Predecessor</option>
-                            <option value="No Precision" >No Predecessor</option>
+                            required
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        >   <option value="Select Predecessor" selected>Select Predecessor</option>
+                            <option value="No Predecessor" >No Predecessor</option>
                             {prerunval.map((item, ind) => {
                                 return <option value={item.Feature_Name}>{item.Feature_Name.substr(5)}</option>
                             })}
+
                         </Select>
                     </FormControl>
 
 
 
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} xl={12}>
-
-
-                    {/* <TextField
-                            id="outlined-multiline-static"
-                            label="Source Description"
-                            multiline
-                            rows={15}
-                            // defaultValue="Default Value"
-                            name="Source_FeatureDescription"
-
-                            fullWidth
-                            onChange={(e) => handleChange(e)}
-                            variant="outlined"
-                            required
-                            
-                        /> */}
-
-                    <div className="App">
-                        <h2>{'Source Description'}</h2>
-                        <CKEditor
-                            editor={ClassicEditor}
-                            // data="<p>Hello from CKEditor 5!</p>"
-                            onReady={editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log('Editor is ready to use!', editor);
-                            }}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                handledes(data)
-                                // console.log( { event, editor, data } );
-                            }}
-
-
-                            onBlur={(event, editor) => {
-                                console.log('Blur.', editor);
-                            }}
-                            onFocus={(event, editor) => {
-                                console.log('Focus.', editor);
-                            }}
-                        />
-                    </div>
-                </Grid>
-
-
-
-                <Grid item xs={12} sm={12} md={12} xl={12}>
-
-
-                    {/* <TextField
-                        id="outlined-multiline-static"
-                        label="Target Description"
-
-                        fullWidth
-                        name='Target_FeatureDescription'
-                        multiline
-                        rows={15}
-                        onChange={(e) => handleChange(e)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        required
-                    /> */}
-                    <div className="App">
-                        <h2>{"Target Description"}</h2>
-                        <CKEditor
-                            editor={ClassicEditor}
-                            // data="<p>Hello from CKEditor 5!</p>"
-                            onReady={editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log('Editor is ready to use!', editor);
-                            }}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                handletarget(data)
-                                // console.log( { event, editor, data } );
-                            }}
-                            onBlur={(event, editor) => {
-                                console.log('Blur.', editor);
-                            }}
-                            onFocus={(event, editor) => {
-                                console.log('Focus.', editor);
-                            }}
-                        />
-                    </div>
-                </Grid>
 
 
 
 
+
+
+
+                {/* 
                 <Grid item xs={12} sm={12} md={12} xl={12}>
 
 
@@ -805,9 +543,9 @@ export default function CreateFeature(props) {
                         required
 
                     />
-                </Grid>
+                </Grid> */}
 
-
+                {/* 
                 <Grid item xs={12} sm={12} md={12} xl={12}>
                     <TextField
                         fullWidth
@@ -828,13 +566,13 @@ export default function CreateFeature(props) {
                     />
 
 
-                </Grid>
+                </Grid> */}
 
 
 
 
 
-                <Grid item xs={12} sm={12} md={12} xl={12}>
+                {/* <Grid item xs={12} sm={12} md={12} xl={12}>
                     <TextField
                         fullWidth
                         id="outlined-multiline-static"
@@ -847,9 +585,9 @@ export default function CreateFeature(props) {
                         variant="outlined"
                         required
                     />
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={12} md={12} xl={12}>
+                {/* <Grid item xs={12} sm={12} md={12} xl={12}>
                     <TextField
                         fullWidth
                         id="outlined-multiline-static"
@@ -862,7 +600,7 @@ export default function CreateFeature(props) {
                         variant="outlined"
                         required
                     />
-                </Grid>
+                </Grid> */}
 
                 {/* <Grid item xs={12} sm={12} md={12} xl={12}>
 
@@ -984,7 +722,7 @@ export default function CreateFeature(props) {
 
                 <Grid container direction='row ' justifyContent='center' spacing={2}>
 
-                    <Grid item >
+                    {/* <Grid item >
                         <Button
                             // type="submit"
                             fullWidth
@@ -996,7 +734,7 @@ export default function CreateFeature(props) {
                         >
                             Convert
                         </Button>
-                    </Grid>
+                    </Grid> */}
                     <Grid item>
                         <Button
                             // type="submit"
@@ -1011,7 +749,7 @@ export default function CreateFeature(props) {
                         </Button>
                     </Grid>
 
-                    <Grid item>
+                    {/* <Grid item>
                         <Button
                             // type="submit"
                             fullWidth
@@ -1023,7 +761,7 @@ export default function CreateFeature(props) {
                         >
                             Deploy
                         </Button>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Box>
             {/* </form> */}
@@ -1033,3 +771,59 @@ export default function CreateFeature(props) {
         </ >
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// <Grid item xs={12} sm={12} md={12} xl={12}>
+
+
+// {/* <TextField
+//     id="outlined-multiline-static"
+//     label="Target Description"
+
+//     fullWidth
+//     name='Target_FeatureDescription'
+//     multiline
+//     rows={15}
+//     onChange={(e) => handleChange(e)}
+//     // defaultValue="Default Value"
+//     variant="outlined"
+//     required
+// /> */}
+// <div className="App">
+//     <h2>{"Target Description"}</h2>
+//     <CKEditor
+//         editor={ClassicEditor}
+//         // data="<p>Hello from CKEditor 5!</p>"
+//         onReady={editor => {
+//             // You can store the "editor" and use when it is needed.
+//             console.log('Editor is ready to use!', editor);
+//         }}
+//         onChange={(event, editor) => {
+//             const data = editor.getData();
+//             handletarget(data)
+//             // console.log( { event, editor, data } );
+//         }}
+//         onBlur={(event, editor) => {
+//             console.log('Blur.', editor);
+//         }}
+//         onFocus={(event, editor) => {
+//             console.log('Focus.', editor);
+//         }}
+//     />
+// </div>
+// </Grid>
+

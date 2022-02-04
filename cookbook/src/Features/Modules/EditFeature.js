@@ -8,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import ConfirmDialog from "../Notifications/ConfirmDialog";
 import axios from "axios";
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -54,7 +55,7 @@ export default function EditFeature(props) {
     // console.log(props.location.data)
     const history = useHistory();
     const editdata = props.location.data
-    // console.log("editdata", editdata.detaildata[0])
+    // console.log("editdata", editdata.detaildata)
     const classes = useStyles();
 
 
@@ -66,6 +67,8 @@ export default function EditFeature(props) {
     const [target_att, setTargetatt] = useState([])
     const [conver_att, setConveratt] = useState([])
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+    // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
     // const [migtypeid,setMigtypeid] = useState()
     const [Source_FeatureDescription, setSource_FeatureDescription] = useState("");
     const [Sequence, setSequence] = useState("");
@@ -157,9 +160,9 @@ export default function EditFeature(props) {
         });
         let conf = {
             headers: {
-              'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
-          }
+        }
         axios.put(`${config.API_BASE_URL()}/api/fupdate/${editdata.detaildata.Feature_Id}`, form, conf)
             .then(res => {
                 console.log(res.data)
@@ -180,6 +183,8 @@ export default function EditFeature(props) {
         dispatch(Menuaction.reloadAction(true))
 
     }
+
+
 
     const handleChange = (e) => {
         if (e.target.value === null) {
@@ -385,7 +390,7 @@ export default function EditFeature(props) {
 
     const handleConvert = (e) => {
         e.preventDefault();
-        
+
 
         // console.log(formValues.Conversion_Code)
         // console.log(formValues.Source_Code)
@@ -395,17 +400,17 @@ export default function EditFeature(props) {
         let body = {
             "sourcecode": Source_Code,
             // "convcode": Conversion_Code,
-            "convcode": "r@rawstringstart'"+Conversion_Code+"'@rawstringend",
+            "convcode": "r@rawstringstart'" + Conversion_Code + "'@rawstringend",
             "featurename": wout_prefix,
             "migration_typeid": editdata.detaildata.Migration_TypeId,
-            "object_type":editdata.detaildata.Object_Type
+            "object_type": editdata.detaildata.Object_Type
         }
         let conf = {
             headers: {
-              'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
-          }
-        axios.post(`${config.API_BASE_URL()}/api/autoconv`, body,conf)
+        }
+        axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf)
             .then(res => {
                 // console.log("res",res.data)
                 setTarget_ActualCode(res.data)
@@ -495,6 +500,30 @@ export default function EditFeature(props) {
             }
         }
     };
+
+    const deleteitem = async (data) => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        setConfirmDialog({
+            confirmDialog,
+            isOpen: true
+        })
+        const res = await axios.delete(`${config.API_BASE_URL()}/api/fdelete/${data}`, conf);
+        // getmenus(1);
+        setNotify({
+            isOpen: true,
+            message: 'Deleted Successfully',
+            type: 'error'
+        });
+        // dispatch(Menuaction.reloadAction(true))
+        // dispatch(ActionMenu.ActionMenu(null));
+        history.push("/dashboard");
+    };
+
+
 
     var tabledata = null
     if (isTable) {
@@ -987,13 +1016,41 @@ export default function EditFeature(props) {
                             Save
                         </Button>
                     </Grid>
+                    <Grid item>
+                        <Button
+                            // type="submit"
+                            fullWidth
+                            variant="contained"
+                            style={{ backgroundColor: 'red', color: 'white' }}
+                            // className={classes.submit}
+                            // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                            onClick={() => {
+                                setConfirmDialog({
+                                    isOpen: true,
+                                    title: 'Are you sure to delete this record?',
+                                    // subTitle: "You can't undo this operation",
+                                    onConfirm: () => { deleteitem(editdata.detaildata.Feature_Id) }
+                                })
+                            }
+                            }
+                        >
+                            Delete
+                        </Button>
+                    </Grid>
                 </Grid>
             </Box>
             {/* </form> */}
 
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
 
-
-        </MenuAppBar>
+        </MenuAppBar >
     );
 }
 

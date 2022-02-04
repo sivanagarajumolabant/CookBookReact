@@ -66,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     background: "#3f51b5",
+    boxShadow: 'none',
+    border:'1px solid #004280'
+
   },
 
   drawer: {
@@ -92,7 +95,9 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('lg')]: {
       width: 240,
+      marginTop: 10,
       background: "#3f51b5",
+      // height:'100vh'
     },
 
 
@@ -102,6 +107,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     height: '80vh',
     background: "#3f51b5",
+    
   },
   content: {
     [theme.breakpoints.down('xs')]: {
@@ -136,14 +142,17 @@ const useStyles = makeStyles((theme) => ({
   },
 
   logoutbtn: {
-    // marginLeft:"0.5px",
+    // marginLeft:"8px",
+    right: 0,
+    position: 'fixed'
     // marginRight: "-1px",
 
 
   },
 
-  inputRoot: {
+  inputRoottype: {
     color: "white",
+    // width: '40px',
     marginTop: 5,
     // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
     '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
@@ -160,6 +169,30 @@ const useStyles = makeStyles((theme) => ({
       borderColor: "white",
     },
   },
+
+  inputRootversion: {
+    color: "white",
+    // width: '40px',
+    marginTop: 5,
+    marginLeft: 10,
+    // border:'none',
+    // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
+    '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+      // Default left padding is 6px
+      paddingLeft: 26,
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+
+
+  }
 }));
 
 const StyledAutocomplete = styled(Autocomplete)({
@@ -204,8 +237,8 @@ export default function ClippedDrawer({ children }) {
     name: "Oracle To Postgres",
   });
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
-  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+  // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+  // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const dispatch = useDispatch();
   const history = useHistory();
   const handleChange = (event) => {
@@ -233,7 +266,7 @@ export default function ClippedDrawer({ children }) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`,conf);
+    const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
     dispatch(Menuaction.reloadAction(false))
   };
@@ -249,31 +282,31 @@ export default function ClippedDrawer({ children }) {
     dispatch(ActionMenu.dropdown(v));
   };
 
-  const deleteitem = async (data) => {
+  // const deleteitem = async (data) => {
 
-    let conf = {
-      headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-      }
-    }
-    setConfirmDialog({
-      confirmDialog,
-      isOpen: false
-    })
+  //   let conf = {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+  //     }
+  //   }
+  //   setConfirmDialog({
+  //     confirmDialog,
+  //     isOpen: false
+  //   })
 
-    const res = await axios.delete(`${config.API_BASE_URL()}/api/fdelete/${data.Feature_Id}`,conf);
-    getmenus(1);
+  //   const res = await axios.delete(`${config.API_BASE_URL()}/api/fdelete/${data.Feature_Id}`, conf);
+  //   getmenus(1);
 
 
-    setNotify({
-      isOpen: true,
-      message: 'Deleted Successfully',
-      type: 'error'
-    });
-    // dispatch(Menuaction.reloadAction(true))
-    dispatch(ActionMenu.ActionMenu(null));
-    // history.push("/dashboard");
-  };
+  //   setNotify({
+  //     isOpen: true,
+  //     message: 'Deleted Successfully',
+  //     type: 'error'
+  //   });
+  //   // dispatch(Menuaction.reloadAction(true))
+  //   dispatch(ActionMenu.ActionMenu(null));
+  //   // history.push("/dashboard");
+  // };
 
 
   const onDownload = () => {
@@ -309,13 +342,13 @@ export default function ClippedDrawer({ children }) {
             </Grid>
 
             <Grid item
-              xm={12} sm={6} md={4} lg={4}
-            // style={{ paddingRight: "1rem" }} 
+              xm={12} sm={6} md={5} lg={5}
+              style={{ marginLeft: "200px" }}
             >
               <StyledAutocomplete
                 size="small"
                 id="grouped-demo"
-                className={classes.inputRoot}
+                className={classes.inputRoottype}
                 options={[
                   { title: "Oracle To Postgres", code: 1 },
                   { title: "Oracle TO SQLServer", code: 2 },
@@ -338,7 +371,7 @@ export default function ClippedDrawer({ children }) {
                 )}
               />
             </Grid>
-            <Grid item xm={12} sm={5} md={4} lg={4}>
+            <Grid item xm={12} sm={5} md={1} lg={1}>
               <StyledAutocomplete
                 size="small"
                 id="grouped-demo"
@@ -347,19 +380,25 @@ export default function ClippedDrawer({ children }) {
                   { title: "v2", code: 2 },
                   { title: "v3", code: 3 },
                 ]}
-                className={classes.inputRoot}
+                className={classes.inputRootversion}
                 groupBy={""}
+                // defaultValue={{ title: "Oracle To Postgres" }}
                 getOptionLabel={(option) => option.title}
                 defaultValue={{ title: "v1", code: 1 }}
-                style={{ width: 300 }}
+                style={{ width: 110 }}
+
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Migration Type  Versions"
+                    label="Versions"
                     variant="outlined"
+                    // borderColor = 'text.primary'
                     InputLabelProps={{
                       className: classes.floatingLabelFocusStyle,
                     }}
+
+
+
                   />
                 )}
               />
@@ -367,7 +406,7 @@ export default function ClippedDrawer({ children }) {
 
 
             {auth && (
-              <Grid item xm={6} sm={1} md={1} lg={1} className={classes.logoutbtn}>
+              <Grid item xs={6} sm={1} md={1} lg={1} className={classes.logoutbtn}>
                 <IconButton
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
@@ -423,42 +462,53 @@ export default function ClippedDrawer({ children }) {
               paper: classes.drawerPaper,
             }}
           >
+
             <Toolbar />
+
+              
 
             <div className={classes.drawerContainer}>
               <Typography
                 variant="body2"
-                style={{ color: "white", paddingTop: 0, paddingLeft: 45 }}
+                style={{ color: "white",marginBottom:10, paddingTop: 0, paddingLeft: 60, marginTop:0, justifyContent:'center' }}
               >
                 Database Objects
               </Typography>
-              <Typography
+              {/* <Typography
 
                 style={{ color: "white", paddingTop: 10, paddingLeft: 35 }}
               >
 
 
 
-              </Typography>
+              </Typography> */}
 
               <Divider />
               <Box py={1}>
                 <GmailTreeView
                   menuList={menuList}
                   dropdown={dropdown}
-                  deleteitem={deleteitem}
-                  confirmDialog ={confirmDialog}
-                  setConfirmDialog={setConfirmDialog}
+                  // deleteitem={deleteitem}
+                  // confirmDialog={confirmDialog}
+                  // setConfirmDialog={setConfirmDialog}
                 />
               </Box>
               <Box py={1}>
                 <Button
-                  style={{ color: 'white', marginLeft: 40, textTransform: 'unset' }}
+                  style={{ color: 'white',marginLeft:'10px', textTransform: 'unset' }}
                   startIcon={<GetAppIcon />}
                   onClick={onDownload}
                   className={classes.downloadbutton}
                 >
-                  Python Template
+                  Template
+                </Button>
+                <Button
+                  style={{ color: 'white',marginLeft:'120px', textTransform: 'unset' }}
+                  startIcon={<GetAppIcon />}
+                  onClick={onDownload}
+                  className={classes.downloadbutton}
+                >
+                  Document
                 </Button>
               </Box>
             </div>
@@ -478,14 +528,14 @@ export default function ClippedDrawer({ children }) {
 
       </Grid>
       {/* <Footer /> */}
-      <Notification
+      {/* <Notification
         notify={notify}
         setNotify={setNotify}
-      />
-      <ConfirmDialog
+      /> */}
+      {/* <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
-      />
+      /> */}
     </div>
   );
 }
