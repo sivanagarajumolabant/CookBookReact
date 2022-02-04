@@ -471,66 +471,6 @@ export default function EditFeature(props) {
 
 
 
-    var tabledata = null
-    if (isTable) {
-        tabledata = <>
-            <Grid container justifyContent="center">
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>TYPE</TableCell>
-                            <TableCell >FILE</TableCell>
-
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Source
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {source_att?.name}
-                            </TableCell>
-                        </TableRow>
-
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Target
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {/* {target_att?.name} */}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Conversion
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {conver_att.name}
-                            </TableCell>
-                        </TableRow>
-
-                    </TableBody>
-                    {/* <TableBody>
-                            {rows.map((row) => (
-                                <TableRow key={row.name}>
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">{row.calories}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
-                                    <TableCell align="right">{row.protein}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody> */}
-                </Table>
-
-
-            </Grid>
-        </>
-    }
-
     return (
 
         <MenuAppBar>
@@ -945,7 +885,7 @@ export default function EditFeature(props) {
                     </Grid>
                 </Grid>
             </Box>
-            {tabledata}
+          
 
 
 
