@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    // console.log(props.location.data)
+    console.log("editdata",props.location.data)
     const history = useHistory();
     const editdata = props.location.data
     // console.log("editdata", editdata.detaildata)

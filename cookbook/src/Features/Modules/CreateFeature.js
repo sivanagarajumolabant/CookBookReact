@@ -9,6 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
+import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import axios from "axios";
 import IconButton from '@material-ui/core/IconButton';
@@ -93,8 +94,8 @@ export default function CreateFeature(props) {
     }
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
-    const [featureslist,setFeatureslist] = useState(["ex1","Sample"])
-
+    const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
+    const history = useHistory();
     const [formValues, setformvalues] = useState({ Migration_TypeId: props.details?.data?.type, Object_Type: props.details?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
@@ -102,6 +103,7 @@ export default function CreateFeature(props) {
 
     const [drop, setDrop] = useState("Source Attachments");
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+    const [createdata, setCreatedata] = useState([])
     // const [migtypeid, setMigtypeid] = useState()
 
     // const [seq, setSeq]=useState({})
@@ -181,12 +183,12 @@ export default function CreateFeature(props) {
             // 'Source_Attachment': source_att,
             // "Conversion_Attachment": target_att,
             // "Target_Attachment": conver_att
-            "Source_FeatureDescription":'' ,
+            "Source_FeatureDescription": '',
             "Source_Code": "",
             "Conversion_Code": "",
             "Target_FeatureDescription": "",
             "Target_Expected_Output": "",
-            "Target_ActualCode":""
+            "Target_ActualCode": ""
         }
         const form = new FormData();
         Object.keys(formData).forEach((key) => {
@@ -200,7 +202,7 @@ export default function CreateFeature(props) {
 
         axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf)
             .then(res => {
-                // console.log(res.data)
+                setCreatedata(res)
                 setNotify({
                     isOpen: true,
                     message: 'Feature Created Successfully',
@@ -214,20 +216,25 @@ export default function CreateFeature(props) {
                     type: 'error'
                 })
             })
+            // .then(()=>{
+            //     if (createdata.length > 0) {
+            //         history.push({
+            //             pathname: `/edit/${createdata.data.Feature_Id}`,
+            //             data: { createdata },
+        
+            //         })
+               
+            //     }
+            // })
 
-
-
+      
         dispatach(Menuaction.reloadAction(true))
     }
 
 
-    const handleChange_feature=(e)=>{
-
-    } 
-
 
     const handleChange = (e) => {
-        
+
         setformvalues({
             ...formValues,
             [e.target.name]: e.target.value
