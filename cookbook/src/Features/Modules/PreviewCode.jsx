@@ -295,7 +295,7 @@ export default function PreviewCode(props) {
                   //     // console.log( { event, editor, data } );
                   // }}
 
-                  
+
                   onBlur={(event, editor) => {
                     console.log('Blur.', editor);
                   }}
@@ -369,23 +369,6 @@ export default function PreviewCode(props) {
             </div>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Target Actual Code
-            </Typography>
-            <div>
-              <Card className={classes.SourceCode}>
-                {/* <Typography component="h2"> */}
-                {detaildata.Target_ActualCode}
-              </Card>
-            </div>
-            {/* </Typography> */}
-          </Grid>
 
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography
@@ -405,6 +388,28 @@ export default function PreviewCode(props) {
             {/* </Typography> */}
           </Grid>
 
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Target Actual Code
+            </Typography>
+            <div>
+              <Card className={classes.SourceCode}>
+                {/* <Typography component="h2"> */}
+                {/* <pre>
+                  <code> */}
+                {detaildata.Target_ActualCode}
+                {/* </code>
+                </pre> */}
+              </Card>
+            </div>
+            {/* </Typography> */}
+          </Grid>
+
 
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography
@@ -418,7 +423,11 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {detaildata.Conversion_Code}
+                <pre>
+                  <code>
+                    {detaildata.Conversion_Code}
+                  </code>
+                </pre>
               </Card>
             </div>
             {/* </Typography> */}

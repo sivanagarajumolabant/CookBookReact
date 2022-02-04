@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
-import {
-    createMuiTheme,
-    ThemeProvider
-} from "@material-ui/core/styles";
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -25,6 +22,7 @@ import MenuAppBar from '../../Components/header'
 import { Box, Grid, Typography, styled } from '@material-ui/core';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CloseIcon from '@material-ui/icons/Close';
+import SaveIcon from '@material-ui/icons/Save';
 import { useDispatch, useSelector } from 'react-redux';
 import Menuaction from '../../Redux/actions/Menuaction';
 import Notification from '../Notifications/Notification';
@@ -186,14 +184,6 @@ export default function CreateFeature(props) {
 
 
 
-    const theme = createMuiTheme({
-        palette: {
-            error: {
-                main: "#ff00ff", // change the error color to pink
-            }
-        }
-    });
-
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
 
@@ -248,7 +238,7 @@ export default function CreateFeature(props) {
                     type: 'success'
                 })
             }, error => {
-                // console.log(error);
+                console.log(error);
                 setNotify({
                     isOpen: true,
                     message: 'Something Went Wrong Please Try Again!',
@@ -490,7 +480,6 @@ export default function CreateFeature(props) {
 
 
                 <Grid item xs={12} sm={4} md={4} xl={4}>
-                    <ThemeProvider theme={theme}>
                         <TextField
                             id="outlined-multiline-static"
                             label="Feature Name"
@@ -510,7 +499,7 @@ export default function CreateFeature(props) {
                             fullWidth
 
                         />
-                    </ThemeProvider>
+                   
 
                 </Grid>
 
@@ -806,12 +795,13 @@ export default function CreateFeature(props) {
                     </Grid> */}
                     <Grid item>
                         <Button
-                            // type="submit"
+                            type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             // className={classes.submit}
                             onClick={handleSubmit}
+                            startIcon={<SaveIcon />}
 
                         >
                             Save

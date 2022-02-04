@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
+// import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -29,6 +32,15 @@ import config from '../../Config/config';
 
 
 const useStyles = makeStyles((theme) => ({
+    convertbutton: {
+        // color: "white",
+        // backgroundColor: "blue",
+        // top: "50%",
+        // height: 30,
+        float: "right",
+        position: "relative",
+        // transform: "translateY(-50%)"
+    },
     table: {
         // minWidth: 150,
         width: '60%',
@@ -52,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    console.log("editdata",props.location.data)
+    console.log("editdata", props.location.data)
     const history = useHistory();
     const editdata = props.location.data
     // console.log("editdata", editdata.detaildata)
@@ -63,9 +75,12 @@ export default function EditFeature(props) {
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
     const { headerValue } = useSelector(state => state.dashboardReducer);
-    const [source_att, setSourceatt] = useState([])
-    const [target_att, setTargetatt] = useState([])
-    const [conver_att, setConveratt] = useState([])
+    const [sourcedescatt, setSourcedescatt] = useState([])
+    const [targetdescatt, setTargetdescatt] = useState([])
+    const [actualtargetcodeatt, setActualtargetcodeatt] = useState([])
+    const [expectedtargetcodeatt, setExpectedtargetcodeatt] = useState([])
+    const [sourcecodeatt, setSourcecodeatt] = useState([])
+    const [conversionatt, setConversionatt] = useState([])
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -78,7 +93,7 @@ export default function EditFeature(props) {
     const [Target_Expected_Output, setTarget_Expected_Output] = useState("");
     const [Conversion_Code, setConversion_Code] = useState("");
     const [isTable, setIsTable] = useState(false)
-    const [drop, setDrop] = useState("Source Attachments");
+    const [drop, setDrop] = useState("Sourcedescription");
     const dispatch = useDispatch();
 
 
@@ -101,22 +116,6 @@ export default function EditFeature(props) {
     }, [editdata]);
 
     var handle_featurename = editdata?.detaildata.Feature_Name.substr(5)
-    // useEffect(() => {
-    //     if (editdata) {
-    //         axios.put(`http://127.0.0.1:8000/api/update/${editdata.detaildata[0].Feature_Id}`, formData)
-    //         .then(res => {
-    //             setDetaildata(res.data
-    //                 );
-    //             console.log(res.data)
-    //         }, error => {
-    //             console.log(error);
-    //         })
-
-    //     }
-    //   }, [editdata]);
-
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -146,9 +145,6 @@ export default function EditFeature(props) {
             "Target_FeatureDescription": Target_FeatureDescription,
             "Target_Expected_Output": Target_Expected_Output,
             "Target_ActualCode": Target_ActualCode,
-            // 'Source_Attachment': source_att,
-            // "Conversion_Attachment": conver_att,
-            // "Target_Attachment": target_att,
             "Source_Code": Source_Code,
             "Conversion_Code": Conversion_Code
         }
@@ -222,123 +218,22 @@ export default function EditFeature(props) {
 
     // }
 
-    const onchangefile_source = (e) => {
-
-        const { files } = e.target;
-        if (files.length > 0) {
-            const filesystem = [...file];
-            for (let i = 0; i < files.length; i++) {
-
-                const file = files[i];
-
-                filesystem.push(file);
-                setSourceatt(filesystem[0])
-
-
-            }
-            // console.log(filesystem)
-        } else {
-            setSourceatt(null);
-        }
-    }
-
-
-    const onchangefile_target = (e) => {
-
-        const { files } = e.target;
-        if (files.length > 0) {
-            const filesystem = [...file];
-            for (let i = 0; i < files.length; i++) {
-
-                const file = files[i];
-
-                filesystem.push(file);
-                setTargetatt(filesystem[0])
-
-            }
-            // console.log(filesystem)
-        } else {
-            setTargetatt(null);
-        }
-    }
-    const onchangefile_conver = (e) => {
-
-        const { files } = e.target;
-        if (files.length > 0) {
-            const filesystem = [...file];
-            for (let i = 0; i < files.length; i++) {
-
-                const file = files[i];
-
-                filesystem.push(file);
-                setConveratt(filesystem[0])
-            }
-            // console.log(filesystem)
-        } else {
-            setConveratt(null);
-        }
-    }
-
-
-
-
-
-    const handledetale_source = (value) => {
-        const data = file.filter((item) => item.name != value.name)
-        setSourceatt(data)
-
-    }
-    const handledetale_target = (value) => {
-        const data = file.filter((item) => item.name != value.name)
-        setTargetatt(data)
-
-    }
-    const handledetale_conv = (value) => {
-        const data = file.filter((item) => item.name != value.name)
-        setConveratt(data)
-
-    }
-
-    // const onchangefile = (e, value) => {
-
-    //     const { files } = e.target;
-    //     if (files.length > 0) {
-    //         const filesystem = [...file];
-    //         for (let i = 0; i < files.length; i++) {
-
-    //             const file = files[i];
-
-    //             filesystem.push({
-    //                 name: file.name,
-    //                 size: file.size,
-    //                 type: file.type
-    //             });
-    //             setfile(filesystem);
-
-
-    //             setAttachmentList({
-    //                 ...AttachmentList,
-    //                 [value]: filesystem[0].name
-    //             })
-
-    //             // setUploadingDoc(false);
-
-
-    //         }
-    //         console.log(filesystem)
-    //     }
-
-
-
-    //     // setformvalues({
-    //     //     ...formValues,
-    //     //  files:[
-    //     //      ...file,
-    //     //      e.target.files[0]
-    //     //  ]
-    //     // })
+    // const handledetale_source = (value) => {
+    //     const data = file.filter((item) => item.name != value.name)
+    //     setSourceatt(data)
 
     // }
+    // const handledetale_target = (value) => {
+    //     const data = file.filter((item) => item.name != value.name)
+    //     setTargetatt(data)
+
+    // }
+    // const handledetale_conv = (value) => {
+    //     const data = file.filter((item) => item.name != value.name)
+    //     setConveratt(data)
+
+    // }
+
 
     const handlechangedropdownlevel = (v) => {
         setformvalues({
@@ -442,63 +337,109 @@ export default function EditFeature(props) {
     // console.log(AttachmentList)
 
     const handleChangedrop = (v) => {
-        setDrop(v.title);
+        setDrop(v.code);
         // console.log(v)
     };
 
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
     const handleSubmitdrpm = (e) => {
-        // console.log(drop);
-
-        if (drop === "Source Attachments") {
+        var filesub = []
+        if (drop === "Sourcedescription") {
             const { files } = e.target;
             if (files.length > 0) {
-                const filesystem = [...file];
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-
-                    filesystem.push(file);
-                    setSourceatt(filesystem[0]);
-                    setIsTable(true)
-                }
-                // console.log(filesystem)
+                const fileatt = e.target.files[0];
+                filesub.push(fileatt)
+                setSourcedescatt(fileatt)
             } else {
-                setSourceatt(null);
+                setSourcedescatt('')
+                filesub.push('')
             }
-        } else if (drop === "Conversion Attachments") {
+        } else if (drop === "Targetdescription") {
             const { files } = e.target;
             if (files.length > 0) {
-                const filesystem = [...file];
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-
-                    filesystem.push(file);
-
-                    setConveratt(filesystem[0]);
-                    setIsTable(true)
-                }
-                // console.log(filesystem)
+                const fileatt = e.target.files[0];
+                filesub.push(fileatt)
+                setTargetdescatt(fileatt)
             } else {
-                setConveratt(null);
+                setTargetdescatt('')
+                filesub.push('')
             }
-        } else {
+        } else if (drop === "Sourcecode") {
             const { files } = e.target;
             if (files.length > 0) {
-                const filesystem = [...file];
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-
-                    filesystem.push(file);
-                    setTargetatt(filesystem[0]);
-                    setIsTable(true)
-                }
-                // console.log(filesystem)
+                const fileatt = e.target.files[0];
+                filesub.push(fileatt)
+                setSourcecodeatt(fileatt)
             } else {
-
-                setTargetatt(null);
+                setSourcecodeatt('')
+                filesub.push('')
+            }
+        } else if (drop === "Actualtargetcode") {
+            const { files } = e.target;
+            if (files.length > 0) {
+                const fileatt = e.target.files[0];
+                filesub.push(fileatt)
+                setActualtargetcodeatt(fileatt)
+            } else {
+                setActualtargetcodeatt('')
+                filesub.push('')
+            }
+        } else if (drop === "Expectedconversion") {
+            const { files } = e.target;
+            if (files.length > 0) {
+                const fileatt = e.target.files[0];
+                filesub.push(fileatt)
+                setExpectedtargetcodeatt(fileatt)
+            } else {
+                setExpectedtargetcodeatt('')
+                filesub.push('')
+            }
+        }else if (drop === "Conversion") {
+            const { files } = e.target;
+            if (files.length > 0) {
+                const fileatt = e.target.files[0];
+                filesub.push(fileatt)
+                setConversionatt(fileatt)
+            } else {
+                setConversionatt('')
+                filesub.push('')
             }
         }
+
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        let formData={
+            "AttachmentType":drop,
+            "Attachment":filesub
+        }
+        const form = new FormData();
+        Object.keys(formData).forEach((key) => {
+            form.append(key, formData[key]);
+
+        });
+        axios.post(`${config.API_BASE_URL()}/api/attachmentsupdate/${editdata.detaildata.Feature_Id}`, form, conf)
+            .then(res => {
+                console.log(res.data)
+                setNotify({
+                    isOpen: true,
+                    message: drop+' Upload Successfully',
+                    type: 'success'
+                })
+            }, error => {
+                console.log(error);
+                setNotify({
+                    isOpen: true,
+                    message: 'Something Went Wrong! Please try Again',
+                    type: 'error'
+                })
+            })
+
+
+
     };
 
     const deleteitem = async (data) => {
@@ -525,65 +466,65 @@ export default function EditFeature(props) {
 
 
 
-    var tabledata = null
-    if (isTable) {
-        tabledata = <>
-            <Grid container justifyContent="center">
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>TYPE</TableCell>
-                            <TableCell >FILE</TableCell>
+    // var tabledata = null
+    // if (isTable) {
+    //     tabledata = <>
+    //         <Grid container justifyContent="center">
+    //             <Table className={classes.table} aria-label="simple table">
+    //                 <TableHead>
+    //                     <TableRow>
+    //                         <TableCell>TYPE</TableCell>
+    //                         <TableCell >FILE</TableCell>
 
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Source
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {source_att?.name}
-                            </TableCell>
-                        </TableRow>
+    //                     </TableRow>
+    //                 </TableHead>
+    //                 <TableBody>
+    //                     <TableRow >
+    //                         <TableCell component="th" scope="row">
+    //                             Source
+    //                         </TableCell>
+    //                         <TableCell component="th" scope="row">
+    //                             {source_att?.name}
+    //                         </TableCell>
+    //                     </TableRow>
 
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Target
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {target_att?.name}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow >
-                            <TableCell component="th" scope="row">
-                                Conversion
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {conver_att.name}
-                            </TableCell>
-                        </TableRow>
+    //                     <TableRow >
+    //                         <TableCell component="th" scope="row">
+    //                             Target
+    //                         </TableCell>
+    //                         <TableCell component="th" scope="row">
+    //                             {/* {target_att?.name} */}
+    //                         </TableCell>
+    //                     </TableRow>
+    //                     <TableRow >
+    //                         <TableCell component="th" scope="row">
+    //                             Conversion
+    //                         </TableCell>
+    //                         <TableCell component="th" scope="row">
+    //                             {conver_att.name}
+    //                         </TableCell>
+    //                     </TableRow>
 
-                    </TableBody>
-                    {/* <TableBody>
-                            {rows.map((row) => (
-                                <TableRow key={row.name}>
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">{row.calories}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
-                                    <TableCell align="right">{row.protein}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody> */}
-                </Table>
+    //                 </TableBody>
+    //                 {/* <TableBody>
+    //                         {rows.map((row) => (
+    //                             <TableRow key={row.name}>
+    //                                 <TableCell component="th" scope="row">
+    //                                     {row.name}
+    //                                 </TableCell>
+    //                                 <TableCell align="right">{row.calories}</TableCell>
+    //                                 <TableCell align="right">{row.fat}</TableCell>
+    //                                 <TableCell align="right">{row.carbs}</TableCell>
+    //                                 <TableCell align="right">{row.protein}</TableCell>
+    //                             </TableRow>
+    //                         ))}
+    //                     </TableBody> */}
+    //             </Table>
 
 
-            </Grid>
-        </>
-    }
+    //         </Grid>
+    //     </>
+    // }
 
     return (
 
@@ -736,7 +677,7 @@ export default function EditFeature(props) {
                         /> */}
 
                     <div className="App">
-                        <h2>{'Source Description'}</h2>
+                        <p>{'Source Description'}</p>
                         <CKEditor
                             editor={ClassicEditor}
                             data={editdata?.detaildata.Source_FeatureDescription}
@@ -842,6 +783,41 @@ export default function EditFeature(props) {
                     />
                 </Grid>
 
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        id="outlined-multiline-static"
+                        label="Expected Target Code"
+                        multiline
+                        rows={15}
+                        name='Target_Expected_Output'
+                        onChange={(e) => setTarget_Expected_Output(e.target.value)}
+                        // defaultValue="Default Value"
+                        variant="outlined"
+                        required
+                        value={Target_Expected_Output}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </Grid>
+                <Box py={2}>
+                    <Button
+                        // type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        // style={{float: 'right'}}
+                        // className={classes.submit}
+                        className={classes.convertbutton}
+                        onClick={handleConvert}
+
+                    >
+                        Convert
+                    </Button>
+
+                </Box>
+
 
                 <Grid item xs={12}>
                     <TextField
@@ -866,24 +842,6 @@ export default function EditFeature(props) {
 
 
 
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Expected Target Code"
-                        multiline
-                        rows={15}
-                        name='Target_Expected_Output'
-                        onChange={(e) => setTarget_Expected_Output(e.target.value)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        required
-                        value={Target_Expected_Output}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </Grid>
 
                 <Grid item xs={12}>
                     <TextField
@@ -934,12 +892,15 @@ export default function EditFeature(props) {
                             fullWidth
                             id="grouped-demo"
                             options={[
-                                { title: "Source Attachments", code: 1 },
-                                { title: "Conversion Attachments", code: 2 },
-                                { title: "Target Attachments", code: 3 },
+                                { title: "Source Description", code: 'Sourcedescription' },
+                                { title: "Target Description", code: 'Targetdescription' },
+                                { title: "Conversion Code", code: 'Conversion' },
+                                { title: "Actual Target Code", code: 'Actualtargetcode' },
+                                { title: "Expected Target Code", code: 'Expectedconversion' },
+                                { title: "Source Code", code: 'Sourcecode' }
                             ]}
                             groupBy={""}
-                            // defaultValue={{ title: "Source Attachments" }}
+                            // defaultValue={{ title: "Source Description" }}
                             getOptionLabel={(option) => option.title}
                             name="Attachemnets"
                             onChange={(e, v) => handleChangedrop(v)}
@@ -947,7 +908,7 @@ export default function EditFeature(props) {
                                 <TextField
                                     {...params}
                                     fullWidth
-                                    label="Attachements"
+                                    label="Attachments"
                                     variant="outlined"
                                 />
                             )}
@@ -967,7 +928,9 @@ export default function EditFeature(props) {
                             />
 
                             <label htmlFor="contained-button-file3">
-                                <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
+                                <Button variant="contained"
+                                    startIcon={<CloudUploadIcon />}
+                                    color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
                                     Upload
                                 </Button>
                             </label>
@@ -976,7 +939,7 @@ export default function EditFeature(props) {
                     </Grid>
                 </Grid>
             </Box>
-            {tabledata}
+            {/* {tabledata} */}
 
 
 
@@ -990,19 +953,7 @@ export default function EditFeature(props) {
 
                 <Grid container direction='row ' justifyContent='center' spacing={2}>
 
-                    <Grid item>
-                        <Button
-                            // type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            // className={classes.submit}
-                            onClick={handleConvert}
 
-                        >
-                            Convert
-                        </Button>
-                    </Grid>
                     <Grid item>
                         <Button
                             // type="submit"
@@ -1011,6 +962,7 @@ export default function EditFeature(props) {
                             color="primary"
                             // className={classes.submit}
                             onClick={handleSubmit}
+                            startIcon={<SaveIcon />}
 
                         >
                             Save
@@ -1024,6 +976,7 @@ export default function EditFeature(props) {
                             style={{ backgroundColor: 'red', color: 'white' }}
                             // className={classes.submit}
                             // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                            startIcon={<DeleteIcon />}
                             onClick={() => {
                                 setConfirmDialog({
                                     isOpen: true,
@@ -1098,3 +1051,73 @@ export default function EditFeature(props) {
 
 
 // </Grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const onchangefile_source = (e) => {
+
+//     const { files } = e.target;
+//     if (files.length > 0) {
+//         const filesystem = [...file];
+//         for (let i = 0; i < files.length; i++) {
+
+//             const file = files[i];
+
+//             filesystem.push(file);
+//             setSourceatt(filesystem[0])
+
+
+//         }
+//         // console.log(filesystem)
+//     } else {
+//         setSourceatt(null);
+//     }
+// }
+
+
+// const onchangefile_target = (e) => {
+
+//     const { files } = e.target;
+//     if (files.length > 0) {
+//         const filesystem = [...file];
+//         for (let i = 0; i < files.length; i++) {
+
+//             const file = files[i];
+
+//             filesystem.push(file);
+//             setTargetatt(filesystem[0])
+
+//         }
+//         // console.log(filesystem)
+//     } else {
+//         setTargetatt(null);
+//     }
+// }
+// const onchangefile_conver = (e) => {
+
+//     const { files } = e.target;
+//     if (files.length > 0) {
+//         const filesystem = [...file];
+//         for (let i = 0; i < files.length; i++) {
+
+//             const file = files[i];
+
+//             filesystem.push(file);
+//             setConveratt(filesystem[0])
+//         }
+//         // console.log(filesystem)
+//     } else {
+//         setConveratt(null);
+//     }
+// }
