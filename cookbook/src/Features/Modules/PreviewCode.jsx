@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     // display: "flex",
   },
+  lineheight: {
+    lineHeight: '30px'
+  },
 
   Object_Type: {
     margin: "16px 0",
@@ -65,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     direction: "ltr",
     maxHeight: "500px",
     lineHeight: 2,
-    // maxWidth: "calc(100vw - 32px)",
+    maxWidth: "calc(78vw - 32px)",
     borderRadius: " 5px",
     backgroundColor: " #272c34",
     webkitOverflowScrolling: "touch",
@@ -309,23 +312,6 @@ export default function PreviewCode(props) {
             </div>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Source Code
-            </Typography>
-            <div>
-              <Card className={classes.SourceCode}>
-                {/* <Typography component="h2"> */}
-                {detaildata.Source_Code}
-              </Card>
-            </div>
-            {/* </Typography> */}
-          </Grid>
 
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography
@@ -368,6 +354,26 @@ export default function PreviewCode(props) {
               {/* </Typography> */}
             </div>
           </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Source Code
+            </Typography>
+            <div>
+              <Card className={classes.SourceCode}>
+                {/* <Typography component="h2"> */}
+                <pre className={classes.lineheight}><code>
+                  {detaildata.Source_Code}
+                </code>
+                </pre>
+              </Card>
+            </div>
+            {/* </Typography> */}
+          </Grid>
 
 
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -382,7 +388,11 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {detaildata.Target_Expected_Output}
+                <pre className={classes.lineheight}>
+                  <code>
+                    {detaildata.Target_Expected_Output}
+                  </code>
+                </pre>
               </Card>
             </div>
             {/* </Typography> */}
@@ -400,11 +410,11 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                {/* <pre>
-                  <code> */}
-                {detaildata.Target_ActualCode}
-                {/* </code>
-                </pre> */}
+                <pre className={classes.lineheight}>
+                  <code>
+                    {detaildata.Target_ActualCode}
+                  </code>
+                </pre>
               </Card>
             </div>
             {/* </Typography> */}
@@ -423,7 +433,7 @@ export default function PreviewCode(props) {
             <div>
               <Card className={classes.SourceCode}>
                 {/* <Typography component="h2"> */}
-                <pre>
+                <pre className={classes.lineheight}>
                   <code>
                     {detaildata.Conversion_Code}
                   </code>

@@ -37,8 +37,10 @@ const useStyles = makeStyles((theme) => ({
         // backgroundColor: "blue",
         // top: "50%",
         // height: 30,
-        float: "right",
-        position: "relative",
+        // float: "right",
+        marginLeft: '68vw',
+        width:'80px'
+        // position: "fixed",
         // transform: "translateY(-50%)"
     },
     table: {
@@ -94,6 +96,8 @@ export default function EditFeature(props) {
     const [Conversion_Code, setConversion_Code] = useState("");
     const [isTable, setIsTable] = useState(false)
     const [drop, setDrop] = useState("Sourcedescription");
+    const [droptitle, setDroptitle] = useState("Sourcedescription");
+
     const dispatch = useDispatch();
 
 
@@ -338,6 +342,7 @@ export default function EditFeature(props) {
 
     const handleChangedrop = (v) => {
         setDrop(v.code);
+        setDroptitle(v.title)
         // console.log(v)
     };
 
@@ -395,7 +400,7 @@ export default function EditFeature(props) {
                 setExpectedtargetcodeatt('')
                 filesub.push('')
             }
-        }else if (drop === "Conversion") {
+        } else if (drop === "Conversion") {
             const { files } = e.target;
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
@@ -412,9 +417,9 @@ export default function EditFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        let formData={
-            "AttachmentType":drop,
-            "Attachment":filesub
+        let formData = {
+            "AttachmentType": drop,
+            "Attachment": filesub
         }
         const form = new FormData();
         Object.keys(formData).forEach((key) => {
@@ -426,14 +431,14 @@ export default function EditFeature(props) {
                 console.log(res.data)
                 setNotify({
                     isOpen: true,
-                    message: drop+' Upload Successfully',
+                    message: droptitle + ' Attachment Upload Successfully',
                     type: 'success'
                 })
             }, error => {
                 console.log(error);
                 setNotify({
                     isOpen: true,
-                    message: 'Something Went Wrong! Please try Again',
+                    message: 'Something Went Wrong! Please try Again for ' + droptitle,
                     type: 'error'
                 })
             })
@@ -466,65 +471,65 @@ export default function EditFeature(props) {
 
 
 
-    // var tabledata = null
-    // if (isTable) {
-    //     tabledata = <>
-    //         <Grid container justifyContent="center">
-    //             <Table className={classes.table} aria-label="simple table">
-    //                 <TableHead>
-    //                     <TableRow>
-    //                         <TableCell>TYPE</TableCell>
-    //                         <TableCell >FILE</TableCell>
+    var tabledata = null
+    if (isTable) {
+        tabledata = <>
+            <Grid container justifyContent="center">
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>TYPE</TableCell>
+                            <TableCell >FILE</TableCell>
 
-    //                     </TableRow>
-    //                 </TableHead>
-    //                 <TableBody>
-    //                     <TableRow >
-    //                         <TableCell component="th" scope="row">
-    //                             Source
-    //                         </TableCell>
-    //                         <TableCell component="th" scope="row">
-    //                             {source_att?.name}
-    //                         </TableCell>
-    //                     </TableRow>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow >
+                            <TableCell component="th" scope="row">
+                                Source
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {source_att?.name}
+                            </TableCell>
+                        </TableRow>
 
-    //                     <TableRow >
-    //                         <TableCell component="th" scope="row">
-    //                             Target
-    //                         </TableCell>
-    //                         <TableCell component="th" scope="row">
-    //                             {/* {target_att?.name} */}
-    //                         </TableCell>
-    //                     </TableRow>
-    //                     <TableRow >
-    //                         <TableCell component="th" scope="row">
-    //                             Conversion
-    //                         </TableCell>
-    //                         <TableCell component="th" scope="row">
-    //                             {conver_att.name}
-    //                         </TableCell>
-    //                     </TableRow>
+                        <TableRow >
+                            <TableCell component="th" scope="row">
+                                Target
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {/* {target_att?.name} */}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow >
+                            <TableCell component="th" scope="row">
+                                Conversion
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {conver_att.name}
+                            </TableCell>
+                        </TableRow>
 
-    //                 </TableBody>
-    //                 {/* <TableBody>
-    //                         {rows.map((row) => (
-    //                             <TableRow key={row.name}>
-    //                                 <TableCell component="th" scope="row">
-    //                                     {row.name}
-    //                                 </TableCell>
-    //                                 <TableCell align="right">{row.calories}</TableCell>
-    //                                 <TableCell align="right">{row.fat}</TableCell>
-    //                                 <TableCell align="right">{row.carbs}</TableCell>
-    //                                 <TableCell align="right">{row.protein}</TableCell>
-    //                             </TableRow>
-    //                         ))}
-    //                     </TableBody> */}
-    //             </Table>
+                    </TableBody>
+                    {/* <TableBody>
+                            {rows.map((row) => (
+                                <TableRow key={row.name}>
+                                    <TableCell component="th" scope="row">
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell align="right">{row.calories}</TableCell>
+                                    <TableCell align="right">{row.fat}</TableCell>
+                                    <TableCell align="right">{row.carbs}</TableCell>
+                                    <TableCell align="right">{row.protein}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody> */}
+                </Table>
 
 
-    //         </Grid>
-    //     </>
-    // }
+            </Grid>
+        </>
+    }
 
     return (
 
@@ -807,6 +812,7 @@ export default function EditFeature(props) {
                         fullWidth
                         variant="contained"
                         color="primary"
+                        size='small'
                         // style={{float: 'right'}}
                         // className={classes.submit}
                         className={classes.convertbutton}
@@ -939,7 +945,7 @@ export default function EditFeature(props) {
                     </Grid>
                 </Grid>
             </Box>
-            {/* {tabledata} */}
+            {tabledata}
 
 
 
