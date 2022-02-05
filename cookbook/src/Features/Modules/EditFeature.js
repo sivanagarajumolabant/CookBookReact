@@ -469,7 +469,40 @@ export default function EditFeature(props) {
         history.push("/dashboard");
     };
 
+    function uploadPlugin(editor) {
+        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+          return uploadAdapter(loader);
+        };
+      }
 
+      function uploadAdapter(loader) {
+        return {
+          upload: () => {
+            return new Promise((resolve, reject) => {
+              const body = new FormData();
+              loader.file.then((file) => {
+                body.append("files", file);
+                // let headers = new Headers();
+                // headers.append("Origin", "http://localhost:3000");
+                // fetch(`${API_URL}/${UPLOAD_ENDPOINT}`, {
+                //   method: "post",
+                //   body: body
+                //   // mode: "no-cors"
+                // })
+                //   .then((res) => res.json())
+                //   .then((res) => {
+                //     resolve({
+                //       default: `${API_URL}/${res.filename}`
+                //     });
+                //   })
+                //   .catch((err) => {
+                //     reject(err);
+                //   });
+              });
+            });
+          }
+        };
+      }
 
     return (
 
@@ -631,6 +664,9 @@ export default function EditFeature(props) {
                                 // You can store the "editor" and use when it is needed.
                                 console.log('Editor is ready to use!', editor);
                             }}
+                            config={{
+                                extraPlugins: [uploadPlugin]
+                              }}
                             onChange={(event, editor) => {
                                 const data = editor.getData();
                                 handledes(data)
