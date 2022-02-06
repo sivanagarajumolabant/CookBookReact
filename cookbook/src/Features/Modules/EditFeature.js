@@ -512,7 +512,7 @@ export default function EditFeature(props) {
             message: 'Deleted Successfully',
             type: 'error'
         });
-        // dispatch(Menuaction.reloadAction(true))
+        dispatch(Menuaction.reloadAction(true))
         // dispatch(ActionMenu.ActionMenu(null));
         history.push("/dashboard");
     };
