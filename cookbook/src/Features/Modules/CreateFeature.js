@@ -256,7 +256,7 @@ export default function CreateFeature(props) {
         //     }
         // })
 
-
+        // dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
         dispatach(Menuaction.reloadAction(true))
     }
 

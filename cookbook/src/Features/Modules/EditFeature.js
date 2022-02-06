@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    console.log("editdata", props.editPreviewdetails?.data)
+    // console.log("editdata", props.editPreviewdetails?.data)
     const history = useHistory();
     const editdata = { detaildata: props.editPreviewdetails?.data }
     // console.log("editdata", editdata.detaildata)
