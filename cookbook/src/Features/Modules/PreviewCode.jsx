@@ -4,7 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { Box, Grid, Paper, TextField, Button } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Container from "@material-ui/core/Container";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ import API_BASE_URL from "../../Config/config";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import config from "../../Config/config";
-
+import ActionMenu from "../../../src/Redux/actions/Menuaction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +93,7 @@ export default function PreviewCode(props) {
   // const id = props.InfoId;
   let history = useHistory();
   const [isdata, setIsdata] = useState(false);
-
+  const dispatch = useDispatch()
   const { menuitem } = useSelector((state) => state.dashboardReducer);
   // console.log(menuitem);
 
@@ -186,11 +186,12 @@ export default function PreviewCode(props) {
 
                 startIcon={<EditSharpIcon />}
                 onClick={() =>
-                  history.push({
-                    pathname: `/edit/${detaildata.Feature_Id}`,
-                    data: { detaildata },
+                  // history.push({
+                  //   pathname: `/edit/${detaildata.Feature_Id}`,
+                  //   data: { detaildata },
 
-                  })
+                  // })
+                  dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
                 }
               >
                 Edit

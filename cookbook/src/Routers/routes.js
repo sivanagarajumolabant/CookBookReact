@@ -20,7 +20,7 @@ const Routing = () => {
                 <Route exact path="/register" component={SignUp} />
                 <ProtectedRoute exact path="/dashboard" component={Home} />
                 <ProtectedRoute exact path="/CreateModule" component={CreateFeature} />
-                <ProtectedRoute exact path="/edit/:id" component={EditFeature} />
+                {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
 
 
             </Switch>

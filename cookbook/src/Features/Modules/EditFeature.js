@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Table from '@material-ui/core/Table';
 // import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import GetAppIcon from '@material-ui/icons/GetApp';
 import TableRow from '@material-ui/core/TableRow';
 import ConfirmDialog from "../Notifications/ConfirmDialog";
 import axios from "axios";
@@ -31,12 +30,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { useHistory } from "react-router-dom";
 import config from '../../Config/config';
 
-const useStylestable = makeStyles({
-    table: {
-        minWidth: 100,
-    },
-
-});
 
 const useStyles = makeStyles((theme) => ({
     convertbutton: {
@@ -73,18 +66,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    console.log("editdata", props.location.data)
+    console.log("editdata", props.editPreviewdetails?.data)
     const history = useHistory();
-    const editdata = props.location.data
+    const editdata = { detaildata: props.editPreviewdetails?.data }
     // console.log("editdata", editdata.detaildata)
     const classes = useStyles();
-    const classestable = useStylestable();
 
 
-    const [formValues, setformvalues] = useState({ Migration_TypeId: props.location.state?.data?.type, Object_Type: props.location.state?.data?.Label })
+    const [formValues, setformvalues] = useState({ Migration_TypeId: props.editPreviewdetails?.data?.type, Object_Type: props.editPreviewdetails?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
-    const { headerValue } = useSelector(state => state.dashboardReducer);
+
     const [sourcedescatt, setSourcedescatt] = useState([])
     const [targetdescatt, setTargetdescatt] = useState([])
     const [actualtargetcodeatt, setActualtargetcodeatt] = useState([])
@@ -105,9 +97,6 @@ export default function EditFeature(props) {
     const [isTable, setIsTable] = useState(false)
     const [drop, setDrop] = useState("Sourcedescription");
     const [droptitle, setDroptitle] = useState("Sourcedescription");
-    const [sourectabledata, setSourectabledata] = useState([])
-    const [targettabledata, setTargettabledata] = useState([])
-    const [contabledata, setContabledata] = useState([])
 
     const dispatch = useDispatch();
 
@@ -130,7 +119,7 @@ export default function EditFeature(props) {
 
     }, [editdata]);
 
-    var handle_featurename = editdata?.detaildata.Feature_Name.substr(5)
+    var handle_featurename = editdata?.detaildata?.Feature_Name?.substr(5)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -367,13 +356,6 @@ export default function EditFeature(props) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
                 setSourcedescatt(fileatt)
-                // console.log("file", fileatt)
-                setSourectabledata([
-                    ...sourectabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
             } else {
                 setSourcedescatt('')
                 filesub.push('')
@@ -384,12 +366,6 @@ export default function EditFeature(props) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
                 setTargetdescatt(fileatt)
-                setTargettabledata([
-                    ...targettabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
             } else {
                 setTargetdescatt('')
                 filesub.push('')
@@ -400,12 +376,6 @@ export default function EditFeature(props) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
                 setSourcecodeatt(fileatt)
-                setSourectabledata([
-                    ...sourectabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
             } else {
                 setSourcecodeatt('')
                 filesub.push('')
@@ -416,12 +386,6 @@ export default function EditFeature(props) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
                 setActualtargetcodeatt(fileatt)
-                setTargettabledata([
-                    ...targettabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
             } else {
                 setActualtargetcodeatt('')
                 filesub.push('')
@@ -432,12 +396,6 @@ export default function EditFeature(props) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
                 setExpectedtargetcodeatt(fileatt)
-                setTargettabledata([
-                    ...targettabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
             } else {
                 setExpectedtargetcodeatt('')
                 filesub.push('')
@@ -448,12 +406,6 @@ export default function EditFeature(props) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
                 setConversionatt(fileatt)
-                setContabledata([
-                    ...contabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
             } else {
                 setConversionatt('')
                 filesub.push('')
@@ -467,7 +419,7 @@ export default function EditFeature(props) {
         }
         let formData = {
             "AttachmentType": drop,
-            "Attachment": filesub[0]
+            "Attachment": filesub
         }
         const form = new FormData();
         Object.keys(formData).forEach((key) => {
@@ -517,58 +469,7 @@ export default function EditFeature(props) {
         history.push("/dashboard");
     };
 
-    function uploadPlugin(editor) {
-        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-            return uploadAdapter(loader);
-        };
-    }
 
-    function uploadAdapter(loader) {
-        return {
-            upload: () => {
-                return new Promise((resolve, reject) => {
-                    const body = new FormData();
-                    loader.file.then((file) => {
-                        body.append("files", file);
-                        // let headers = new Headers();
-                        // headers.append("Origin", "http://localhost:3000");
-                        // fetch(`${API_URL}/${UPLOAD_ENDPOINT}`, {
-                        //   method: "post",
-                        //   body: body
-                        //   // mode: "no-cors"
-                        // })
-                        //   .then((res) => res.json())
-                        //   .then((res) => {
-                        //     resolve({
-                        //       default: `${API_URL}/${res.filename}`
-                        //     });
-                        //   })
-                        //   .catch((err) => {
-                        //     reject(err);
-                        //   });
-                    });
-                });
-            }
-        };
-    }
-
-    const StyledTableCell = withStyles((theme) => ({
-        head: {
-            backgroundColor: theme.palette.common.black,
-            color: theme.palette.common.white,
-        },
-        body: {
-            fontSize: 14,
-        },
-    }))(TableCell);
-
-    const StyledTableRow = withStyles((theme) => ({
-        root: {
-            '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.action.hover,
-            },
-        },
-    }))(TableRow);
 
     return (
 
@@ -597,7 +498,7 @@ export default function EditFeature(props) {
                         onChange={(e) => handleChange(e)}
                         label="Migration Type"
                         // defaultValue="Default Value"
-                        value={editdata?.detaildata.Migration_TypeId}
+                        value={editdata?.detaildata?.Migration_TypeId}
                         variant="outlined"
                         required
                         disabled
@@ -616,7 +517,7 @@ export default function EditFeature(props) {
                         multiline
                         rows={1}
                         onChange={(e) => handleChange(e)}
-                        value={editdata?.detaildata.Object_Type}
+                        value={editdata?.detaildata?.Object_Type}
                         name="Object_Type"
                         variant="outlined"
                         required
@@ -724,14 +625,11 @@ export default function EditFeature(props) {
                         <p>{'Source Description'}</p>
                         <CKEditor
                             editor={ClassicEditor}
-                            data={editdata?.detaildata.Source_FeatureDescription}
+                            data={editdata?.detaildata?.Source_FeatureDescription}
                             // value ={detaildata[0].Source_FeatureDescription}
                             onReady={editor => {
                                 // You can store the "editor" and use when it is needed.
                                 console.log('Editor is ready to use!', editor);
-                            }}
-                            config={{
-                                extraPlugins: [uploadPlugin]
                             }}
                             onChange={(event, editor) => {
                                 const data = editor.getData();
@@ -779,7 +677,7 @@ export default function EditFeature(props) {
                         <p>{'Target Description'}</p>
                         <CKEditor
                             editor={ClassicEditor}
-                            data={editdata?.detaildata.Target_FeatureDescription}
+                            data={editdata?.detaildata?.Target_FeatureDescription}
                             onReady={editor => {
                                 // You can store the "editor" and use when it is needed.
                                 console.log('Editor is ready to use!', editor);
@@ -989,139 +887,7 @@ export default function EditFeature(props) {
             </Box>
 
 
-            <Box py={4}>
-                <Grid container spacing={0.5}>
-                    <Grid container item xs={12} spacing={1}>
-                        <Grid item xs={4}>
-                            <center><p>Source Attachments</p></center>
-                            <Table className={classestable.table} aria-label="customized table">
-                                <TableHead>
-                                    <TableRow>
-                                        <StyledTableCell>Attachment Type</StyledTableCell>
-                                        <StyledTableCell align="right">File</StyledTableCell>
-                                        <StyledTableCell align="right">Actions</StyledTableCell>
 
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-
-                                    {sourectabledata.map((row) => (
-                                        <StyledTableRow key={row.name}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {row.AttachmentType}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell>
-                                                <Box >
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
-                                                        <GetAppIcon />
-                                                    </IconButton>
-                                                </Box>
-
-
-
-
-
-
-                                            </StyledTableCell>
-
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </Grid>
-                        <Grid item xs={4}>
-                            <center><p>Target Attachments</p></center>
-                            <Table className={classestable.table} aria-label="customized table">
-                                <TableHead className={classestable.tablehead}>
-                                    <TableRow>
-                                        <StyledTableCell>Attachment Type</StyledTableCell>
-                                        <StyledTableCell align="right">File</StyledTableCell>
-                                        <StyledTableCell align="right">Actions</StyledTableCell>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-
-                                    {targettabledata.map((row) => (
-                                        <StyledTableRow key={row.name}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {row.AttachmentType}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell align="right">
-                                                <IconButton aria-label="delete" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                                <IconButton aria-label="download" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <GetAppIcon />
-                                                </IconButton>
-
-                                            </StyledTableCell>
-
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </Grid>
-                        <Grid item xs={4}>
-                            <center><p>Conversion Attachments</p></center>
-                            <Table className={classestable.table} aria-label="customized table">
-                                <TableHead className={classestable.tablehead}>
-                                    <TableRow>
-                                        <StyledTableCell>Attachment Type</StyledTableCell>
-                                        <StyledTableCell align="right">File</StyledTableCell>
-                                        <StyledTableCell align="right">Actions</StyledTableCell>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-
-                                    {contabledata.map((row) => (
-                                        <StyledTableRow key={row.name}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {row.AttachmentType}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell align="right">
-                                                <IconButton aria-label="delete" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                                <IconButton aria-label="download" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <GetAppIcon />
-                                                </IconButton>
-
-                                            </StyledTableCell>
-
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </Grid>
-                    </Grid>
-
-
-
-                </Grid>
-            </Box>
 
 
 

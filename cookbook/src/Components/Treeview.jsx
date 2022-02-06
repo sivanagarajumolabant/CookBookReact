@@ -130,7 +130,7 @@ function StyledTreeItem(props) {
 
                   //   },
                   // })
-                  dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }}))
+                  dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }, id:'createFeature'}))
                 }
               />
             )}
@@ -231,7 +231,11 @@ export default function GmailTreeView({ menuList, dropdown, deleteitem, confirmD
                 <StyledTreeItem
                   style={{ color: "white" }}
                   sub={true}
-                  onClick={() => {dispatch(ActionMenu.Createremoved())
+                  onClick={() => {
+                    
+                    dispatch(ActionMenu.PreviewFeature())
+                     
+                    // dispatch(ActionMenu.Createremoved())
                     
                   MenuSelected(data.Feature_Id)}}
                   nodeId={"S" + Index + index}

@@ -58,11 +58,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
     },
     textField: {
-       
-        '& p':{
-          color:'red',
+
+        '& p': {
+            color: 'red',
         },
-      },
+    },
 }));
 
 const StyledAutocompleteDrop = styled(Autocomplete)({
@@ -480,26 +480,26 @@ export default function CreateFeature(props) {
 
 
                 <Grid item xs={12} sm={4} md={4} xl={4}>
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Feature Name"
-                            multiline
-                            rows={1}
-                            onChange={(e) => handleChange(e)}
-                            name='Feature_Name'
-                            // defaultValue="Default Value"
-                            helperText={featurenamemsg}
-                            className={classes.textField}
-                            // helperText="Some important text"
-                            variant="outlined"
-                            required
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            fullWidth
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Feature Name"
+                        multiline
+                        rows={1}
+                        onChange={(e) => handleChange(e)}
+                        name='Feature_Name'
+                        // defaultValue="Default Value"
+                        helperText={featurenamemsg}
+                        className={classes.textField}
+                        // helperText="Some important text"
+                        variant="outlined"
+                        required
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        fullWidth
 
-                        />
-                   
+                    />
+
 
                 </Grid>
 

@@ -57,5 +57,29 @@ const Createremoved = (value) => {
       })
    }
 }
+const PreviewFeature = (value) => {
+   return dispatch => {
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved }
+      dispatch({
+         type: "PREVIEW_FEATURE",
+         payload: {
+            id: true,
+            data: value
+         }
+      })
+   }
+}
+const EditPreviewFeature = (value) => {
+   return dispatch => {
+
+      dispatch({
+         type: "EDIT_PREVIEW_FEATURE",
+         payload: {
+            id: true,
+            data: value
+         }
+      })
+   }
+}
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature , PreviewFeature}
