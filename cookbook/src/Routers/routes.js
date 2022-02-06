@@ -8,6 +8,7 @@ import ClippedDrawer from '../Components/header';
 import Home from '../Features/Home';
 import CreateFeature from '../Features/Modules/CreateFeature';
 import EditFeature from '../Features/Modules/EditFeature';
+import PageNotFound from '../Features/NotFound';
 import ProtectedRoute from './PrivateRoute';
 
 
@@ -19,8 +20,9 @@ const Routing = () => {
                 <Route exact path="/" component={SignIn} />
                 <Route exact path="/register" component={SignUp} />
                 <ProtectedRoute exact path="/dashboard" component={Home} />
-                <ProtectedRoute exact path="/CreateModule" component={CreateFeature} />
+                {/* <ProtectedRoute exact path="/create" component={CreateFeature} /> */}
                 {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
+                <Route path="*" component={PageNotFound} />
 
 
             </Switch>
