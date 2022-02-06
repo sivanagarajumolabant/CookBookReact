@@ -106,6 +106,7 @@ export default function EditFeature(props) {
     const [drop, setDrop] = useState("Sourcedescription");
     const [droptitle, setDroptitle] = useState("Sourcedescription");
     const [sourectabledata, setSourectabledata] = useState([])
+    const [level, setLevel] = useState("")
     const [targettabledata, setTargettabledata] = useState([])
     const [contabledata, setContabledata] = useState([])
 
@@ -122,6 +123,7 @@ export default function EditFeature(props) {
             setTarget_Expected_Output(editdata.detaildata.Target_Expected_Output)
             setConversion_Code(editdata.detaildata.Conversion_Code)
             setSequence(editdata.detaildata.Sequence)
+            setLevel(editdata.detaildata.Level)
         } else {
             history.push({
                 pathname: "/dashboard",
@@ -648,19 +650,20 @@ export default function EditFeature(props) {
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Autocomplete
+                    {/* <Autocomplete
                         fullWidth
                         id="outlined-multiline-static"
-                        options={[
-                            { title: "Programlevel" },
-                            { title: "Statementlevel" },
+                        // options={[
+                        //     { title: "Programlevel" },
+                        //     { title: "Statementlevel" },
 
-                        ]}
-                        groupBy={""}
+                        // ]}
+                        // groupBy={""}
                         // defaultValue={{ title: 'Programlevel' }}
-                        getOptionLabel={(option) => option.title}
+                        // getOptionLabel={(option) => option.title}
                         name="Level"
-                        onChange={(e, v) => handlechangedropdownlevel(v)}
+                        value={level}
+                        // onChange={(e, v) => handlechangedropdownlevel(v)}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -669,6 +672,24 @@ export default function EditFeature(props) {
                                 variant="outlined"
                             />
                         )}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        disabled
+                    /> */}
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Level"
+                        multiline
+                        rows={1}
+                        // onChange={(e) => handleChange(e)}
+                        value={level}
+                        name='Level'
+                        // defaultValue="Default Value"
+                        variant="outlined"
+                        required
+                        disabled
+                        fullWidth
                         InputLabelProps={{
                             shrink: true,
                         }}

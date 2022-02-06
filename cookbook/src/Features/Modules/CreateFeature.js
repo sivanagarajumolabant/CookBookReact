@@ -102,7 +102,7 @@ export default function CreateFeature(props) {
     }
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
-    const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
+    // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
     const history = useHistory();
     const [formValues, setformvalues] = useState({ Migration_TypeId: props.details?.data?.type, Object_Type: props.details?.data?.Label })
     const [file, setfile] = useState([])
@@ -237,6 +237,7 @@ export default function CreateFeature(props) {
                     message: 'Feature Created Successfully',
                     type: 'success'
                 })
+                // dispatach(Menuaction.EditPreviewFeature({data:res.data}))
             }, error => {
                 console.log(error);
                 setNotify({
@@ -256,7 +257,7 @@ export default function CreateFeature(props) {
         //     }
         // })
 
-        // dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
+        
         dispatach(Menuaction.reloadAction(true))
     }
 
