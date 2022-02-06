@@ -257,7 +257,7 @@ export default function CreateFeature(props) {
         //     }
         // })
 
-
+        dispatach(Menuaction.reloadAction(true))
     }
 
 
