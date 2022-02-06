@@ -191,7 +191,7 @@ export default function PreviewCode(props) {
                   //   data: { detaildata },
 
                   // })
-                  dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+                  dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
                 }
               >
                 Edit
@@ -463,7 +463,7 @@ export default function PreviewCode(props) {
                 //   data: { detaildata },
 
                 // })
-                dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+                dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
               }
             >
               Edit
@@ -477,7 +477,7 @@ export default function PreviewCode(props) {
   }
 
   return (
-
+   
     <>{data}</>
   );
 }
