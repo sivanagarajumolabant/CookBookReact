@@ -515,7 +515,7 @@ export default function EditFeature(props) {
         });
         dispatch(Menuaction.reloadAction(true))
         // dispatch(ActionMenu.ActionMenu(null));
-        // history.push("/dashboard");
+        history.push("/dashboard");
     };
 
 
@@ -567,15 +567,15 @@ export default function EditFeature(props) {
         root: {
             '&:nth-of-type(odd)': {
                 backgroundColor: theme.palette.action.hover,
-              
+
             },
         },
     }))(TableRow);
 
 
     return (
+        <>
 
-        <MenuAppBar>
             <Box py={2}>
                 {/* <Grid container direction='row' justifyContent='center'>
                     <Grid item>
@@ -1004,7 +1004,7 @@ export default function EditFeature(props) {
                             />
 
                             <label htmlFor="contained-button-file3">
-                                <Button variant="contained" 
+                                <Button variant="contained"
                                     startIcon={<CloudUploadIcon />}
                                     color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
                                     Upload
@@ -1034,22 +1034,22 @@ export default function EditFeature(props) {
                                 <TableBody>
 
                                     {sourectabledata.map((row) => (
-                                        <StyledTableRow key={row.name} spacing={1} style={{overflow:'hidden'}}>
+                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
                                             <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell > 
-                                                <Box  flexDirection="row" >
+                                            <StyledTableCell >
+                                                <Box flexDirection="row" >
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <DeleteIcon style={{color:'red'}}/>
+                                                        <DeleteIcon style={{ color: 'red' }} />
                                                     </IconButton>
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <GetAppIcon style={{color:'blue'}}/>
+                                                        <GetAppIcon style={{ color: 'blue' }} />
                                                     </IconButton>
                                                 </Box>
                                             </StyledTableCell>
@@ -1074,22 +1074,22 @@ export default function EditFeature(props) {
                                 <TableBody>
 
                                     {targettabledata.map((row) => (
-                                        <StyledTableRow key={row.name} spacing={1} style={{overflow:'hidden'}}>
+                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
                                             <StyledTableCell>{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell > 
-                                                <Box  flexDirection="row" >
+                                            <StyledTableCell >
+                                                <Box flexDirection="row" >
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <DeleteIcon style={{color:'red'}}/>
+                                                        <DeleteIcon style={{ color: 'red' }} />
                                                     </IconButton>
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <GetAppIcon style={{color:'blue'}}/>
+                                                        <GetAppIcon style={{ color: 'blue' }} />
                                                     </IconButton>
                                                 </Box>
                                             </StyledTableCell>
@@ -1114,22 +1114,22 @@ export default function EditFeature(props) {
                                 <TableBody>
 
                                     {contabledata.map((row) => (
-                                        <StyledTableRow key={row.name} spacing={1} style={{overflow:'hidden'}}>
+                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
                                             <StyledTableCell>{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell > 
-                                                <Box  flexDirection="row" >
+                                            <StyledTableCell >
+                                                <Box flexDirection="row" >
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <DeleteIcon style={{color:'red'}}/>
+                                                        <DeleteIcon style={{ color: 'red' }} />
                                                     </IconButton>
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <GetAppIcon style={{color:'blue'}}/>
+                                                        <GetAppIcon style={{ color: 'blue' }} />
                                                     </IconButton>
                                                 </Box>
                                             </StyledTableCell>
@@ -1208,7 +1208,7 @@ export default function EditFeature(props) {
                 setConfirmDialog={setConfirmDialog}
             />
 
-        </MenuAppBar >
+        </>
     );
 }
 
