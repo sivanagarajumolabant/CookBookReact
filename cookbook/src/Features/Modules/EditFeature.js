@@ -34,6 +34,7 @@ import config from '../../Config/config';
 const useStylestable = makeStyles({
     table: {
         minWidth: 100,
+        // width:10
     },
 
 });
@@ -104,7 +105,7 @@ export default function EditFeature(props) {
     const [Conversion_Code, setConversion_Code] = useState("");
     const [isTable, setIsTable] = useState(false)
     const [drop, setDrop] = useState("Sourcedescription");
-    const [droptitle, setDroptitle] = useState("Sourcedescription");
+    const [droptitle, setDroptitle] = useState("Source Description");
     const [sourectabledata, setSourectabledata] = useState([])
     const [level, setLevel] = useState("")
     const [targettabledata, setTargettabledata] = useState([])
@@ -514,7 +515,7 @@ export default function EditFeature(props) {
         });
         dispatch(Menuaction.reloadAction(true))
         // dispatch(ActionMenu.ActionMenu(null));
-        history.push("/dashboard");
+        // history.push("/dashboard");
     };
 
 
@@ -554,7 +555,7 @@ export default function EditFeature(props) {
 
     const StyledTableCell = withStyles((theme) => ({
         head: {
-            backgroundColor: theme.palette.common.black,
+            backgroundColor: '#3f51b5',
             color: theme.palette.common.white,
         },
         body: {
@@ -566,6 +567,7 @@ export default function EditFeature(props) {
         root: {
             '&:nth-of-type(odd)': {
                 backgroundColor: theme.palette.action.hover,
+              
             },
         },
     }))(TableRow);
@@ -1002,7 +1004,7 @@ export default function EditFeature(props) {
                             />
 
                             <label htmlFor="contained-button-file3">
-                                <Button variant="contained"
+                                <Button variant="contained" 
                                     startIcon={<CloudUploadIcon />}
                                     color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
                                     Upload
@@ -1018,44 +1020,38 @@ export default function EditFeature(props) {
             <Box py={4}>
                 <Grid container spacing={0.5}>
                     <Grid container item xs={12} spacing={1}>
-                        <Grid item xs={4}>
+                        <Grid item xs={4} spacing={0.5}>
                             <center><p>Source Attachments</p></center>
                             <Table className={classestable.table} aria-label="customized table">
-                                <TableHead>
+                                <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell>Attachment Type</StyledTableCell>
-                                        <StyledTableCell align="right">File</StyledTableCell>
-                                        <StyledTableCell align="right">Actions</StyledTableCell>
+                                        <StyledTableCell>Type</StyledTableCell>
+                                        <StyledTableCell>File</StyledTableCell>
+                                        <StyledTableCell>Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
 
                                     {sourectabledata.map((row) => (
-                                        <StyledTableRow key={row.name}>
+                                        <StyledTableRow key={row.name} spacing={1} style={{overflow:'hidden'}}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
                                             <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell>
-                                                <Box >
+                                            <StyledTableCell > 
+                                                <Box  flexDirection="row" >
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <DeleteIcon />
+                                                        <DeleteIcon style={{color:'red'}}/>
                                                     </IconButton>
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
-                                                        <GetAppIcon />
+                                                        <GetAppIcon style={{color:'blue'}}/>
                                                     </IconButton>
                                                 </Box>
-
-
-
-
-
-
                                             </StyledTableCell>
 
                                         </StyledTableRow>
@@ -1067,34 +1063,35 @@ export default function EditFeature(props) {
                         <Grid item xs={4}>
                             <center><p>Target Attachments</p></center>
                             <Table className={classestable.table} aria-label="customized table">
-                                <TableHead className={classestable.tablehead}>
+                                <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell>Attachment Type</StyledTableCell>
-                                        <StyledTableCell align="right">File</StyledTableCell>
-                                        <StyledTableCell align="right">Actions</StyledTableCell>
+                                        <StyledTableCell>Type</StyledTableCell>
+                                        <StyledTableCell>File</StyledTableCell>
+                                        <StyledTableCell>Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
 
                                     {targettabledata.map((row) => (
-                                        <StyledTableRow key={row.name}>
+                                        <StyledTableRow key={row.name} spacing={1} style={{overflow:'hidden'}}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell align="right">
-                                                <IconButton aria-label="delete" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                                <IconButton aria-label="download" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <GetAppIcon />
-                                                </IconButton>
-
+                                            <StyledTableCell>{row.Attachment}</StyledTableCell>
+                                            <StyledTableCell > 
+                                                <Box  flexDirection="row" >
+                                                    <IconButton onClick={() => {
+                                                        alert('clicked')
+                                                    }}>
+                                                        <DeleteIcon style={{color:'red'}}/>
+                                                    </IconButton>
+                                                    <IconButton onClick={() => {
+                                                        alert('clicked')
+                                                    }}>
+                                                        <GetAppIcon style={{color:'blue'}}/>
+                                                    </IconButton>
+                                                </Box>
                                             </StyledTableCell>
 
                                         </StyledTableRow>
@@ -1106,34 +1103,35 @@ export default function EditFeature(props) {
                         <Grid item xs={4}>
                             <center><p>Conversion Attachments</p></center>
                             <Table className={classestable.table} aria-label="customized table">
-                                <TableHead className={classestable.tablehead}>
+                                <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell>Attachment Type</StyledTableCell>
-                                        <StyledTableCell align="right">File</StyledTableCell>
-                                        <StyledTableCell align="right">Actions</StyledTableCell>
+                                        <StyledTableCell>Type</StyledTableCell>
+                                        <StyledTableCell>File</StyledTableCell>
+                                        <StyledTableCell>Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
 
                                     {contabledata.map((row) => (
-                                        <StyledTableRow key={row.name}>
+                                        <StyledTableRow key={row.name} spacing={1} style={{overflow:'hidden'}}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
-                                            <StyledTableCell align="right">
-                                                <IconButton aria-label="delete" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                                <IconButton aria-label="download" onClick={() => {
-                                                    alert('clicked')
-                                                }}>
-                                                    <GetAppIcon />
-                                                </IconButton>
-
+                                            <StyledTableCell>{row.Attachment}</StyledTableCell>
+                                            <StyledTableCell > 
+                                                <Box  flexDirection="row" >
+                                                    <IconButton onClick={() => {
+                                                        alert('clicked')
+                                                    }}>
+                                                        <DeleteIcon style={{color:'red'}}/>
+                                                    </IconButton>
+                                                    <IconButton onClick={() => {
+                                                        alert('clicked')
+                                                    }}>
+                                                        <GetAppIcon style={{color:'blue'}}/>
+                                                    </IconButton>
+                                                </Box>
                                             </StyledTableCell>
 
                                         </StyledTableRow>

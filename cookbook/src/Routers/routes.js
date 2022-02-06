@@ -18,8 +18,8 @@ const Routing = () => {
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={SignIn} />
-                <Route exact path="/register" component={SignUp} />
-                <ProtectedRoute exact path="/dashboard" component={Home} />
+                <Route  path="/register" component={SignUp} />
+                <ProtectedRoute  path="/dashboard" component={Home} />
                 {/* <ProtectedRoute exact path="/create" component={CreateFeature} /> */}
                 {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
                 <Route path="*" component={PageNotFound} />
