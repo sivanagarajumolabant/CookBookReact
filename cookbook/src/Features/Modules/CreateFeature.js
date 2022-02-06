@@ -231,13 +231,13 @@ export default function CreateFeature(props) {
 
         axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf)
             .then(res => {
-                setCreatedata(res)
+                // setCreatedata(res)
                 setNotify({
                     isOpen: true,
                     message: 'Feature Created Successfully',
                     type: 'success'
                 })
-                // dispatach(Menuaction.EditPreviewFeature({data:res.data}))
+                dispatach(Menuaction.EditPreviewFeature({data:res.data}))
             }, error => {
                 console.log(error);
                 setNotify({
@@ -257,8 +257,7 @@ export default function CreateFeature(props) {
         //     }
         // })
 
-        
-        dispatach(Menuaction.reloadAction(true))
+
     }
 
 

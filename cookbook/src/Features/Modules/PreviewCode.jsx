@@ -160,7 +160,7 @@ export default function PreviewCode(props) {
   var data = null;
   let seq = null
   if (detaildata) {
-    if (detaildata.Sequence !== 'No Precision') {
+    if (detaildata.Sequence !== 'No Predecessor') {
       seq = detaildata.Sequence.substr(5)
 
     } else {

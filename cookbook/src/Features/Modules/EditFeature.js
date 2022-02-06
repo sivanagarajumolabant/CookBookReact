@@ -75,7 +75,7 @@ export default function EditFeature(props) {
     // console.log("editdata", props.editPreviewdetails?.data)
     const history = useHistory();
     const editdata = { detaildata: props.editPreviewdetails?.data }
-    // console.log("editdata", editdata.detaildata)
+    console.log("editdata", editdata)
     const classes = useStyles();
     const classestable = useStylestable();
 
@@ -124,13 +124,14 @@ export default function EditFeature(props) {
             setConversion_Code(editdata.detaildata.Conversion_Code)
             setSequence(editdata.detaildata.Sequence)
             setLevel(editdata.detaildata.Level)
+
         } else {
             history.push({
                 pathname: "/dashboard",
             })
         }
 
-    }, [editdata]);
+    }, []);
 
     var handle_featurename = editdata?.detaildata?.Feature_Name?.substr(5)
 
@@ -343,7 +344,7 @@ export default function EditFeature(props) {
 
     }
     var seq = null;
-    if (Sequence !== 'No Precision') {
+    if (Sequence !== 'No Predecessor') {
         seq = String(Sequence).substr(5)
 
     } else {
@@ -502,7 +503,7 @@ export default function EditFeature(props) {
         }
         setConfirmDialog({
             confirmDialog,
-            isOpen: true
+            isOpen: false
         })
         const res = await axios.delete(`${config.API_BASE_URL()}/api/fdelete/${data}`, conf);
         // getmenus(1);
@@ -743,8 +744,8 @@ export default function EditFeature(props) {
                         <p>{'Source Description'}</p>
                         <CKEditor
                             editor={ClassicEditor}
-                            data={editdata?.detaildata?.Source_FeatureDescription}
-                            // value ={detaildata[0].Source_FeatureDescription}
+                            data={editdata.detaildata.Source_FeatureDescription}
+                            // value ={editdata.detaildata.Source_FeatureDescription}
                             onReady={editor => {
                                 // You can store the "editor" and use when it is needed.
                                 console.log('Editor is ready to use!', editor);
@@ -798,7 +799,7 @@ export default function EditFeature(props) {
                         <p>{'Target Description'}</p>
                         <CKEditor
                             editor={ClassicEditor}
-                            data={editdata?.detaildata?.Target_FeatureDescription}
+                            data={editdata.detaildata.Target_FeatureDescription}
                             onReady={editor => {
                                 // You can store the "editor" and use when it is needed.
                                 console.log('Editor is ready to use!', editor);
@@ -834,14 +835,15 @@ export default function EditFeature(props) {
                         id="outlined-multiline-static"
                         label="Source Code"
                         multiline
+                        type="text"
                         rows={15}
                         name='Source_Code'
                         onChange={(e) => setSource_Code(e.target.value)}
-                        // defaultValue="Default Value"
+                        defaultValue={Source_Code}
                         fullWidth
                         variant="outlined"
                         required
-                        value={Source_Code}
+                        // value={Source_Code}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -862,6 +864,7 @@ export default function EditFeature(props) {
                         onChange={(e) => setTarget_Expected_Output(e.target.value)}
                         // defaultValue="Default Value"
                         variant="outlined"
+                        // defaultValue={Target_Expected_Output}
                         required
                         value={Target_Expected_Output}
                         InputLabelProps={{
@@ -898,6 +901,7 @@ export default function EditFeature(props) {
                         name='Target_ActualCode'
                         onChange={(e) => setTarget_ActualCode(e.target.value)}
                         // defaultValue="Default Value"
+                        // defaultValue={Target_ActualCode}
                         variant="outlined"
                         // required
                         value={Target_ActualCode}
@@ -922,6 +926,7 @@ export default function EditFeature(props) {
                         rows={15}
                         onChange={(e) => setConversion_Code(e.target.value)}
                         // defaultValue="Default Value"
+                        // defaultValue={Conversion_Code}
                         variant="outlined"
                         required
                         value={Conversion_Code}
