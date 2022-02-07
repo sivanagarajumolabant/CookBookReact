@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import IconButton from '@material-ui/core/IconButton';
 import Card from "@material-ui/core/Card";
+import DeleteIcon from '@material-ui/icons/Delete';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import TableBody from '@material-ui/core/TableBody';
+// import fileDownload from "js-file-download";
+import Table from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { Box, Grid, Paper, TextField, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Container from "@material-ui/core/Container";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 import { useHistory, Link } from "react-router-dom";
 import fileDownload from "js-file-download";
@@ -17,6 +28,14 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import config from "../../Config/config";
 import ActionMenu from "../../../src/Redux/actions/Menuaction";
 
+
+const useStylestable = makeStyles({
+  table: {
+    minWidth: 100,
+    // width:10
+  },
+
+});
 const useStyles = makeStyles((theme) => ({
   root: {
     // display: "flex",
@@ -89,11 +108,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PreviewCode(props) {
   const classes = useStyles();
+  const classestable = useStylestable();
   const [detaildata, setDetaildata] = useState();
   // const id = props.InfoId;
   let history = useHistory();
   const [isdata, setIsdata] = useState(false);
   const dispatch = useDispatch()
+  const [source_att, setSource_att] = useState([])
+  const [target_att, setTarget_att] = useState([])
+  const [conv_att, setConv_att] = useState([])
   const { menuitem } = useSelector((state) => state.dashboardReducer);
   // console.log(menuitem);
 
@@ -120,6 +143,75 @@ export default function PreviewCode(props) {
     }
   }, [menuitem]);
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Feature_Id": menuitem,
+      "Targetdescription": "Targetdescription",
+      "Actualtargetcode": "Actualtargetcode",
+      "Expectedconversion": "Expectedconversion"
+    }
+    axios.post(`${config.API_BASE_URL()}/api/targetattlist`, body, conf).then(
+      (res) => {
+        console.log(res);
+        setTarget_att(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [menuitem])
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Feature_Id": menuitem,
+      "Conversion": "Conversion",
+
+    }
+    axios.post(`${config.API_BASE_URL()}/api/convattlist`, body, conf).then(
+      (res) => {
+        console.log(res);
+        setConv_att(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [menuitem])
+  useEffect(() => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Feature_Id": menuitem,
+      "Sourcedescription": 'Sourcedescription',
+      "Sourcecode": 'Sourcecode'
+    }
+    axios.post(`${config.API_BASE_URL()}/api/sourceattlist`, body, conf).then(
+      (res) => {
+        console.log(res);
+        setSource_att(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [menuitem])
+
 
 
   // console.log("data",detaildata)
@@ -139,23 +231,28 @@ export default function PreviewCode(props) {
 
 
   const handleDownload = (dfile) => {
-    // console.log(dfile);
-    let dnfile = dfile.split('/').pop()
-    let conf = {
-      headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-      }
-    }
-    axios.get(`${config.API_BASE_URL()}/api/template/${dnfile}`, {
-      responseType: 'blob',
-    }, conf).then(res => {
-      // console.log(res)
-      fileDownload(res.data, dnfile);
-      // console.log(res);
-    }).catch(err => {
-      // console.log(err);
-    })
+
   }
+
+  const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: '#3f51b5',
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
+
+  const StyledTableRow = withStyles((theme) => ({
+    root: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+
+      },
+    },
+  }))(TableRow);
+
 
   var data = null;
   let seq = null
@@ -191,7 +288,7 @@ export default function PreviewCode(props) {
                   //   data: { detaildata },
 
                   // })
-                  dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
+                  dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
                 }
               >
                 Edit
@@ -447,6 +544,137 @@ export default function PreviewCode(props) {
 
         </Grid>
 
+        <Box py={4}>
+          <Grid container spacing={0.5}>
+            <Grid container item xs={12} spacing={1}>
+              <Grid item xs={4} spacing={0.5}>
+                <center><p>Source Attachments</p></center>
+                <Table className={classestable.table} aria-label="customized table">
+                  <TableHead className={classes.primary}>
+                    <TableRow>
+                      <StyledTableCell>Type</StyledTableCell>
+                      <StyledTableCell>File</StyledTableCell>
+                      <StyledTableCell>Actions</StyledTableCell>
+
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {source_att.map((row) => (
+                      <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                        <StyledTableCell component="th" scope="row">
+                          {row.AttachmentType}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                        <StyledTableCell >
+                          <Box flexDirection="row" >
+                            <IconButton onClick={() => {
+                              alert('clicked')
+                            }}>
+                              <DeleteIcon style={{ color: 'red' }} />
+                            </IconButton>
+                            <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                              <GetAppIcon style={{ color: 'blue' }} />
+                            </IconButton>
+                          </Box>
+                        </StyledTableCell>
+
+                      </StyledTableRow>
+                    ))}
+
+                  </TableBody>
+                </Table>
+
+              </Grid>
+              <Grid item xs={4}>
+                <center><p>Target Attachments</p></center>
+                <Table className={classestable.table} aria-label="customized table">
+                  <TableHead className={classes.primary}>
+                    <TableRow>
+                      <StyledTableCell>Type</StyledTableCell>
+                      <StyledTableCell>File</StyledTableCell>
+                      <StyledTableCell>Actions</StyledTableCell>
+
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {target_att.map((row) => (
+                      <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                        <StyledTableCell component="th" scope="row">
+                          {row.AttachmentType}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">{row.Attachment?.split(",").pop()}</StyledTableCell>
+                        <StyledTableCell >
+                          <Box flexDirection="row" >
+                            <IconButton onClick={() => {
+                              alert('clicked')
+                            }}>
+                              <DeleteIcon style={{ color: 'red' }} />
+                            </IconButton>
+                            <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                              <GetAppIcon style={{ color: 'blue' }} />
+                            </IconButton>
+                          </Box>
+                        </StyledTableCell>
+
+                      </StyledTableRow>
+                    ))}
+
+
+                  </TableBody>
+                </Table>
+
+              </Grid>
+              <Grid item xs={4}>
+                <center><p>Conversion Attachments</p></center>
+                <Table className={classestable.table} aria-label="customized table">
+                  <TableHead className={classes.primary}>
+                    <TableRow>
+                      <StyledTableCell>Type</StyledTableCell>
+                      <StyledTableCell>File</StyledTableCell>
+                      <StyledTableCell>Actions</StyledTableCell>
+
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {conv_att.map((row) => (
+
+                      <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                        <StyledTableCell component="th" scope="row">
+                          {row.AttachmentType}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">{row.Attachment?.split(",").pop()}</StyledTableCell>
+                        <StyledTableCell >
+                          <Box flexDirection="row" >
+                            <IconButton onClick={() => {
+                              alert('clicked')
+                            }}>
+                              <DeleteIcon style={{ color: 'red' }} />
+                            </IconButton>
+                            <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                              <GetAppIcon style={{ color: 'blue' }} />
+                            </IconButton>
+                          </Box>
+                        </StyledTableCell>
+
+                      </StyledTableRow>
+                    ))}
+
+
+                  </TableBody>
+                </Table>
+
+              </Grid>
+            </Grid>
+
+
+
+          </Grid>
+        </Box>
+
+
+
+
+
 
         <Grid container justifyContent="center">
 
@@ -463,7 +691,7 @@ export default function PreviewCode(props) {
                 //   data: { detaildata },
 
                 // })
-                dispatch(ActionMenu.EditPreviewFeature({data:detaildata}))
+                dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
               }
             >
               Edit
@@ -477,7 +705,7 @@ export default function PreviewCode(props) {
   }
 
   return (
-   
+
     <>{data}</>
   );
 }

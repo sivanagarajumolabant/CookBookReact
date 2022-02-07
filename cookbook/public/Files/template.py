@@ -4,11 +4,12 @@ import pandas as pd
 
 # Snippet 1:
 def function_pre_lower(data):     #function to Convert the whole string to lower case except the data which is in single quotes 
-    data = re.sub(r"\b(?<!')(\w+)(?!')\b", lambda match: match.group().lower(), data)
+    data = data.lower()
     return data
 
 input_1 = "the Data had the ' The data Main forum ' values Main to Copy"
-output_1 = function_pre_lower(input)
+output_1 = function_pre_lower(input_1)
+#print(output_1)
 #output:
 """
 the data had the ' The data Main forum ' values main to copy """
@@ -42,6 +43,7 @@ v_location numeric;
 /* fudsgdskhfkdlgndknfdlkbnfdlb */
 """
 output_2 = data_remove_comments(input_2)
+#print(output_2)
 #Output:
 """
 create or replace function p_addedocpatient (iclob_patientdetails text, in_registrationtype registrationmaster.registrationtype%type, iv_registrationsource registrationmaster.registrationsource%type, iv_registrationdesc registrationmaster.registrationdescription%type, iv_loginid registrationmaster.updatedby%type, on_registrationid inout numeric) AS $body$
@@ -78,7 +80,8 @@ input_3 = """
     trim(both extract(v_patient, '/RegistrationRequest/Patient/@Gender') .getstringval()),
     trim(both extract(v_patient, '/RegistrationRequest/Patient/@Title') .getstringval()) 
 """
-output_3 = commonlogicextract(kimberly, 'extract')
+output_3 = commonlogicextract(input_3, 'extract')
+#print(output_3)
 # Output:
 ''' [extract(v_patient, '/RegistrationRequest/Patient/@TransactionId'),extract(v_patient, '/RegistrationRequest/Patient/@Gender')] '''
 
@@ -106,13 +109,14 @@ input_4= """ SELECT lv_patient,
  extract(value(li) , '/currentaddress/@AddressTypeID')  .getnumberval() ,
  extract(value(li) , '/currentaddress/@Street')  .getnumberval() ; """
 output_4 = split_main(input_4)
+#print(output_4)
 # Output:
 """ ['SELECT lv_patient', "\n extract(value(li) , '/currentaddress/@AddressTypeID')  .getnumberval() ",
     "\n extract(value(li) , '/currentaddress/@Street')  .getnumberval() "] """
 
 
 # Snippet 5:
-def function_pre_lower(data):           #This function will search for data present in single quotes, deletes it and makes other data to lower
+def function_pre_lower(data):           #This function will search for data present in single quotes and makes other data to lower
     singlequoye = re.findall(r"\'.*?\'", data)
     extractpartsdictformat = {}
     if len(singlequoye):
@@ -128,10 +132,10 @@ def function_pre_lower(data):           #This function will search for data pres
             data = data.replace(barc, extractpartsdictformat[barc], 1)
     return data
 
-Input_5 = """ SET client_encoding TO 'UTF8'
-        FDGDUIDFHGDKFLGNLFK 'UGFDKK' djhfdFHDHDGH
-    """
+input_5 = """ SET CLIENT_ENCODING TO 'UTF8'
+        FDGDUIDFHGDKFLGNLFK 'UGFDKK' djhfdFHDHDGH """
 output_5 =function_pre_lower(input_5)
+#print(output_5)
 # Output:
 """ set client_encoding to 'UTF8'
         fdgduidfhgdkflgnlfk 'UGFDKK' djhfdfhdhdgh
@@ -150,7 +154,8 @@ SET search_path = crm,public;
 create or replace function p_addedocpatient (iclob_patientdetails text) AS $body$
 DECLARE
  lv_patient numeric; """
-output_6 = select_funname(data,'HRPAY')
+output_6 = select_funname(input_6,'HRPAY')
+#print(output_6)
 # Output:
 """
 SET search_path = crm,public;
@@ -163,6 +168,7 @@ DECLARE
 def xml_extract_3(data): # This function will search for extract keyword from insert statement and constructs a statement by retirieving values from extract statement
     insert_data = re.findall(r'\binsert into\b.*?;',data,flags=re.I | re.DOTALL)
     for ins in insert_data:
+        
         modified_string = ins
         ins = ins.casefold().replace('extract', 'EXTRACT').replace('values', 'VALUES').replace('getnumberval',
                                                                                     'GETNUMBERVAL').replace(
@@ -206,7 +212,7 @@ input_7 = """
      LX_EMPLOYEEDETAILS.EXTRACT('EmployeeBasicDetails/@employeecode')
      .GETSTRINGVAL(),
      LX_EMPLOYEEDETAILS.EXTRACT('EmployeeBasicDetails/@TitleID')
-     .GETNUMBERVAL();
+     .GETNUMBERVAL());
  INSERT INTO EMPLOYEE_AUXILIARY_DETAILS
     (EMP_AUX_ID,
      MADIAN_NAME_OTHER_NAME,
@@ -217,10 +223,11 @@ input_7 = """
      .GETSTRINGVAL(),
      TO_DATE(LX_EMPLOYEEDETAILS.EXTRACT('EmployeeBasicDetails/@MarriageDate')
              .GETSTRINGVAL(),
-             'dd-mm-yyyy HH24:MI:SS');
+             'dd-mm-yyyy HH24:MI:SS'));
  END;
  """
 output_7 = xml_extract_3(input_7)
+#print(output_7)
 # Output:
 """
   CREATE OR REPLACE PROCEDURE "HR"."P_ADDEMPLOYEEDETAILS_NEW" (IC_EMPLOYEEDETAILS IN CLOB,

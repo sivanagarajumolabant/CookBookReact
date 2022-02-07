@@ -107,10 +107,14 @@ export default function EditFeature(props) {
     const [isTable, setIsTable] = useState(false)
     const [drop, setDrop] = useState("Sourcedescription");
     const [droptitle, setDroptitle] = useState("Source Description");
-    const [sourectabledata, setSourectabledata] = useState([])
+    // const [sourectabledata, setSourectabledata] = useState([])
     const [level, setLevel] = useState("")
-    const [targettabledata, setTargettabledata] = useState([])
-    const [contabledata, setContabledata] = useState([])
+    // const [targettabledata, setTargettabledata] = useState([])
+    // const [contabledata, setContabledata] = useState([])
+    const [source_att, setSource_att] = useState([])
+    const [target_att, setTarget_att] = useState([])
+    const [conv_att, setConv_att] = useState([])
+    // const [fupdate, setFupdate] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -134,6 +138,76 @@ export default function EditFeature(props) {
         }
 
     }, []);
+
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        let body = {
+            "Feature_Id": editdata.detaildata.Feature_Id,
+            "Targetdescription": "Targetdescription",
+            "Actualtargetcode": "Actualtargetcode",
+            "Expectedconversion": "Expectedconversion"
+        }
+        axios.post(`${config.API_BASE_URL()}/api/targetattlist`, body, conf).then(
+            (res) => {
+                console.log(res);
+                setTarget_att(res.data)
+
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [target_att])
+
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        let body = {
+            "Feature_Id": editdata.detaildata.Feature_Id,
+            "Conversion": "Conversion",
+
+        }
+        axios.post(`${config.API_BASE_URL()}/api/convattlist`, body, conf).then(
+            (res) => {
+                console.log(res);
+                setConv_att(res.data)
+
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [conv_att])
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        let body = {
+            "Feature_Id": editdata.detaildata.Feature_Id,
+            "Sourcedescription": 'Sourcedescription',
+            "Sourcecode": 'Sourcecode'
+        }
+        axios.post(`${config.API_BASE_URL()}/api/sourceattlist`, body, conf).then(
+            (res) => {
+                console.log(res);
+                setSource_att(res.data)
+
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [target_att])
+
 
     var handle_featurename = editdata?.detaildata?.Feature_Name?.substr(5)
 
@@ -311,10 +385,10 @@ export default function EditFeature(props) {
             }
         }
         console.log(conf.headers)
-        axios.post(`${config.API_BASE_URL()}/api/download_att`,body,conf).then(res => {
+        axios.post(`${config.API_BASE_URL()}/api/download_att`, body, conf).then(res => {
             fileDownload(res.data, att_name);
         }).catch(err => {
-           
+
         })
     }
     const handledetale = (value) => {
@@ -391,97 +465,42 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
-                setSourcedescatt(fileatt)
-                // console.log("file", fileatt)
-                setSourectabledata([
-                    ...sourectabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
-            } else {
-                setSourcedescatt('')
-                filesub.push('')
+
             }
         } else if (drop === "Targetdescription") {
             const { files } = e.target;
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
-                setTargetdescatt(fileatt)
-                setTargettabledata([
-                    ...targettabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
-            } else {
-                setTargetdescatt('')
-                filesub.push('')
+
             }
         } else if (drop === "Sourcecode") {
             const { files } = e.target;
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
-                setSourcecodeatt(fileatt)
-                setSourectabledata([
-                    ...sourectabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
-            } else {
-                setSourcecodeatt('')
-                filesub.push('')
+
             }
         } else if (drop === "Actualtargetcode") {
             const { files } = e.target;
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
-                setActualtargetcodeatt(fileatt)
-                setTargettabledata([
-                    ...targettabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
-            } else {
-                setActualtargetcodeatt('')
-                filesub.push('')
+
             }
         } else if (drop === "Expectedconversion") {
             const { files } = e.target;
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
-                setExpectedtargetcodeatt(fileatt)
-                setTargettabledata([
-                    ...targettabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
-            } else {
-                setExpectedtargetcodeatt('')
-                filesub.push('')
+
             }
         } else if (drop === "Conversion") {
             const { files } = e.target;
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
-                setConversionatt(fileatt)
-                setContabledata([
-                    ...contabledata,
-                    {
-                        "AttachmentType": droptitle,
-                        "Attachment": fileatt.name
-                    }])
-            } else {
-                setConversionatt('')
-                filesub.push('')
+
             }
         }
 
@@ -1054,7 +1073,7 @@ export default function EditFeature(props) {
                                 </TableHead>
                                 <TableBody>
 
-                                    {sourectabledata.map((row) => (
+                                    {source_att.map((row) => (
                                         <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
@@ -1092,7 +1111,7 @@ export default function EditFeature(props) {
                                 </TableHead>
                                 <TableBody>
 
-                                    {targettabledata.map((row) => (
+                                    {target_att.map((row) => (
                                         <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
@@ -1132,7 +1151,7 @@ export default function EditFeature(props) {
                                 </TableHead>
                                 <TableBody>
 
-                                    {contabledata.map((row) => (
+                                    {conv_att.map((row) => (
                                         <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}

@@ -317,8 +317,8 @@ export default function ClippedDrawer({ children }) {
   };
   const onDownload2 = () => {
     const link = document.createElement("a");
-    link.download = `template.py`;
-    link.href = "./Files/template.py";
+    link.download = `Instructions.pdf`;
+    link.href = "./Files/Instructions.pdf";
     link.click();
   };
 
