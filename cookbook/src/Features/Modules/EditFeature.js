@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import TableBody from '@material-ui/core/TableBody';
+import fileDownload from "js-file-download";
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -296,6 +297,26 @@ export default function EditFeature(props) {
     }
 
 
+    const handleDownload = (att_Type, migtypeid, obj_type, att_name) => {
+        let body = {
+            "file_name": att_name,
+            "migration_typeid": migtypeid,
+            "object_type": obj_type,
+            "AttachmentType": att_Type,
+            responseType: 'blob',
+        }
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        console.log(conf.headers)
+        axios.post(`${config.API_BASE_URL()}/api/download_att`,body,conf).then(res => {
+            fileDownload(res.data, att_name);
+        }).catch(err => {
+           
+        })
+    }
     const handledetale = (value) => {
         const data = file.filter((item) => item.name != value.name)
         setfile(data)
@@ -1046,9 +1067,7 @@ export default function EditFeature(props) {
                                                     }}>
                                                         <DeleteIcon style={{ color: 'red' }} />
                                                     </IconButton>
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
+                                                    <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
                                                         <GetAppIcon style={{ color: 'blue' }} />
                                                     </IconButton>
                                                 </Box>

@@ -309,7 +309,13 @@ export default function ClippedDrawer({ children }) {
   // };
 
 
-  const onDownload = () => {
+  const onDownload1 = () => {
+    const link = document.createElement("a");
+    link.download = `template.py`;
+    link.href = "./Files/template.py";
+    link.click();
+  };
+  const onDownload2 = () => {
     const link = document.createElement("a");
     link.download = `template.py`;
     link.href = "./Files/template.py";
@@ -497,7 +503,7 @@ export default function ClippedDrawer({ children }) {
                 <Button
                   style={{ color: 'white',marginLeft:'10px', textTransform: 'unset' }}
                   startIcon={<GetAppIcon />}
-                  onClick={onDownload}
+                  onClick={onDownload1}
                   className={classes.downloadbutton}
                 >
                   Template
@@ -505,7 +511,7 @@ export default function ClippedDrawer({ children }) {
                 <Button
                   style={{ color: 'white',marginLeft:'120px', textTransform: 'unset' }}
                   startIcon={<GetAppIcon />}
-                  onClick={onDownload}
+                  onClick={onDownload2}
                   className={classes.downloadbutton}
                 >
                   Document
