@@ -40,6 +40,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     // display: "flex",
   },
+
+  texttablecell:{
+    overflowX:'hidden',
+     whiteSpace: "nowrap", 
+     width: "95px",
+     overflow: "hidden",
+     textOverflow: "ellipsis", 
+},
   lineheight: {
     lineHeight: '30px'
   },
@@ -563,7 +571,7 @@ export default function PreviewCode(props) {
 
         </Grid>
 
-        <Box py={4}>
+        {/* <Box py={4}>
           <Grid container spacing={0.5}>
             <Grid container item xs={12} spacing={1}>
               <Grid item xs={9}>
@@ -737,9 +745,180 @@ export default function PreviewCode(props) {
 
           </Grid>
 
-        </Box>
+        </Box> */}
 
 
+<Grid container xl={12} justifyContent="space-evenly">
+            <Grid item xl={4}>
+            <Typography
+                  gutterBottom
+                  align='center'
+                  variant="h6"
+                  component="h2"
+                  className={classes.Object_Type}
+                >
+                  Source Attachments
+                </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="center">Type</StyledTableCell>
+                  <StyledTableCell align="center">File</StyledTableCell>
+                  <StyledTableCell align="center">Actions</StyledTableCell>
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {issattdata ? <>
+                        {source_att.map((row) => (
+
+                    <StyledTableRow container>
+                      <StyledTableCell item xl={5}>
+                            <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                      </StyledTableCell>
+                      <StyledTableCell item xl={5} >
+                         <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                      </StyledTableCell>
+                      <StyledTableCell item xl={2}>
+                      <Box flexDirection="row" >
+                                <IconButton onClick={() => {
+                                  alert('clicked')
+                                }}>
+                                  <DeleteIcon style={{ color: 'red' }} />
+                                </IconButton>
+                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                                  <GetAppIcon style={{ color: 'blue' }} />
+                                </IconButton>
+                              </Box>
+                      </StyledTableCell>
+
+                    </StyledTableRow>
+                  ))}
+                  </>
+                  : <>
+                
+                  <StyledTableCell align="center"></StyledTableCell>
+                  <StyledTableCell align="center">No Data</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
+                </>}
+
+
+              </TableBody>
+            </Table> 
+            </Grid>
+            <Grid item xl={4}>
+            <Typography
+                  gutterBottom
+                  align='center'
+                  variant="h6"
+                  component="h5"
+                  className={classes.Object_Type}
+                >
+                  Target Attachments
+                </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="center">Type</StyledTableCell>
+                  <StyledTableCell align="center">File</StyledTableCell>
+                  <StyledTableCell align="center">Actions</StyledTableCell>
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {istattdata ? <>
+                  {target_att.map((row) => (
+
+                    <StyledTableRow container>
+                      <StyledTableCell item xl={5}>
+                            <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                      </StyledTableCell>
+                      <StyledTableCell item xl={5} >
+                         <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                      </StyledTableCell>
+                      <StyledTableCell item xl={2}>
+                      <Box flexDirection="row" >
+                                <IconButton onClick={() => {
+                                  alert('clicked')
+                                }}>
+                                  <DeleteIcon style={{ color: 'red' }} />
+                                </IconButton>
+                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                                  <GetAppIcon style={{ color: 'blue' }} />
+                                </IconButton>
+                              </Box>
+                      </StyledTableCell>
+
+                    </StyledTableRow>
+                  ))}
+                  </>
+                  : <>
+                  <StyledTableCell align="center"></StyledTableCell>
+                  <StyledTableCell align="center">No Data</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
+                </>}
+
+
+              </TableBody>
+            </Table>
+            </Grid>
+            <Grid item xl={4}>
+            <Typography
+                  gutterBottom
+                  align='center'
+                  variant="h6"
+                  component="h2"
+                  className={classes.Object_Type}
+                >
+                  Conversion Attachments
+                </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="center">Type</StyledTableCell>
+                  <StyledTableCell align="center">File</StyledTableCell>
+                  <StyledTableCell align="center">Actions</StyledTableCell>
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {iscattdata ? <>
+                  {conv_att.map((row) => (
+
+                    <StyledTableRow container>
+                      <StyledTableCell item xl={5}>
+                            <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                      </StyledTableCell>
+                      <StyledTableCell item xl={5} >
+                         <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                      </StyledTableCell>
+                      <StyledTableCell item xl={2}>
+                      <Box flexDirection="row" >
+                                <IconButton onClick={() => {
+                                  alert('clicked')
+                                }}>
+                                  <DeleteIcon style={{ color: 'red' }} />
+                                </IconButton>
+                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                                  <GetAppIcon style={{ color: 'blue' }} />
+                                </IconButton>
+                              </Box>
+                      </StyledTableCell>
+
+                    </StyledTableRow>
+                  ))}
+                  </>
+                  : <>
+                  <StyledTableCell align="center"></StyledTableCell>
+                  <StyledTableCell align="center">No Data</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
+                </>}
+
+
+              </TableBody>
+            </Table> 
+            </Grid>
+        </Grid>
 
         <Grid container justifyContent="center" spacing={1}>
 
