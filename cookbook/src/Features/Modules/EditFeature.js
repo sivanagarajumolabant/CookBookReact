@@ -596,8 +596,12 @@ export default function EditFeature(props) {
     const StyledTableCell = withStyles((theme) => ({
         head: {
             backgroundColor: '#3f51b5',
-            color: theme.palette.common.white,
+            // color: theme.palette.common.white,
         },
+        root: {
+            padding: "0px 16px",
+        },
+
         body: {
             fontSize: 14,
         },
@@ -609,9 +613,11 @@ export default function EditFeature(props) {
                 backgroundColor: theme.palette.action.hover,
 
             },
+
+            height: 10
+
         },
     }))(TableRow);
-
 
     return (
         <>
@@ -1060,33 +1066,39 @@ export default function EditFeature(props) {
             <Box py={4}>
                 <Grid container spacing={0.5}>
                     <Grid container item xs={12} spacing={1}>
-                        <Grid item xs={4} spacing={0.5}>
-                            <center><p>Source Attachments</p></center>
+                        <Grid item xs={9} spacing={0.5}>
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                                className={classes.Object_Type}
+                            >
+                                Source Attachments
+                            </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell>Type</StyledTableCell>
-                                        <StyledTableCell>File</StyledTableCell>
-                                        <StyledTableCell>Actions</StyledTableCell>
+                                        <StyledTableCell align="center">Type</StyledTableCell>
+                                        <StyledTableCell align="center">File</StyledTableCell>
+                                        <StyledTableCell align="center">Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-
                                     {source_att.map((row) => (
                                         <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                                            <StyledTableCell component="th" scope="row">
+                                            <StyledTableCell component="th" scope="row" align="center">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment?.split('/').pop()}</StyledTableCell>
-                                            <StyledTableCell >
+                                            <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                                            <StyledTableCell align="center">
                                                 <Box flexDirection="row" >
                                                     <IconButton onClick={() => {
                                                         alert('clicked')
                                                     }}>
                                                         <DeleteIcon style={{ color: 'red' }} />
                                                     </IconButton>
-                                                    <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                    <IconButton onClick={(e) => handleDownload()}>
                                                         <GetAppIcon style={{ color: 'blue' }} />
                                                     </IconButton>
                                                 </Box>
@@ -1094,97 +1106,118 @@ export default function EditFeature(props) {
 
                                         </StyledTableRow>
                                     ))}
+
                                 </TableBody>
                             </Table>
 
                         </Grid>
-                        <Grid item xs={4}>
-                            <center><p>Target Attachments</p></center>
-                            <Table className={classestable.table} aria-label="customized table">
-                                <TableHead className={classes.primary}>
-                                    <TableRow>
-                                        <StyledTableCell>Type</StyledTableCell>
-                                        <StyledTableCell>File</StyledTableCell>
-                                        <StyledTableCell>Actions</StyledTableCell>
 
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
 
-                                    {target_att.map((row) => (
-                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {row.AttachmentType}
-                                            </StyledTableCell>
-                                            <StyledTableCell>{row.Attachment?.split('/').pop()}</StyledTableCell>
-                                            <StyledTableCell >
-                                                <Box flexDirection="row" >
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
-                                                        <DeleteIcon style={{ color: 'red' }} />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
-                                                        <GetAppIcon style={{ color: 'blue' }} />
-                                                    </IconButton>
-                                                </Box>
-                                            </StyledTableCell>
-
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </Grid>
-                        <Grid item xs={4}>
-                            <center><p>Conversion Attachments</p></center>
-                            <Table className={classestable.table} aria-label="customized table">
-                                <TableHead className={classes.primary}>
-                                    <TableRow>
-                                        <StyledTableCell>Type</StyledTableCell>
-                                        <StyledTableCell>File</StyledTableCell>
-                                        <StyledTableCell>Actions</StyledTableCell>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-
-                                    {conv_att.map((row) => (
-                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {row.AttachmentType}
-                                            </StyledTableCell>
-                                            <StyledTableCell>{row.Attachment?.split('/').pop()}</StyledTableCell>
-                                            <StyledTableCell >
-                                                <Box flexDirection="row" >
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
-                                                        <DeleteIcon style={{ color: 'red' }} />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => {
-                                                        alert('clicked')
-                                                    }}>
-                                                        <GetAppIcon style={{ color: 'blue' }} />
-                                                    </IconButton>
-                                                </Box>
-                                            </StyledTableCell>
-
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </Grid>
                     </Grid>
 
 
 
                 </Grid>
             </Box>
+            <Box>
+                <Grid item xs={9}>
+                    <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                        className={classes.Object_Type}
+                    >
+                        Target Attachments
+                    </Typography>
+                    <Table className={classestable.table} aria-label="customized table">
+                        <TableHead className={classes.primary}>
+                            <TableRow>
+                                <StyledTableCell align="center">Type</StyledTableCell>
+                                <StyledTableCell align="center">File</StyledTableCell>
+                                <StyledTableCell align="center">Actions</StyledTableCell>
 
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {target_att.map((row) => (
+                                <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                                    <StyledTableCell component="th" scope="row" align="center">
+                                        {row.AttachmentType}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        <Box flexDirection="row" >
+                                            <IconButton onClick={() => {
+                                                alert('clicked')
+                                            }}>
+                                                <DeleteIcon style={{ color: 'red' }} />
+                                            </IconButton>
+                                            <IconButton onClick={(e) => handleDownload()}>
+                                                <GetAppIcon style={{ color: 'blue' }} />
+                                            </IconButton>
+                                        </Box>
+                                    </StyledTableCell>
+
+                                </StyledTableRow>
+                            ))}
+
+
+                        </TableBody>
+                    </Table>
+
+                </Grid>
+            </Box>
+
+            <Box>
+                <Grid item xs={9}>
+                    <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                        className={classes.Object_Type}
+                    >
+                        Conversion Attachments
+                    </Typography>
+                    <Table className={classestable.table} aria-label="customized table">
+                        <TableHead className={classes.primary}>
+                            <TableRow>
+                                <StyledTableCell align="center">Type</StyledTableCell>
+                                <StyledTableCell align="center">File</StyledTableCell>
+                                <StyledTableCell align="center">Actions</StyledTableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {conv_att.map((row) => (
+
+                                <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                                    <StyledTableCell component="th" scope="row" align="center">
+                                        {row.AttachmentType}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        <Box flexDirection="row" >
+                                            <IconButton onClick={() => {
+                                                alert('clicked')
+                                            }}>
+                                                <DeleteIcon style={{ color: 'red' }} />
+                                            </IconButton>
+                                            <IconButton onClick={(e) => handleDownload()}>
+                                                <GetAppIcon style={{ color: 'blue' }} />
+                                            </IconButton>
+                                        </Box>
+                                    </StyledTableCell>
+
+                                </StyledTableRow>
+                            ))}
+
+
+                        </TableBody>
+                    </Table>
+
+                </Grid>
+
+            </Box>
 
 
 
