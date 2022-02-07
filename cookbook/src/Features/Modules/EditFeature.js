@@ -114,7 +114,7 @@ export default function EditFeature(props) {
     const [source_att, setSource_att] = useState([])
     const [target_att, setTarget_att] = useState([])
     const [conv_att, setConv_att] = useState([])
-    // const [fupdate, setFupdate] = useState(false)
+    const [fupdate, setFupdate] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -161,7 +161,7 @@ export default function EditFeature(props) {
                 console.log(error);
             }
         );
-    }, [target_att])
+    }, [])
 
     useEffect(() => {
         let conf = {
@@ -184,7 +184,7 @@ export default function EditFeature(props) {
                 console.log(error);
             }
         );
-    }, [conv_att])
+    }, [])
     useEffect(() => {
         let conf = {
             headers: {
@@ -206,7 +206,7 @@ export default function EditFeature(props) {
                 console.log(error);
             }
         );
-    }, [target_att])
+    }, [])
 
 
     var handle_featurename = editdata?.detaildata?.Feature_Name?.substr(5)
@@ -1078,7 +1078,7 @@ export default function EditFeature(props) {
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
-                                            <StyledTableCell align="right">{row.Attachment}</StyledTableCell>
+                                            <StyledTableCell align="right">{row.Attachment?.split('/').pop()}</StyledTableCell>
                                             <StyledTableCell >
                                                 <Box flexDirection="row" >
                                                     <IconButton onClick={() => {
@@ -1116,7 +1116,7 @@ export default function EditFeature(props) {
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
-                                            <StyledTableCell>{row.Attachment}</StyledTableCell>
+                                            <StyledTableCell>{row.Attachment?.split('/').pop()}</StyledTableCell>
                                             <StyledTableCell >
                                                 <Box flexDirection="row" >
                                                     <IconButton onClick={() => {
@@ -1156,7 +1156,7 @@ export default function EditFeature(props) {
                                             <StyledTableCell component="th" scope="row">
                                                 {row.AttachmentType}
                                             </StyledTableCell>
-                                            <StyledTableCell>{row.Attachment}</StyledTableCell>
+                                            <StyledTableCell>{row.Attachment?.split('/').pop()}</StyledTableCell>
                                             <StyledTableCell >
                                                 <Box flexDirection="row" >
                                                     <IconButton onClick={() => {

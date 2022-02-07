@@ -602,7 +602,7 @@ export default function PreviewCode(props) {
                         <StyledTableCell component="th" scope="row">
                           {row.AttachmentType}
                         </StyledTableCell>
-                        <StyledTableCell align="right">{row.Attachment?.split(",").pop()}</StyledTableCell>
+                        <StyledTableCell align="right">{row.Attachment?.split("/").pop()}</StyledTableCell>
                         <StyledTableCell >
                           <Box flexDirection="row" >
                             <IconButton onClick={() => {
@@ -642,7 +642,7 @@ export default function PreviewCode(props) {
                         <StyledTableCell component="th" scope="row">
                           {row.AttachmentType}
                         </StyledTableCell>
-                        <StyledTableCell align="right">{row.Attachment?.split(",").pop()}</StyledTableCell>
+                        <StyledTableCell align="right">{row.Attachment?.split("/").pop()}</StyledTableCell>
                         <StyledTableCell >
                           <Box flexDirection="row" >
                             <IconButton onClick={() => {
