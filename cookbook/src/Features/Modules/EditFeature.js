@@ -76,7 +76,8 @@ const useStyles = makeStyles((theme) => ({
 export default function EditFeature(props) {
     // console.log("editdata", props.editPreviewdetails?.data)
     const history = useHistory();
-    const editdata = { detaildata: props.editPreviewdetails?.data }
+    const [editdata, seteditdata] = useState({ detaildata: props.editPreviewdetails?.data })
+    // const editdata = { detaildata: props.editPreviewdetails?.data }
     console.log("editdata", editdata)
     const classes = useStyles();
     const classestable = useStylestable();
@@ -160,7 +161,7 @@ export default function EditFeature(props) {
                 setTarget_att(res.data)
                 if (res.data.length > 0) {
                     setIstattdata(true)
-                  }
+                }
 
             },
             (error) => {
@@ -186,7 +187,7 @@ export default function EditFeature(props) {
                 setConv_att(res.data)
                 if (res.data.length > 0) {
                     setIscattdata(true)
-                  }
+                }
 
             },
             (error) => {
@@ -211,7 +212,7 @@ export default function EditFeature(props) {
                 setSource_att(res.data)
                 if (res.data.length > 0) {
                     setIssattdata(true)
-                  }
+                }
 
             },
             (error) => {
@@ -549,6 +550,7 @@ export default function EditFeature(props) {
     };
 
     const deleteitem = async (data) => {
+        seteditdata({})
         let conf = {
             headers: {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -565,9 +567,10 @@ export default function EditFeature(props) {
             message: 'Deleted Successfully',
             type: 'error'
         });
+
+        // dispatch(ActionMenu.ActionMenu(
+        seteditdata({})
         dispatch(Menuaction.reloadAction(true))
-        // dispatch(ActionMenu.ActionMenu(null));
-        history.push("/dashboard");
     };
 
 
@@ -632,10 +635,14 @@ export default function EditFeature(props) {
     }))(TableRow);
 
     return (
-        <>
 
-            <Box py={2}>
-                {/* <Grid container direction='row' justifyContent='center'>
+
+        <>
+            {Object.keys(editdata).length > 0 &&
+                <>
+
+                    <Box py={2}>
+                        {/* <Grid container direction='row' justifyContent='center'>
                     <Grid item>
                         <Typography variant='h6'>
                             Edit Feature
@@ -643,75 +650,75 @@ export default function EditFeature(props) {
                     </Grid>
 
                 </Grid> */}
-            </Box>
+                    </Box>
 
-            {/* <form autoComplete="off"> */}
-            <Grid container direction='row' xs={12} spacing={4}>
+                    {/* <form autoComplete="off"> */}
+                    <Grid container direction='row' xs={12} spacing={4}>
 
-                <Grid item xs={6}>
+                        <Grid item xs={6}>
 
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Migration Type"
-                        multiline
-                        rows={1}
-                        onChange={(e) => handleChange(e)}
-                        label="Migration Type"
-                        // defaultValue="Default Value"
-                        value={editdata?.detaildata?.Migration_TypeId}
-                        variant="outlined"
-                        required
-                        disabled
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        fullWidth
-                    />
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Migration Type"
+                                multiline
+                                rows={1}
+                                onChange={(e) => handleChange(e)}
+                                label="Migration Type"
+                                // defaultValue="Default Value"
+                                value={editdata?.detaildata?.Migration_TypeId}
+                                variant="outlined"
+                                required
+                                disabled
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                fullWidth
+                            />
 
-                </Grid>
-                <Grid item xs={6}>
+                        </Grid>
+                        <Grid item xs={6}>
 
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Object Type"
-                        multiline
-                        rows={1}
-                        onChange={(e) => handleChange(e)}
-                        value={editdata?.detaildata?.Object_Type}
-                        name="Object_Type"
-                        variant="outlined"
-                        required
-                        disabled
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Object Type"
+                                multiline
+                                rows={1}
+                                onChange={(e) => handleChange(e)}
+                                value={editdata?.detaildata?.Object_Type}
+                                name="Object_Type"
+                                variant="outlined"
+                                required
+                                disabled
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
 
-                </Grid>
-                <Grid item xs={4}>
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Feature Name"
-                        multiline
-                        rows={1}
-                        onChange={(e) => handleChange(e)}
-                        value={handle_featurename}
-                        name='Feature_Name'
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        required
-                        disabled
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Feature Name"
+                                multiline
+                                rows={1}
+                                onChange={(e) => handleChange(e)}
+                                value={handle_featurename}
+                                name='Feature_Name'
+                                // defaultValue="Default Value"
+                                variant="outlined"
+                                required
+                                disabled
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
 
-                </Grid>
+                        </Grid>
 
-                <Grid item xs={4}>
-                    {/* <Autocomplete
+                        <Grid item xs={4}>
+                            {/* <Autocomplete
                         fullWidth
                         id="outlined-multiline-static"
                         // options={[
@@ -738,50 +745,50 @@ export default function EditFeature(props) {
                         }}
                         disabled
                     /> */}
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Level"
-                        multiline
-                        rows={1}
-                        // onChange={(e) => handleChange(e)}
-                        value={level}
-                        name='Level'
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        required
-                        disabled
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={4}>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Level"
+                                multiline
+                                rows={1}
+                                // onChange={(e) => handleChange(e)}
+                                value={level}
+                                name='Level'
+                                // defaultValue="Default Value"
+                                variant="outlined"
+                                required
+                                disabled
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
 
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Predecessor"
-                        multiline
-                        fullWidth
-                        // onChange={(e, v) => handleChange(v)}
-                        // onChange={(e) => setSequence(e.target.value)}
-                        rows={1}
-                        name='Sequence_Number'
-                        // defaultValue="Default Value"
-                        value={seq}
-                        variant="outlined"
-                        required
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        disabled
-                    />
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Predecessor"
+                                multiline
+                                fullWidth
+                                // onChange={(e, v) => handleChange(v)}
+                                // onChange={(e) => setSequence(e.target.value)}
+                                rows={1}
+                                name='Sequence_Number'
+                                // defaultValue="Default Value"
+                                value={seq}
+                                variant="outlined"
+                                required
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                disabled
+                            />
 
-                </Grid>
-                <Grid item xs={12}>
+                        </Grid>
+                        <Grid item xs={12}>
 
 
-                    {/* <TextField
+                            {/* <TextField
                             id="outlined-multiline-static"
                             label="Source Description"
                             multiline
@@ -800,44 +807,44 @@ export default function EditFeature(props) {
                             }}
                         /> */}
 
-                    <div className="App">
-                        <p>{'Source Description'}</p>
-                        <CKEditor
-                            editor={ClassicEditor}
-                            data={editdata.detaildata.Source_FeatureDescription}
-                            // value ={editdata.detaildata.Source_FeatureDescription}
-                            onReady={editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log('Editor is ready to use!', editor);
-                            }}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                handledes(data)
-                                // console.log( { event, editor, data } );
-                            }}
-                            config={{
-                                extraPlugins: [uploadPlugin]
-                            }}
+                            <div className="App">
+                                <p>{'Source Description'}</p>
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={editdata.detaildata.Source_FeatureDescription}
+                                    // value ={editdata.detaildata.Source_FeatureDescription}
+                                    onReady={editor => {
+                                        // You can store the "editor" and use when it is needed.
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        handledes(data)
+                                        // console.log( { event, editor, data } );
+                                    }}
+                                    config={{
+                                        extraPlugins: [uploadPlugin]
+                                    }}
 
 
-                            onBlur={(event, editor) => {
-                                console.log('Blur.', editor);
-                            }}
-                            onFocus={(event, editor) => {
-                                console.log('Focus.', editor);
-                            }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                    }}
+                                    onFocus={(event, editor) => {
+                                        console.log('Focus.', editor);
+                                    }}
 
-                        />
-                    </div>
+                                />
+                            </div>
 
-                </Grid>
-
-
-
-                <Grid item xs={12}>
+                        </Grid>
 
 
-                    {/* <TextField
+
+                        <Grid item xs={12}>
+
+
+                            {/* <TextField
                         id="outlined-multiline-static"
                         label="Target Description"
 
@@ -855,148 +862,148 @@ export default function EditFeature(props) {
                         }}
                     /> */}
 
-                    <div className="App">
-                        <p>{'Target Description'}</p>
-                        <CKEditor
-                            editor={ClassicEditor}
-                            data={editdata.detaildata.Target_FeatureDescription}
-                            onReady={editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log('Editor is ready to use!', editor);
-                            }}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                handletarget(data)
-                                // console.log( { event, editor, data } );
-                            }}
-                            // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
+                            <div className="App">
+                                <p>{'Target Description'}</p>
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={editdata.detaildata.Target_FeatureDescription}
+                                    onReady={editor => {
+                                        // You can store the "editor" and use when it is needed.
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        handletarget(data)
+                                        // console.log( { event, editor, data } );
+                                    }}
+                                    // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
 
-                            config={{
-                                extraPlugins: [uploadPlugin]
-                            }}
-                            onBlur={(event, editor) => {
-                                console.log('Blur.', editor);
-                            }}
-                            onFocus={(event, editor) => {
-                                console.log('Focus.', editor);
-                            }}
-                        />
-                    </div>
+                                    config={{
+                                        extraPlugins: [uploadPlugin]
+                                    }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                    }}
+                                    onFocus={(event, editor) => {
+                                        console.log('Focus.', editor);
+                                    }}
+                                />
+                            </div>
 
-                </Grid>
-
-
-
-
-                <Grid item xs={12}>
-
-
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Source Code"
-                        multiline
-                        type="text"
-                        rows={15}
-                        name='Source_Code'
-                        onChange={(e) => setSource_Code(e.target.value)}
-                        defaultValue={Source_Code}
-                        fullWidth
-                        variant="outlined"
-                        required
-                        // value={Source_Code}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-
-                    // error={Source_Code === ""}
-                    // helperText={Source_Code === "" ? "Empty!" : " "}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Expected Target Code"
-                        multiline
-                        rows={15}
-                        name='Target_Expected_Output'
-                        onChange={(e) => setTarget_Expected_Output(e.target.value)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        // defaultValue={Target_Expected_Output}
-                        required
-                        value={Target_Expected_Output}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </Grid>
-                <Box py={2}>
-                    <Button
-                        // type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        size='small'
-                        // style={{float: 'right'}}
-                        // className={classes.submit}
-                        className={classes.convertbutton}
-                        onClick={handleConvert}
-
-                    >
-                        Convert
-                    </Button>
-
-                </Box>
-
-
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Actual Target Code"
-                        multiline
-                        rows={15}
-                        name='Target_ActualCode'
-                        onChange={(e) => setTarget_ActualCode(e.target.value)}
-                        // defaultValue="Default Value"
-                        // defaultValue={Target_ActualCode}
-                        variant="outlined"
-                        // required
-                        value={Target_ActualCode}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </Grid>
+                        </Grid>
 
 
 
 
+                        <Grid item xs={12}>
 
 
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Conversion Code"
-                        multiline
-                        name='Conversion_Code'
-                        rows={15}
-                        onChange={(e) => setConversion_Code(e.target.value)}
-                        // defaultValue="Default Value"
-                        // defaultValue={Conversion_Code}
-                        variant="outlined"
-                        required
-                        value={Conversion_Code}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </Grid>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Source Code"
+                                multiline
+                                type="text"
+                                rows={15}
+                                name='Source_Code'
+                                onChange={(e) => setSource_Code(e.target.value)}
+                                defaultValue={Source_Code}
+                                fullWidth
+                                variant="outlined"
+                                required
+                                // value={Source_Code}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
 
-                {/* <Grid item xs={12}>
+                            // error={Source_Code === ""}
+                            // helperText={Source_Code === "" ? "Empty!" : " "}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="outlined-multiline-static"
+                                label="Expected Target Code"
+                                multiline
+                                rows={15}
+                                name='Target_Expected_Output'
+                                onChange={(e) => setTarget_Expected_Output(e.target.value)}
+                                // defaultValue="Default Value"
+                                variant="outlined"
+                                // defaultValue={Target_Expected_Output}
+                                required
+                                value={Target_Expected_Output}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                        <Box py={2}>
+                            <Button
+                                // type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                size='small'
+                                // style={{float: 'right'}}
+                                // className={classes.submit}
+                                className={classes.convertbutton}
+                                onClick={handleConvert}
+
+                            >
+                                Convert
+                            </Button>
+
+                        </Box>
+
+
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="outlined-multiline-static"
+                                label="Actual Target Code"
+                                multiline
+                                rows={15}
+                                name='Target_ActualCode'
+                                onChange={(e) => setTarget_ActualCode(e.target.value)}
+                                // defaultValue="Default Value"
+                                // defaultValue={Target_ActualCode}
+                                variant="outlined"
+                                // required
+                                value={Target_ActualCode}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+
+
+
+
+
+
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="outlined-multiline-static"
+                                label="Conversion Code"
+                                multiline
+                                name='Conversion_Code'
+                                rows={15}
+                                onChange={(e) => setConversion_Code(e.target.value)}
+                                // defaultValue="Default Value"
+                                // defaultValue={Conversion_Code}
+                                variant="outlined"
+                                required
+                                value={Conversion_Code}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+
+                        {/* <Grid item xs={12}>
 
                         <TextField
                             fullWidth
@@ -1017,299 +1024,301 @@ export default function EditFeature(props) {
                     </Grid>
  */}
 
-            </Grid>
-            <Box py={4}>
-                <Grid container direction='row' justifyContent='center'>
-                    <Grid >
-                        <Autocomplete
-                            style={{ width: 300, maxHeight: 10, height: '1.5rem' }}
-                            fullWidth
-                            id="grouped-demo"
-                            options={[
-                                { title: "Source Description", code: 'Sourcedescription' },
-                                { title: "Target Description", code: 'Targetdescription' },
-                                { title: "Conversion Code", code: 'Conversion' },
-                                { title: "Actual Target Code", code: 'Actualtargetcode' },
-                                { title: "Expected Target Code", code: 'Expectedconversion' },
-                                { title: "Source Code", code: 'Sourcecode' }
-                            ]}
-                            groupBy={""}
-                            // defaultValue={{ title: "Source Description" }}
-                            getOptionLabel={(option) => option.title}
-                            name="Attachemnets"
-                            onChange={(e, v) => handleChangedrop(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
+                    </Grid>
+                    <Box py={4}>
+                        <Grid container direction='row' justifyContent='center'>
+                            <Grid >
+                                <Autocomplete
+                                    style={{ width: 300, maxHeight: 10, height: '1.5rem' }}
                                     fullWidth
-                                    label="Attachments"
-                                    variant="outlined"
+                                    id="grouped-demo"
+                                    options={[
+                                        { title: "Source Description", code: 'Sourcedescription' },
+                                        { title: "Target Description", code: 'Targetdescription' },
+                                        { title: "Conversion Code", code: 'Conversion' },
+                                        { title: "Actual Target Code", code: 'Actualtargetcode' },
+                                        { title: "Expected Target Code", code: 'Expectedconversion' },
+                                        { title: "Source Code", code: 'Sourcecode' }
+                                    ]}
+                                    groupBy={""}
+                                    // defaultValue={{ title: "Source Description" }}
+                                    getOptionLabel={(option) => option.title}
+                                    name="Attachemnets"
+                                    onChange={(e, v) => handleChangedrop(v)}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            fullWidth
+                                            label="Attachments"
+                                            variant="outlined"
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
 
-                    </Grid>
+                            </Grid>
 
-                    <Grid item>
-                        <div className={classes.rootc}>
-                            <input
-                                accept="file"
-                                className={classes.input}
-                                id="contained-button-file3"
-                                multiple={true}
-                                onChange={(e) => handleSubmitdrpm(e)}
-                                type="file"
-                            />
+                            <Grid item>
+                                <div className={classes.rootc}>
+                                    <input
+                                        accept="file"
+                                        className={classes.input}
+                                        id="contained-button-file3"
+                                        multiple={true}
+                                        onChange={(e) => handleSubmitdrpm(e)}
+                                        type="file"
+                                    />
 
-                            <label htmlFor="contained-button-file3">
-                                <Button variant="contained"
-                                    startIcon={<CloudUploadIcon />}
-                                    color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
-                                    Upload
+                                    <label htmlFor="contained-button-file3">
+                                        <Button variant="contained"
+                                            startIcon={<CloudUploadIcon />}
+                                            color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
+                                            Upload
+                                        </Button>
+                                    </label>
+
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </Box>
+
+
+                    <Box py={4}>
+                        <Grid container spacing={0.5}>
+                            <Grid container item xs={12} spacing={1}>
+                                <Grid item xs={9} >
+                                    <Typography
+                                        gutterBottom
+                                        variant="h5"
+                                        component="h2"
+                                        className={classes.Object_Type}
+                                    >
+                                        Source Attachments
+                                    </Typography>
+                                    <Table className={classestable.table} aria-label="customized table">
+                                        <TableHead className={classes.primary}>
+                                            <TableRow>
+                                                <StyledTableCell align="center">Type</StyledTableCell>
+                                                <StyledTableCell align="center">File</StyledTableCell>
+                                                <StyledTableCell align="center">Actions</StyledTableCell>
+
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {issattdata ?
+                                                <>
+                                                    {source_att.map((row) => (
+                                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                                                            <StyledTableCell component="th" scope="row" align="center">
+                                                                {row.AttachmentType}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                                                            <StyledTableCell align="center">
+                                                                <Box flexDirection="row" >
+                                                                    <IconButton onClick={() => {
+                                                                        alert('clicked')
+                                                                    }}>
+                                                                        <DeleteIcon style={{ color: 'red' }} />
+                                                                    </IconButton>
+                                                                    <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                                        <GetAppIcon style={{ color: 'blue' }} />
+                                                                    </IconButton>
+                                                                </Box>
+                                                            </StyledTableCell>
+
+                                                        </StyledTableRow>
+                                                    ))}
+                                                </>
+                                                : <>
+                                                    <StyledTableCell align="center"></StyledTableCell>
+                                                    <StyledTableCell align="center">No Data</StyledTableCell>
+                                                    <StyledTableCell align="center"></StyledTableCell>
+                                                </>}
+
+                                        </TableBody>
+                                    </Table>
+
+                                </Grid>
+
+
+                            </Grid>
+
+
+
+                        </Grid>
+                    </Box>
+                    <Box>
+                        <Grid item xs={9}>
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                                className={classes.Object_Type}
+                            >
+                                Target Attachments
+                            </Typography>
+                            <Table className={classestable.table} aria-label="customized table">
+                                <TableHead className={classes.primary}>
+                                    <TableRow>
+                                        <StyledTableCell align="center">Type</StyledTableCell>
+                                        <StyledTableCell align="center">File</StyledTableCell>
+                                        <StyledTableCell align="center">Actions</StyledTableCell>
+
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {istattdata ? <>
+                                        {target_att.map((row) => (
+                                            <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                                                <StyledTableCell component="th" scope="row" align="center">
+                                                    {row.AttachmentType}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    <Box flexDirection="row" >
+                                                        <IconButton onClick={() => {
+                                                            alert('clicked')
+                                                        }}>
+                                                            <DeleteIcon style={{ color: 'red' }} />
+                                                        </IconButton>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                            <GetAppIcon style={{ color: 'blue' }} />
+                                                        </IconButton>
+                                                    </Box>
+                                                </StyledTableCell>
+
+                                            </StyledTableRow>
+                                        ))}
+                                    </>
+                                        : <>
+                                            <StyledTableCell align="center"></StyledTableCell>
+                                            <StyledTableCell align="center">No Data</StyledTableCell>
+                                            <StyledTableCell align="center"></StyledTableCell>
+                                        </>}
+
+                                </TableBody>
+                            </Table>
+
+                        </Grid>
+                    </Box>
+
+                    <Box>
+                        <Grid item xs={9}>
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                                className={classes.Object_Type}
+                            >
+                                Conversion Attachments
+                            </Typography>
+                            <Table className={classestable.table} aria-label="customized table">
+                                <TableHead className={classes.primary}>
+                                    <TableRow>
+                                        <StyledTableCell align="center">Type</StyledTableCell>
+                                        <StyledTableCell align="center">File</StyledTableCell>
+                                        <StyledTableCell align="center">Actions</StyledTableCell>
+
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {iscattdata ? <>
+                                        {conv_att.map((row) => (
+
+                                            <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
+                                                <StyledTableCell component="th" scope="row" align="center">
+                                                    {row.AttachmentType}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    <Box flexDirection="row" >
+                                                        <IconButton onClick={() => {
+                                                            alert('clicked')
+                                                        }}>
+                                                            <DeleteIcon style={{ color: 'red' }} />
+                                                        </IconButton>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                            <GetAppIcon style={{ color: 'blue' }} />
+                                                        </IconButton>
+                                                    </Box>
+                                                </StyledTableCell>
+
+                                            </StyledTableRow>
+                                        ))}
+                                    </> : <>
+                                        <StyledTableCell align="center"></StyledTableCell>
+                                        <StyledTableCell align="center">No Data</StyledTableCell>
+                                        <StyledTableCell align="center"></StyledTableCell>
+                                    </>}
+
+
+                                </TableBody>
+                            </Table>
+
+                        </Grid>
+
+                    </Box>
+
+
+                    <Notification
+                        notify={notify}
+                        setNotify={setNotify}
+                    />
+                    <Box py={5}>
+
+                        <Grid container direction='row ' justifyContent='center' spacing={2}>
+
+
+                            <Grid item>
+                                <Button
+                                    // type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    // className={classes.submit}
+                                    onClick={handleSubmit}
+                                    startIcon={<SaveIcon />}
+
+                                >
+                                    Save
                                 </Button>
-                            </label>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    // type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    style={{ backgroundColor: 'red', color: 'white' }}
+                                    // className={classes.submit}
+                                    // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                                    startIcon={<DeleteIcon />}
+                                    onClick={() => {
+                                        setConfirmDialog({
+                                            isOpen: true,
+                                            title: 'Are you sure to delete this record?',
+                                            // subTitle: "You can't undo this operation",
+                                            onConfirm: () => { deleteitem(editdata.detaildata.Feature_Id) }
+                                        })
+                                    }
+                                    }
+                                >
+                                    Delete
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    {/* </form> */}
 
-                        </div>
-                    </Grid>
-                </Grid>
-            </Box>
-
-
-            <Box py={4}>
-          <Grid container spacing={0.5}>
-            <Grid container item xs={12} spacing={1}>
-              <Grid item xs={9} >
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="h2"
-                  className={classes.Object_Type}
-                >
-                  Source Attachments
-                </Typography>
-                <Table className={classestable.table} aria-label="customized table">
-                  <TableHead className={classes.primary}>
-                    <TableRow>
-                      <StyledTableCell align="center">Type</StyledTableCell>
-                      <StyledTableCell align="center">File</StyledTableCell>
-                      <StyledTableCell align="center">Actions</StyledTableCell>
-
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {issattdata ?
-                      <>
-                        {source_att.map((row) => (
-                          <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                            <StyledTableCell component="th" scope="row" align="center">
-                              {row.AttachmentType}
-                            </StyledTableCell>
-                            <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
-                            <StyledTableCell align="center">
-                              <Box flexDirection="row" >
-                                <IconButton onClick={() => {
-                                  alert('clicked')
-                                }}>
-                                  <DeleteIcon style={{ color: 'red' }} />
-                                </IconButton>
-                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
-                                  <GetAppIcon style={{ color: 'blue' }} />
-                                </IconButton>
-                              </Box>
-                            </StyledTableCell>
-
-                          </StyledTableRow>
-                        ))}
-                      </>
-                      : <>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="center">No Data</StyledTableCell>
-                        <StyledTableCell align="center"></StyledTableCell>
-                      </>}
-
-                  </TableBody>
-                </Table>
-
-              </Grid>
-
-
-            </Grid>
-
-
-
-          </Grid>
-        </Box>
-        <Box>
-          <Grid item xs={9}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Target Attachments
-            </Typography>
-            <Table className={classestable.table} aria-label="customized table">
-              <TableHead className={classes.primary}>
-                <TableRow>
-                  <StyledTableCell align="center">Type</StyledTableCell>
-                  <StyledTableCell align="center">File</StyledTableCell>
-                  <StyledTableCell align="center">Actions</StyledTableCell>
-
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {istattdata ? <>
-                  {target_att.map((row) => (
-                    <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                      <StyledTableCell component="th" scope="row" align="center">
-                        {row.AttachmentType}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
-                            <DeleteIcon style={{ color: 'red' }} />
-                          </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
-                            <GetAppIcon style={{ color: 'blue' }} />
-                          </IconButton>
-                        </Box>
-                      </StyledTableCell>
-
-                    </StyledTableRow>
-                  ))}
+                    <Notification
+                        notify={notify}
+                        setNotify={setNotify}
+                    />
+                    <ConfirmDialog
+                        seteditdata={seteditdata}
+                        confirmDialog={confirmDialog}
+                        setConfirmDialog={setConfirmDialog}
+                    />
                 </>
-                  : <>
-                    <StyledTableCell align="center"></StyledTableCell>
-                    <StyledTableCell align="center">No Data</StyledTableCell>
-                    <StyledTableCell align="center"></StyledTableCell>
-                  </>}
-
-              </TableBody>
-            </Table>
-
-          </Grid>
-        </Box>
-
-        <Box>
-          <Grid item xs={9}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Conversion Attachments
-            </Typography>
-            <Table className={classestable.table} aria-label="customized table">
-              <TableHead className={classes.primary}>
-                <TableRow>
-                  <StyledTableCell align="center">Type</StyledTableCell>
-                  <StyledTableCell align="center">File</StyledTableCell>
-                  <StyledTableCell align="center">Actions</StyledTableCell>
-
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {iscattdata ? <>
-                  {conv_att.map((row) => (
-
-                    <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                      <StyledTableCell component="th" scope="row" align="center">
-                        {row.AttachmentType}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
-                            <DeleteIcon style={{ color: 'red' }} />
-                          </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
-                            <GetAppIcon style={{ color: 'blue' }} />
-                          </IconButton>
-                        </Box>
-                      </StyledTableCell>
-
-                    </StyledTableRow>
-                  ))}
-                </> : <>
-                  <StyledTableCell align="center"></StyledTableCell>
-                  <StyledTableCell align="center">No Data</StyledTableCell>
-                  <StyledTableCell align="center"></StyledTableCell>
-                </>}
-
-
-              </TableBody>
-            </Table>
-
-          </Grid>
-
-        </Box>
-
-
-            <Notification
-                notify={notify}
-                setNotify={setNotify}
-            />
-            <Box py={5}>
-
-                <Grid container direction='row ' justifyContent='center' spacing={2}>
-
-
-                    <Grid item>
-                        <Button
-                            // type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            // className={classes.submit}
-                            onClick={handleSubmit}
-                            startIcon={<SaveIcon />}
-
-                        >
-                            Save
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            // type="submit"
-                            fullWidth
-                            variant="contained"
-                            style={{ backgroundColor: 'red', color: 'white' }}
-                            // className={classes.submit}
-                            // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
-                            startIcon={<DeleteIcon />}
-                            onClick={() => {
-                                setConfirmDialog({
-                                    isOpen: true,
-                                    title: 'Are you sure to delete this record?',
-                                    // subTitle: "You can't undo this operation",
-                                    onConfirm: () => { deleteitem(editdata.detaildata.Feature_Id) }
-                                })
-                            }
-                            }
-                        >
-                            Delete
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
-            {/* </form> */}
-
-            <Notification
-                notify={notify}
-                setNotify={setNotify}
-            />
-            <ConfirmDialog
-                confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog}
-            />
-
+            }
         </>
     );
 }
