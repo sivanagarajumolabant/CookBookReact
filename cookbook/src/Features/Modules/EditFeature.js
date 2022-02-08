@@ -46,9 +46,9 @@ const useStyles = makeStyles((theme) => ({
         width: "160px",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        '&:hover': {
-            overflow: 'visible'
-        }
+        // '&:hover': {
+        //     overflow: 'visible'
+        // }
     },
     convertbutton: {
         // color: "white",
@@ -98,12 +98,7 @@ export default function EditFeature(props) {
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
 
-    const [sourcedescatt, setSourcedescatt] = useState([])
-    const [targetdescatt, setTargetdescatt] = useState([])
-    const [actualtargetcodeatt, setActualtargetcodeatt] = useState([])
-    const [expectedtargetcodeatt, setExpectedtargetcodeatt] = useState([])
-    const [sourcecodeatt, setSourcecodeatt] = useState([])
-    const [conversionatt, setConversionatt] = useState([])
+
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -128,7 +123,14 @@ export default function EditFeature(props) {
     const [issattdata, setIssattdata] = useState(false)
     const [iscattdata, setIscattdata] = useState(false)
     const [istattdata, setIstattdata] = useState(false)
-    // const [fupdate, setFupdate] = useState(false)
+
+    const [source_codeatt, setSource_codeatt] = useState([])
+    const [target_acodeatt, setTarget_acodeatt] = useState([])
+    const [target_ecodeatt, setTarget_ecodeatt] = useState([])
+    const [isscattdata, setIsscattdata] = useState(false)
+    const [istaattdata, setIstaattdata] = useState(false)
+    const [istettdata, setIstettdata] = useState(false)
+    const [fupdate, setFupdate] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -153,32 +155,7 @@ export default function EditFeature(props) {
 
     }, []);
 
-    useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        let body = {
-            "Feature_Id": editdata.detaildata.Feature_Id,
-            "Targetdescription": "Targetdescription",
-            "Actualtargetcode": "Actualtargetcode",
-            "Expectedconversion": "Expectedconversion"
-        }
-        axios.post(`${config.API_BASE_URL()}/api/targetattlist`, body, conf).then(
-            (res) => {
-                console.log(res);
-                setTarget_att(res.data)
-                if (res.data.length > 0) {
-                    setIstattdata(true)
-                }
 
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-    }, [])
 
     useEffect(() => {
         let conf = {
@@ -186,50 +163,113 @@ export default function EditFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        let body = {
-            "Feature_Id": editdata.detaildata.Feature_Id,
-            "Conversion": "Conversion",
-
-        }
-        axios.post(`${config.API_BASE_URL()}/api/convattlist`, body, conf).then(
+        axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${editdata.detaildata.Feature_Id}`, conf).then(
             (res) => {
-                console.log(res);
-                setConv_att(res.data)
-                if (res.data.length > 0) {
-                    setIscattdata(true)
-                }
-
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-    }, [])
-    useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        let body = {
-            "Feature_Id": editdata.detaildata.Feature_Id,
-            "Sourcedescription": 'Sourcedescription',
-            "Sourcecode": 'Sourcecode'
-        }
-        axios.post(`${config.API_BASE_URL()}/api/sourceattlist`, body, conf).then(
-            (res) => {
-                console.log(res);
                 setSource_att(res.data)
                 if (res.data.length > 0) {
                     setIssattdata(true)
                 }
-
             },
             (error) => {
                 console.log(error);
             }
         );
-    }, [])
+    }, [fupdate])
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.get(`${config.API_BASE_URL()}/api/targetdesc/${editdata.detaildata.Feature_Id}`, conf).then(
+            (res) => {
+                setTarget_att(res.data)
+                if (res.data.length > 0) {
+                    setIstattdata(true)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [fupdate])
+
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.get(`${config.API_BASE_URL()}/api/convatt/${editdata.detaildata.Feature_Id}`, conf).then(
+            (res) => {
+                setConv_att(res.data)
+                if (res.data.length > 0) {
+                    setIscattdata(true)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+
+    }, [fupdate])
+
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.get(`${config.API_BASE_URL()}/api/sourcecode/${editdata.detaildata.Feature_Id}`, conf).then(
+            (res) => {
+                setSource_codeatt(res.data)
+                if (res.data.length > 0) {
+                    setIsscattdata(true)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [fupdate])
+
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.get(`${config.API_BASE_URL()}/api/atargetcode/${editdata.detaildata.Feature_Id}`, conf).then(
+            (res) => {
+                setTarget_acodeatt(res.data)
+                if (res.data.length > 0) {
+                    setIstaattdata(true)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [fupdate])
+    useEffect(() => {
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.get(`${config.API_BASE_URL()}/api/etargetcode/${editdata.detaildata.Feature_Id}`, conf).then(
+            (res) => {
+                setTarget_ecodeatt(res.data)
+                if (res.data.length > 0) {
+                    setIstettdata(true)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, [fupdate])
+
 
 
     var handle_featurename = editdata?.detaildata?.Feature_Name?.substr(5)
@@ -488,6 +528,7 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
+                setFupdate(true)
 
             }
         } else if (drop === "Targetdescription") {
@@ -495,6 +536,7 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
+                setFupdate(true)
 
             }
         } else if (drop === "Sourcecode") {
@@ -502,6 +544,7 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
+                setFupdate(true)
 
             }
         } else if (drop === "Actualtargetcode") {
@@ -509,6 +552,7 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
+                setFupdate(true)
 
             }
         } else if (drop === "Expectedconversion") {
@@ -516,6 +560,7 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
+                setFupdate(true)
 
             }
         } else if (drop === "Conversion") {
@@ -523,6 +568,7 @@ export default function EditFeature(props) {
             if (files.length > 0) {
                 const fileatt = e.target.files[0];
                 filesub.push(fileatt)
+                setFupdate(true)
 
             }
         }
@@ -549,6 +595,7 @@ export default function EditFeature(props) {
                     message: droptitle + ' Attachment Upload Successfully',
                     type: 'success'
                 })
+                setFupdate(false)
             }, error => {
                 console.log(error);
                 setNotify({
@@ -556,6 +603,7 @@ export default function EditFeature(props) {
                     message: 'Something Went Wrong! Please try Again for ' + droptitle,
                     type: 'error'
                 })
+                setFupdate(false)
             })
     };
 
@@ -1091,99 +1139,39 @@ export default function EditFeature(props) {
                         </Grid>
                     </Box>
 
-                    {/* 
-                    <Box py={4}>
-                        <Grid container spacing={0.5}>
-                            <Grid container item xs={12} spacing={1}>
-                                <Grid item xs={9} >
-                                    <Typography
-                                        gutterBottom
-                                        variant="h5"
-                                        component="h2"
-                                        className={classes.Object_Type}
-                                    >
-                                        Source Attachments
-                                    </Typography>
-                                    <Table className={classestable.table} aria-label="customized table">
-                                        <TableHead className={classes.primary}>
-                                            <TableRow>
-                                                <StyledTableCell align="center">Type</StyledTableCell>
-                                                <StyledTableCell align="center">File</StyledTableCell>
-                                                <StyledTableCell align="center">Actions</StyledTableCell>
 
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {issattdata ?
-                                                <>
-                                                    {source_att.map((row) => (
-                                                        <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                                                            <StyledTableCell component="th" scope="row" align="center">
-                                                                {row.AttachmentType}
-                                                            </StyledTableCell>
-                                                            <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
-                                                            <StyledTableCell align="center">
-                                                                <Box flexDirection="row" >
-                                                                    <IconButton onClick={() => {
-                                                                        alert('clicked')
-                                                                    }}>
-                                                                        <DeleteIcon style={{ color: 'red' }} />
-                                                                    </IconButton>
-                                                                    <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
-                                                                        <GetAppIcon style={{ color: 'blue' }} />
-                                                                    </IconButton>
-                                                                </Box>
-                                                            </StyledTableCell>
-
-                                                        </StyledTableRow>
-                                                    ))}
-                                                </>
-                                                : <>
-                                                    <StyledTableCell align="center"></StyledTableCell>
-                                                    <StyledTableCell align="center">No Data</StyledTableCell>
-                                                    <StyledTableCell align="center"></StyledTableCell>
-                                                </>}
-
-                                        </TableBody>
-                                    </Table>
-
-                                </Grid>
-
-
-                            </Grid>
-
-
-
-                        </Grid>
-                    </Box>
-                    <Box>
-                        <Grid item xs={9}>
+                    <Grid container xl={12} justifyContent="space-between" sp>
+                        <Grid item xl={4}>
                             <Typography
                                 gutterBottom
-                                variant="h5"
+                                align='center'
+                                variant="h6"
                                 component="h2"
                                 className={classes.Object_Type}
                             >
-                                Target Attachments
+                                Source Code
                             </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell align="center">Type</StyledTableCell>
+                                        {/* <StyledTableCell align="center">Type</StyledTableCell> */}
                                         <StyledTableCell align="center">File</StyledTableCell>
                                         <StyledTableCell align="center">Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {istattdata ? <>
-                                        {target_att.map((row) => (
-                                            <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                                                <StyledTableCell component="th" scope="row" align="center">
-                                                    {row.AttachmentType}
+                                    {isscattdata ? <>
+                                        {source_codeatt.map((row) => (
+
+                                            <StyledTableRow container>
+                                                {/* <StyledTableCell item xl={5}>
+                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                                                </StyledTableCell> */}
+                                                <StyledTableCell item xl={10} >
+                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
                                                 </StyledTableCell>
-                                                <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
-                                                <StyledTableCell align="center">
+                                                <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
                                                         <IconButton onClick={() => {
                                                             alert('clicked')
@@ -1200,46 +1188,47 @@ export default function EditFeature(props) {
                                         ))}
                                     </>
                                         : <>
-                                            <StyledTableCell align="center"></StyledTableCell>
-                                            <StyledTableCell align="center">No Data</StyledTableCell>
-                                            <StyledTableCell align="center"></StyledTableCell>
+
+                                            {/* <StyledTableCell align="center"></StyledTableCell> */}
+                                            <StyledTableCell align="right">No Data</StyledTableCell>
+                                            <StyledTableCell align="right"></StyledTableCell>
                                         </>}
+
 
                                 </TableBody>
                             </Table>
-
                         </Grid>
-                    </Box>
-
-                    <Box>
-                        <Grid item xs={9}>
+                        <Grid item xl={4}>
                             <Typography
                                 gutterBottom
-                                variant="h5"
-                                component="h2"
+                                align='center'
+                                variant="h6"
+                                component="h5"
                                 className={classes.Object_Type}
                             >
-                                Conversion Attachments
+                                Expected Code
                             </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell align="center">Type</StyledTableCell>
+                                        {/* <StyledTableCell align="center">Type</StyledTableCell> */}
                                         <StyledTableCell align="center">File</StyledTableCell>
                                         <StyledTableCell align="center">Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {iscattdata ? <>
-                                        {conv_att.map((row) => (
+                                    {istettdata ? <>
+                                        {target_ecodeatt.map((row) => (
 
-                                            <StyledTableRow key={row.name} spacing={1} style={{ overflow: 'hidden' }}>
-                                                <StyledTableCell component="th" scope="row" align="center">
-                                                    {row.AttachmentType}
+                                            <StyledTableRow container>
+                                                {/* <StyledTableCell item xl={5}>
+                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                                                </StyledTableCell> */}
+                                                <StyledTableCell item xl={10} >
+                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
                                                 </StyledTableCell>
-                                                <StyledTableCell align="center">{row.Attachment?.split("/").pop()}</StyledTableCell>
-                                                <StyledTableCell align="center">
+                                                <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
                                                         <IconButton onClick={() => {
                                                             alert('clicked')
@@ -1254,88 +1243,76 @@ export default function EditFeature(props) {
 
                                             </StyledTableRow>
                                         ))}
-                                    </> : <>
-                                        <StyledTableCell align="center"></StyledTableCell>
-                                        <StyledTableCell align="center">No Data</StyledTableCell>
-                                        <StyledTableCell align="center"></StyledTableCell>
-                                    </>}
+                                    </>
+                                        : <>
+                                            {/* <StyledTableCell align="center"></StyledTableCell> */}
+                                            <StyledTableCell align="right">No Data</StyledTableCell>
+                                            <StyledTableCell align="right"></StyledTableCell>
+                                        </>}
 
 
                                 </TableBody>
                             </Table>
-
                         </Grid>
+                        <Grid item xl={4}>
+                            <Typography
+                                gutterBottom
+                                align='center'
+                                variant="h6"
+                                component="h2"
+                                className={classes.Object_Type}
+                            >
+                                Actual Code
+                            </Typography>
+                            <Table className={classestable.table} aria-label="customized table">
+                                <TableHead className={classes.primary}>
+                                    <TableRow>
+                                        {/* <StyledTableCell align="center">Type</StyledTableCell> */}
+                                        <StyledTableCell align="center">File</StyledTableCell>
+                                        <StyledTableCell align="center">Actions</StyledTableCell>
 
-                    </Box> */}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {istaattdata ? <>
+                                        {target_acodeatt.map((row) => (
 
-                    <Box>
-                        <Grid container xl={12} justifyContent="space-between">
-                            <Grid item xs={12}>
-                                <Typography
-                                    gutterBottom
-                                    align='left'
-                                    variant="h6"
-                                    component="h2"
-                                    className={classes.Object_Type}
-                                >
-                                    Code Attachments
-                                </Typography>
-                                <Table className={classestable.table} aria-label="customized table">
-                                    <TableHead className={classes.primary}>
-                                        <TableRow>
-                                            <StyledTableCell align="center">Source Code</StyledTableCell>
-                                            <StyledTableCell align="center">Expecetd Target Code</StyledTableCell>
-                                            <StyledTableCell align="center">Actual Target Code</StyledTableCell>
-                                            <StyledTableCell align="center">Actions</StyledTableCell>
+                                            <StyledTableRow container>
+                                                {/* <StyledTableCell item xl={5}>
+                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                                                </StyledTableCell> */}
+                                                <StyledTableCell item xl={10} >
+                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                                                </StyledTableCell>
+                                                <StyledTableCell item xl={2}>
+                                                    <Box flexDirection="row" >
+                                                        <IconButton onClick={() => {
+                                                            alert('clicked')
+                                                        }}>
+                                                            <DeleteIcon style={{ color: 'red' }} />
+                                                        </IconButton>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                            <GetAppIcon style={{ color: 'blue' }} />
+                                                        </IconButton>
+                                                    </Box>
+                                                </StyledTableCell>
 
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {issattdata ? <>
-                                            {source_att.map((row) => (
-
-                                                <StyledTableRow container>
-                                                    <StyledTableCell item xl={5}>
-                                                        <div className={classes.texttablecell}></div>
-                                                    </StyledTableCell>
-                                                    <StyledTableCell item xl={5}>
-                                                        <div className={classes.texttablecell}></div>
-                                                    </StyledTableCell>
-                                                    <StyledTableCell item xl={10} >
-                                                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
-                                                    </StyledTableCell>
-                                                    <StyledTableCell item xl={2}>
-                                                        <Box flexDirection="row" >
-                                                            <IconButton onClick={() => {
-                                                                alert('clicked')
-                                                            }}>
-                                                                <DeleteIcon style={{ color: 'red' }} />
-                                                            </IconButton>
-                                                            <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
-                                                                <GetAppIcon style={{ color: 'blue' }} />
-                                                            </IconButton>
-                                                        </Box>
-                                                    </StyledTableCell>
-
-                                                </StyledTableRow>
-                                            ))}
-                                        </>
-                                            : <>
-                                                <StyledTableCell align="right"></StyledTableCell>
-                                                <StyledTableCell align="right"></StyledTableCell>
-                                                <StyledTableCell align="right">No Data</StyledTableCell>
-                                                <StyledTableCell align="right"></StyledTableCell>
-
-                                            </>}
+                                            </StyledTableRow>
+                                        ))}
+                                    </>
+                                        : <>
+                                            {/* <StyledTableCell align="center"></StyledTableCell> */}
+                                            <StyledTableCell align="right">No Data</StyledTableCell>
+                                            <StyledTableCell align="right"></StyledTableCell>
+                                        </>}
 
 
-                                    </TableBody>
-                                </Table>
-                            </Grid>
-
-
+                                </TableBody>
+                            </Table>
                         </Grid>
-                    </Box>
+                    </Grid>
+
+
 
 
                     <Grid container xl={12} justifyContent="space-between" sp>

@@ -237,7 +237,7 @@ export default function CreateFeature(props) {
                     message: 'Feature Created Successfully',
                     type: 'success'
                 })
-                dispatach(Menuaction.EditPreviewFeature({data:res.data}))
+                dispatach(Menuaction.EditPreviewFeature({ data: res.data }))
             }, error => {
                 console.log(error);
                 setNotify({
@@ -280,11 +280,13 @@ export default function CreateFeature(props) {
                         setFeaturenamemsg("Feature Already Exist!");
                         break;
                     } else if (val_mod !== e.target.value) {
-                        setFeaturenamemsg("Feature Avaialable");
+                        setFeaturenamemsg("Feature Avaialable to Create");
 
                     }
                 }
 
+            } else {
+                setFeaturenamemsg("Feature Avaialable to Create");
             }
         }
     }
