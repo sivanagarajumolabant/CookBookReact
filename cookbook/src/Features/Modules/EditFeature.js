@@ -350,41 +350,7 @@ export default function EditFeature(props) {
     }
 
 
-    // const handlechangedropdownlevel = (v) => {
-    //     setformvalues({
-    //         ...formValues,
-    //         "Level": v.title
-    //     })
-
-
-    // }
-    // const handlechangedropdown = (v) => {
-    //     setformvalues({
-    //         ...formValues,
-    //         "Migration_TypeId": v.title
-    //     })
-
-
-    // }
-    // const handlechangedropdownobj = (v) => {
-    //     setformvalues({
-    //         ...formValues,
-    //         "Object_Type": v.code
-    //     })
-
-
-    // }
-
-    // const handledetale_source = (value) => {
-    //     const data = file.filter((item) => item.name != value.name)
-    //     setSourceatt(data)
-
-    // }
-    // const handledetale_target = (value) => {
-    //     const data = file.filter((item) => item.name != value.name)
-    //     setTargetatt(data)
-
-    // }
+   
     // const handledetale_conv = (value) => {
     //     const data = file.filter((item) => item.name != value.name)
     //     setConveratt(data)
@@ -392,12 +358,6 @@ export default function EditFeature(props) {
     // }
 
 
-    const handlechangedropdownlevel = (v) => {
-        setformvalues({
-            ...formValues,
-            "Level": v.title
-        })
-    }
 
     const handledes = (data) => {
         // setformvalues({
@@ -776,33 +736,7 @@ export default function EditFeature(props) {
                         </Grid>
 
                         <Grid item xs={4}>
-                            {/* <Autocomplete
-                        fullWidth
-                        id="outlined-multiline-static"
-                        // options={[
-                        //     { title: "Programlevel" },
-                        //     { title: "Statementlevel" },
-
-                        // ]}
-                        // groupBy={""}
-                        // defaultValue={{ title: 'Programlevel' }}
-                        // getOptionLabel={(option) => option.title}
-                        name="Level"
-                        value={level}
-                        // onChange={(e, v) => handlechangedropdownlevel(v)}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                fullWidth
-                                label="Level"
-                                variant="outlined"
-                            />
-                        )}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        disabled
-                    /> */}
+                           
                             <TextField
                                 id="outlined-multiline-static"
                                 label="Level"
@@ -846,25 +780,7 @@ export default function EditFeature(props) {
                         <Grid item xs={12}>
 
 
-                            {/* <TextField
-                            id="outlined-multiline-static"
-                            label="Source Description"
-                            multiline
-                            rows={15}
-                            // defaultValue="Default Value"
-                            name="Source_FeatureDescription"
-                            // value={editdata.detaildata[0].Source_FeatureDescription}
-                            value={Source_FeatureDescription}
-                            fullWidth
-                            // onChange={(e, v) => handleChange(v)}
-                            onChange={(e) => setSource_FeatureDescription(e.target.value)}
-                            variant="outlined"
-                            required
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        /> */}
-
+                           
                             <div className="App">
                                 <p>{'Source Description'}</p>
                                 <CKEditor
@@ -901,24 +817,6 @@ export default function EditFeature(props) {
 
                         <Grid item xs={12}>
 
-
-                            {/* <TextField
-                        id="outlined-multiline-static"
-                        label="Target Description"
-
-                        fullWidth
-                        name='Target_FeatureDescription'
-                        multiline
-                        rows={15}
-                        onChange={(e) => setTarget_FeatureDescription(e.target.value)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        value={Target_FeatureDescription}
-                        required
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    /> */}
 
                             <div className="App">
                                 <p>{'Target Description'}</p>
@@ -1061,26 +959,7 @@ export default function EditFeature(props) {
                             />
                         </Grid>
 
-                        {/* <Grid item xs={12}>
-
-                        <TextField
-                            fullWidth
-                            id="outlined-multiline-static"
-                            label="Conversion Code Description"
-                            multiline
-                            name='Conversion_Description'
-                            rows={15}
-                            onChange={(e) => handleChange(e)}
-                            // defaultValue="Default Value"
-                            variant="outlined"
-                            required
-                            value={editdata[0].Conversion_Description}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
- */}
+                       
 
                     </Grid>
                     <Box py={4}>

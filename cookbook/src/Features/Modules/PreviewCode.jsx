@@ -279,21 +279,6 @@ export default function PreviewCode(props) {
 
 
 
-  // console.log("data",detaildata)
-  // useEffect(() => {
-
-  //   axios.get(`http://127.0.0.1:8000/api/detail/${1}`).then(
-  //     (res) => {
-  //       console.log(res);
-  //       setDetaildata(res.data);
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-
-  // }, []);
-
 
   const handleDownload = (dfile) => {
 
@@ -339,13 +324,7 @@ export default function PreviewCode(props) {
       <>
         <Grid container >
           <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }}>
-            {/* <Grid item xs={6} sm={6} md={6} lg={6} >
-              <Typography
-               style={{paddingLeft:370}} variant="h4"
-               >
-                  <b>Detail View</b>
-              </Typography>
-            </Grid> */}
+           
             <Grid item >
 
               <Button

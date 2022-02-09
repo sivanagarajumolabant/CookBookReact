@@ -328,48 +328,6 @@ export default function CreateFeature(props) {
     }
 
 
-
-
-    // const handleConvert = (e) => {
-    //     e.preventDefault();
-
-    //     let body = {
-    //         "sourcecode": formValues.Source_Code,
-    //         "convcode": "r@rawstringstart'" + formValues.Conversion_Code + "'@rawstringend",
-    //         "featurename": formValues.Feature_Name,
-    //         "migration_typeid": formValues.Migration_TypeId,
-    //         "object_type": obj_type
-    //     }
-    //     let conf = {
-    //         headers: {
-    //             'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-    //         }
-    //     }
-    //     axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf)
-    //         .then(res => {
-    //             // console.log("res",res.data)
-    //             setformvalues({
-    //                 ...formValues,
-    //                 "Target_ActualCode": res.data
-    //             })
-    //             setNotify({
-    //                 isOpen: true,
-    //                 message: 'Conversion Completed Please Check The Output',
-    //                 type: 'success'
-    //             })
-    //         }, error => {
-    //             console.log(error);
-    //             setNotify({
-    //                 isOpen: true,
-    //                 message: 'Something Went Wrong! Please try Again',
-    //                 type: 'error'
-    //             })
-    //         })
-
-    // }
-
-
-    // console.log(prerunval,'pre')
     return (
 
         <>
@@ -388,29 +346,7 @@ export default function CreateFeature(props) {
             <Grid container direction='row' spacing={4}>
 
                 <Grid item xs={12} sm={6} md={6} xl={6}>
-                    {/* <Autocomplete
-                            fullWidth
-                            id="grouped-demo"
-                            options={[
-                                { title: "Oracle To Postgres" },
-                                { title: "Oracle TO SQLServer" },
-                                { title: "Oracle To MYSQL" },
-                            ]}
-                            groupBy={""}
-                            defaultValue={{ title:props.details?.data?.type }}
-                            getOptionLabel={(option) => option.title}
-                            name="Migration_TypeId"
-                            onChange={(e, v) => handlechangedropdown(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    fullWidth
-                                    label="Migration Type"
-                                    variant="outlined"
-                                />
-                            )}
-                        /> */}
-
+                    
 
                     <TextField
                         id="outlined-multiline-static"
@@ -432,29 +368,7 @@ export default function CreateFeature(props) {
 
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} xl={6}>
-                    {/* <Autocomplete
-                            fullWidth
-                            id="grouped-demo"
-                            options={[
-                                { title: "Procedure", code: 'Procedure' },
-                                { title: "Function", code: 'Function' },
-                                { title: "Package", code: 'Package' },
-                            ]}
-                            groupBy={""}
-                            getOptionLabel={(option) => option.title}
-                            defaultValue={{ title:props.details?.data?.Label }}
-                            name="Object_Type"
-                            onChange={(e, v) => handlechangedropdownobj(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    name="Object_Type"
-                                    fullWidth
-                                    label="Object Type"
-                                    variant="outlined"
-                                />
-                            )}
-                        /> */}
+                   
 
                     <TextField
                         id="outlined-multiline-static"
@@ -542,19 +456,6 @@ export default function CreateFeature(props) {
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} xl={4}>
 
-                    {/* <TextField
-                            id="outlined-multiline-static"
-                            label="Sequence No"
-                            multiline
-                            fullWidth
-                            onChange={(e) => handleChange(e)}
-                            rows={1}
-                            name='Sequence_Number'
-                            // defaultValue="Default Value"
-
-                            variant="outlined"
-                            required
-                        /> */}
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel >Predecessor</InputLabel>
                         <Select
@@ -584,192 +485,9 @@ export default function CreateFeature(props) {
 
 
 
-
-
-                {/* 
-                <Grid item xs={12} sm={12} md={12} xl={12}>
-
-
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Source Code"
-                        multiline
-                        rows={15}
-                        name='Source_Code'
-                        onChange={(e) => handleChange(e)}
-                        // defaultValue="Default Value"
-                        fullWidth
-                        variant="outlined"
-                        required
-
-                    />
-                </Grid> */}
-
-                {/* 
-                <Grid item xs={12} sm={12} md={12} xl={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Actual Target Code"
-                        multiline
-                        rows={15}
-                        name='Target_ActualCode'
-                        onChange={(e) => handleChange(e)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        // required
-                        value={formValues.Target_ActualCode}
-                        // disabled
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-
-
-                </Grid> */}
-
-
-
-
-
-                {/* <Grid item xs={12} sm={12} md={12} xl={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Expected Target Code"
-                        multiline
-                        rows={15}
-                        name='Target_Expected_Output'
-                        onChange={(e) => handleChange(e)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        required
-                    />
-                </Grid> */}
-
-                {/* <Grid item xs={12} sm={12} md={12} xl={12}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Conversion Module"
-                        multiline
-                        name='Conversion_Code'
-                        rows={15}
-                        onChange={(e) => handleChange(e)}
-                        // defaultValue="Default Value"
-                        variant="outlined"
-                        required
-                    />
-                </Grid> */}
-
-                {/* <Grid item xs={12} sm={12} md={12} xl={12}>
-
-                        <TextField
-                            fullWidth
-                            id="outlined-multiline-static"
-                            label="Conversion Code Description"
-                            multiline
-                            name='Conversion_Description'
-                            rows={15}
-                            onChange={(e) => handleChange(e)}
-                            // defaultValue="Default Value"
-                            variant="outlined"
-                            required
-                        />
-                    </Grid> */}
-
-                {/* <Grid item xs={12} sm={4} md={4} xl={4}>
-                    <Autocomplete
-                        fullWidth
-                        id="grouped-demo"
-                        options={[
-                            { title: "Source Attachment", code: 1 },
-                            { title: "Conversion Attachment", code: 2 },
-                            { title: "Target Attachment", code: 3 },
-                        ]}
-                        groupBy={""}
-                        defaultValue={{ title: "Source Attachment" }}
-                        getOptionLabel={(option) => option.title}
-                        name="Attachemnets"
-                        onChange={(e, v) => handleChangedrop(v)}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                fullWidth
-                                label="Level"
-                                variant="outlined"
-                            />
-                        )}
-                    />
-                   
-
-
-                </Grid>
-                <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        component="span"
-                        startIcon={<CloudUploadIcon />}
-                    >
-                        Upload
-                    </Button> */}
-
             </Grid>
 
-            {/* <Box py={4}>
-                <Grid container direction='row' justifyContent='center'>
-                    <Grid >
-                        <Autocomplete
-                            style={{ width: 300, maxHeight: 10, height: '1.5rem' }}
-                            fullWidth
-                            id="grouped-demo"
-                            options={[
-                                { title: "Source Attachments", code: 1 },
-                                { title: "Conversion Attachments", code: 2 },
-                                { title: "Target Attachments", code: 3 },
-                            ]}
-                            groupBy={""}
-                            // defaultValue={{ title: "Source Attachments" }}
-                            getOptionLabel={(option) => option.title}
-                            name="Attachemnets"
-                            onChange={(e, v) => handleChangedrop(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    fullWidth
-                                    label="Attachements"
-                                    variant="outlined"
-                                />
-                            )}
-                        />
-
-                    </Grid>
-
-                    <Grid item>
-                        <div className={classes.rootc}>
-                            <input
-                                accept="file"
-                                className={classes.input}
-                                id="contained-button-file3"
-                                multiple={true}
-                                onChange={(e) => handleSubmitdrpm(e)}
-                                type="file"
-                            />
-
-                            <label htmlFor="contained-button-file3">
-                                <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />} style={{ marginTop: 8 }}>
-                                    Upload
-                                </Button>
-                            </label>
-
-                        </div>
-                    </Grid>
-                </Grid>
-            </Box> */}
-            {/* {tabledata} */}
-
-
+            
 
 
 
@@ -782,19 +500,7 @@ export default function CreateFeature(props) {
 
                 <Grid container direction='row ' justifyContent='center' spacing={2}>
 
-                    {/* <Grid item >
-                        <Button
-                            // type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            // className={classes.submit}
-                            onClick={handleConvert}
-
-                        >
-                            Convert
-                        </Button>
-                    </Grid> */}
+                   
                     <Grid item>
                         <Button
                             type="submit"
@@ -810,22 +516,10 @@ export default function CreateFeature(props) {
                         </Button>
                     </Grid>
 
-                    {/* <Grid item>
-                        <Button
-                            // type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                        // className={classes.submit}
-                        // onClick={handleSubmit}
-
-                        >
-                            Deploy
-                        </Button>
-                    </Grid> */}
+                    
                 </Grid>
             </Box>
-            {/* </form> */}
+           
 
 
 
