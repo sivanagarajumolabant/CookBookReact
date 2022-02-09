@@ -1085,7 +1085,7 @@ export default function EditFeature(props) {
                     </Grid>
                     <Box py={4}>
                         <Grid container direction='row' justifyContent='center'>
-                            <Grid >
+                            <Grid item >
                                 <Autocomplete
                                     style={{ width: 300, maxHeight: 10, height: '1.5rem' }}
                                     fullWidth
@@ -1115,7 +1115,7 @@ export default function EditFeature(props) {
 
                             </Grid>
 
-                            <Grid item>
+                            <Grid item >
                                 <div className={classes.rootc}>
                                     <input
                                         accept="file"
@@ -1140,8 +1140,8 @@ export default function EditFeature(props) {
                     </Box>
 
 
-                    <Grid container xl={12} justifyContent="space-between" sp>
-                        <Grid item xl={4}>
+                    <Grid container xl={12} justifyContent="space-between" spacing={1}>
+                        <Grid item xl={4} xs={12} sm={12} md={4}>
                             <Typography
                                 gutterBottom
                                 align='center'
@@ -1198,7 +1198,7 @@ export default function EditFeature(props) {
                                 </TableBody>
                             </Table>
                         </Grid>
-                        <Grid item xl={4}>
+                        <Grid item xl={4} xs={12} sm={12} md={4}>
                             <Typography
                                 gutterBottom
                                 align='center'
@@ -1254,7 +1254,7 @@ export default function EditFeature(props) {
                                 </TableBody>
                             </Table>
                         </Grid>
-                        <Grid item xl={4}>
+                        <Grid item xl={4} xs={12} sm={12} md={4}>
                             <Typography
                                 gutterBottom
                                 align='center'
@@ -1315,8 +1315,8 @@ export default function EditFeature(props) {
 
 
 
-                    <Grid container xl={12} justifyContent="space-between" sp>
-                        <Grid item xl={4}>
+                    <Grid container xl={12} justifyContent="space-between" spacing={1}>
+                        <Grid item xl={4} xs={12} sm={12} md={4}>
                             <Typography
                                 gutterBottom
                                 align='center'
@@ -1373,7 +1373,7 @@ export default function EditFeature(props) {
                                 </TableBody>
                             </Table>
                         </Grid>
-                        <Grid item xl={4}>
+                        <Grid item xl={4} xs={12} sm={12} md={4}>
                             <Typography
                                 gutterBottom
                                 align='center'
@@ -1429,7 +1429,7 @@ export default function EditFeature(props) {
                                 </TableBody>
                             </Table>
                         </Grid>
-                        <Grid item xl={4}>
+                        <Grid item xl={4} xs={12} sm={12} md={4}>
                             <Typography
                                 gutterBottom
                                 align='center'

@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
   Object_Type: {
     margin: "16px 0",
-    fontSize: "20px",
+    fontSize: "24px",
     fontWeight: 400,
     lineHeight: 1,
     letterSpacing: "0em",
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 2,
     maxWidth: "calc(78vw - 32px)",
     borderRadius: " 5px",
-    backgroundColor: " #272c34",
+    backgroundColor: "#383f4a",
     webkitOverflowScrolling: "touch",
   },
 
@@ -436,7 +436,7 @@ export default function PreviewCode(props) {
             </div>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={4} lg={12}>
             <Typography
               gutterBottom
               variant="h5"
@@ -457,6 +457,7 @@ export default function PreviewCode(props) {
                 <CKEditor
                   editor={ClassicEditor}
                   data={detaildata.Source_FeatureDescription}
+                  
                   // value ={detaildata[0].Source_FeatureDescription}
                   onReady={editor => {
                     // You can store the "editor" and use when it is needed.
@@ -483,7 +484,7 @@ export default function PreviewCode(props) {
           </Grid>
 
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={4} lg={12}>
             <Typography
               gutterBottom
               variant="h5"
@@ -524,7 +525,7 @@ export default function PreviewCode(props) {
               {/* </Typography> */}
             </div>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={4} lg={12}>
             <Typography
               gutterBottom
               variant="h5"
@@ -546,7 +547,7 @@ export default function PreviewCode(props) {
           </Grid>
 
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={4} lg={12}>
             <Typography
               gutterBottom
               variant="h5"
@@ -568,7 +569,7 @@ export default function PreviewCode(props) {
             {/* </Typography> */}
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={4} lg={12}>
             <Typography
               gutterBottom
               variant="h5"
@@ -591,7 +592,7 @@ export default function PreviewCode(props) {
           </Grid>
 
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={4} lg={12}>
             <Typography
               gutterBottom
               variant="h5"
@@ -616,8 +617,8 @@ export default function PreviewCode(props) {
 
         </Grid>
 
-        <Grid container xl={12} justifyContent="space-between" sp>
-          <Grid item xl={4}>
+        <Grid container xl={12} spacing={1} justifyContent="space-between">
+          <Grid item xl={4} xs={12} sm={12} md={4}>
             <Typography
               gutterBottom
               align='center'
@@ -674,7 +675,7 @@ export default function PreviewCode(props) {
               </TableBody>
             </Table>
           </Grid>
-          <Grid item xl={4}>
+          <Grid item xl={4} xs={12} sm={12} md={4}>
             <Typography
               gutterBottom
               align='center'
@@ -730,7 +731,7 @@ export default function PreviewCode(props) {
               </TableBody>
             </Table>
           </Grid>
-          <Grid item xl={4}>
+          <Grid item xl={4} xs={12} sm={12} md={4}>
             <Typography
               gutterBottom
               align='center'
@@ -791,8 +792,8 @@ export default function PreviewCode(props) {
 
 
 
-        <Grid container xl={12} justifyContent="space-between" sp>
-          <Grid item xl={4}>
+        <Grid container xl={12} spacing={1} spacing={1} justifyContent="space-between">
+          <Grid item xs={12} sm={12} md={4} xl={4}>
             <Typography
               gutterBottom
               align='center'
@@ -849,7 +850,7 @@ export default function PreviewCode(props) {
               </TableBody>
             </Table>
           </Grid>
-          <Grid item xl={4}>
+          <Grid item xl={4} xs={12} sm={12} md={4}>
             <Typography
               gutterBottom
               align='center'
@@ -905,7 +906,7 @@ export default function PreviewCode(props) {
               </TableBody>
             </Table>
           </Grid>
-          <Grid item xl={4}>
+          <Grid item xl={4} xs={12} sm={12} md={4}>
             <Typography
               gutterBottom
               align='center'

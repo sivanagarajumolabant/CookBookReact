@@ -76,7 +76,13 @@ const useStyles = makeStyles((theme) => ({
     background: "#3f51b5",
   },
 
-
+              // style={{  }}
+  navbarcom:{
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: "200px"
+      // height:'100vh'
+    },
+  },
 
   drawerPaper: {
     [theme.breakpoints.down('xs')]: {
@@ -143,10 +149,27 @@ const useStyles = makeStyles((theme) => ({
 
   logoutbtn: {
     // marginLeft:"8px",
-    right: 0,
-    position: 'fixed'
+    
     // marginRight: "-1px",
+    [theme.breakpoints.down('xs')]: {
+      right: 100,
+      position: 'fixed',
+     
+      // padding: theme.spacing(1),
 
+    },
+    [theme.breakpoints.down('sm')]: {
+      
+      padding: theme.spacing(1),
+
+    },
+    [theme.breakpoints.up('md')]: {
+
+    },
+    [theme.breakpoints.up('lg')]: {
+      right: 0,
+      position: 'fixed',
+    },
 
   },
 
@@ -349,7 +372,7 @@ export default function ClippedDrawer({ children }) {
 
             <Grid item
               xm={12} sm={6} md={5} lg={5}
-              style={{ marginLeft: "200px" }}
+              className={classes.navbarcom}
             >
               <StyledAutocomplete
                 size="small"
