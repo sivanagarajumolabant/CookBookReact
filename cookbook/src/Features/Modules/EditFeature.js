@@ -115,6 +115,7 @@ export default function EditFeature(props) {
     const [droptitle, setDroptitle] = useState("Source Description");
     // const [sourectabledata, setSourectabledata] = useState([])
     const [level, setLevel] = useState("")
+    const [filedata, setFiledata] = useState()
     // const [targettabledata, setTargettabledata] = useState([])
     // const [contabledata, setContabledata] = useState([])
     const [source_att, setSource_att] = useState([])
@@ -166,6 +167,7 @@ export default function EditFeature(props) {
         axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${editdata.detaildata.Feature_Id}`, conf).then(
             (res) => {
                 setSource_att(res.data)
+                // console.log("source desc ",res.data)
                 if (res.data.length > 0) {
                     setIssattdata(true)
                 }
@@ -214,61 +216,61 @@ export default function EditFeature(props) {
 
     }, [fupdate])
 
-    useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.get(`${config.API_BASE_URL()}/api/sourcecode/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setSource_codeatt(res.data)
-                if (res.data.length > 0) {
-                    setIsscattdata(true)
-                }
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-    }, [fupdate])
+    // useEffect(() => {
+    //     let conf = {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+    //         }
+    //     }
+    //     axios.get(`${config.API_BASE_URL()}/api/sourcecode/${editdata.detaildata.Feature_Id}`, conf).then(
+    //         (res) => {
+    //             setSource_codeatt(res.data)
+    //             if (res.data.length > 0) {
+    //                 setIsscattdata(true)
+    //             }
+    //         },
+    //         (error) => {
+    //             console.log(error);
+    //         }
+    //     );
+    // }, [fupdate])
 
-    useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.get(`${config.API_BASE_URL()}/api/atargetcode/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setTarget_acodeatt(res.data)
-                if (res.data.length > 0) {
-                    setIstaattdata(true)
-                }
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-    }, [fupdate])
-    useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.get(`${config.API_BASE_URL()}/api/etargetcode/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setTarget_ecodeatt(res.data)
-                if (res.data.length > 0) {
-                    setIstettdata(true)
-                }
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-    }, [fupdate])
+    // useEffect(() => {
+    //     let conf = {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+    //         }
+    //     }
+    //     axios.get(`${config.API_BASE_URL()}/api/atargetcode/${editdata.detaildata.Feature_Id}`, conf).then(
+    //         (res) => {
+    //             setTarget_acodeatt(res.data)
+    //             if (res.data.length > 0) {
+    //                 setIstaattdata(true)
+    //             }
+    //         },
+    //         (error) => {
+    //             console.log(error);
+    //         }
+    //     );
+    // }, [fupdate])
+    // useEffect(() => {
+    //     let conf = {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+    //         }
+    //     }
+    //     axios.get(`${config.API_BASE_URL()}/api/etargetcode/${editdata.detaildata.Feature_Id}`, conf).then(
+    //         (res) => {
+    //             setTarget_ecodeatt(res.data)
+    //             if (res.data.length > 0) {
+    //                 setIstettdata(true)
+    //             }
+    //         },
+    //         (error) => {
+    //             console.log(error);
+    //         }
+    //     );
+    // }, [fupdate])
 
 
 
@@ -350,7 +352,7 @@ export default function EditFeature(props) {
     }
 
 
-   
+
     // const handledetale_conv = (value) => {
     //     const data = file.filter((item) => item.name != value.name)
     //     setConveratt(data)
@@ -394,11 +396,9 @@ export default function EditFeature(props) {
     }
 
 
-    const handleDownload = (att_Type, migtypeid, obj_type, att_name) => {
+    const handleDownload = (att_Type, file_name) => {
         let body = {
-            "file_name": att_name,
-            "migration_typeid": migtypeid,
-            "object_type": obj_type,
+            "file_name": file_name,
             "AttachmentType": att_Type,
             responseType: 'blob',
         }
@@ -407,9 +407,9 @@ export default function EditFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        console.log(conf.headers)
-        axios.post(`${config.API_BASE_URL()}/api/download_att`, body, conf).then(res => {
-            fileDownload(res.data, att_name);
+        axios.post(`${config.API_BASE_URL()}/api/attdownload/${editdata.detaildata.Feature_Id}`, body, conf).then(res => {
+
+            fileDownload(res.data, file_name);
         }).catch(err => {
 
         })
@@ -538,33 +538,65 @@ export default function EditFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        let formData = {
-            "AttachmentType": drop,
-            "Attachment": filesub[0]
+        // function onChangefile() {
+        //     var file = filesub[0];
+        //     return new Promise((resolve, reject) => {
+        //         const fr = new FileReader();
+        //         fr.onerror = reject;
+        //         fr.onload = () => {
+        //             resolve(fr.result);
+        //             setFiledata(fr.result)
+        //         }
+        //         fr.readAsDataURL(file);
+        //     });
+        // }
+        function readFile() {
+            return new Promise((resolve, reject) => {
+                var fr = new FileReader();
+                fr.onload = () => {
+                    resolve(fr.result)
+                };
+                fr.readAsText(filesub[0]);
+            })
         }
-        const form = new FormData();
-        Object.keys(formData).forEach((key) => {
-            form.append(key, formData[key]);
+        readFile().then((res) => {
+            console.log(res)
+            let formData = {
+                "AttachmentType": drop,
+                "Attachment": res,
+                "Filename": filesub[0].name
+            }
+
+            console.log(formData)
+
+            const form = new FormData();
+            Object.keys(formData).forEach((key) => {
+                form.append(key, formData[key]);
+
+            });
+            axios.post(`${config.API_BASE_URL()}/api/attupload/${editdata.detaildata.Feature_Id}`, form, conf)
+                .then(res => {
+                    console.log(res.data)
+                    setNotify({
+                        isOpen: true,
+                        message: droptitle + ' Attachment Upload Successfully',
+                        type: 'success'
+                    })
+                    setFupdate(false)
+                }, error => {
+                    console.log(error);
+                    setNotify({
+                        isOpen: true,
+                        message: 'Something Went Wrong! Please try Again for ' + droptitle,
+                        type: 'error'
+                    })
+                    setFupdate(false)
+                })
 
         });
-        axios.post(`${config.API_BASE_URL()}/api/attachmentsupdate/${editdata.detaildata.Feature_Id}`, form, conf)
-            .then(res => {
-                console.log(res.data)
-                setNotify({
-                    isOpen: true,
-                    message: droptitle + ' Attachment Upload Successfully',
-                    type: 'success'
-                })
-                setFupdate(false)
-            }, error => {
-                console.log(error);
-                setNotify({
-                    isOpen: true,
-                    message: 'Something Went Wrong! Please try Again for ' + droptitle,
-                    type: 'error'
-                })
-                setFupdate(false)
-            })
+        // console.log(data)
+
+
     };
 
     const deleteitem = async (data) => {
@@ -736,7 +768,7 @@ export default function EditFeature(props) {
                         </Grid>
 
                         <Grid item xs={4}>
-                           
+
                             <TextField
                                 id="outlined-multiline-static"
                                 label="Level"
@@ -780,7 +812,7 @@ export default function EditFeature(props) {
                         <Grid item xs={12}>
 
 
-                           
+
                             <div className="App">
                                 <p>{'Source Description'}</p>
                                 <CKEditor
@@ -959,7 +991,7 @@ export default function EditFeature(props) {
                             />
                         </Grid>
 
-                       
+
 
                     </Grid>
                     <Box py={4}>
@@ -1048,7 +1080,7 @@ export default function EditFeature(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                                                 <StyledTableCell item xl={10} >
-                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                                                    <div className={classes.texttablecell}></div>
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
@@ -1223,7 +1255,7 @@ export default function EditFeature(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                                                 <StyledTableCell item xl={10} >
-                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                                                    <div className={classes.texttablecell}>{row.File_name + '.' + row.File_extension}</div>
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
@@ -1232,7 +1264,7 @@ export default function EditFeature(props) {
                                                         }}>
                                                             <DeleteIcon style={{ color: 'red' }} />
                                                         </IconButton>
-                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, row.File_name + '.' + row.File_extension)}>
                                                             <GetAppIcon style={{ color: 'blue' }} />
                                                         </IconButton>
                                                     </Box>
@@ -1280,7 +1312,7 @@ export default function EditFeature(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                                                 <StyledTableCell item xl={10} >
-                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                                                    <div className={classes.texttablecell}>{row.File_name + '.' + row.File_extension}</div>
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
@@ -1336,7 +1368,7 @@ export default function EditFeature(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                                                 <StyledTableCell item xl={10} >
-                                                    <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                                                    <div className={classes.texttablecell}>{row.File_name + '.' + row.File_extension}</div>
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
