@@ -360,12 +360,13 @@ export default function EditFeature(props) {
     }
 
 
-    const handleDownload = (att_Type, migtypeid, obj_type, att_name) => {
+    const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
         let body = {
             "file_name": att_name,
             "migration_typeid": migtypeid,
             "object_type": obj_type,
             "AttachmentType": att_Type,
+            "id": id,
             responseType: 'blob',
         }
         let conf = {
@@ -428,14 +429,14 @@ export default function EditFeature(props) {
             })
 
     }
-    
-    const handleAttachment_delete = (AttachmentType, Migration_TypeId,id,Object_Type, fname) => {
+
+    const handleAttachment_delete = (AttachmentType, Migration_TypeId, id, Object_Type, fname) => {
         let formData = {
             "migration_typeid": Migration_TypeId,
             "object_type": Object_Type,
-            "file_name":fname ,
-            "AttachmentType":AttachmentType,
-            "id":id
+            "file_name": fname,
+            "AttachmentType": AttachmentType,
+            "id": id
         }
         let conf = {
             headers: {
@@ -463,10 +464,10 @@ export default function EditFeature(props) {
                     message: 'Something Went Wrong! Please try Again',
                     type: 'error'
                 })
-               
+
             })
-            setFupdate(false)
-    }   
+        setFupdate(false)
+    }
 
     var seq = null;
     if (Sequence !== 'No Predecessor') {
@@ -1068,12 +1069,10 @@ export default function EditFeature(props) {
                                                         <Box flexDirection="row" >
                                                             {row.Sourcecode}
                                                             {row.Sourcecode == 'Y' ? <>
-                                                                <IconButton onClick={() => {
-                                                                    alert('clicked')
-                                                                }}>
+                                                                <IconButton onClick={() => handleAttachment_delete("Sourcecode", editdata.detaildata.Migration_TypeId, row.sid, editdata.detaildata.Object_Type, row.filename)}>
                                                                     <DeleteIcon style={{ color: 'red' }} />
                                                                 </IconButton>
-                                                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                                <IconButton onClick={(e) => handleDownload('Sourcecode', editdata.detaildata.Migration_TypeId, row.sid, editdata.detaildata.Object_Type, row.filename)}>
                                                                     <GetAppIcon style={{ color: 'blue' }} />
                                                                 </IconButton> </> : null
                                                             }
@@ -1088,11 +1087,11 @@ export default function EditFeature(props) {
                                                             {row.Expectedconversion}
                                                             {row.Expectedconversion == 'Y' ? <>
                                                                 <IconButton onClick={() => {
-                                                                    alert('clicked')
+                                                                    handleAttachment_delete('Expectedconversion', editdata.detaildata.Migration_TypeId, row.etid, editdata.detaildata.Object_Type, row.filename)
                                                                 }}>
                                                                     <DeleteIcon style={{ color: 'red' }} />
                                                                 </IconButton>
-                                                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                                <IconButton onClick={(e) => handleDownload('Expectedconversion', editdata.detaildata.Migration_TypeId, row.etid, editdata.detaildata.Object_Type, row.filename)}>
                                                                     <GetAppIcon style={{ color: 'blue' }} />
                                                                 </IconButton> </> : null
                                                             }
@@ -1109,11 +1108,11 @@ export default function EditFeature(props) {
                                                             {row.Actualtargetcode}
                                                             {row.Actualtargetcode == 'Y' ? <>
                                                                 <IconButton onClick={() => {
-                                                                    alert('clicked')
+                                                                    handleAttachment_delete('Actualtargetcode', editdata.detaildata.Migration_TypeId, row.atid, editdata.detaildata.Object_Type, row.filename)
                                                                 }}>
                                                                     <DeleteIcon style={{ color: 'red' }} />
                                                                 </IconButton>
-                                                                <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                                <IconButton onClick={(e) => handleDownload('Actualtargetcode', editdata.detaildata.Migration_TypeId, row.atid, editdata.detaildata.Object_Type, row.filename)}>
                                                                     <GetAppIcon style={{ color: 'blue' }} />
                                                                 </IconButton> </> : null
                                                             }
@@ -1122,27 +1121,17 @@ export default function EditFeature(props) {
 
                                                     </div>
                                                 </StyledTableCell>
-                                                {/* <StyledTableCell item xl={2}>
-                                                    <Box flexDirection="row" >
-                                                        <IconButton onClick={() => {
-                                                            alert('clicked')
-                                                        }}>
-                                                            <DeleteIcon style={{ color: 'red' }} />
-                                                        </IconButton>
-                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
-                                                            <GetAppIcon style={{ color: 'blue' }} />
-                                                        </IconButton>
-                                                    </Box>
-                                                </StyledTableCell> */}
+
 
                                             </StyledTableRow>
                                         ))}
                                     </>
                                         : <>
 
-                                            {/* <StyledTableCell align="center"></StyledTableCell> */}
-                                            <StyledTableCell align="right">No Data</StyledTableCell>
-                                            <StyledTableCell align="right"></StyledTableCell>
+                                            <StyledTableCell align="center"></StyledTableCell>
+                                            <StyledTableCell align="center"></StyledTableCell>
+                                            <StyledTableCell align="left">No Data</StyledTableCell>
+                                            <StyledTableCell align="center"></StyledTableCell>
                                         </>}
 
 
@@ -1188,10 +1177,10 @@ export default function EditFeature(props) {
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
-                                                        <IconButton onClick={() => handleAttachment_delete(row.AttachmentType, editdata.detaildata.Migration_TypeId,row.id,editdata.detaildata.Object_Type, row.filename) }>
+                                                        <IconButton onClick={() => handleAttachment_delete(row.AttachmentType, editdata.detaildata.Migration_TypeId, row.id, editdata.detaildata.Object_Type, row.filename)}>
                                                             <DeleteIcon style={{ color: 'red' }} />
                                                         </IconButton>
-                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, row.id, editdata.detaildata.Object_Type, row.filename)}>
                                                             <GetAppIcon style={{ color: 'blue' }} />
                                                         </IconButton>
                                                     </Box>
@@ -1243,10 +1232,10 @@ export default function EditFeature(props) {
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
-                                                        <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, editdata.detaildata.Migration_TypeId,row.id,editdata.detaildata.Object_Type, row.filename)}>
+                                                        <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, editdata.detaildata.Migration_TypeId, row.id, editdata.detaildata.Object_Type, row.filename)}>
                                                             <DeleteIcon style={{ color: 'red' }} />
                                                         </IconButton>
-                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, row.id, editdata.detaildata.Object_Type, row.filename)}>
                                                             <GetAppIcon style={{ color: 'blue' }} />
                                                         </IconButton>
                                                     </Box>
@@ -1297,10 +1286,10 @@ export default function EditFeature(props) {
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={2}>
                                                     <Box flexDirection="row" >
-                                                        <IconButton onClick={(e) =>handleAttachment_delete(row.AttachmentType, editdata.detaildata.Migration_TypeId,row.id,editdata.detaildata.Object_Type, row.filename)}>
+                                                        <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, editdata.detaildata.Migration_TypeId, row.id, editdata.detaildata.Object_Type, row.filename)}>
                                                             <DeleteIcon style={{ color: 'red' }} />
                                                         </IconButton>
-                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, editdata.detaildata.Object_Type, row.Attachment)}>
+                                                        <IconButton onClick={(e) => handleDownload(row.AttachmentType, editdata.detaildata.Migration_TypeId, row.id, editdata.detaildata.Object_Type, row.filename)}>
                                                             <GetAppIcon style={{ color: 'blue' }} />
                                                         </IconButton>
                                                     </Box>
@@ -1384,118 +1373,3 @@ export default function EditFeature(props) {
         </>
     );
 }
-
-
-
-
-
-
-// <Grid container xs={3} lg={4}>
-//     <Grid item xs>
-//         <Grid container direction='column'>
-//             {/* {conver_att.map(item => {
-//                                     return (
-//                                         <>
-
-//                                             <Grid item>
-
-//                                                 <Grid container direction='row' justifyContent='space-around'>
-
-//                                                     <Grid item>
-//                                                         <Typography variant='caption'>
-//                                                             {item.name}
-//                                                         </Typography>
-//                                                     </Grid>
-
-
-
-//                                                     <Grid item>
-//                                                         <CloseIcon onClick={() => handledetale_conv(item)} />
-//                                                     </Grid>
-//                                                 </Grid>
-
-
-
-//                                             </Grid>
-
-//                                         </>
-//                                     )
-//                                 })} */}
-//             {conver_att.name}
-
-//         </Grid>
-//     </Grid>
-
-
-
-// </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const onchangefile_source = (e) => {
-
-//     const { files } = e.target;
-//     if (files.length > 0) {
-//         const filesystem = [...file];
-//         for (let i = 0; i < files.length; i++) {
-
-//             const file = files[i];
-
-//             filesystem.push(file);
-//             setSourceatt(filesystem[0])
-
-
-//         }
-//         // console.log(filesystem)
-//     } else {
-//         setSourceatt(null);
-//     }
-// }
-
-
-// const onchangefile_target = (e) => {
-
-//     const { files } = e.target;
-//     if (files.length > 0) {
-//         const filesystem = [...file];
-//         for (let i = 0; i < files.length; i++) {
-
-//             const file = files[i];
-
-//             filesystem.push(file);
-//             setTargetatt(filesystem[0])
-
-//         }
-//         // console.log(filesystem)
-//     } else {
-//         setTargetatt(null);
-//     }
-// }
-// const onchangefile_conver = (e) => {
-
-//     const { files } = e.target;
-//     if (files.length > 0) {
-//         const filesystem = [...file];
-//         for (let i = 0; i < files.length; i++) {
-
-//             const file = files[i];
-
-//             filesystem.push(file);
-//             setConveratt(filesystem[0])
-//         }
-//         // console.log(filesystem)
-//     } else {
-//         setConveratt(null);
-//     }
-// }
