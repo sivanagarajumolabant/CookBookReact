@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     // '&:hover': {
     //     overflow: 'visible'
     // }
-},
+  },
   root: {
     // display: "flex",
   },
@@ -138,6 +138,7 @@ export default function PreviewCode(props) {
   const [isscattdata, setIsscattdata] = useState(false)
   const [istaattdata, setIstaattdata] = useState(false)
   const [istettdata, setIstettdata] = useState(false)
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
 
   // console.log(menuitem);
 
@@ -170,7 +171,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${menuitem}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${detaildata.Feature_Id}`, conf).then(
       (res) => {
         setSource_att(res.data)
         if (res.data.length > 0) {
@@ -188,7 +189,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/targetdesc/${menuitem}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/targetdesc/${detaildata.Feature_Id}`, conf).then(
       (res) => {
         setTarget_att(res.data)
         if (res.data.length > 0) {
@@ -207,7 +208,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/convatt/${menuitem}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/convatt/${detaildata.Feature_Id}`, conf).then(
       (res) => {
         setConv_att(res.data)
         if (res.data.length > 0) {
@@ -227,9 +228,10 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/sourcecode/${menuitem}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/codefiles/${detaildata.Feature_Id}`, conf).then(
       (res) => {
         setSource_codeatt(res.data)
+        console.log(res.data)
         if (res.data.length > 0) {
           setIsscattdata(true)
         }
@@ -240,49 +242,72 @@ export default function PreviewCode(props) {
     );
   }, [])
 
-  useEffect(() => {
-    let conf = {
-      headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-      }
-    }
-    axios.get(`${config.API_BASE_URL()}/api/atargetcode/${menuitem}`, conf).then(
-      (res) => {
-        setTarget_acodeatt(res.data)
-        if (res.data.length > 0) {
-          setIstaattdata(true)
+
+
+const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
+        let body = {
+            "file_name": att_name,
+            "migration_typeid": migtypeid,
+            "object_type": obj_type,
+            "AttachmentType": att_Type,
+            "id": id,
+            responseType: 'blob',
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [])
-  useEffect(() => {
-    let conf = {
-      headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-      }
-    }
-    axios.get(`${config.API_BASE_URL()}/api/etargetcode/${menuitem}`, conf).then(
-      (res) => {
-        setTarget_ecodeatt(res.data)
-        if (res.data.length > 0) {
-          setIstettdata(true)
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [])
+        console.log(conf.headers)
+        axios.post(`${config.API_BASE_URL()}/api/download_att`, body, conf).then(res => {
+            fileDownload(res.data, att_name);
+        }).catch(err => {
+
+        })
+    }
 
 
 
+  const handleAttachment_delete = (AttachmentType, Migration_TypeId, id, Object_Type, fname) => {
+    let formData = {
+        "migration_typeid": Migration_TypeId,
+        "object_type": Object_Type,
+        "file_name": fname,
+        "AttachmentType": AttachmentType,
+        "id": id
+    }
+    let conf = {
+        headers: {
+            'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+        }
+    }
+    const form = new FormData();
+    Object.keys(formData).forEach((key) => {
 
-  const handleDownload = (dfile) => {
+        form.append(key, formData[key]);
 
-  }
+    });
+    axios.post(`${config.API_BASE_URL()}/api/attdelete`, form, conf)
+        .then(res => {
+            setNotify({
+                isOpen: true,
+                message: 'File Deleted',
+                type: 'success'
+            })
+            
+        }, error => {
+            console.log(error);
+            setNotify({
+                isOpen: true,
+                message: 'Something Went Wrong! Please try Again',
+                type: 'error'
+            })
+
+        })
+    
+}
+
+
 
   const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -324,7 +349,7 @@ export default function PreviewCode(props) {
       <>
         <Grid container >
           <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }}>
-           
+
             <Grid item >
 
               <Button
@@ -436,7 +461,7 @@ export default function PreviewCode(props) {
                 <CKEditor
                   editor={ClassicEditor}
                   data={detaildata.Source_FeatureDescription}
-                  
+
                   // value ={detaildata[0].Source_FeatureDescription}
                   onReady={editor => {
                     // You can store the "editor" and use when it is needed.
@@ -596,8 +621,8 @@ export default function PreviewCode(props) {
 
         </Grid>
 
-        <Grid container xl={12} spacing={1} justifyContent="space-between">
-          <Grid item xl={4} xs={12} sm={12} md={4}>
+        <Grid container xl={12} justifyContent="space-between" spacing={1}>
+          <Grid item xs={12}>
             <Typography
               gutterBottom
               align='center'
@@ -605,14 +630,17 @@ export default function PreviewCode(props) {
               component="h2"
               className={classes.Object_Type}
             >
-              Source Code
+              Code Attachemnets
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
                   {/* <StyledTableCell align="center">Type</StyledTableCell> */}
-                  <StyledTableCell align="center">File</StyledTableCell>
-                  <StyledTableCell align="center">Actions</StyledTableCell>
+                  <StyledTableCell align="left">File Name</StyledTableCell>
+                  <StyledTableCell align="left">Source Code</StyledTableCell>
+                  <StyledTableCell align="left">Expected Target Code</StyledTableCell>
+                  <StyledTableCell align="left">Actual Target Code</StyledTableCell>
+                  {/* <StyledTableCell align="center">Actions</StyledTableCell> */}
 
                 </TableRow>
               </TableHead>
@@ -625,154 +653,93 @@ export default function PreviewCode(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                       <StyledTableCell item xl={10} >
-                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                        <div className={classes.texttablecell}>
+                          {row.filename}
+
+                        </div>
                       </StyledTableCell>
-                      <StyledTableCell item xl={2}>
-                        <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
-                            <DeleteIcon style={{ color: 'red' }} />
-                          </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
-                            <GetAppIcon style={{ color: 'blue' }} />
-                          </IconButton>
-                        </Box>
-                      </StyledTableCell>
-
-                    </StyledTableRow>
-                  ))}
-                </>
-                  : <>
-
-                    {/* <StyledTableCell align="center"></StyledTableCell> */}
-                    <StyledTableCell align="right">No Data</StyledTableCell>
-                    <StyledTableCell align="right"></StyledTableCell>
-                  </>}
-
-
-              </TableBody>
-            </Table>
-          </Grid>
-          <Grid item xl={4} xs={12} sm={12} md={4}>
-            <Typography
-              gutterBottom
-              align='center'
-              variant="h6"
-              component="h5"
-              className={classes.Object_Type}
-            >
-              Expected Code
-            </Typography>
-            <Table className={classestable.table} aria-label="customized table">
-              <TableHead className={classes.primary}>
-                <TableRow>
-                  {/* <StyledTableCell align="center">Type</StyledTableCell> */}
-                  <StyledTableCell align="center">File</StyledTableCell>
-                  <StyledTableCell align="center">Actions</StyledTableCell>
-
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {istettdata ? <>
-                  {target_ecodeatt.map((row) => (
-
-                    <StyledTableRow container>
-                      {/* <StyledTableCell item xl={5}>
-                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
-                                                </StyledTableCell> */}
                       <StyledTableCell item xl={10} >
-                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                        <div className={classes.texttablecell}>
+                          <Box flexDirection="row" >
+                            {row.Sourcecode}
+                            {row.Sourcecode == 'Y' ? <>
+                              <IconButton onClick={() => handleAttachment_delete("Sourcecode", detaildata.Migration_TypeId, row.sid, detaildata.Object_Type, row.filename)}>
+                                <DeleteIcon style={{ color: 'red' }} />
+                              </IconButton>
+                              <IconButton onClick={(e) => handleDownload('Sourcecode', detaildata.Migration_TypeId, row.sid, detaildata.Object_Type, row.filename)}>
+                                <GetAppIcon style={{ color: 'blue' }} />
+                              </IconButton> </> : null
+                            }
+
+                          </Box>
+                        </div>
                       </StyledTableCell>
-                      <StyledTableCell item xl={2}>
-                        <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
-                            <DeleteIcon style={{ color: 'red' }} />
-                          </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
-                            <GetAppIcon style={{ color: 'blue' }} />
-                          </IconButton>
-                        </Box>
-                      </StyledTableCell>
-
-                    </StyledTableRow>
-                  ))}
-                </>
-                  : <>
-                    {/* <StyledTableCell align="center"></StyledTableCell> */}
-                    <StyledTableCell align="right">No Data</StyledTableCell>
-                    <StyledTableCell align="right"></StyledTableCell>
-                  </>}
-
-
-              </TableBody>
-            </Table>
-          </Grid>
-          <Grid item xl={4} xs={12} sm={12} md={4}>
-            <Typography
-              gutterBottom
-              align='center'
-              variant="h6"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Actual Code
-            </Typography>
-            <Table className={classestable.table} aria-label="customized table">
-              <TableHead className={classes.primary}>
-                <TableRow>
-                  {/* <StyledTableCell align="center">Type</StyledTableCell> */}
-                  <StyledTableCell align="center">File</StyledTableCell>
-                  <StyledTableCell align="center">Actions</StyledTableCell>
-
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {istaattdata ? <>
-                  {target_acodeatt.map((row) => (
-
-                    <StyledTableRow container>
-                      {/* <StyledTableCell item xl={5}>
-                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
-                                                </StyledTableCell> */}
                       <StyledTableCell item xl={10} >
-                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                        <div className={classes.texttablecell}>
+
+                          <Box flexDirection="row" >
+                            {row.Expectedconversion}
+                            {row.Expectedconversion == 'Y' ? <>
+                              <IconButton onClick={() => {
+                                handleAttachment_delete('Expectedconversion', detaildata.Migration_TypeId, row.etid, detaildata.Object_Type, row.filename)
+                              }}>
+                                <DeleteIcon style={{ color: 'red' }} />
+                              </IconButton>
+                              <IconButton onClick={(e) => handleDownload('Expectedconversion', detaildata.Migration_TypeId, row.etid, detaildata.Object_Type, row.filename)}>
+                                <GetAppIcon style={{ color: 'blue' }} />
+                              </IconButton> </> : null
+                            }
+
+                          </Box>
+
+
+                        </div>
                       </StyledTableCell>
-                      <StyledTableCell item xl={2}>
-                        <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
-                            <DeleteIcon style={{ color: 'red' }} />
-                          </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
-                            <GetAppIcon style={{ color: 'blue' }} />
-                          </IconButton>
-                        </Box>
+                      <StyledTableCell item xl={10} >
+                        <div className={classes.texttablecell}>
+
+                          <Box flexDirection="row" >
+                            {row.Actualtargetcode}
+                            {row.Actualtargetcode == 'Y' ? <>
+                              <IconButton onClick={() => {
+                                handleAttachment_delete('Actualtargetcode', detaildata.Migration_TypeId, row.atid, detaildata.Object_Type, row.filename)
+                              }}>
+                                <DeleteIcon style={{ color: 'red' }} />
+                              </IconButton>
+                              <IconButton onClick={(e) => handleDownload('Actualtargetcode', detaildata.Migration_TypeId, row.atid, detaildata.Object_Type, row.filename)}>
+                                <GetAppIcon style={{ color: 'blue' }} />
+                              </IconButton> </> : null
+                            }
+
+                          </Box>
+
+                        </div>
                       </StyledTableCell>
+
 
                     </StyledTableRow>
                   ))}
                 </>
                   : <>
-                    {/* <StyledTableCell align="center"></StyledTableCell> */}
-                    <StyledTableCell align="right">No Data</StyledTableCell>
-                    <StyledTableCell align="right"></StyledTableCell>
+
+                    <StyledTableCell align="center"></StyledTableCell>
+                    <StyledTableCell align="center"></StyledTableCell>
+                    <StyledTableCell align="left">No Data</StyledTableCell>
+                    <StyledTableCell align="center"></StyledTableCell>
                   </>}
 
 
               </TableBody>
             </Table>
           </Grid>
+
         </Grid>
 
 
 
 
-        <Grid container xl={12} spacing={1} spacing={1} justifyContent="space-between">
-          <Grid item xs={12} sm={12} md={4} xl={4}>
+        <Grid container xl={12} justifyContent="space-between" spacing={1}>
+          <Grid item xl={4} xs={12} sm={12} md={4}>
             <Typography
               gutterBottom
               align='center'
@@ -804,12 +771,10 @@ export default function PreviewCode(props) {
                       </StyledTableCell>
                       <StyledTableCell item xl={2}>
                         <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
+                          <IconButton onClick={() => handleAttachment_delete(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <DeleteIcon style={{ color: 'red' }} />
                           </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <GetAppIcon style={{ color: 'blue' }} />
                           </IconButton>
                         </Box>
@@ -861,12 +826,10 @@ export default function PreviewCode(props) {
                       </StyledTableCell>
                       <StyledTableCell item xl={2}>
                         <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
+                          <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <DeleteIcon style={{ color: 'red' }} />
                           </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <GetAppIcon style={{ color: 'blue' }} />
                           </IconButton>
                         </Box>
@@ -917,12 +880,10 @@ export default function PreviewCode(props) {
                       </StyledTableCell>
                       <StyledTableCell item xl={2}>
                         <Box flexDirection="row" >
-                          <IconButton onClick={() => {
-                            alert('clicked')
-                          }}>
+                          <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <DeleteIcon style={{ color: 'red' }} />
                           </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, detaildata.Object_Type, row.Attachment)}>
+                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <GetAppIcon style={{ color: 'blue' }} />
                           </IconButton>
                         </Box>

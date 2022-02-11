@@ -220,6 +220,7 @@ export default function EditFeature(props) {
             headers: {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
+
         }
         axios.get(`${config.API_BASE_URL()}/api/codefiles/${editdata.detaildata.Feature_Id}`, conf).then(
             (res) => {
@@ -571,8 +572,9 @@ export default function EditFeature(props) {
                     message: 'Something Went Wrong! Please try Again for ' + droptitle,
                     type: 'error'
                 })
-                setFupdate(false)
+                // setFupdate(false)
             })
+
     };
 
     const deleteitem = async (data) => {
@@ -1008,7 +1010,7 @@ export default function EditFeature(props) {
                                         accept="file"
                                         className={classes.input}
                                         id="contained-button-file3"
-                                        multiple={true}
+                                        multiple={false}
                                         onChange={(e) => handleSubmitdrpm(e)}
                                         type="file"
                                     />
