@@ -84,7 +84,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    // console.log("editdata", props.editPreviewdetails?.data)
+    console.log(props)
+    console.log("editdata", props.editPreviewdetails?.data)
     const history = useHistory();
     const [editdata, seteditdata] = useState({ detaildata: props.editPreviewdetails?.data })
     // const editdata = { detaildata: props.editPreviewdetails?.data }
@@ -467,7 +468,7 @@ export default function EditFeature(props) {
                 })
 
             })
-        setFupdate(false)
+            setFupdate(false) 
     }
 
     var seq = null;
@@ -593,7 +594,7 @@ export default function EditFeature(props) {
         setNotify({
             isOpen: true,
             message: 'Deleted Successfully',
-            type: 'error'
+            type: 'success'
         });
 
         // dispatch(ActionMenu.ActionMenu(
