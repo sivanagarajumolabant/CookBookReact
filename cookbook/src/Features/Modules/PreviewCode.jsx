@@ -171,7 +171,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${detaildata.Feature_Id}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${menuitem}`, conf).then(
       (res) => {
         setSource_att(res.data)
         if (res.data.length > 0) {
@@ -189,7 +189,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/targetdesc/${detaildata.Feature_Id}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/targetdesc/${menuitem}`, conf).then(
       (res) => {
         setTarget_att(res.data)
         if (res.data.length > 0) {
@@ -208,7 +208,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/convatt/${detaildata.Feature_Id}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/convatt/${menuitem}`, conf).then(
       (res) => {
         setConv_att(res.data)
         if (res.data.length > 0) {
@@ -228,7 +228,7 @@ export default function PreviewCode(props) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/codefiles/${detaildata.Feature_Id}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/codefiles/${menuitem}`, conf).then(
       (res) => {
         setSource_codeatt(res.data)
         console.log(res.data)
@@ -244,68 +244,68 @@ export default function PreviewCode(props) {
 
 
 
-const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
-        let body = {
-            "file_name": att_name,
-            "migration_typeid": migtypeid,
-            "object_type": obj_type,
-            "AttachmentType": att_Type,
-            "id": id,
-            responseType: 'blob',
-        }
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        console.log(conf.headers)
-        axios.post(`${config.API_BASE_URL()}/api/download_att`, body, conf).then(res => {
-            fileDownload(res.data, att_name);
-        }).catch(err => {
-
-        })
+  const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
+    let body = {
+      "file_name": att_name,
+      "migration_typeid": migtypeid,
+      "object_type": obj_type,
+      "AttachmentType": att_Type,
+      "id": id,
+      responseType: 'blob',
     }
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    console.log(conf.headers)
+    axios.post(`${config.API_BASE_URL()}/api/download_att`, body, conf).then(res => {
+      fileDownload(res.data, att_name);
+    }).catch(err => {
+
+    })
+  }
 
 
 
   const handleAttachment_delete = (AttachmentType, Migration_TypeId, id, Object_Type, fname) => {
     let formData = {
-        "migration_typeid": Migration_TypeId,
-        "object_type": Object_Type,
-        "file_name": fname,
-        "AttachmentType": AttachmentType,
-        "id": id
+      "migration_typeid": Migration_TypeId,
+      "object_type": Object_Type,
+      "file_name": fname,
+      "AttachmentType": AttachmentType,
+      "id": id
     }
     let conf = {
-        headers: {
-            'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-        }
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
     }
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
 
-        form.append(key, formData[key]);
+      form.append(key, formData[key]);
 
     });
     axios.post(`${config.API_BASE_URL()}/api/attdelete`, form, conf)
-        .then(res => {
-            setNotify({
-                isOpen: true,
-                message: 'File Deleted',
-                type: 'success'
-            })
-            
-        }, error => {
-            console.log(error);
-            setNotify({
-                isOpen: true,
-                message: 'Something Went Wrong! Please try Again',
-                type: 'error'
-            })
-
+      .then(res => {
+        setNotify({
+          isOpen: true,
+          message: 'File Deleted',
+          type: 'success'
         })
-    
-}
+
+      }, error => {
+        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong! Please try Again',
+          type: 'error'
+        })
+
+      })
+
+  }
 
 
 
