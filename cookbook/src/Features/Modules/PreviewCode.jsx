@@ -800,7 +800,7 @@ export default function PreviewCode(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                       <StyledTableCell item xl={10} >
-                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                        <div className={classes.texttablecell}>{row.filename}</div>
                       </StyledTableCell>
                       <StyledTableCell item xl={2}>
                         <Box flexDirection="row" >
@@ -857,7 +857,7 @@ export default function PreviewCode(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                       <StyledTableCell item xl={10} >
-                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                        <div className={classes.texttablecell}>{row.filename}</div>
                       </StyledTableCell>
                       <StyledTableCell item xl={2}>
                         <Box flexDirection="row" >
@@ -913,7 +913,7 @@ export default function PreviewCode(props) {
                                                     <div className={classes.texttablecell}>{row.AttachmentType}</div>
                                                 </StyledTableCell> */}
                       <StyledTableCell item xl={10} >
-                        <div className={classes.texttablecell}>{row.Attachment?.split("/").pop()}</div>
+                        <div className={classes.texttablecell}>{row.filename}</div>
                       </StyledTableCell>
                       <StyledTableCell item xl={2}>
                         <Box flexDirection="row" >
