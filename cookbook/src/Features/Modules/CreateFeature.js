@@ -187,19 +187,23 @@ export default function CreateFeature(props) {
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
 
+     console.log( props.details?.data)
+
     const handleSubmit = (e) => {
         let typeval = props.details?.data?.type
-        let val = 0
+        
+        let val;
         e.preventDefault();
-        if (typeval) {
-            if (typeval === 'Oracle To Postgres') {
+        if (headerValue) {
+            // debugger
+            if (headerValue.title === 'Oracle To Postgres') {
                 val = 1
             }
-            else if (typeval === 'Oracle TO SQLServer') {
+            else if (headerValue.title === 'Oracle TO SQLServer') {
 
                 val = 2
             }
-            else if (typeval === 'Oracle To MYSQL') {
+            else if (headerValue.title === 'Oracle To MYSQL') {
 
                 val = 3
             }
@@ -207,7 +211,7 @@ export default function CreateFeature(props) {
 
         let formData = {
             ...formValues,
-            Migration_TypeId: val,
+            Migration_TypeId:  val,//props.headerValue?.code,
             Object_Type: obj_type,
             // 'Source_Attachment': source_att,
             // "Conversion_Attachment": target_att,
@@ -232,6 +236,7 @@ export default function CreateFeature(props) {
         axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf)
             .then(res => {
                 // setCreatedata(res)
+                console.log("createdata",res)
                 setNotify({
                     isOpen: true,
                     message: 'Feature Created Successfully',

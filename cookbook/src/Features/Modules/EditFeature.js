@@ -84,12 +84,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    console.log(props)
-    console.log("editdata", props.editPreviewdetails?.data)
+    // console.log(props)
+    // console.log("editdataprops", props.editPreviewdetails?.data)
     const history = useHistory();
     const [editdata, seteditdata] = useState({ detaildata: props.editPreviewdetails?.data })
     // const editdata = { detaildata: props.editPreviewdetails?.data }
-    console.log("editdata", editdata)
+    // console.log("editdata", editdata)
     const classes = useStyles();
     const classestable = useStylestable();
 
