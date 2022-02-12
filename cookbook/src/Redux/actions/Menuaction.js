@@ -36,6 +36,8 @@ const reloadAction = (value) => {
       })
    }
 }
+
+
 const CreateFeature = (value) => {
    return dispatch => {
 
@@ -82,4 +84,4 @@ const EditPreviewFeature = (value) => {
    }
 }
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature , PreviewFeature}
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature }

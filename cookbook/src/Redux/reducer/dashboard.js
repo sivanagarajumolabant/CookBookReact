@@ -32,6 +32,7 @@ const dashboardReducer = (state = initialState, action) => {
       };
 
 
+
     case "CREATE_FEATURE":
       return {
         ...state,
@@ -66,6 +67,7 @@ const dashboardReducer = (state = initialState, action) => {
         createFeature: action.payload,
         details: {}
       };
+    
     default:
       return state;
   }
