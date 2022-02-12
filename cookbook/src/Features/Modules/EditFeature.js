@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import download from 'downloadjs'
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -376,9 +377,11 @@ export default function EditFeature(props) {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
             }
         }
-        console.log(conf.headers)
+        // console.log(conf.headers)
         axios.post(`${config.API_BASE_URL()}/api/download_att`, body, conf).then(res => {
             fileDownload(res.data, att_name);
+            // const content = res.headers['content-type'];
+            // download(res.data, att_name, content)
         }).catch(err => {
 
         })
@@ -468,7 +471,7 @@ export default function EditFeature(props) {
                 })
 
             })
-            setFupdate(false) 
+        setFupdate(false)
     }
 
     var seq = null;
@@ -575,6 +578,8 @@ export default function EditFeature(props) {
                 })
                 // setFupdate(false)
             })
+
+        
 
     };
 
@@ -1013,6 +1018,9 @@ export default function EditFeature(props) {
                                         id="contained-button-file3"
                                         multiple={false}
                                         onChange={(e) => handleSubmitdrpm(e)}
+                                        onClick={(event)=> {
+                                            event.target.value = null
+                                          }}
                                         type="file"
                                     />
 
