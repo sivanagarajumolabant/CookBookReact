@@ -122,11 +122,11 @@ export default function CreateFeature(props) {
         if (headerValue.title === 'Oracle To Postgres') {
             sval = 1
         }
-        else if (headerValue.title === 'Oracle TO SQLServer') {
+        else if (headerValue.title === 'SQLServer To Postgres') {
 
             sval = 2
         }
-        else if (headerValue.title === 'Oracle To MYSQL') {
+        else if (headerValue.title === 'MYSQL To Postgres') {
 
             sval = 3
         }
@@ -199,11 +199,11 @@ export default function CreateFeature(props) {
             if (headerValue.title === 'Oracle To Postgres') {
                 val = 1
             }
-            else if (headerValue.title === 'Oracle TO SQLServer') {
+            else if (headerValue.title === 'SQLServer To Postgres') {
 
                 val = 2
             }
-            else if (headerValue.title === 'Oracle To MYSQL') {
+            else if (headerValue.title === 'MYSQL To Postgres') {
 
                 val = 3
             }

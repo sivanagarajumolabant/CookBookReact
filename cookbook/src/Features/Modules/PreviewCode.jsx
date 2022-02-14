@@ -245,6 +245,18 @@ export default function PreviewCode(props) {
 
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
+    if (migtypeid === '1') {
+      migtypeid = 'Oracle To Postgres'
+      // setMigtypeid(1)
+    }
+    else if (migtypeid === '2') {
+      migtypeid = 'SQLServer To Postgres'
+      // setMigtypeid(2)
+    }
+    else if (migtypeid === '3') {
+      migtypeid = 'MYSQL To Postgres'
+      // setMigtypeid(3)
+    }
     let body = {
       "file_name": att_name,
       "migration_typeid": migtypeid,
@@ -255,7 +267,8 @@ export default function PreviewCode(props) {
     }
     let conf = {
       headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN(),
+        'Content-Type': 'application/json'
       }
     }
     console.log(conf.headers)

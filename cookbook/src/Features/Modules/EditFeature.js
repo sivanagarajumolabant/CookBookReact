@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import download from 'downloadjs'
+// import download from 'downloadjs'
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -251,11 +251,11 @@ export default function EditFeature(props) {
             if (editdata.detaildata.Migration_TypeId === 'Oracle To Postgres') {
                 val = 1
             }
-            else if (editdata.detaildata.Migration_TypeId === 'Oracle TO SQLServer') {
+            else if (editdata.detaildata.Migration_TypeId === 'SQLServer To Postgres') {
 
                 val = 2
             }
-            else if (editdata.detaildata.Migration_TypeId === 'Oracle To MYSQL') {
+            else if (editdata.detaildata.Migration_TypeId === 'MYSQL To Postgres') {
 
                 val = 3
             }
@@ -353,11 +353,11 @@ export default function EditFeature(props) {
             // setMigtypeid(1)
         }
         else if (editdata.detaildata.Migration_TypeId === '2') {
-            editdata.detaildata.Migration_TypeId = 'Oracle TO SQLServer'
+            editdata.detaildata.Migration_TypeId = 'SQLServer To Postgres'
             // setMigtypeid(2)
         }
         else if (editdata.detaildata.Migration_TypeId === '3') {
-            editdata.detaildata.Migration_TypeId = 'Oracle To MYSQL'
+            editdata.detaildata.Migration_TypeId = 'MYSQL To Postgres'
             // setMigtypeid(3)
         }
     }

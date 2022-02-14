@@ -251,7 +251,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue } = useSelector(state => state.dashboardReducer);
+  const { updatedValue,  headerValue} = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -347,7 +347,7 @@ export default function ClippedDrawer({ children }) {
 
   React.useEffect(() => {
     if (updatedValue) {
-      getmenus(1);
+      getmenus(headerValue.code ||1);
     }
   }, [updatedValue])
   return (
@@ -380,8 +380,8 @@ export default function ClippedDrawer({ children }) {
                 className={classes.inputRoottype}
                 options={[
                   { title: "Oracle To Postgres", code: 1 },
-                  { title: "Oracle TO SQLServer", code: 2 },
-                  { title: "Oracle To MYSQL", code: 3 },
+                  { title: "SQLServer TO Postgres", code: 2 },
+                  { title: "MYSQL To Postgres", code: 3 },
                 ]}
                 groupBy={""}
                 defaultValue={{ title: "Oracle To Postgres" }}
