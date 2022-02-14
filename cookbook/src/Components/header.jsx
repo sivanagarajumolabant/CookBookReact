@@ -257,7 +257,7 @@ export default function ClippedDrawer({ children }) {
   const openview = Boolean(anchorEl);
   const [menuList, setmenuList] = React.useState([]);
   const [dropdown, setdropdown] = React.useState({
-    name: "Oracle To Postgres",
+    name: "Oracle TO Postgres",
   });
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -379,12 +379,12 @@ export default function ClippedDrawer({ children }) {
                 id="grouped-demo"
                 className={classes.inputRoottype}
                 options={[
-                  { title: "Oracle To Postgres", code: 1 },
+                  { title: "Oracle TO Postgres", code: 1 },
                   { title: "SQLServer TO Postgres", code: 2 },
-                  { title: "MYSQL To Postgres", code: 3 },
+                  { title: "MYSQL TO Postgres", code: 3 },
                 ]}
                 groupBy={""}
-                defaultValue={{ title: "Oracle To Postgres" }}
+                defaultValue={{ title: "Oracle TO Postgres" }}
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
                 onChange={(e, v) => handleversion(v)}

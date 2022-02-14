@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditFeature(props) {
     // console.log(props)
-    // console.log("editdataprops", props.editPreviewdetails?.data)
+    console.log("editdataprops", props.editPreviewdetails?.data)
     const history = useHistory();
     const [editdata, seteditdata] = useState({ detaildata: props.editPreviewdetails?.data })
     // const editdata = { detaildata: props.editPreviewdetails?.data }
@@ -248,14 +248,14 @@ export default function EditFeature(props) {
 
         var val = 0;
         if (editdata.detaildata) {
-            if (editdata.detaildata.Migration_TypeId === 'Oracle To Postgres') {
+            if (editdata.detaildata.Migration_TypeId === 'Oracle TO Postgres') {
                 val = 1
             }
-            else if (editdata.detaildata.Migration_TypeId === 'SQLServer To Postgres') {
+            else if (editdata.detaildata.Migration_TypeId === 'SQLServer TO Postgres') {
 
                 val = 2
             }
-            else if (editdata.detaildata.Migration_TypeId === 'MYSQL To Postgres') {
+            else if (editdata.detaildata.Migration_TypeId === 'MYSQL TO Postgres') {
 
                 val = 3
             }
@@ -349,15 +349,15 @@ export default function EditFeature(props) {
 
     if (editdata?.detaildata) {
         if (editdata.detaildata.Migration_TypeId === '1') {
-            editdata.detaildata.Migration_TypeId = 'Oracle To Postgres'
+            editdata.detaildata.Migration_TypeId = 'Oracle TO Postgres'
             // setMigtypeid(1)
         }
         else if (editdata.detaildata.Migration_TypeId === '2') {
-            editdata.detaildata.Migration_TypeId = 'SQLServer To Postgres'
+            editdata.detaildata.Migration_TypeId = 'SQLServer TO Postgres'
             // setMigtypeid(2)
         }
         else if (editdata.detaildata.Migration_TypeId === '3') {
-            editdata.detaildata.Migration_TypeId = 'MYSQL To Postgres'
+            editdata.detaildata.Migration_TypeId = 'MYSQL TO Postgres'
             // setMigtypeid(3)
         }
     }

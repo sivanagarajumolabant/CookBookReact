@@ -119,14 +119,14 @@ export default function CreateFeature(props) {
     // const [seq, setSeq]=useState({})
     let sval = 0;
     if (headerValue) {
-        if (headerValue.title === 'Oracle To Postgres') {
+        if (headerValue.title === 'Oracle TO Postgres') {
             sval = 1
         }
-        else if (headerValue.title === 'SQLServer To Postgres') {
+        else if (headerValue.title === 'SQLServer TO Postgres') {
 
             sval = 2
         }
-        else if (headerValue.title === 'MYSQL To Postgres') {
+        else if (headerValue.title === 'MYSQL TO Postgres') {
 
             sval = 3
         }
@@ -187,23 +187,24 @@ export default function CreateFeature(props) {
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
 
-     console.log( props.details?.data)
+     console.log(props.details?.data)
 
     const handleSubmit = (e) => {
         let typeval = props.details?.data?.type
-        
+        // console.log("type data ", props.details?.data)
+        // console.log("type ", typeval)
         let val;
         e.preventDefault();
         if (headerValue) {
             // debugger
-            if (headerValue.title === 'Oracle To Postgres') {
+            if (headerValue.title === 'Oracle TO Postgres') {
                 val = 1
             }
-            else if (headerValue.title === 'SQLServer To Postgres') {
+            else if (headerValue.title === 'SQLServer TO Postgres') {
 
                 val = 2
             }
-            else if (headerValue.title === 'MYSQL To Postgres') {
+            else if (headerValue.title === 'MYSQL TO Postgres') {
 
                 val = 3
             }

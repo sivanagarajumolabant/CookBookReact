@@ -246,15 +246,15 @@ export default function PreviewCode(props) {
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
     if (migtypeid === '1') {
-      migtypeid = 'Oracle To Postgres'
+      migtypeid = 'Oracle TO Postgres'
       // setMigtypeid(1)
     }
     else if (migtypeid === '2') {
-      migtypeid = 'SQLServer To Postgres'
+      migtypeid = 'SQLServer TO Postgres'
       // setMigtypeid(2)
     }
     else if (migtypeid === '3') {
-      migtypeid = 'MYSQL To Postgres'
+      migtypeid = 'MYSQL TO Postgres'
       // setMigtypeid(3)
     }
     let body = {
