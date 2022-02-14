@@ -36,7 +36,7 @@ import {
 } from "@material-ui/core";
 import GmailTreeView from "../Components/Treeview";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Footer from "../Components/Footer";
 import axios from "axios";
 import API_BASE_URL from "../Config/config";
@@ -562,6 +562,13 @@ export default function ClippedDrawer({ children }) {
 
                 {/* new code start */}
                 <Grid container direction="column" spacing={0}>
+                  <Grid item >
+                    <Link to="/admin">
+                  <Button variant="contained" color="primary"  style={{ width: 230, height:40 }}>
+                    Admin
+                       </Button>
+                       </Link>
+                  </Grid>
                   <Grid item>
 
                     <StyledAutocompletesidebar
