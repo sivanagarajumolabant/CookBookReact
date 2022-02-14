@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     background: "#3f51b5",
     boxShadow: 'none',
-    border:'1px solid #004280'
+    border: '1px solid #004280'
 
   },
 
@@ -76,8 +76,8 @@ const useStyles = makeStyles((theme) => ({
     background: "#3f51b5",
   },
 
-              // style={{  }}
-  navbarcom:{
+  // style={{  }}
+  navbarcom: {
     [theme.breakpoints.up('lg')]: {
       marginLeft: "200px"
       // height:'100vh'
@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     height: '80vh',
     background: "#3f51b5",
-    
+
   },
   content: {
     [theme.breakpoints.down('xs')]: {
@@ -149,17 +149,17 @@ const useStyles = makeStyles((theme) => ({
 
   logoutbtn: {
     // marginLeft:"8px",
-    
+
     // marginRight: "-1px",
     [theme.breakpoints.down('xs')]: {
       right: 100,
       position: 'fixed',
-     
+
       // padding: theme.spacing(1),
 
     },
     [theme.breakpoints.down('sm')]: {
-      
+
       padding: theme.spacing(1),
 
     },
@@ -231,6 +231,34 @@ const StyledAutocomplete = styled(Autocomplete)({
     '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
       // Default left padding is 6px
       paddingLeft: 26,
+      // height: '1rem'
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+  },
+});
+
+const StyledAutocompletesidebar = styled(Autocomplete)({
+  "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+    // Default transform is "translate(14px, 20px) scale(1)""
+    // This lines up the label with the initial cursor position in the input
+    // after changing its padding-left.
+    transform: "translate(34px, 13px) scale(1);",
+  },
+  "& .MuiAutocomplete-inputRoot": {
+    color: "white",
+    // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
+    '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+      // Default left padding is 6px
+      paddingLeft: 26,
+      height: '0.3rem'
     },
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor: "white",
@@ -251,7 +279,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue,  headerValue} = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue } = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -259,6 +287,7 @@ export default function ClippedDrawer({ children }) {
   const [dropdown, setdropdown] = React.useState({
     name: "Oracle TO Postgres",
   });
+  const [selectedItems, setselectedItems] = React.useState([])
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -347,9 +376,15 @@ export default function ClippedDrawer({ children }) {
 
   React.useEffect(() => {
     if (updatedValue) {
-      getmenus(headerValue.code ||1);
+      getmenus(headerValue.code || 1);
     }
   }, [updatedValue])
+
+  const handlefeature = (data) => {
+
+    setselectedItems([data])
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -494,12 +529,12 @@ export default function ClippedDrawer({ children }) {
 
             <Toolbar />
 
-              
+
 
             <div className={classes.drawerContainer}>
               <Typography
                 variant="body2"
-                style={{ color: "white",marginBottom:10, paddingTop: 0, paddingLeft: 60, marginTop:0, justifyContent:'center' }}
+                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center' }}
               >
                 Database Objects
               </Typography>
@@ -514,17 +549,60 @@ export default function ClippedDrawer({ children }) {
 
               <Divider />
               <Box py={1}>
-                <GmailTreeView
-                  menuList={menuList}
-                  dropdown={dropdown}
-                  // deleteitem={deleteitem}
-                  // confirmDialog={confirmDialog}
-                  // setConfirmDialog={setConfirmDialog}
-                />
+
+                {/* old code start */}
+                {/* <GmailTreeView
+                      menuList={menuList}
+                      dropdown={dropdown}
+                    // deleteitem={deleteitem}
+                    // confirmDialog={confirmDialog}
+                    // setConfirmDialog={setConfirmDialog}
+                    /> */}
+                {/* old code end */}
+
+                {/* new code start */}
+                <Grid container direction="column" spacing={0}>
+                  <Grid item>
+
+                    <StyledAutocompletesidebar
+                      size="medium"
+                      id="grouped-demo"
+                      className={classes.inputRoottype}
+                      options={menuList}
+                      groupBy={""}
+                      // defaultValue={{ title: "Oracle To Postgres" }}
+                      getOptionLabel={(option) => option.Label}
+                      style={{ width: 230, height:50 }}
+                      onChange={(e, v) => handlefeature(v)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Migration Objects"
+                          variant="outlined"
+                          InputLabelProps={{
+                            className: classes.floatingLabelFocusStyle,
+                          }}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+
+                  <Grid item spacing={1}>
+
+                    <GmailTreeView
+                      menuList={selectedItems}
+                      dropdown={dropdown}
+
+                    />
+                  </Grid>
+
+                </Grid>
+                {/* new code end */}
               </Box>
               <Box py={1}>
                 <Button
-                  style={{ color: 'white',marginLeft:'10px', textTransform: 'unset' }}
+                  style={{ color: 'white', marginLeft: '10px', textTransform: 'unset' }}
                   startIcon={<GetAppIcon />}
                   onClick={onDownload1}
                   className={classes.downloadbutton}
@@ -532,7 +610,7 @@ export default function ClippedDrawer({ children }) {
                   Template
                 </Button>
                 <Button
-                  style={{ color: 'white',marginLeft:'120px', textTransform: 'unset' }}
+                  style={{ color: 'white', marginLeft: '120px', textTransform: 'unset' }}
                   startIcon={<GetAppIcon />}
                   onClick={onDownload2}
                   className={classes.downloadbutton}
