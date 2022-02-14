@@ -95,11 +95,13 @@ const StyledAutocompleteDrop = styled(Autocomplete)({
 
 export default function CreateFeature(props) {
     var obj_type = props.details?.data?.Label
+    console.log("obj type ",obj_type)
     if (obj_type === 'Indexes') {
         obj_type = obj_type.slice(0, -2);
     } else {
         obj_type = obj_type.slice(0, -1);
     }
+    console.log("obj 1 ",obj_type)
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
     // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
@@ -174,6 +176,7 @@ export default function CreateFeature(props) {
         }
         axios.post(`${config.API_BASE_URL()}/api/fnlist`, body, conf).then(
             (res) => {
+                console.log("fn list", res.data)
                 setFnlist(res.data);
             },
             (error) => {
@@ -276,7 +279,7 @@ export default function CreateFeature(props) {
             ...formValues,
             [e.target.name]: e.target.value
         })
-
+        console.log("fn list",fnlist)
         if (e.target.name === 'Feature_Name') {
             if (fnlist.length > 0) {
                 // let fnvalue = fnlist.Feature_Name.substr(5)
