@@ -5,12 +5,12 @@ import MenuAppBar from '../../Components/header'
 export default function AdminAccesslist() {
   return (
     <MenuAppBar>
-      <Box py={4} px={5}>
+      <Box py={1} px={1}>
 
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
             <Typography variant='h6'>
-              ADMIN ACCESS LIST
+              Admin Access & Roles
             </Typography>
           </Grid>
         </Grid>
@@ -45,6 +45,21 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
+
+
+        </Grid>
+      </Box>
+      <Box py={1} px={1} spacing={2}>
+
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Approval Requests
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction='row' xs={12}>
+
 
 
         </Grid>

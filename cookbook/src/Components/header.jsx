@@ -557,11 +557,11 @@ export default function ClippedDrawer({ children }) {
 
               <Typography
                 variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                 onClick={handleAdminMenus}
               >
-                Admin Menus
+                Admin Access & Approvals
               </Typography>
 
               <Divider />
