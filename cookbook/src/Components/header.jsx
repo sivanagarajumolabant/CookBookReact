@@ -329,6 +329,8 @@ export default function ClippedDrawer({ children }) {
 
   const handleversion = (v) => {
     getmenus(v.code);
+    setselectedItems([])
+  
     setdropdown(v);
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
@@ -384,6 +386,10 @@ export default function ClippedDrawer({ children }) {
 
     setselectedItems([data])
   }
+
+   const handleAdminMenus=()=>{
+     history.push('/AdminAccesslist')
+   }
 
   return (
     <div className={classes.root}>
@@ -532,12 +538,12 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-              <Typography
+              {/* <Typography
                 variant="body2"
                 style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center' }}
               >
                 Database Objects
-              </Typography>
+              </Typography> */}
               {/* <Typography
 
                 style={{ color: "white", paddingTop: 10, paddingLeft: 35 }}
@@ -547,6 +553,17 @@ export default function ClippedDrawer({ children }) {
 
               </Typography> */}
 
+              {/* <Divider /> */}
+
+              <Typography
+                variant="body2"
+                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center' , cursor:'pointer'}}
+
+                 onClick={handleAdminMenus}
+              >
+            Admin Menus
+              </Typography>
+              
               <Divider />
               <Box py={1}>
 
@@ -624,7 +641,7 @@ export default function ClippedDrawer({ children }) {
 
         </Grid>
 
-        <Grid item >
+        <Grid item  xs={12}>
           <main
             className={classes.content}
           >
