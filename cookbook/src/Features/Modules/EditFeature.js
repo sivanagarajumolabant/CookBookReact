@@ -370,6 +370,7 @@ export default function EditFeature(props) {
             "object_type": obj_type,
             "AttachmentType": att_Type,
             "id": id,
+            "fname": editdata.detaildata.Feature_Name,
             responseType: 'blob',
         }
         let conf = {
@@ -389,6 +390,39 @@ export default function EditFeature(props) {
     const handledetale = (value) => {
         const data = file.filter((item) => item.name != value.name)
         setfile(data)
+
+    }
+
+    const handleConvertFiles = () => {
+        let body = {
+            "Feature_Id": editdata.detaildata.Feature_Id,
+            "AttachmentType": 'Sourcecode',
+            "Feature_Name": editdata.detaildata.Feature_Name,
+            "Migration_TypeId": editdata.detaildata.Migration_TypeId,
+            "Object_Type": editdata.detaildata.Object_Type
+        }
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        axios.post(`${config.API_BASE_URL()}/api/convertfiles`, body, conf)
+            .then(res => {
+                setNotify({
+                    isOpen: true,
+                    message: 'Converted Files Please check',
+                    type: 'success'
+                })
+                setFupdate(true)
+            }, error => {
+                console.log(error)
+                setNotify({
+                    isOpen: true,
+                    message: error.response.data.error,
+                    type: 'error'
+                })
+            })
+
 
     }
 
@@ -441,7 +475,8 @@ export default function EditFeature(props) {
             "object_type": Object_Type,
             "file_name": fname,
             "AttachmentType": AttachmentType,
-            "id": id
+            "id": id,
+            "fname": editdata.detaildata.Feature_Name
         }
         let conf = {
             headers: {
@@ -579,7 +614,7 @@ export default function EditFeature(props) {
                 // setFupdate(false)
             })
 
-        
+
 
     };
 
@@ -989,7 +1024,7 @@ export default function EditFeature(props) {
                                         { title: "Source Description", code: 'Sourcedescription' },
                                         { title: "Target Description", code: 'Targetdescription' },
                                         { title: "Conversion Code", code: 'Conversion' },
-                                        { title: "Actual Target Code", code: 'Actualtargetcode' },
+                                        // { title: "Actual Target Code", code: 'Actualtargetcode' },
                                         { title: "Expected Target Code", code: 'Expectedconversion' },
                                         { title: "Source Code", code: 'Sourcecode' }
                                     ]}
@@ -1018,9 +1053,9 @@ export default function EditFeature(props) {
                                         id="contained-button-file3"
                                         multiple={false}
                                         onChange={(e) => handleSubmitdrpm(e)}
-                                        onClick={(event)=> {
+                                        onClick={(event) => {
                                             event.target.value = null
-                                          }}
+                                        }}
                                         type="file"
                                     />
 
@@ -1032,7 +1067,13 @@ export default function EditFeature(props) {
                                         </Button>
                                     </label>
 
+                                    <Button variant="contained" onClick={(e) => handleConvertFiles()}
+                                        // startIcon={<CloudUploadIcon />}
+                                        color="primary" component="span" style={{ marginTop: 15 }}>
+                                        Convert Files
+                                    </Button>
                                 </div>
+
                             </Grid>
                         </Grid>
                     </Box>
@@ -1047,7 +1088,7 @@ export default function EditFeature(props) {
                                 component="h2"
                                 className={classes.Object_Type}
                             >
-                                Code Attachemnets
+                                SQL Code Attachemnets
                             </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>
@@ -1164,7 +1205,7 @@ export default function EditFeature(props) {
                                 component="h2"
                                 className={classes.Object_Type}
                             >
-                                Source Attachments
+                                Source Description
                             </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>
@@ -1219,7 +1260,7 @@ export default function EditFeature(props) {
                                 component="h5"
                                 className={classes.Object_Type}
                             >
-                                Target Attachments
+                                Target Description
                             </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>
@@ -1273,7 +1314,7 @@ export default function EditFeature(props) {
                                 component="h2"
                                 className={classes.Object_Type}
                             >
-                                Conversion Attachments
+                                Conversion Description
                             </Typography>
                             <Table className={classestable.table} aria-label="customized table">
                                 <TableHead className={classes.primary}>

@@ -1,5 +1,6 @@
 import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
@@ -42,13 +43,13 @@ const StyledAutocomplete = styled(Autocomplete)({
       // height: '1rem'
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "black",
+      borderColor: "grey",
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "white",
+      borderColor: "black",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "black",
+      borderColor: "#3f51b5",
     },
   },
 });
@@ -198,32 +199,124 @@ export default function AdminAccesslist() {
 
           <Grid item xs={4}>
 
-            <FormControl variant="outlined" style={{ minWidth: '300px' }} size="small">
-              <InputLabel >Feature Names</InputLabel>
-              <Select
-
-                native
-                // value={state.age}
-                // onChange={handleChange}
-                label="FeatureNames"
-                variant="outlined"
-                name='Sequence'
-                required
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              >   <option value="Select Predecessor" selected>Select Predecessor</option>
-                <option value="No Predecessor" >No Predecessor</option>
-                {/* {prerunval.map((item, ind) => {
-                return <option value={item.Feature_Name}>{item.Feature_Name.substr(5)}</option>
-              })} */}
-
-              </Select>
-            </FormControl>
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={[
+                { title: "XML", code: 1 },
+                { title: "Coll", code: 2 },
+              ]}
+              groupBy={""}
+              defaultValue={{ title: "Edit" }}
+              getOptionLabel={(option) => option.title}
+              style={{ width: 300 }}
+              onChange={(e, v) => handleversion(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Feature Names"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                  }}
+                />
+              )}
+            />
 
 
 
           </Grid>
+          <Grid item xs={4}>
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={[
+                { title: "Edit", code: 1 },
+                { title: "View", code: 2 },
+                { title: "Admin", code: 3 },
+              ]}
+              groupBy={""}
+              defaultValue={{ title: "Edit" }}
+              getOptionLabel={(option) => option.title}
+              style={{ width: 300, marginTop: 10 }}
+              onChange={(e, v) => handleversion(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Accesstype"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={4}>
+
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={[
+                { title: "abc@gmail.com", code: 1 },
+                { title: "123@gmail.com", code: 2 },
+                { title: "abc123@gmail.com", code: 3 },
+              ]}
+              groupBy={""}
+              defaultValue={{ title: "Select email" }}
+              getOptionLabel={(option) => option.title}
+              style={{ width: 300, marginTop: 10 }}
+              onChange={(e, v) => handleversion(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="ID"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          {/* <Grid item xs={4}>
+
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={[
+                { title: "28-02-2022", code: 1 },
+                { title: "29-02-2022", code: 2 },
+                { title: "30-02-2022", code: 3 },
+              ]}
+              groupBy={""}
+              defaultValue={{ title: "Expiry Date" }}
+              getOptionLabel={(option) => option.title}
+              style={{ width: 300, marginTop: 10 }}
+              onChange={(e, v) => handleversion(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Expiry On"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                  }}
+                />
+              )}
+            />
+          </Grid> */}
+          <Button variant="contained"
+            // startIcon={<CloudUploadIcon />}
+            color="primary" component="span" style={{ marginTop: 15 }}>
+            
+          </Button>
+
+
         </Grid>
       </Box>
 

@@ -263,6 +263,7 @@ export default function PreviewCode(props) {
       "object_type": obj_type,
       "AttachmentType": att_Type,
       "id": id,
+      "fname":detaildata.Feature_Name,
       responseType: 'blob',
     }
     let conf = {
@@ -287,7 +288,8 @@ export default function PreviewCode(props) {
       "object_type": Object_Type,
       "file_name": fname,
       "AttachmentType": AttachmentType,
-      "id": id
+      "id": id,
+      "fname":detaildata.Feature_Name
     }
     let conf = {
       headers: {
@@ -643,7 +645,7 @@ export default function PreviewCode(props) {
               component="h2"
               className={classes.Object_Type}
             >
-              Code Attachemnets
+              SQL Code Attachemnets
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
@@ -760,7 +762,7 @@ export default function PreviewCode(props) {
               component="h2"
               className={classes.Object_Type}
             >
-              Source Attachments
+              Source Description
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
@@ -815,7 +817,7 @@ export default function PreviewCode(props) {
               component="h5"
               className={classes.Object_Type}
             >
-              Target Attachments
+              Target Description
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
@@ -869,7 +871,7 @@ export default function PreviewCode(props) {
               component="h2"
               className={classes.Object_Type}
             >
-              Conversion Attachments
+              Conversion Description
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
