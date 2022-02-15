@@ -310,89 +310,96 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid> */}
+
+
+        </Grid>
+
+
+      </Box>
+      <Box>
+        <Grid container direction='row' justifyContent='center'>
           <Button variant="contained"
             // startIcon={<CloudUploadIcon />}
-            color="primary" component="span" style={{ marginTop: 15 }}>
-            
+            color="primary" component="span" style={{ marginTop: 15 }}> Access
+
           </Button>
-
-
         </Grid>
       </Box>
 
-
-      <Grid container xl={12} justifyContent="space-between" spacing={1}>
-        <Grid item xs={12}>
-          <Typography
-            gutterBottom
-            align='center'
-            variant="h6"
-            component="h2"
-            className={classes.Object_Type}
-          >
-            Approval Requests
-          </Typography>
-          <Table className={classestable.table} aria-label="customized table">
-            <TableHead className={classes.primary}>
-              <TableRow>
-                <StyledTableCell align="left">User Email</StyledTableCell>
-                <StyledTableCell align="left">Migration Type</StyledTableCell>
-                <StyledTableCell align="left">Object Type</StyledTableCell>
-                <StyledTableCell align="left">Feature Name</StyledTableCell>
-                <StyledTableCell align="left">Approval Status</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-
-
-              {isData ?
-                <StyledTableRow container>
-                  <StyledTableCell item xl={8} >
-                    <div className={classes.texttablecell}>
-                      {"siva.n@quadrantresource.com"}
-                    </div>
-                  </StyledTableCell>
-                  <StyledTableCell item xl={8} >
-                    <div className={classes.texttablecell}>
-                      {"Oracle TO Postgres"}
-                    </div>
-                  </StyledTableCell>
-                  <StyledTableCell item xl={10} >
-                    <div className={classes.texttablecell}>
-                      {"Procedures"}
-                    </div>
-                  </StyledTableCell>
-                  <StyledTableCell item xl={10} >
-                    <div className={classes.texttablecell}>
-                      {"XML"}
-                    </div>
-                  </StyledTableCell>
-                  <StyledTableCell item xl={10} >
-                    <div className={classes.texttablecell}>
-                      {"Pending"}
-                    </div>
-                  </StyledTableCell>
+      <Box py={2} px={2}>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Approval Requests
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Email</StyledTableCell>
+                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                  <StyledTableCell align="left">Object Type</StyledTableCell>
+                  <StyledTableCell align="left">Feature Name</StyledTableCell>
+                  <StyledTableCell align="left">Approval Status</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
 
 
-                </StyledTableRow>
-                : <>
+                {isData ?
                   <StyledTableRow container>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"siva.n@quadrantresource.com"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"Oracle TO Postgres"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={10} >
+                      <div className={classes.texttablecell}>
+                        {"Procedures"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={10} >
+                      <div className={classes.texttablecell}>
+                        {"XML"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={10} >
+                      <div className={classes.texttablecell}>
+                        {"Pending"}
+                      </div>
+                    </StyledTableCell>
 
-                    <StyledTableCell align="center"></StyledTableCell>
-                    <StyledTableCell align="center"></StyledTableCell>
-                    <StyledTableCell align="center">No Requests</StyledTableCell>
-                    <StyledTableCell align="center"></StyledTableCell>
-                    <StyledTableCell align="center"></StyledTableCell>
+
                   </StyledTableRow>
-                </>
-              }
+                  : <>
+                    <StyledTableRow container>
+
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                    </StyledTableRow>
+                  </>
+                }
 
 
-            </TableBody>
-          </Table>
+              </TableBody>
+            </Table>
+          </Grid>
+
         </Grid>
-
-      </Grid>
+      </Box>
 
     </MenuAppBar>
   )
