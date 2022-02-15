@@ -330,7 +330,7 @@ export default function ClippedDrawer({ children }) {
   const handleversion = (v) => {
     getmenus(v.code);
     setselectedItems([])
-  
+
     setdropdown(v);
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
@@ -387,9 +387,9 @@ export default function ClippedDrawer({ children }) {
     setselectedItems([data])
   }
 
-   const handleAdminMenus=()=>{
-     history.push('/AdminAccesslist')
-   }
+  const handleAdminMenus = () => {
+    history.push('/AdminAccesslist')
+  }
 
   return (
     <div className={classes.root}>
@@ -557,13 +557,13 @@ export default function ClippedDrawer({ children }) {
 
               <Typography
                 variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center' , cursor:'pointer'}}
+                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                 onClick={handleAdminMenus}
+                onClick={handleAdminMenus}
               >
-            Admin Menus
+                Admin Menus
               </Typography>
-              
+
               <Divider />
               <Box py={1}>
 
@@ -589,7 +589,7 @@ export default function ClippedDrawer({ children }) {
                       groupBy={""}
                       // defaultValue={{ title: "Oracle To Postgres" }}
                       getOptionLabel={(option) => option.Label}
-                      style={{ width: 230, height:50 }}
+                      style={{ width: 230, height: 50 }}
                       onChange={(e, v) => handlefeature(v)}
                       renderInput={(params) => (
                         <TextField
@@ -641,7 +641,7 @@ export default function ClippedDrawer({ children }) {
 
         </Grid>
 
-        <Grid item  xs={12}>
+        <Grid item xs={12}>
           <main
             className={classes.content}
           >
