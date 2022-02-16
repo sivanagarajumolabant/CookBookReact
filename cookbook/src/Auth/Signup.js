@@ -119,145 +119,147 @@ export default function SignUp(props) {
         })
         .catch((error) => {
           setIsloading(false)
+          console.log(error.response.data)
           setNotify({
             isOpen: true,
-            message: 'Something went Wrong Please Try Again',
+            message: 'Something Went Wrong Please Try Again',
             type: 'error'
           })
-        })
 
-    }
+          })
+
+        }
 
 
   }
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="fname"
-                variant="outlined"
-                required
-                fullWidth
-                id="fname"
-                label="First Name"
-                autoFocus
-                value={state.fname}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lname"
-                label="Last Name"
-                name="lname"
-                autoComplete="lname"
-                value={state.lname}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="uname"
-                label="Username"
-                name="uname"
-                autoComplete="uname"
-                value={state.uname}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={state.email}
-                onChange={handleChange}
-              />
-            </Grid>
+    return (
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="fname"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="fname"
+                  label="First Name"
+                  autoFocus
+                  value={state.fname}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lname"
+                  label="Last Name"
+                  name="lname"
+                  autoComplete="lname"
+                  value={state.lname}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="uname"
+                  label="Username"
+                  name="uname"
+                  autoComplete="uname"
+                  value={state.uname}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={state.email}
+                  onChange={handleChange}
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={state.password}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="cpassword"
-                label="Confirm Password"
-                type="password"
-                id="cpassword"
-                autoComplete="current-password"
-                value={state.cpassword}
-                onChange={handleChange}
-              />
-            </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={state.password}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="cpassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="cpassword"
+                  autoComplete="current-password"
+                  value={state.cpassword}
+                  onChange={handleChange}
+                />
+              </Grid>
 
-          </Grid>
-          {isloading ?
-            <div style={{ marginTop: '5px' }}>
-              <center><CircularProgress /></center>
-
-            </div> : null}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSubmit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/" variant="body2">
-                Already have an account? Sign in
-              </Link>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-      <Notification
-        notify={notify}
-        setNotify={setNotify}
-      />
-    </Container>
-  );
-}
+            {isloading ?
+              <div style={{ marginTop: '5px' }}>
+                <center><CircularProgress /></center>
+
+              </div> : null}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleSubmit}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+        <Notification
+          notify={notify}
+          setNotify={setNotify}
+        />
+      </Container>
+    );
+  }

@@ -14,6 +14,7 @@ import PageNotFound from '../Features/NotFound';
 import ProtectedRoute from './PrivateRoute';
 import MenuAppBar from '../Components/header'
 import PreviewCode from '../Features/Modules/PreviewCode';
+import EmailVerify from '../Auth/EmailVerificationPage';
 
 
 
@@ -24,6 +25,7 @@ const Routing = () => {
             <Switch>
                 <Route exact path="/" component={SignIn} />
                 <Route path="/register" component={SignUp} />
+                <Route path="/emailverification" component={EmailVerify} />
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <MenuAppBar>
                     <ProtectedRoute path="/dashboard" component={Home} />
@@ -35,6 +37,7 @@ const Routing = () => {
                     {/* <Route path="*" component={PageNotFound} /> */}
                     <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
                     <ProtectedRoute path="/Request" component={Request} />
+                    
 
                 </MenuAppBar>
 

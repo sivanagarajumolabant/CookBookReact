@@ -202,6 +202,7 @@ export default function GmailTreeView({
     // history.push("/dashboard");
   };
 
+   console.log(menuList)
   return (
     <TreeView
       className={classes.root}
@@ -211,11 +212,17 @@ export default function GmailTreeView({
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
     >
-      {menuList.map((Data, Index) => {
+      <>
+       {menuList?.length>=0&&
+      <>
+      {menuList?.map((Data, Index) => {
+         if(Data){
+
+         
         return (
           <StyledTreeItem
             nodeId={Index}
-            labelText={Data.Label}
+            labelText={Data?.Label}
             labelIcon={Label}
             key={Index}
             data={Data}
@@ -223,7 +230,7 @@ export default function GmailTreeView({
             style={{ color: "white" }}
             mainheader={true}
           >
-            {Data.subMenu.map((data, index) => {
+            {Data?.subMenu?.map((data, index) => {
               return (
                 <StyledTreeItem
                   style={{ color: "white" }}
@@ -247,7 +254,10 @@ export default function GmailTreeView({
             })}
           </StyledTreeItem>
         );
+          }
       })}
+      </>}
+      </>
     </TreeView>
   );
 }
