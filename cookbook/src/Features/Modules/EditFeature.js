@@ -85,18 +85,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
+    const { details, createFeature , preview, editpreview, editPreviewdetails, headerValue} = useSelector(state => state.dashboardReducer);
+
     // console.log(props)
-    console.log("editdataprops", props.editPreviewdetails?.data)
+    console.log("editdataprops", editPreviewdetails?.data)
     const history = useHistory();
-    const [editdata, seteditdata] = useState({ detaildata: props.editPreviewdetails?.data })
-    // const editdata = { detaildata: props.editPreviewdetails?.data }
+    const [editdata, seteditdata] = useState({ detaildata: editPreviewdetails?.data })
+    // const editdata = { detaildata: editPreviewdetails?.data }
     // console.log("editdata", editdata)
     const classes = useStyles();
     const classestable = useStylestable();
 
 
 
-    const [formValues, setformvalues] = useState({ Migration_TypeId: props.editPreviewdetails?.data?.type, Object_Type: props.editPreviewdetails?.data?.Label })
+    const [formValues, setformvalues] = useState({ Migration_TypeId: editPreviewdetails?.data?.type, Object_Type: editPreviewdetails?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
 

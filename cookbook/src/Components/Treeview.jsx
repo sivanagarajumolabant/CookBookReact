@@ -21,7 +21,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";
 import ConfirmDialog from "../Features/Notifications/ConfirmDialog";
 
-
 const useTreeItemStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.text.secondary,
@@ -29,13 +28,13 @@ const useTreeItemStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
     "&:focus > $content, &$selected > $content": {
-      backgroundColor: '#0A7D7F',
+      backgroundColor: "#0A7D7F",
       color: "",
     },
     "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label":
-    {
-      backgroundColor: "transparent",
-    },
+      {
+        backgroundColor: "transparent",
+      },
   },
   content: {
     color: theme.palette.text.secondary,
@@ -76,7 +75,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
 function StyledTreeItem(props) {
   const history = useHistory();
   const classes = useTreeItemStyles();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const {
     labelText,
@@ -94,7 +93,6 @@ function StyledTreeItem(props) {
 
   return (
     <>
-
       <TreeItem
         label={
           <div className={classes.labelRoot}>
@@ -116,21 +114,19 @@ function StyledTreeItem(props) {
             </Typography>
 
             {mainheader && (
-              
               <AddIcon
                 color="inherit"
                 className={classes.labelIcon}
-                style={{ color: '#0BCD19' }}
-
-                onClick={() =>
-                  // history.push({
-                  //   pathname: "/CreateModule",
-                  //   state: {
-                  //     data: { ...data, type: props.dropdown?.name },
-
-                  //   },
-                  // })
-                  dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }, id:'createFeature'}))
+                style={{ color: "#0BCD19" }}
+                onClick={
+                  () =>
+                    history.push({
+                      pathname: "/Create",
+                      state: {
+                        data: { ...data, type: props.dropdown?.name },
+                      },
+                    })
+                  // dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }, id:'createFeature'}))
                 }
               />
             )}
@@ -154,9 +150,7 @@ function StyledTreeItem(props) {
                 }}
               />
             )} */}
-            {sub }
-
-
+            {sub}
           </div>
         }
         style={{
@@ -173,7 +167,6 @@ function StyledTreeItem(props) {
         }}
         {...other}
       />
-      
     </>
   );
 }
@@ -194,16 +187,20 @@ const useStyles = makeStyles({
   },
 });
 
-export default function GmailTreeView({ menuList, dropdown, deleteitem, confirmDialog,setConfirmDialog }) {
+export default function GmailTreeView({
+  menuList,
+  dropdown,
+  deleteitem,
+  confirmDialog,
+  setConfirmDialog,
+}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   let history = useHistory();
   const MenuSelected = (value) => {
     dispatch(ActionMenu.ActionMenu(value));
-    history.push("/dashboard");
+    // history.push("/dashboard");
   };
-
-
 
   return (
     <TreeView
@@ -232,27 +229,25 @@ export default function GmailTreeView({ menuList, dropdown, deleteitem, confirmD
                   style={{ color: "white" }}
                   sub={true}
                   onClick={() => {
-                    
-                    dispatch(ActionMenu.PreviewFeature())
-                     
-                    // dispatch(ActionMenu.Createremoved())
-                    
-                  MenuSelected(data.Feature_Id)}}
+                    // dispatch(ActionMenu.PreviewFeature())
+                    MenuSelected(data.Feature_Id);
+
+                    history.push("/PreviewCode");
+                  }}
                   nodeId={"S" + Index + index}
                   labelText={data.Feature_Name.substr(5)}
                   labelIcon={ViewModuleIcon}
                   deleteitem={deleteitem}
                   datavalue={data}
-                  confirmDialog ={confirmDialog}
+                  confirmDialog={confirmDialog}
                   setConfirmDialog={setConfirmDialog}
-                // data={data}
+                  // data={data}
                 />
               );
             })}
           </StyledTreeItem>
         );
       })}
-
     </TreeView>
   );
 }

@@ -14,13 +14,9 @@ export default function Home() {
   return (
     <div>
       <MenuAppBar>
-        {createFeature && <CreateFeature details={details}
+      
 
-headerValue={headerValue}
-        /> }
-
-        {preview&&
-          <PreviewCode />}
+        
           {editpreview&&
           <EditFeature editPreviewdetails={editPreviewdetails}/>}
 

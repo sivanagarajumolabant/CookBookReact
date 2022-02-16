@@ -126,7 +126,8 @@ export default function AdminAccesslist() {
 
   }
   return (
-    <MenuAppBar>
+    <>
+   
       <Box py={1} px={1}>
 
         <Grid container direction='row' justifyContent='center'>
@@ -401,6 +402,6 @@ export default function AdminAccesslist() {
         </Grid>
       </Box>
 
-    </MenuAppBar>
+    </>
   )
 }

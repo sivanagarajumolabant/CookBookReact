@@ -140,9 +140,10 @@ export default function PreviewCode(props) {
   const [istettdata, setIstettdata] = useState(false)
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
 
-  // console.log(menuitem);
+
 
   useEffect(() => {
+
     if (menuitem) {
       let conf = {
         headers: {
@@ -166,6 +167,7 @@ export default function PreviewCode(props) {
   }, [menuitem]);
 
   useEffect(() => {
+    // console.log("menu ", menuitem);
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -263,7 +265,7 @@ export default function PreviewCode(props) {
       "object_type": obj_type,
       "AttachmentType": att_Type,
       "id": id,
-      "fname":detaildata.Feature_Name,
+      "fname": detaildata.Feature_Name,
       responseType: 'blob',
     }
     let conf = {
@@ -289,7 +291,7 @@ export default function PreviewCode(props) {
       "file_name": fname,
       "AttachmentType": AttachmentType,
       "id": id,
-      "fname":detaildata.Feature_Name
+      "fname": detaildata.Feature_Name
     }
     let conf = {
       headers: {
@@ -373,13 +375,17 @@ export default function PreviewCode(props) {
                 component="span"
 
                 startIcon={<EditSharpIcon />}
-                onClick={() =>
+                onClick={() => {
+                  dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+
+                  history.push('/EditFeature')
+                }
                   // history.push({
                   //   pathname: `/edit/${detaildata.Feature_Id}`,
                   //   data: { detaildata },
 
                   // })
-                  dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+
                 }
               >
                 Edit
@@ -929,13 +935,19 @@ export default function PreviewCode(props) {
               component="span"
 
               startIcon={<EditSharpIcon />}
-              onClick={() =>
-                // history.push({
-                //   pathname: `/edit/${detaildata.Feature_Id}`,
-                //   data: { detaildata },
+              // onClick={() =>
+              //   // history.push({
+              //   //   pathname: `/edit/${detaildata.Feature_Id}`,
+              //   //   data: { detaildata },
 
-                // })
+              //   // })
+              //   dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+              // }
+              onClick={() => {
                 dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+
+                history.push('/EditFeature')
+              }
               }
             >
               Edit

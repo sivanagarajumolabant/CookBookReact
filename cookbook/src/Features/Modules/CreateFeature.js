@@ -94,22 +94,26 @@ const StyledAutocompleteDrop = styled(Autocomplete)({
 
 
 export default function CreateFeature(props) {
-    var obj_type = props.details?.data?.Label
+
+    const { details, createFeature , preview, editpreview, editPreviewdetails, headerValue} = useSelector(state => state.dashboardReducer);
+
+
+    var obj_type = props.location?.state?.data?.Label
     console.log("obj type ",obj_type)
     if (obj_type === 'Indexes') {
-        obj_type = obj_type.slice(0, -2);
+        obj_type = obj_type?.slice(0, -2);
     } else {
-        obj_type = obj_type.slice(0, -1);
+        obj_type = obj_type?.slice(0, -1);
     }
     console.log("obj 1 ",obj_type)
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
     // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
     const history = useHistory();
-    const [formValues, setformvalues] = useState({ Migration_TypeId: props.details?.data?.type, Object_Type: props.details?.data?.Label })
+    const [formValues, setformvalues] = useState({ Migration_TypeId: props.location?.state?.data?.type, Object_Type: props.location?.state?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
-    const { headerValue } = useSelector(state => state.dashboardReducer);
+    // const { headerValue } = useSelector(state => state.dashboardReducer);
 
     const [drop, setDrop] = useState("Source Attachments");
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -190,11 +194,11 @@ export default function CreateFeature(props) {
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
 
-     console.log(props.details?.data)
+     console.log(props.location?.state?.data)
 
     const handleSubmit = (e) => {
-        let typeval = props.details?.data?.type
-        // console.log("type data ", props.details?.data)
+        let typeval = details?.data?.type
+        // console.log("type data ", details?.data)
         // console.log("type ", typeval)
         let val;
         e.preventDefault();
