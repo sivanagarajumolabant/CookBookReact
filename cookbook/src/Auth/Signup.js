@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import { useHistory } from "react-router-dom";
 import Notification from '../Features/Notifications/Notification'
 import axios from 'axios'
 import Button from '@material-ui/core/Button';
@@ -52,6 +53,7 @@ export default function SignUp(props) {
   const classes = useStyles();
   const [isloading, setIsloading] = useState(false)
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+  const history = useHistory();
 
 
   const [state, setState] = React.useState({
@@ -111,17 +113,16 @@ export default function SignUp(props) {
             message: 'User registered Please Check And Confirm Your Email Before Login',
             type: 'Success'
           })
-
           setTimeout(() => {
-            window.location.href = '/login'
+            history.push('/')
           }, 2000);
         })
         .catch((error) => {
           setIsloading(false)
           setNotify({
             isOpen: true,
-            message: error,
-            type: 'Success'
+            message: 'Something went Wrong Please Try Again',
+            type: 'error'
           })
         })
 
@@ -227,7 +228,7 @@ export default function SignUp(props) {
 
           </Grid>
           {isloading ?
-            <div style={{marginTop:'5px'}}>
+            <div style={{ marginTop: '5px' }}>
               <center><CircularProgress /></center>
 
             </div> : null}

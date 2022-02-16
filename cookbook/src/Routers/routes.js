@@ -34,6 +34,7 @@ const Routing = () => {
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
                 <ProtectedRoute path="/Request" component={Request} />
+                <Route path="*" component={PageNotFound} />
                 </MenuAppBar>
 
             </Switch>
