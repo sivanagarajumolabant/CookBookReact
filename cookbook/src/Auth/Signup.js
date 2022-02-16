@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import Notification from '../Features/Notifications/Notification'
 import axios from 'axios'
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,7 +15,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import API_BASE_URL from '../Config/config';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import config from '../Config/config';
 
 function Copyright() {
   return (
@@ -48,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props) {
   const classes = useStyles();
-  const [msg, setMsg] = useState('')
+  const [isloading, setIsloading] = useState(false)
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
 
 
   const [state, setState] = React.useState({
@@ -66,8 +69,9 @@ export default function SignUp(props) {
       [evt.target.name]: value
     });
   }
-  let regurl = API_BASE_URL + '/register/'
+  let regurl = config.API_BASE_URL() + '/api/register/'
   function handleSubmit(e) {
+    setIsloading(true)
     e.preventDefault();
     let userinfo = {
       username: state.uname,
@@ -77,31 +81,53 @@ export default function SignUp(props) {
       first_name: state.fname,
       last_name: state.lname
     }
+    const form = new FormData();
+    Object.keys(userinfo).forEach((key) => {
+      form.append(key, userinfo[key]);
+    });
 
     if (state.uname === '' || state.password === '' || state.cpassword === '' || state.fname === '' || state.lname === '' || state.email === "") {
-      setMsg('Please Enter All Details !!')
+      setNotify({
+        isOpen: true,
+        message: 'Please Enter All Details',
+        type: 'error'
+      })
+      setIsloading(false)
     } else if ((userinfo.password !== userinfo.password2)) {
-      setMsg('Both Password and Confirm Password Are not same')
+      // setMsg('Both Password and Confirm Password Are not same')
+      setNotify({
+        isOpen: true,
+        message: 'Both Password and Confirm Password Are Not same',
+        type: 'error'
+      })
+      setIsloading(false)
     } else {
-      axios.post(regurl, userinfo)
+      axios.post(regurl, form)
         .then((res) => {
-          setMsg('User Registered Redirecting to Login Page')
+          // setMsg('User Registered Successfully Please Check')
+          setIsloading(false)
+          setNotify({
+            isOpen: true,
+            message: 'User registered Please Check And Confirm Your Email Before Login',
+            type: 'Success'
+          })
+
           setTimeout(() => {
             window.location.href = '/login'
           }, 2000);
         })
         .catch((error) => {
-          console.log(error)
-          setMsg('Something Went Wrong')
+          setIsloading(false)
+          setNotify({
+            isOpen: true,
+            message: error,
+            type: 'Success'
+          })
         })
 
     }
 
 
-  }
-  var display_msg = null;
-  if (msg.length > 0) {
-    display_msg = <Alert variant="filled" severity="info">{msg}</Alert>
   }
 
   return (
@@ -200,7 +226,11 @@ export default function SignUp(props) {
             </Grid>
 
           </Grid>
-          {display_msg}
+          {isloading ?
+            <div style={{marginTop:'5px'}}>
+              <center><CircularProgress /></center>
+
+            </div> : null}
           <Button
             type="submit"
             fullWidth
@@ -223,6 +253,10 @@ export default function SignUp(props) {
       <Box mt={5}>
         <Copyright />
       </Box>
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+      />
     </Container>
   );
 }
