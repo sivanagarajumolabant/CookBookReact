@@ -24,7 +24,7 @@ const Routing = () => {
             <Switch>
                 <Route exact path="/" component={SignIn} />
                 <Route path="/register" component={SignUp} />
-                <Route path="*" component={PageNotFound} />
+                {/* <Route path="*" component={PageNotFound} /> */}
                 <MenuAppBar>
                     <ProtectedRoute path="/dashboard" component={Home} />
                     <ProtectedRoute exact path="/create" component={CreateFeature} />
