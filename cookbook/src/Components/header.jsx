@@ -391,6 +391,11 @@ export default function ClippedDrawer({ children }) {
     history.push('/AdminAccesslist')
   }
 
+
+  const handlerequestMenus = () => {
+    history.push('/Request')
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -565,6 +570,19 @@ export default function ClippedDrawer({ children }) {
               </Typography>
 
               <Divider />
+
+              <Typography
+                variant="body2"
+                style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+
+                onClick={handlerequestMenus}
+              >
+                Request
+              </Typography>
+
+              <Divider />
+
+
               <Box py={1}>
 
                 {/* old code start */}

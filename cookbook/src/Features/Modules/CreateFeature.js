@@ -95,17 +95,17 @@ const StyledAutocompleteDrop = styled(Autocomplete)({
 
 export default function CreateFeature(props) {
 
-    const { details, createFeature , preview, editpreview, editPreviewdetails, headerValue} = useSelector(state => state.dashboardReducer);
+    const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
 
 
     var obj_type = props.location?.state?.data?.Label
-    console.log("obj type ",obj_type)
+    console.log("obj type ", obj_type)
     if (obj_type === 'Indexes') {
         obj_type = obj_type?.slice(0, -2);
     } else {
         obj_type = obj_type?.slice(0, -1);
     }
-    console.log("obj 1 ",obj_type)
+    console.log("obj 1 ", obj_type)
     const [prerunval, setPrerunval] = useState([]);
     const classes = useStyles();
     // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
@@ -194,7 +194,7 @@ export default function CreateFeature(props) {
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
 
-     console.log(props.location?.state?.data)
+    console.log(props.location?.state?.data)
 
     const handleSubmit = (e) => {
         let typeval = details?.data?.type
@@ -219,7 +219,7 @@ export default function CreateFeature(props) {
 
         let formData = {
             ...formValues,
-            Migration_TypeId:  val,//props.headerValue?.code,
+            Migration_TypeId: val,//props.headerValue?.code,
             Object_Type: obj_type,
             // 'Source_Attachment': source_att,
             // "Conversion_Attachment": target_att,
@@ -244,13 +244,18 @@ export default function CreateFeature(props) {
         axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf)
             .then(res => {
                 // setCreatedata(res)
-                console.log("createdata",res)
+                // console.log("createdata",res)
                 setNotify({
                     isOpen: true,
                     message: 'Feature Created Successfully',
                     type: 'success'
                 })
                 dispatach(Menuaction.EditPreviewFeature({ data: res.data }))
+                // history.push({
+                //     pathname: `/edit/${res.data}`,
+                //     data: { createdata },
+
+                // })
             }, error => {
                 console.log(error);
                 setNotify({
@@ -271,9 +276,9 @@ export default function CreateFeature(props) {
         // })
 
         dispatach(Menuaction.reloadAction(true))
-       
 
-      
+
+
     }
 
 
@@ -283,7 +288,7 @@ export default function CreateFeature(props) {
             ...formValues,
             [e.target.name]: e.target.value
         })
-        console.log("fn list",fnlist)
+        console.log("fn list", fnlist)
         if (e.target.name === 'Feature_Name') {
             if (fnlist.length > 0) {
                 // let fnvalue = fnlist.Feature_Name.substr(5)
@@ -362,7 +367,7 @@ export default function CreateFeature(props) {
             <Grid container direction='row' spacing={4}>
 
                 <Grid item xs={12} sm={6} md={6} xl={6}>
-                    
+
 
                     <TextField
                         id="outlined-multiline-static"
@@ -384,7 +389,7 @@ export default function CreateFeature(props) {
 
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} xl={6}>
-                   
+
 
                     <TextField
                         id="outlined-multiline-static"
@@ -503,7 +508,7 @@ export default function CreateFeature(props) {
 
             </Grid>
 
-            
+
 
 
 
@@ -516,7 +521,7 @@ export default function CreateFeature(props) {
 
                 <Grid container direction='row ' justifyContent='center' spacing={2}>
 
-                   
+
                     <Grid item>
                         <Button
                             type="submit"
@@ -532,10 +537,10 @@ export default function CreateFeature(props) {
                         </Button>
                     </Grid>
 
-                    
+
                 </Grid>
             </Box>
-           
+
 
 
 

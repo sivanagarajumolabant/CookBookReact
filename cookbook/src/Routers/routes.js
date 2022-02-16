@@ -7,6 +7,7 @@ import SignUp from '../Auth/Signup';
 import ClippedDrawer from '../Components/header';
 import Home from '../Features/Home';
 import AdminAccesslist from '../Features/Modules/AdminAccesslist';
+import Request from '../Features/Modules/AccessRequest';
 import CreateFeature from '../Features/Modules/CreateFeature';
 import EditFeature from '../Features/Modules/EditFeature';
 import PageNotFound from '../Features/NotFound';
@@ -32,6 +33,7 @@ const Routing = () => {
                 {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
+                <ProtectedRoute path="/Request" component={Request} />
                 </MenuAppBar>
 
             </Switch>

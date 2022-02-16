@@ -441,6 +441,7 @@ export default function EditFeature(props) {
                     type: 'success'
                 })
                 setFupdate(true)
+
             }, error => {
                 console.log(error)
                 setNotify({
@@ -448,8 +449,9 @@ export default function EditFeature(props) {
                     message: error.response.data.error,
                     type: 'error'
                 })
+                setFupdate(true)
             })
-
+        setFupdate(false)
 
     }
 
