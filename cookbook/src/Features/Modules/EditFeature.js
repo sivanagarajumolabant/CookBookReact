@@ -85,10 +85,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditFeature(props) {
-    const { details, createFeature , preview, editpreview, editPreviewdetails, headerValue} = useSelector(state => state.dashboardReducer);
+    const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
 
     // console.log(props)
-    console.log("editdataprops", editPreviewdetails?.data)
+    // console.log("editdataprops", editPreviewdetails?.data)
     const history = useHistory();
     const [editdata, seteditdata] = useState({ detaildata: editPreviewdetails?.data })
     // const editdata = { detaildata: editPreviewdetails?.data }
@@ -141,7 +141,7 @@ export default function EditFeature(props) {
 
 
     useEffect((e) => {
-        if (editdata) {
+        if (editdata.detaildata) {
             setSource_FeatureDescription(editdata.detaildata.Source_FeatureDescription)
             setTarget_FeatureDescription(editdata.detaildata.Target_FeatureDescription)
             setSource_Code(editdata.detaildata.Source_Code)
@@ -162,82 +162,107 @@ export default function EditFeature(props) {
 
 
     useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setSource_att(res.data)
-                console.log(res.data)
-                if (res.data.length > 0) {
-                    setIssattdata(true)
+        if (!editdata.detaildata) {
+            history.push({
+                pathname: "/dashboard",
+            })
+        } else {
+            let conf = {
+                headers: {
+                    'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
                 }
-            },
-            (error) => {
-                console.log(error);
             }
-        );
+            axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${editdata.detaildata.Feature_Id}`, conf).then(
+                (res) => {
+                    setSource_att(res.data)
+                    console.log(res.data)
+                    if (res.data.length > 0) {
+                        setIssattdata(true)
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        }
+
     }, [fupdate])
     useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.get(`${config.API_BASE_URL()}/api/targetdesc/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setTarget_att(res.data)
-                if (res.data.length > 0) {
-                    setIstattdata(true)
+        if (!editdata.detaildata) {
+            history.push({
+                pathname: "/dashboard",
+            })
+        } else {
+            let conf = {
+                headers: {
+                    'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
                 }
-            },
-            (error) => {
-                console.log(error);
             }
-        );
-    }, [fupdate])
-
-    useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-        }
-        axios.get(`${config.API_BASE_URL()}/api/convatt/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setConv_att(res.data)
-                if (res.data.length > 0) {
-                    setIscattdata(true)
+            axios.get(`${config.API_BASE_URL()}/api/targetdesc/${editdata.detaildata.Feature_Id}`, conf).then(
+                (res) => {
+                    setTarget_att(res.data)
+                    if (res.data.length > 0) {
+                        setIstattdata(true)
+                    }
+                },
+                (error) => {
+                    console.log(error);
                 }
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-
+            );
+        }
     }, [fupdate])
 
     useEffect(() => {
-        let conf = {
-            headers: {
-                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-            }
-
-        }
-        axios.get(`${config.API_BASE_URL()}/api/codefiles/${editdata.detaildata.Feature_Id}`, conf).then(
-            (res) => {
-                setSource_codeatt(res.data)
-                console.log(res.data)
-                if (res.data.length > 0) {
-                    setIsscattdata(true)
+        if (!editdata.detaildata) {
+            history.push({
+                pathname: "/dashboard",
+            })
+        } else {
+            let conf = {
+                headers: {
+                    'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
                 }
-            },
-            (error) => {
-                console.log(error);
             }
-        );
+            axios.get(`${config.API_BASE_URL()}/api/convatt/${editdata.detaildata.Feature_Id}`, conf).then(
+                (res) => {
+                    setConv_att(res.data)
+                    if (res.data.length > 0) {
+                        setIscattdata(true)
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        }
+
+    }, [fupdate])
+
+    useEffect(() => {
+        if (!editdata.detaildata) {
+            history.push({
+                pathname: "/dashboard",
+            })
+        } else {
+            let conf = {
+                headers: {
+                    'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+                }
+
+            }
+            axios.get(`${config.API_BASE_URL()}/api/codefiles/${editdata.detaildata.Feature_Id}`, conf).then(
+                (res) => {
+                    setSource_codeatt(res.data)
+                    console.log(res.data)
+                    if (res.data.length > 0) {
+                        setIsscattdata(true)
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        }
     }, [fupdate])
 
 
@@ -838,7 +863,7 @@ export default function EditFeature(props) {
                                 <p>{'Source Description'}</p>
                                 <CKEditor
                                     editor={ClassicEditor}
-                                    data={editdata.detaildata.Source_FeatureDescription}
+                                    data={editdata.detaildata?.Source_FeatureDescription}
                                     // value ={editdata.detaildata.Source_FeatureDescription}
                                     onReady={editor => {
                                         // You can store the "editor" and use when it is needed.
@@ -875,7 +900,7 @@ export default function EditFeature(props) {
                                 <p>{'Target Description'}</p>
                                 <CKEditor
                                     editor={ClassicEditor}
-                                    data={editdata.detaildata.Target_FeatureDescription}
+                                    data={editdata.detaildata?.Target_FeatureDescription}
                                     onReady={editor => {
                                         // You can store the "editor" and use when it is needed.
                                         console.log('Editor is ready to use!', editor);

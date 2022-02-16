@@ -167,7 +167,7 @@ export default function PreviewCode(props) {
   }, [menuitem]);
 
   useEffect(() => {
-    // console.log("menu ", menuitem);
+    console.log("menus ", menuitem);
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -184,7 +184,7 @@ export default function PreviewCode(props) {
         console.log(error);
       }
     );
-  }, [])
+  }, [menuitem])
   useEffect(() => {
     let conf = {
       headers: {
@@ -202,7 +202,7 @@ export default function PreviewCode(props) {
         console.log(error);
       }
     );
-  }, [])
+  }, [menuitem])
 
   useEffect(() => {
     let conf = {
@@ -222,7 +222,7 @@ export default function PreviewCode(props) {
       }
     );
 
-  }, [])
+  }, [menuitem])
 
   useEffect(() => {
     let conf = {
@@ -242,7 +242,7 @@ export default function PreviewCode(props) {
         console.log(error);
       }
     );
-  }, [])
+  }, [menuitem])
 
 
 
