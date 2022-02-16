@@ -12,7 +12,7 @@ import CreateFeature from '../Features/Modules/CreateFeature';
 import EditFeature from '../Features/Modules/EditFeature';
 import PageNotFound from '../Features/NotFound';
 import ProtectedRoute from './PrivateRoute';
- import MenuAppBar from '../Components/header'
+import MenuAppBar from '../Components/header'
 import PreviewCode from '../Features/Modules/PreviewCode';
 
 
@@ -20,25 +20,27 @@ import PreviewCode from '../Features/Modules/PreviewCode';
 const Routing = () => {
     return (
         <BrowserRouter>
-       
+
             <Switch>
                 <Route exact path="/" component={SignIn} />
-                <Route  path="/register" component={SignUp} />
-                <MenuAppBar>
-                <ProtectedRoute  path="/dashboard" component={Home} />
-                <ProtectedRoute exact path="/create" component={CreateFeature} />
-                <ProtectedRoute exact path="/PreviewCode" component={PreviewCode} />
-                <ProtectedRoute exact path="/EditFeature" component={EditFeature} />
-                
-                {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
-                {/* <Route path="*" component={PageNotFound} /> */}
-                <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
-                <ProtectedRoute path="/Request" component={Request} />
+                <Route path="/register" component={SignUp} />
                 <Route path="*" component={PageNotFound} />
+                <MenuAppBar>
+                    <ProtectedRoute path="/dashboard" component={Home} />
+                    <ProtectedRoute exact path="/create" component={CreateFeature} />
+                    <ProtectedRoute exact path="/PreviewCode" component={PreviewCode} />
+                    <ProtectedRoute exact path="/EditFeature" component={EditFeature} />
+
+                    {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
+                    {/* <Route path="*" component={PageNotFound} /> */}
+                    <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
+                    <ProtectedRoute path="/Request" component={Request} />
+
                 </MenuAppBar>
 
+
             </Switch>
-         
+
         </BrowserRouter>
 
 
