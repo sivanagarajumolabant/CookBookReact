@@ -577,7 +577,7 @@ export default function ClippedDrawer({ children }) {
 
                 onClick={handlerequestMenus}
               >
-                Request
+                Feature Catalog
               </Typography>
 
               <Divider />

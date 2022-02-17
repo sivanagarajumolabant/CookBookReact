@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles,withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
-
+import GetAppIcon from '@material-ui/icons/GetApp';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -33,7 +33,50 @@ import config from '../../Config/config';
 // import Font from '@ckeditor/ckeditor5-font/src/font';
 
 
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+        backgroundColor: '#3f51b5',
+        color: theme.palette.common.white,
+    },
+    root: {
+        padding: "0px 16px",
+    },
+
+    body: {
+        fontSize: 14,
+    },
+}))(TableCell);
+const useStylestable = makeStyles({
+    table: {
+        minWidth: 100,
+        // width:10
+    },
+
+});
+
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+
+        },
+
+        height: 10
+
+    },
+}))(TableRow);
+
 const useStyles = makeStyles((theme) => ({
+    texttablecell: {
+        overflowX: 'hidden',
+        whiteSpace: "nowrap",
+        width: "140px",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        // '&:hover': {
+        //     overflow: 'visible'
+        // }
+    },
     table: {
         // minWidth: 150,
         width: '60%',
@@ -41,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
         border: '1px black'
     }, formControl: {
         margin: theme.spacing(0),
-        minWidth: 300,
+        minWidth: 220,
     },
     root: {
         '& .MuiTextField-root': {
@@ -94,22 +137,24 @@ const StyledAutocompleteDrop = styled(Autocomplete)({
 
 
 export default function CreateFeature(props) {
-
-    const { details, createFeature , preview, editpreview, editPreviewdetails, headerValue} = useSelector(state => state.dashboardReducer);
+    const classes = useStyles();
+    const classestable = useStylestable();
+    const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
 
 
     var obj_type = props.location?.state?.data?.Label
-    console.log("obj type ",obj_type)
+    console.log("obj type ", obj_type)
     if (obj_type === 'Indexes') {
         obj_type = obj_type?.slice(0, -2);
     } else {
         obj_type = obj_type?.slice(0, -1);
     }
-    console.log("obj 1 ",obj_type)
+    console.log("obj 1 ", obj_type)
     const [prerunval, setPrerunval] = useState([]);
-    const classes = useStyles();
+    
     // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
     const history = useHistory();
+    
     const [formValues, setformvalues] = useState({ Migration_TypeId: props.location?.state?.data?.type, Object_Type: props.location?.state?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
@@ -194,7 +239,7 @@ export default function CreateFeature(props) {
     const dispatach = useDispatch()
     // console.log(props.location.state?.data?.type)
 
-     console.log(props.location?.state?.data)
+    console.log(props.location?.state?.data)
 
     const handleSubmit = (e) => {
         let typeval = details?.data?.type
@@ -219,7 +264,7 @@ export default function CreateFeature(props) {
 
         let formData = {
             ...formValues,
-            Migration_TypeId:  val,//props.headerValue?.code,
+            Migration_TypeId: val,//props.headerValue?.code,
             Object_Type: obj_type,
             // 'Source_Attachment': source_att,
             // "Conversion_Attachment": target_att,
@@ -244,14 +289,14 @@ export default function CreateFeature(props) {
         axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf)
             .then(res => {
                 // setCreatedata(res)
-                console.log("createdata",res)
+                console.log("createdata", res)
                 setNotify({
                     isOpen: true,
                     message: 'Feature Created Successfully',
                     type: 'success'
                 })
                 dispatach(Menuaction.EditPreviewFeature({ data: res.data }))
-              
+
                 history.push('/EditFeature')
             }, error => {
                 console.log(error);
@@ -273,9 +318,9 @@ export default function CreateFeature(props) {
         // })
 
         dispatach(Menuaction.reloadAction(true))
-       
 
-      
+
+
     }
 
 
@@ -285,7 +330,7 @@ export default function CreateFeature(props) {
             ...formValues,
             [e.target.name]: e.target.value
         })
-        console.log("fn list",fnlist)
+        console.log("fn list", fnlist)
         if (e.target.name === 'Feature_Name') {
             if (fnlist.length > 0) {
                 // let fnvalue = fnlist.Feature_Name.substr(5)
@@ -363,8 +408,8 @@ export default function CreateFeature(props) {
             {/* <form autoComplete="off"> */}
             <Grid container direction='row' spacing={4}>
 
-                <Grid item xs={12} sm={6} md={6} xl={6}>
-                    
+                <Grid item xs={12} sm={3} md={3} xl={3}>
+
 
                     <TextField
                         id="outlined-multiline-static"
@@ -385,8 +430,8 @@ export default function CreateFeature(props) {
                     />
 
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} xl={6}>
-                   
+                <Grid item xs={12} sm={3} md={3} xl={3}>
+
 
                     <TextField
                         id="outlined-multiline-static"
@@ -413,7 +458,7 @@ export default function CreateFeature(props) {
 
 
 
-                <Grid item xs={12} sm={4} md={4} xl={4}>
+                <Grid item xs={12} sm={3} md={3} xl={3}>
                     <TextField
                         id="outlined-multiline-static"
                         label="Feature Name"
@@ -437,7 +482,7 @@ export default function CreateFeature(props) {
 
                 </Grid>
 
-                <Grid item xs={12} sm={4} md={4} xl={4}>
+                <Grid item xs={12} sm={3} md={3} xl={3}>
                     <Autocomplete
                         fullWidth
                         id="grouped-demo"
@@ -472,7 +517,7 @@ export default function CreateFeature(props) {
 
 
                 </Grid>
-                <Grid item xs={12} sm={4} md={4} xl={4}>
+                <Grid item xs={6} sm={3} md={3} xl={3}>
 
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel >Predecessor</InputLabel>
@@ -500,25 +545,87 @@ export default function CreateFeature(props) {
                 </Grid>
 
 
+                <Grid item xs={12} sm={3} md={3} xl={3}>
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Keywords"
+                        multiline
+                        rows={1}
+                        // onChange={(e) => handleChange(e)}
+                        name='Keywords'
+                        // defaultValue="Default Value"
+                        // helperText={featurenamemsg}
+                        className={classes.textField}
+                        // helperText="Some important text"
+                        variant="outlined"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        fullWidth
+                        multiline
+                        rows={2}
+                        maxRows={4}
+
+                    />
+
+
+                </Grid>
+
+                <Grid item xs={12} sm={3} md={3} xl={3}>
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Estimation"
+                        multiline
+                        rows={1}
+                        // onChange={(e) => handleChange(e)}
+                        name='Estimation'
+                        // defaultValue="Default Value"
+                        // helperText={featurenamemsg}
+                        className={classes.textField}
+                        // helperText="Some important text"
+                        variant="outlined"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        multiline
+                        rows={2}
+                        maxRows={4}
+                        fullWidth
+
+                    />
+
+
+                </Grid>
+
+                <Grid item xs={6} sm={1} md={2} xl={1}>
+                    <Button
+                        size='small'
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        // className={classes.submit}
+                        onClick={handleSubmit}
+                        startIcon={<SaveIcon />}
+                        style={{ marginTop: 12, marginLeft: 50 }}
+                    >
+                        Save
+                    </Button>
+                </Grid>
 
 
 
             </Grid>
 
-            
-
-
-
-
             <Notification
                 notify={notify}
                 setNotify={setNotify}
             />
-            <Box py={5}>
+            {/* <Box py={5}>
 
                 <Grid container direction='row ' justifyContent='center' spacing={2}>
 
-                   
+
                     <Grid item>
                         <Button
                             type="submit"
@@ -534,69 +641,58 @@ export default function CreateFeature(props) {
                         </Button>
                     </Grid>
 
-                    
-                </Grid>
-            </Box>
-           
 
+                </Grid>
+            </Box> */}
+
+            <Grid container xl={12} justifyContent="space-between" spacing={3}>
+                <Grid item xl={12} xs={12} sm={12} md={12}>
+                    <Typography
+                        gutterBottom
+                        align='center'
+                        variant="h6"
+                        component="h2"
+                        className={classes.Object_Type}
+                    >
+                        Features List
+                    </Typography>
+                    <Table className={classestable.table} aria-label="customized table">
+                        <TableHead className={classes.primary}>
+                            <TableRow>
+                                {/* <StyledTableCell align="center">Type</StyledTableCell> */}
+                                <StyledTableCell align="center">File</StyledTableCell>
+                                <StyledTableCell align="center">Actions</StyledTableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+
+                            <StyledTableRow container>
+                                {/* <StyledTableCell item xl={5}>
+                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
+                                                </StyledTableCell> */}
+                                <StyledTableCell item xl={10} >
+                                    <div className={classes.texttablecell}></div>
+                                </StyledTableCell>
+                                <StyledTableCell item xl={2}>
+                                    <Box flexDirection="row" >
+
+                                        <IconButton onClick={(e) => { }}>
+                                            <GetAppIcon style={{ color: 'blue' }} />
+                                        </IconButton>
+                                    </Box>
+                                </StyledTableCell>
+
+                            </StyledTableRow>
+
+
+                        </TableBody>
+                    </Table>
+                </Grid>
+            </Grid>
 
 
         </ >
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// <Grid item xs={12} sm={12} md={12} xl={12}>
-
-
-// {/* <TextField
-//     id="outlined-multiline-static"
-//     label="Target Description"
-
-//     fullWidth
-//     name='Target_FeatureDescription'
-//     multiline
-//     rows={15}
-//     onChange={(e) => handleChange(e)}
-//     // defaultValue="Default Value"
-//     variant="outlined"
-//     required
-// /> */}
-// <div className="App">
-//     <h2>{"Target Description"}</h2>
-//     <CKEditor
-//         editor={ClassicEditor}
-//         // data="<p>Hello from CKEditor 5!</p>"
-//         onReady={editor => {
-//             // You can store the "editor" and use when it is needed.
-//             console.log('Editor is ready to use!', editor);
-//         }}
-//         onChange={(event, editor) => {
-//             const data = editor.getData();
-//             handletarget(data)
-//             // console.log( { event, editor, data } );
-//         }}
-//         onBlur={(event, editor) => {
-//             console.log('Blur.', editor);
-//         }}
-//         onFocus={(event, editor) => {
-//             console.log('Focus.', editor);
-//         }}
-//     />
-// </div>
-// </Grid>
 
