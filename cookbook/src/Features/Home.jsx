@@ -7,20 +7,20 @@ import CreateFeature from '../Features/Modules/CreateFeature'
 import { useSelector } from "react-redux";
 import EditFeature from "./Modules/EditFeature";
 export default function Home() {
-  const { details, createFeature , preview, editpreview, editPreviewdetails, headerValue} = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
 
 
-   console.log(details, headerValue)
+  console.log(details, headerValue)
   return (
     <div>
-      <MenuAppBar>
-      
+      {/* <MenuAppBar> */}
+      <>
 
-        
-          {editpreview&&
-          <EditFeature editPreviewdetails={editPreviewdetails}/>}
 
-      </MenuAppBar>
+
+        {/* {editpreview &&
+          <EditFeature editPreviewdetails={editPreviewdetails} />} */}
+      </>
     </div>
   );
 }

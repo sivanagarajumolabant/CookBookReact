@@ -328,7 +328,7 @@ export default function ClippedDrawer({ children }) {
   }, []);
 
   const handleversion = (v) => {
-    getmenus(v.code);
+    getmenus(v?.code);
     setselectedItems([])
 
     setdropdown(v);

@@ -209,7 +209,7 @@ export default function CreateFeature(props) {
                 console.log(error);
             }
         );
-    }, [obj_type, headerValue.title]);
+    }, [obj_type, headerValue?.title]);
 
     useEffect(() => {
         let body = {
