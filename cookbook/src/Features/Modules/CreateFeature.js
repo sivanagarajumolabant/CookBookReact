@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles,withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import EditSharpIcon from "@material-ui/icons/EditSharp";
 import FormControl from '@material-ui/core/FormControl';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Table from '@material-ui/core/Table';
@@ -151,10 +152,10 @@ export default function CreateFeature(props) {
     }
     console.log("obj 1 ", obj_type)
     const [prerunval, setPrerunval] = useState([]);
-    
+
     // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
     const history = useHistory();
-    
+
     const [formValues, setformvalues] = useState({ Migration_TypeId: props.location?.state?.data?.type, Object_Type: props.location?.state?.data?.Label })
     const [file, setfile] = useState([])
     // const [AttachmentList, setAttachmentList] = useState({})
@@ -164,6 +165,8 @@ export default function CreateFeature(props) {
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [createdata, setCreatedata] = useState([])
     const [fnlist, setFnlist] = useState([])
+    const [tableinfo, setTableinfo] = useState([])
+    const [istdata, setIstdata] = useState(false)
     const [featurenamemsg, setFeaturenamemsg] = useState();
     // const [migtypeid, setMigtypeid] = useState()
 
@@ -207,6 +210,33 @@ export default function CreateFeature(props) {
             }
         );
     }, [obj_type, headerValue.title]);
+
+    useEffect(() => {
+        let body = {
+            "Object_Type": obj_type,
+            "Migration_TypeId": sval
+
+        }
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        const form = new FormData();
+        Object.keys(body).forEach((key) => {
+            form.append(key, body[key]);
+        });
+        axios.post(`${config.API_BASE_URL()}/api/tablesdata/`, form, conf).then(
+            (res) => {
+                setTableinfo(res.data)
+                setIstdata(true)
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, []);
+
 
     useEffect(() => {
 
@@ -390,6 +420,9 @@ export default function CreateFeature(props) {
 
     }
 
+    const handleEditmodal = () => {
+
+    }
 
     return (
 
@@ -551,7 +584,7 @@ export default function CreateFeature(props) {
                         label="Keywords"
                         multiline
                         rows={1}
-                        // onChange={(e) => handleChange(e)}
+                        onChange={(e) => handleChange(e)}
                         name='Keywords'
                         // defaultValue="Default Value"
                         // helperText={featurenamemsg}
@@ -577,8 +610,8 @@ export default function CreateFeature(props) {
                         label="Estimation"
                         multiline
                         rows={1}
-                        // onChange={(e) => handleChange(e)}
-                        name='Estimation'
+                        onChange={(e) => handleChange(e)}
+                        name='Estimations'
                         // defaultValue="Default Value"
                         // helperText={featurenamemsg}
                         className={classes.textField}
@@ -607,7 +640,7 @@ export default function CreateFeature(props) {
                         // className={classes.submit}
                         onClick={handleSubmit}
                         startIcon={<SaveIcon />}
-                        style={{ marginTop: 12, marginLeft: 50 }}
+                        style={{ marginTop: 12, marginLeft: 60 }}
                     >
                         Save
                     </Button>
@@ -659,31 +692,63 @@ export default function CreateFeature(props) {
                     <Table className={classestable.table} aria-label="customized table">
                         <TableHead className={classes.primary}>
                             <TableRow>
-                                {/* <StyledTableCell align="center">Type</StyledTableCell> */}
-                                <StyledTableCell align="center">File</StyledTableCell>
+                                <StyledTableCell align="center">Feature Name</StyledTableCell>
+                                <StyledTableCell align="center">Predecessor</StyledTableCell>
+                                <StyledTableCell align="center">Keywords</StyledTableCell>
+                                <StyledTableCell align="center">Estimation</StyledTableCell>
                                 <StyledTableCell align="center">Actions</StyledTableCell>
 
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            {istdata && tableinfo.length > 0 ?
+                                <>
+                                    {tableinfo.map((row) => (
+                                        < StyledTableRow container>
+                                            <StyledTableCell item xl={10} align="center">
+                                                <div className={classes.texttablecell}>{row.Feature_Name}</div>
+                                            </StyledTableCell>
+                                            <StyledTableCell item xl={10} align="center">
+                                                <div className={classes.texttablecell}>{row.Sequence}</div>
+                                            </StyledTableCell>
+                                            <StyledTableCell item xl={10} align="center">
+                                                <div className={classes.texttablecell}>{row.Keywords}</div>
+                                            </StyledTableCell>
+                                            <StyledTableCell item xl={10} align="center">
+                                                <div className={classes.texttablecell}>{row.Estimations}</div>
+                                            </StyledTableCell>
+                                            <StyledTableCell item xl={10} align="center">
+                                                <div className={classes.texttablecell}>
+                                                    <IconButton onClick={(e) => { handleEditmodal() }}>
+                                                        <EditSharpIcon style={{ color: 'blue' }} />
+                                                    </IconButton>
+                                                </div>
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                                </>
+                                :
+                                <>
+                                    < StyledTableRow container>
 
-                            <StyledTableRow container>
-                                {/* <StyledTableCell item xl={5}>
-                                                    <div className={classes.texttablecell}>{row.AttachmentType}</div>
-                                                </StyledTableCell> */}
-                                <StyledTableCell item xl={10} >
-                                    <div className={classes.texttablecell}></div>
-                                </StyledTableCell>
-                                <StyledTableCell item xl={2}>
-                                    <Box flexDirection="row" >
+                                        <StyledTableCell item xl={10} align="center">
 
-                                        <IconButton onClick={(e) => { }}>
-                                            <GetAppIcon style={{ color: 'blue' }} />
-                                        </IconButton>
-                                    </Box>
-                                </StyledTableCell>
+                                        </StyledTableCell>
+                                        <StyledTableCell item xl={10} align="center">
 
-                            </StyledTableRow>
+                                        </StyledTableCell>
+                                        <StyledTableCell item xl={10} align="center">
+                                            No Data Found
+                                        </StyledTableCell>
+                                        <StyledTableCell item xl={10} align="center">
+
+                                        </StyledTableCell>
+                                        <StyledTableCell item xl={10} align="center">
+
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                </>
+                            }
 
 
                         </TableBody>
