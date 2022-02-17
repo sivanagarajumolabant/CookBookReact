@@ -12,6 +12,7 @@ import Select from '@material-ui/core/Select';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { useSelector } from 'react-redux';
 
 
 const useStylestable = makeStyles((theme) => ({
@@ -75,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '25ch',
+      width: '20ch',
     },
   },
   rootc: {
@@ -120,6 +121,8 @@ export default function AdminAccesslist() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+
 
 
   const handleversion = () => {
@@ -127,7 +130,7 @@ export default function AdminAccesslist() {
   }
   return (
     <>
-   
+
       <Box py={1} px={1}>
 
         <Grid container direction='row' justifyContent='center'>
@@ -142,46 +145,51 @@ export default function AdminAccesslist() {
       <Box py={2} px={2}>
         <Grid container direction='row' spacing={1}>
 
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4} md={4} xl={4}>
 
-            <StyledAutocomplete
-              size="small"
-              id="grouped-demo"
-              className={classes.inputRoottype}
-              options={[
-                { title: "Oracle TO Postgres", code: 1 },
-                { title: "SQLServer TO Postgres", code: 2 },
-                { title: "MYSQL TO Postgres", code: 3 },
-              ]}
-              groupBy={""}
-              defaultValue={{ title: "Oracle TO Postgres" }}
-              getOptionLabel={(option) => option.title}
+            <TextField
+              id="outlined-multiline-static"
+              label="Migration Type"
+              multiline
+              rows={1}
+              // onChange={(e) => handleChange(e)}
+              label="Migration Type"
+              defaultValue="Default Value"
+              value={headerValue?.title}
+              variant="outlined"
+              size='small'
+              required
+              disabled
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
               style={{ width: 300 }}
-              onChange={(e, v) => handleversion(v)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="MigrationTypes"
-                  variant="outlined"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                />
-              )}
             />
           </Grid>
-          <Grid item xs={4} >
+          <Grid item xs={12} sm={4} md={4} xl={4}>
 
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
               options={[
-                { title: "Procedures" },
+                { title: "Procedure" },
+                { title: "Function" },
+                { title: "View" },
+                { title: "Index" },
+                { title: "Package" },
+                { title: "Trigger" },
+                { title: "Sequence" },
+                { title: "Synonym" },
+                { title: "Material View" },
+                { title: "Type" },
+                { title: "Table" },
+                { title: "All" },
 
               ]}
               groupBy={""}
-              defaultValue={{ title: "Procedures" }}
+              defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
               onChange={(e, v) => handleversion(v)}
@@ -198,7 +206,7 @@ export default function AdminAccesslist() {
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4} md={4} xl={4}>
 
             <StyledAutocomplete
               size="small"

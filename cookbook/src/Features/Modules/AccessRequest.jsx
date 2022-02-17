@@ -121,7 +121,7 @@ export default function Request() {
   const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
 
-  console.log(headerValue.title)
+  // console.log(headerValue.title)
   const handleversion = () => {
 
   }
@@ -158,6 +158,7 @@ export default function Request() {
               value={headerValue.title}
               size='small'
               disabled
+              style={{ width: 300 }}
 
             />
           </Grid>
