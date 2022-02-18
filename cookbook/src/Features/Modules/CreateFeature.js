@@ -139,10 +139,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   item: {
-      justifyContent:"center",
-      justifyItems:"center",
-      position:"relative",
-    marginBottom: theme.spacing(8),
+    justifyContent: "center",
+    justifyItems: "center",
+    position: "relative",
+    marginBottom: theme.spacing(6),
   },
 }));
 
@@ -223,6 +223,8 @@ export default function CreateFeature(props) {
   const [tableinfo, setTableinfo] = useState([]);
   const [istdata, setIstdata] = useState(false);
   const [featurenamemsg, setFeaturenamemsg] = useState();
+  const [fid, setFid] = useState()
+  const [modalupdate, setModalupdate] = useState(false)
   // const [migtypeid, setMigtypeid] = useState()
 
   // const [seq, setSeq]=useState({})
@@ -283,9 +285,9 @@ export default function CreateFeature(props) {
         console.log(error);
       }
     );
-  }, []);
+  }, [modalupdate]);
 
-  useEffect(() => {}, [formValues]);
+  useEffect(() => { }, [formValues]);
 
   useEffect(() => {
     let body = {
@@ -440,22 +442,77 @@ export default function CreateFeature(props) {
     });
   };
 
-  const handledes = (data) => {
-    setformvalues({
-      ...formValues,
-      Source_FeatureDescription: data,
-    });
-  };
-  const handletarget = (data) => {
-    setformvalues({
-      ...formValues,
-      Target_FeatureDescription: data,
-    });
+  // const handledes = (data) => {
+  //   setformvalues({
+  //     ...formValues,
+  //     Source_FeatureDescription: data,
+  //   });
+  // };
+  // const handletarget = (data) => {
+  //   setformvalues({
+  //     ...formValues,
+  //     Target_FeatureDescription: data,
+  //   });
+  // };
+
+  const handleEditmodal = (featuredata) => {
+    console.log(featuredata)
+    featuredata.map((feature) => {
+      if (feature.Feature_Id === fid) {
+
+        let formData = {
+          ...formValues,
+          Migration_TypeId: feature.Migration_TypeId,
+          Object_Type: feature.Object_Type,
+          Feature_Name: String(feature.Feature_Name).substr(5),
+          // Source_FeatureDescription, Target_FeatureDescription,
+          // "Sequence": '',
+          "Source_FeatureDescription": feature.Source_FeatureDescription,
+          "Target_FeatureDescription": feature.Target_FeatureDescription,
+          "Target_Expected_Output": feature.Target_Expected_Output,
+          "Target_ActualCode": feature.Target_ActualCode,
+          "Source_Code": feature.Source_Code,
+          "Conversion_Code": feature.Conversion_Code,
+          // "Keywords":,
+          // "Estimations":'',
+        }
+        const form = new FormData();
+        Object.keys(formData).forEach((key) => {
+
+          form.append(key, formData[key]);
+
+        });
+        let conf = {
+          headers: {
+            'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+          }
+        }
+        axios.put(`${config.API_BASE_URL()}/api/fupdate/${feature.Feature_Id}`, form, conf)
+          .then(res => {
+            setNotify({
+              isOpen: true,
+              message: 'Feature Updated Successfully',
+              type: 'success'
+            })
+            setModalupdate(true)
+            setOpen(false)
+          }, error => {
+            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong! Please try Again',
+              type: 'error'
+            })
+            setModalupdate(true)
+          })
+        setModalupdate(false)
+
+      }
+    })
+
+
   };
 
-  const handleEditmodal = () => {
-    alert("fdghksfjdbgk");
-  };
 
   return (
     <>
@@ -697,15 +754,16 @@ export default function CreateFeature(props) {
               {istdata && tableinfo.length > 0 ? (
                 <>
                   {tableinfo.map((row) => (
+
                     <StyledTableRow container>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Feature_Name}
+                          {row.Feature_Name.substr(5)}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Sequence}
+                          {row.Sequence === 'No Predecessor' ? row.Sequence : row.Sequence.substr(5)}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
@@ -728,10 +786,117 @@ export default function CreateFeature(props) {
                         <Tooltip
                           title="Edit"
                           aria-label="Edit"
-                          onClick={() => setOpen(true)}
+                          onClick={() => { setOpen(true); setFid(row.Feature_Id) }}
                         >
                           <EditSharpIcon style={{ color: "blue" }} />
                         </Tooltip>
+                        <Modal open={open}>
+                          <Container className={classes.container}>
+                            <Typography
+                              gutterBottom
+                              align="center"
+                              variant="h6"
+                              component="h2"
+                              className={classes.Object_Type}
+                            >
+                              Edit Feature
+                            </Typography>
+                            {/* <form className={classes.form} autoComplete="off"> */}
+                            <div className={classes.item}>
+
+                              <FormControl fullWidth variant="outlined" className={classes.formControl}>
+                                <InputLabel>Predecessor</InputLabel>
+                                <Select
+                                  native
+                                  // value={row.Sequence}
+                                  onChange={(e) => handleChange(e)}
+                                  label="Predecessor"
+                                  name="Sequence"
+                                  defaultValue={row.Sequence}
+                                  required
+
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                >
+                                  {" "}
+                                  <option value="Select Predecessor" selected>
+                                    Select Predecessor
+                                  </option>
+                                  <option value="No Predecessor">No Predecessor</option>
+                                  {prerunval.map((item, ind) => {
+                                    return (
+                                      <option value={item.Feature_Name}>
+                                        {item.Feature_Name.substr(5)}
+                                      </option>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
+                            </div>
+                            <div className={classes.item}>
+                              <TextField
+                                id="outlined-multiline-static"
+                                label="Keywords"
+                                multiline
+                                rows={1}
+                                // value ={row.Keywords}
+                                onChange={(e) => handleChange(e)}
+                                name="Keywords"
+                                defaultValue={row.Keywords}
+                                // helperText={featurenamemsg}
+                                className={classes.textField}
+                                // helperText="Some important text"
+                                variant="outlined"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                fullWidth
+                                multiline
+                              />
+                            </div>
+                            <div className={classes.item}>
+                              <TextField
+                                id="outlined-multiline-static"
+                                label="Estimation"
+                                multiline
+                                rows={1}
+                                // value = {row.Estimations}
+                                onChange={(e) => handleChange(e)}
+                                name="Estimations"
+                                defaultValue={row.Estimations}
+                                // helperText={featurenamemsg}
+                                className={classes.textField}
+                                // helperText="Some important text"
+                                variant="outlined"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                multiline
+                                fullWidth
+                              />
+                            </div>
+
+                            <div className={classes.item}>
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                style={{ marginRight: 20 }}
+                                onClick={() => handleEditmodal(tableinfo)}
+                              >
+                                Update
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => setOpen(false)}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                            {/* </form> */}
+                          </Container>
+                        </Modal>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -769,109 +934,16 @@ export default function CreateFeature(props) {
           </Table>
         </Grid>
 
-        <Modal open={open}>
-          <Container className={classes.container}>
-            <form className={classes.form} autoComplete="off">
-              <div className={classes.item}>
-                <FormControl  fullWidth variant="outlined" className={classes.formControl}>
-                  <InputLabel>Predecessor</InputLabel>
-                  <Select
-                    native
-                    // value={state.age}
-                    onChange={handleChange}
-                    label="Predecessor"
-                    name="Sequence"
-                    required
-                   
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  >
-                    {" "}
-                    <option value="Select Predecessor" selected>
-                      Select Predecessor
-                    </option>
-                    <option value="No Predecessor">No Predecessor</option>
-                    {prerunval.map((item, ind) => {
-                      return (
-                        <option value={item.Feature_Name}>
-                          {item.Feature_Name.substr(5)}
-                        </option>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </div>
-              <div className={classes.item}>
-                <TextField
-                  id="outlined-multiline-static"
-                  label="Keywords"
-                  multiline
-                  rows={1}
-                  onChange={(e) => handleChange(e)}
-                  name="Keywords"
-                  // defaultValue="Default Value"
-                  // helperText={featurenamemsg}
-                  className={classes.textField}
-                  // helperText="Some important text"
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  multiline
-                />
-              </div>
-              <div className={classes.item}>
-                <TextField
-                  id="outlined-multiline-static"
-                  label="Estimation"
-                  multiline
-                  rows={1}
-                  onChange={(e) => handleChange(e)}
-                  name="Estimations"
-                  // defaultValue="Default Value"
-                  // helperText={featurenamemsg}
-                  className={classes.textField}
-                  // helperText="Some important text"
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  multiline
-                  fullWidth
-                />
-              </div>
-             
-              <div  className={classes.item}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginRight: 20 }}
-                  onClick={() => setOpenAlert(true)}
-                >
-                  Update
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </Container>
-        </Modal>
+
         <Snackbar
           open={openAlert}
           autoHideDuration={4000}
           onClose={handleClose}
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
-          <Alert onClose={handleClose} severity="success">
+          {/* <Alert onClose={handleClose} severity="success">
             Data is updated successfully!
-          </Alert>
+          </Alert> */}
         </Snackbar>
       </Grid>
     </>
