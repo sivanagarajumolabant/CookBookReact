@@ -13,6 +13,10 @@ import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { useSelector } from 'react-redux';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import axios from "axios";
+import config from "../../Config/config";
 
 
 const useStylestable = makeStyles((theme) => ({
@@ -122,12 +126,76 @@ export default function AdminAccesslist() {
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const [migtypeid, setMigtypeid] = useState(headerValue.title)
+  const [objtype, setObjtype] = useState('Procedure')
+  const [fnnames, setFnnames] = useState([])
+  const [data, setData] = useState([])
 
 
+  useEffect(() => {
+    let sval = 0;
+    if (headerValue) {
+      if (headerValue.title === "Oracle TO Postgres") {
+        sval = 1;
+      } else if (headerValue.title === "SQLServer TO Postgres") {
+        sval = 2;
+      } else if (headerValue.title === "MYSQL TO Postgres") {
+        sval = 3;
+      }
+    }
+    let body = {
+      "Object_Type": objtype,
+      "Migration_TypeId": sval,
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+      (res) => {
+        setFnnames(res.data)
+        console.log(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [objtype]);
+
+
+  const handleObjecttype = (v) => {
+    setObjtype(v.title)
+  }
+
+
+  
+
+
+  const handledropdown = (e,v) => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    axios.get(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, conf).then(
+      (res) => {
+        setData(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
   const handleversion = () => {
 
   }
+
   return (
     <>
 
@@ -146,95 +214,92 @@ export default function AdminAccesslist() {
         <Grid container direction='row' spacing={1}>
 
           <Grid item xs={12} sm={4} md={4} xl={4}>
-
             <TextField
-              id="outlined-multiline-static"
-              label="Migration Type"
-              multiline
-              rows={1}
-              // onChange={(e) => handleChange(e)}
-              label="Migration Type"
-              defaultValue="Default Value"
-              value={headerValue?.title}
-              variant="outlined"
-              size='small'
-              required
-              disabled
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              style={{ width: 300 }}
-            />
+                id="outlined-multiline-static"
+                label="Migration Type"
+                // onChange={(e) => handleChange(e)}
+                name='MigrationType_Id'
+                // defaultValue="Default Value"
+                // helperText={featurenamemsg}
+                className={classes.textField}
+                // helperText="Some important text"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                value={headerValue.title}
+                size='small'
+                disabled
+                style={{ width: 300 }}
+
+              />
           </Grid>
           <Grid item xs={12} sm={4} md={4} xl={4}>
-
             <StyledAutocomplete
-              size="small"
-              id="grouped-demo"
-              className={classes.inputRoottype}
-              options={[
-                { title: "Procedure" },
-                { title: "Function" },
-                { title: "View" },
-                { title: "Index" },
-                { title: "Package" },
-                { title: "Trigger" },
-                { title: "Sequence" },
-                { title: "Synonym" },
-                { title: "Material View" },
-                { title: "Type" },
-                { title: "Table" },
-                { title: "All" },
+                size="small"
+                id="grouped-demo"
+                className={classes.inputRoottype}
+                options={[
+                  { title: "Procedure" },
+                  { title: "Function" },
+                  { title: "View" },
+                  { title: "Index" },
+                  { title: "Package" },
+                  { title: "Trigger" },
+                  { title: "Sequence" },
+                  { title: "Synonym" },
+                  { title: "Material View" },
+                  { title: "Type" },
+                  { title: "Table" },
+                  { title: "All" },
 
-              ]}
-              groupBy={""}
-              defaultValue={{ title: "Procedure" }}
-              getOptionLabel={(option) => option.title}
-              style={{ width: 300 }}
-              onChange={(e, v) => handleversion(v)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="ObjectType"
-                  variant="outlined"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                />
-              )}
-            />
+                ]}
+                groupBy={""}
+                defaultValue={{ title: "Procedure" }}
+                getOptionLabel={(option) => option.title}
+                style={{ width: 300 }}
+                onChange={(e, v) => handleObjecttype(v)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="ObjectType"
+                    variant="outlined"
+                    InputLabelProps={{
+                      className: classes.floatingLabelFocusStyle,
+                    }}
+                  />
+                )}
+              />
           </Grid>
 
           <Grid item xs={12} sm={4} md={4} xl={4}>
-
             <StyledAutocomplete
-              size="small"
-              id="grouped-demo"
-              className={classes.inputRoottype}
-              options={[
-                { title: "XML", code: 1 },
-                { title: "Coll", code: 2 },
-              ]}
-              groupBy={""}
-              defaultValue={{ title: "Edit" }}
-              getOptionLabel={(option) => option.title}
-              style={{ width: 300 }}
-              onChange={(e, v) => handleversion(v)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Feature Names"
-                  variant="outlined"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                />
-              )}
+                size="small"
+                id="grouped-demo"
+                className={classes.inputRoottype}
+                options={fnnames}
+                groupBy={""}
+                // defaultValue={{ title: "Edit" }}
+                getOptionLabel={(option) =>option.Feature_Name}
+                style={{ width: 300 }}
+                onChange={(e, v) => handledropdown(e, v)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Feature Names"
+                    variant="outlined"
+                    InputLabelProps={{
+                      className: classes.floatingLabelFocusStyle,
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+
+                )}
+
             />
-
-
-
           </Grid>
           <Grid item xs={4}>
             <StyledAutocomplete
