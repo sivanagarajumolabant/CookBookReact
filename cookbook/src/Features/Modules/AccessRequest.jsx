@@ -5,14 +5,18 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import config from "../../Config/config";
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import axios from "axios";
 import MenuAppBar from '../../Components/header'
 import Select from '@material-ui/core/Select';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { useSelector } from 'react-redux';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 
 const useStylestable = makeStyles((theme) => ({
@@ -120,10 +124,67 @@ export default function Request() {
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const [migtypeid, setMigtypeid] = useState(headerValue.title)
+  const [objtype, setObjtype] = useState('Procedure')
+  const [fnnames, setFnnames] = useState([])
+  const [data, setData] = useState([])
+  
+
+  useEffect(() => {
+    let sval = 0;
+    if (headerValue) {
+      if (headerValue.title === "Oracle TO Postgres") {
+        sval = 1;
+      } else if (headerValue.title === "SQLServer TO Postgres") {
+        sval = 2;
+      } else if (headerValue.title === "MYSQL TO Postgres") {
+        sval = 3;
+      }
+    }
+    let body = {
+      "Object_Type": objtype,
+      "Migration_TypeId": sval,
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+      (res) => {
+        setFnnames(res.data)
+        console.log(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [objtype]);
+
 
   // console.log(headerValue.title)
-  const handleversion = () => {
+  const handleObjecttype = (v) => {
+    setObjtype(v.title)
+  }
 
+  const handledropdown = (e,v) => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    axios.get(`${config.API_BASE_URL()}/api/fdetail/${v.Feature_Id}`, conf).then(
+      (res) => {
+        setData(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
   return (
     <>
@@ -187,7 +248,7 @@ export default function Request() {
               defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
-              onChange={(e, v) => handleversion(v)}
+              onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -207,15 +268,12 @@ export default function Request() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "XML", code: 1 },
-                { title: "Coll", code: 2 },
-              ]}
+              options={fnnames}
               groupBy={""}
-              defaultValue={{ title: "Edit" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Edit" }}
+              getOptionLabel={(option) =>option.Feature_Name}
               style={{ width: 300 }}
-              onChange={(e, v) => handleversion(v)}
+              onChange={(e, v) => handledropdown(e, v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -224,10 +282,85 @@ export default function Request() {
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                   }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
+
               )}
+
             />
           </Grid>
+
+          <Grid item xs={6}>
+
+
+            <div className="App">
+              <p>{'Source Description'}</p>
+              <CKEditor
+                editor={ClassicEditor}
+                data={data?.Source_FeatureDescription}
+                onReady={editor => {
+                  // You can store the "editor" and use when it is needed.
+                  console.log('Editor is ready to use!', editor);
+                }}
+                // onChange={(event, editor) => {
+                //   const data = editor.getData();
+                //   handletarget(data)
+                //   // console.log( { event, editor, data } );
+                // }}
+                // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
+
+                // config={{
+                //   extraPlugins: [uploadPlugin]
+                // }}
+                onBlur={(event, editor) => {
+                  console.log('Blur.', editor);
+                }}
+                onFocus={(event, editor) => {
+                  console.log('Focus.', editor);
+                }}
+                disabled
+              />
+            </div>
+
+          </Grid>
+
+
+          <Grid item xs={6}>
+
+
+            <div className="App">
+              <p>{'Target Description'}</p>
+              <CKEditor
+                editor={ClassicEditor}
+                data={data?.Target_FeatureDescription}
+                onReady={editor => {
+                  // You can store the "editor" and use when it is needed.
+                  console.log('Editor is ready to use!', editor);
+                }}
+                // onChange={(event, editor) => {
+                //   const data = editor.getData();
+                //   handletarget(data)
+                //   // console.log( { event, editor, data } );
+                // }}
+                // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
+
+                // config={{
+                //   extraPlugins: [uploadPlugin]
+                // }}
+                onBlur={(event, editor) => {
+                  console.log('Blur.', editor);
+                }}
+                onFocus={(event, editor) => {
+                  console.log('Focus.', editor);
+                }}
+                disabled
+              />
+            </div>
+
+          </Grid>
+
         </Grid>
       </Box>
       <Box>
