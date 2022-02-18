@@ -177,7 +177,7 @@ export default function Request() {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/fdetail/${v.Feature_Id}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, conf).then(
       (res) => {
         setData(res.data)
       },
