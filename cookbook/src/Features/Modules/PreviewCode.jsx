@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import IconButton from '@material-ui/core/IconButton';
+import Notification from '../Notifications/Notification';
 import Card from "@material-ui/core/Card";
 import DeleteIcon from '@material-ui/icons/Delete';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -139,6 +140,7 @@ export default function PreviewCode(props) {
   const [istaattdata, setIstaattdata] = useState(false)
   const [istettdata, setIstettdata] = useState(false)
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+  const [att_update, setAtt_update] = useState(false)
 
 
 
@@ -164,7 +166,7 @@ export default function PreviewCode(props) {
     } else {
       setDetaildata();
     }
-  }, [menuitem]);
+  }, [menuitem,att_update]);
 
   useEffect(() => {
     console.log("menus ", menuitem);
@@ -184,7 +186,7 @@ export default function PreviewCode(props) {
         console.log(error);
       }
     );
-  }, [menuitem])
+  }, [menuitem,att_update])
   useEffect(() => {
     let conf = {
       headers: {
@@ -202,7 +204,7 @@ export default function PreviewCode(props) {
         console.log(error);
       }
     );
-  }, [menuitem])
+  }, [menuitem,att_update])
 
   useEffect(() => {
     let conf = {
@@ -222,7 +224,7 @@ export default function PreviewCode(props) {
       }
     );
 
-  }, [menuitem])
+  }, [menuitem,att_update])
 
   useEffect(() => {
     let conf = {
@@ -242,11 +244,11 @@ export default function PreviewCode(props) {
         console.log(error);
       }
     );
-  }, [menuitem])
+  }, [menuitem,att_update])
 
 
 
-  const handleDownload = (att_Type, migtypeid, id, obj_type, att_name) => {
+  const handleDownload = (att_Type, migtypeid, id, obj_type, att_name, fid) => {
     if (migtypeid === '1') {
       migtypeid = 'Oracle TO Postgres'
       // setMigtypeid(1)
@@ -266,6 +268,7 @@ export default function PreviewCode(props) {
       "AttachmentType": att_Type,
       "id": id,
       "fname": detaildata.Feature_Name,
+      "feature_id": fid,
       responseType: 'blob',
     }
     let conf = {
@@ -311,6 +314,7 @@ export default function PreviewCode(props) {
           message: 'File Deleted',
           type: 'success'
         })
+        setAtt_update(true)
 
       }, error => {
         console.log(error);
@@ -319,8 +323,10 @@ export default function PreviewCode(props) {
           message: 'Something Went Wrong! Please try Again',
           type: 'error'
         })
+        setAtt_update(true)
 
       })
+      setAtt_update(false)
 
   }
 
@@ -687,7 +693,7 @@ export default function PreviewCode(props) {
                               <IconButton onClick={() => handleAttachment_delete("Sourcecode", detaildata.Migration_TypeId, row.sid, detaildata.Object_Type, row.filename)}>
                                 <DeleteIcon style={{ color: 'red' }} />
                               </IconButton>
-                              <IconButton onClick={(e) => handleDownload('Sourcecode', detaildata.Migration_TypeId, row.sid, detaildata.Object_Type, row.filename)}>
+                              <IconButton onClick={(e) => handleDownload('Sourcecode', detaildata.Migration_TypeId, row.sid, detaildata.Object_Type, row.filename, detaildata.Feature_Id)}>
                                 <GetAppIcon style={{ color: 'blue' }} />
                               </IconButton> </> : null
                             }
@@ -706,7 +712,7 @@ export default function PreviewCode(props) {
                               }}>
                                 <DeleteIcon style={{ color: 'red' }} />
                               </IconButton>
-                              <IconButton onClick={(e) => handleDownload('Expectedconversion', detaildata.Migration_TypeId, row.etid, detaildata.Object_Type, row.filename)}>
+                              <IconButton onClick={(e) => handleDownload('Expectedconversion', detaildata.Migration_TypeId, row.etid, detaildata.Object_Type, row.filename, detaildata.Feature_Id)}>
                                 <GetAppIcon style={{ color: 'blue' }} />
                               </IconButton> </> : null
                             }
@@ -727,7 +733,7 @@ export default function PreviewCode(props) {
                               }}>
                                 <DeleteIcon style={{ color: 'red' }} />
                               </IconButton>
-                              <IconButton onClick={(e) => handleDownload('Actualtargetcode', detaildata.Migration_TypeId, row.atid, detaildata.Object_Type, row.filename)}>
+                              <IconButton onClick={(e) => handleDownload('Actualtargetcode', detaildata.Migration_TypeId, row.atid, detaildata.Object_Type, row.filename, detaildata.Feature_Id)}>
                                 <GetAppIcon style={{ color: 'blue' }} />
                               </IconButton> </> : null
                             }
@@ -795,7 +801,7 @@ export default function PreviewCode(props) {
                           <IconButton onClick={() => handleAttachment_delete(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <DeleteIcon style={{ color: 'red' }} />
                           </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
+                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename, detaildata.Feature_Id)}>
                             <GetAppIcon style={{ color: 'blue' }} />
                           </IconButton>
                         </Box>
@@ -850,7 +856,7 @@ export default function PreviewCode(props) {
                           <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <DeleteIcon style={{ color: 'red' }} />
                           </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
+                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename, detaildata.Feature_Id)}>
                             <GetAppIcon style={{ color: 'blue' }} />
                           </IconButton>
                         </Box>
@@ -904,7 +910,7 @@ export default function PreviewCode(props) {
                           <IconButton onClick={(e) => handleAttachment_delete(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
                             <DeleteIcon style={{ color: 'red' }} />
                           </IconButton>
-                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename)}>
+                          <IconButton onClick={(e) => handleDownload(row.AttachmentType, detaildata.Migration_TypeId, row.id, detaildata.Object_Type, row.filename, detaildata.Feature_Id)}>
                             <GetAppIcon style={{ color: 'blue' }} />
                           </IconButton>
                         </Box>
@@ -962,6 +968,11 @@ export default function PreviewCode(props) {
 
   return (
 
-    <>{data}</>
+    <>{data}
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+      />
+    </>
   );
 }
