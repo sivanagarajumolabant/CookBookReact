@@ -84,4 +84,27 @@ const EditPreviewFeature = (value) => {
    }
 }
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature }
+const selectedMenutlist = (value) => {
+   
+   return dispatch => {
+
+      dispatch({
+         type:"SELECTED_ITEM",
+         payload:[value]
+      })
+   }
+}
+
+
+const UpdateMenutlist = (value) => {
+   
+   return dispatch => {
+
+      dispatch({
+         type:"UPDATE_SELECTED_ITEM",
+         payload:value
+      })
+   }
+}
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist}

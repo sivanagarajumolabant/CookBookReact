@@ -10,10 +10,12 @@ const initialState = {
   preview: false,
   editpreview: false,
   details: {},
-  editPreviewdetails: {}
+  editPreviewdetails: {},
+   ITEMlIST:[]
 };
 
 const dashboardReducer = (state = initialState, action) => {
+  
   switch (action.type) {
     case "SELECTED_MENU":
       return {
@@ -68,6 +70,19 @@ const dashboardReducer = (state = initialState, action) => {
         details: {}
       };
     
+      case "SELECTED_ITEM":
+        return {
+          ...state,
+         ITEMlIST:action.payload
+        };
+
+        case "UPDATE_SELECTED_ITEM":
+          return {
+            ...state,
+           ITEMlIST:action.payload
+          };
+
+        
     default:
       return state;
   }

@@ -279,7 +279,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue,ITEMlIST  } = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -383,7 +383,8 @@ export default function ClippedDrawer({ children }) {
   }, [updatedValue])
 
   const handlefeature = (data) => {
-
+  
+    dispatch( ActionMenu.selectedMenutlist(data))
     setselectedItems([data])
   }
 
@@ -396,6 +397,7 @@ export default function ClippedDrawer({ children }) {
     history.push('/Request')
   }
 
+   console.log(ITEMlIST, 'liusdce')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -626,7 +628,7 @@ export default function ClippedDrawer({ children }) {
                   <Grid item spacing={1}>
 
                     <GmailTreeView
-                      menuList={selectedItems}
+                      menuList={ITEMlIST}
                       dropdown={dropdown}
 
                     />

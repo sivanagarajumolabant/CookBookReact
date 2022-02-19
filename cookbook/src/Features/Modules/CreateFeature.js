@@ -189,6 +189,7 @@ export default function CreateFeature(props) {
     editpreview,
     editPreviewdetails,
     headerValue,
+    ITEMlIST
   } = useSelector((state) => state.dashboardReducer);
 
   var obj_type = props.location?.state?.data?.Label;
@@ -366,6 +367,11 @@ export default function CreateFeature(props) {
           type: "success",
         });
         dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
+         let UpdateItem={
+            Label:ITEMlIST[0]?.Label,
+            subMenu:ITEMlIST[0]?.subMenu.concat({Feature_Id:res.data?.Feature_Id, Feature_Name:res.data?.Feature_Name})
+         }
+        dispatach(Menuaction.UpdateMenutlist(UpdateItem))
 
         history.push("/EditFeature");
       },
