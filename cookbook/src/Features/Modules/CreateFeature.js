@@ -121,6 +121,8 @@ const useStyles = makeStyles((theme) => ({
   //pop up weindow
 
   container: {
+    border:"none",
+    borderRadius: 15,
     width: 600,
     height: 500,
     backgroundColor: "white",
@@ -130,6 +132,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     margin: "auto",
+    
     [theme.breakpoints.down("sm")]: {
       width: "100vw",
       height: "100vh",
@@ -139,6 +142,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   item: {
+    marginTop:40,
+    marginLeft:80,
+    width:400,
     justifyContent: "center",
     justifyItems: "center",
     position: "relative",
@@ -844,6 +850,7 @@ export default function CreateFeature(props) {
                               <TextField
                                 id="outlined-multiline-static"
                                 label="Keywords"
+                                style={{width:400, }}
                                 multiline
                                 rows={1}
                                 // value ={row.Keywords}
@@ -857,7 +864,7 @@ export default function CreateFeature(props) {
                                 InputLabelProps={{
                                   shrink: true,
                                 }}
-                                fullWidth
+                                
                                 multiline
                               />
                             </div>
@@ -883,11 +890,11 @@ export default function CreateFeature(props) {
                               />
                             </div>
 
-                            <div className={classes.item}>
+                            <div className={classes.item} >
                               <Button
                                 variant="outlined"
                                 color="primary"
-                                style={{ marginRight: 20 }}
+                                style={{ marginRight: 20, marginLeft:100 }}
                                 onClick={() => handleEditmodal(tableinfo)}
                               >
                                 Update
