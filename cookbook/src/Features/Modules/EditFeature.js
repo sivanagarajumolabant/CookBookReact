@@ -132,6 +132,9 @@ export default function EditFeature(props) {
   const [Target_ActualCode, setTarget_ActualCode] = useState("");
   const [Target_Expected_Output, setTarget_Expected_Output] = useState("");
   const [Conversion_Code, setConversion_Code] = useState("");
+  const [precon_val, setPrecon_val]= useState('')
+  const [presource_code_val, setSource_code_val]= useState('')
+
   const [isTable, setIsTable] = useState(false);
   const [drop, setDrop] = useState("Sourcedescription");
   const [droptitle, setDroptitle] = useState("Source Description");
@@ -490,8 +493,12 @@ export default function EditFeature(props) {
         type: "error",
       });
 
-    }else if(Conversion_Code===''){
-
+    }else if(Conversion_Code===precon_val && Source_Code=== presource_code_val){
+      setNotify({
+        isOpen: true,
+        message: "Please make change to either Source code or conversion Module before clicking on the Convert button",
+        type: "error",
+      });
     } 
     else {
 
@@ -533,6 +540,8 @@ export default function EditFeature(props) {
           });
         }
       );
+      setSource_code_val(Source_Code)
+      setPrecon_val(Conversion_Code)
     }
   };
 
