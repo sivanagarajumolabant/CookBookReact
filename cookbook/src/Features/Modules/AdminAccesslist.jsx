@@ -343,18 +343,29 @@ export default function AdminAccesslist() {
             />
           </Grid>
           <Grid item xs={4} style={{ marginTop: "10px" }}>
-            <Button
+          <TextField
+              id="outlined-multiline-static"
+              type="date"
+              // label="End Date"
+              // onChange={(e) => handleChange(e)}
+              name="date_id"
+              // defaultValue="Default Value"
+              // helperText={featurenamemsg}
+              className={classes.textField}
+              // helperText="Some important text"
               variant="outlined"
-              width="200%"
-              style={{
-                paddingRight: "20px",
-                paddingLeft: "20px",
-                width: "300px",
+              InputLabelProps={{
+                shrink: true,
               }}
-            >
-              {" "}
-              End Date
-            </Button>
+              fullWidth
+              value={headerValue.title}
+              size="small"
+              disabled
+              style={{ width: 300 }}
+            />
+              
+              
+          
           </Grid>
           {/* <Grid item xs={4}>
 

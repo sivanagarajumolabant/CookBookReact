@@ -367,7 +367,7 @@ export default function EditFeature(props) {
           console.log(error);
           setNotify({
             isOpen: true,
-            message: "Something Went Wrong! Please try Again",
+            message: "No Feature",
             type: "error",
           });
         }
@@ -522,7 +522,7 @@ export default function EditFeature(props) {
         console.log(error);
         setNotify({
           isOpen: true,
-          message: "Something Went Wrong! Please try Again",
+          message: "Please make change to either Source code or conversion Module",
           type: "error",
         });
       }
@@ -566,7 +566,7 @@ export default function EditFeature(props) {
         console.log(error);
         setNotify({
           isOpen: true,
-          message: "Something Went Wrong! Please try Again",
+          message: "File is Note Their",
           type: "error",
         });
       }
@@ -674,7 +674,7 @@ export default function EditFeature(props) {
           console.log(error);
           setNotify({
             isOpen: true,
-            message: "Something Went Wrong! Please try Again for " + droptitle,
+            message: "Please add Attachment " + droptitle,
             type: "error",
           });
           // setFupdate(false)
