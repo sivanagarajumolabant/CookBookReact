@@ -407,7 +407,7 @@ export default function AdminAccesslist() {
             style={{ marginTop: 15 }}
           >
             {" "}
-            Access
+            Grant Access
           </Button>
         </Grid>
       </Box>
