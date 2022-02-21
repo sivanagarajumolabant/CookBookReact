@@ -360,7 +360,7 @@ export default function AdminAccesslist() {
               fullWidth
               value={headerValue.title}
               size="small"
-              disabled
+              // disabled
               style={{ width: 300 }}
             />
               

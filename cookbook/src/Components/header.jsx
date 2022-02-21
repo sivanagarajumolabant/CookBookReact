@@ -318,7 +318,7 @@ export default function ClippedDrawer({ children }) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
+    const res = await axios.get(`${config.API_BASE_URL()}/api/fvlist/`, conf);
     setmenuList(res.data);
     dispatch(Menuaction.reloadAction(false))
   };
