@@ -363,8 +363,32 @@ export default function Request() {
 
         </Grid>
       </Box>
-      <Box>
-        <Grid container direction='row' justifyContent='center'>
+      <Box className={classes.root}>
+      <Grid container spacing={3} justifyContent="center"
+  alignItems="center">
+        
+       
+        <Grid item xs={6} sm={3}>
+        <Button variant="contained"
+            // startIcon={<CloudUploadIcon />}
+            color="primary" component="span" style={{ marginTop: 15 }}>
+            Request Access
+
+          </Button>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+        <Button variant="outlined"
+            // startIcon={<CloudUploadIcon />}
+            color="primary" component="span" style={{ marginTop: 15, width:"170px" }}>
+            Show All
+
+          </Button>
+        </Grid>
+      </Grid>
+    </Box>
+      {/* <Box direction='row'>
+        <Grid container >
+
           <Button variant="contained"
             // startIcon={<CloudUploadIcon />}
             color="primary" component="span" style={{ marginTop: 15 }}>
@@ -372,7 +396,15 @@ export default function Request() {
 
           </Button>
         </Grid>
-      </Box>
+        <Grid container >
+          <Button variant="outlined"
+            // startIcon={<CloudUploadIcon />}
+            color="primary" component="span" style={{ marginTop: 15, width:"170px" }}>
+            Show All
+
+          </Button>
+        </Grid>
+      </Box> */}
     </>
   )
 }
