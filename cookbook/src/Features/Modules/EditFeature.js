@@ -190,8 +190,7 @@ export default function EditFeature(props) {
       };
       axios
         .get(
-          `${config.API_BASE_URL()}/api/sourcedesc/${
-            editdata.detaildata.Feature_Id
+          `${config.API_BASE_URL()}/api/sourcedesc/${editdata.detaildata.Feature_Id
           }`,
           conf
         )
@@ -222,8 +221,7 @@ export default function EditFeature(props) {
       };
       axios
         .get(
-          `${config.API_BASE_URL()}/api/targetdesc/${
-            editdata.detaildata.Feature_Id
+          `${config.API_BASE_URL()}/api/targetdesc/${editdata.detaildata.Feature_Id
           }`,
           conf
         )
@@ -254,8 +252,7 @@ export default function EditFeature(props) {
       };
       axios
         .get(
-          `${config.API_BASE_URL()}/api/convatt/${
-            editdata.detaildata.Feature_Id
+          `${config.API_BASE_URL()}/api/convatt/${editdata.detaildata.Feature_Id
           }`,
           conf
         )
@@ -286,8 +283,7 @@ export default function EditFeature(props) {
       };
       axios
         .get(
-          `${config.API_BASE_URL()}/api/codefiles/${
-            editdata.detaildata.Feature_Id
+          `${config.API_BASE_URL()}/api/codefiles/${editdata.detaildata.Feature_Id
           }`,
           conf
         )
@@ -348,8 +344,7 @@ export default function EditFeature(props) {
     };
     axios
       .put(
-        `${config.API_BASE_URL()}/api/fupdate/${
-          editdata.detaildata.Feature_Id
+        `${config.API_BASE_URL()}/api/fupdate/${editdata.detaildata.Feature_Id
         }`,
         form,
         conf
@@ -444,7 +439,7 @@ export default function EditFeature(props) {
         // const content = res.headers['content-type'];
         // download(res.data, att_name, content)
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
   const handledetale = (value) => {
     const data = file.filter((item) => item.name != value.name);
@@ -488,45 +483,57 @@ export default function EditFeature(props) {
 
   const handleConvert = (e) => {
     e.preventDefault();
+    if (Conversion_Code==='') {
+      setNotify({
+        isOpen: true,
+        message: "No Conversion Module, please add Conversion Module before Convert",
+        type: "error",
+      });
 
-    // console.log(formValues.Conversion_Code)
-    // console.log(formValues.Source_Code)
-    // console.log(formValues.Feature_Name)
-    let wout_prefix = editdata.detaildata.Feature_Name.substr(5);
-    // "convcode": "r@rawstringstart'"+formValues.Conversion_Code+"'@rawstringend",
-    let body = {
-      sourcecode: Source_Code,
-      // "convcode": Conversion_Code,
-      convcode: "r@rawstringstart'" + Conversion_Code + "'@rawstringend",
-      featurename: wout_prefix,
-      migration_typeid: editdata.detaildata.Migration_TypeId,
-      object_type: editdata.detaildata.Object_Type,
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf).then(
-      (res) => {
-        // console.log("res",res.data)
-        setTarget_ActualCode(res.data);
+    }else if(Conversion_Code===''){
 
-        setNotify({
-          isOpen: true,
-          message: "Conversion Completed Please Check The Output",
-          type: "success",
-        });
-      },
-      (error) => {
-        console.log(error);
-        setNotify({
-          isOpen: true,
-          message: "Please make change to either Source code or conversion Module",
-          type: "error",
-        });
-      }
-    );
+    } 
+    else {
+
+      // console.log(formValues.Conversion_Code)
+      // console.log(formValues.Source_Code)
+      // console.log(formValues.Feature_Name)
+      let wout_prefix = editdata.detaildata.Feature_Name.substr(5);
+      // "convcode": "r@rawstringstart'"+formValues.Conversion_Code+"'@rawstringend",
+      let body = {
+        sourcecode: Source_Code,
+        // "convcode": Conversion_Code,
+        convcode: "r@rawstringstart'" + Conversion_Code + "'@rawstringend",
+        featurename: wout_prefix,
+        migration_typeid: editdata.detaildata.Migration_TypeId,
+        object_type: editdata.detaildata.Object_Type,
+      };
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf).then(
+        (res) => {
+          // console.log("res",res.data)
+          setTarget_ActualCode(res.data);
+
+          setNotify({
+            isOpen: true,
+            message: "Conversion Completed Please Check The Output",
+            type: "success",
+          });
+        },
+        (error) => {
+          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: "Something Went wrong Please Try Again",
+            type: "error",
+          });
+        }
+      );
+    }
   };
 
   const handleAttachment_delete = (
@@ -654,8 +661,7 @@ export default function EditFeature(props) {
     });
     axios
       .post(
-        `${config.API_BASE_URL()}/api/attachmentsupdate/${
-          editdata.detaildata.Feature_Id
+        `${config.API_BASE_URL()}/api/attachmentsupdate/${editdata.detaildata.Feature_Id
         }`,
         form,
         conf
@@ -957,8 +963,8 @@ export default function EditFeature(props) {
                   shrink: true,
                 }}
 
-                // error={Source_Code === ""}
-                // helperText={Source_Code === "" ? "Empty!" : " "}
+              // error={Source_Code === ""}
+              // helperText={Source_Code === "" ? "Empty!" : " "}
               />
             </Grid>
 
@@ -1011,7 +1017,7 @@ export default function EditFeature(props) {
               spacing={2}
               style={{ marginRight: "20px" }}
             >
-                <Grid item>
+              <Grid item>
                 <Button
                   // type="submit"
                   fullWidth
@@ -1041,7 +1047,7 @@ export default function EditFeature(props) {
                   Save
                 </Button>
               </Grid>
-              
+
             </Grid>
             {/* </Box> */}
 
@@ -1066,18 +1072,18 @@ export default function EditFeature(props) {
             </Grid>
 
             <Grid container justifyContent="center">
-                <Button
-                  // type="submit"
-                  
-                  variant="contained"
-                  color="primary"
-                  // className={classes.submit}
-                  onClick={handleSubmit}
-                  startIcon={<SaveIcon />}
-                >
-                  Save
-                </Button>
-              </Grid>
+              <Button
+                // type="submit"
+
+                variant="contained"
+                color="primary"
+                // className={classes.submit}
+                onClick={handleSubmit}
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </Grid>
 
 
             {/* <Grid item xs={12}>
