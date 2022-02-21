@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   // style={{  }}
   navbarcom: {
     [theme.breakpoints.up('lg')]: {
-      marginLeft: "200px"
+      // marginLeft: "200px"
       // height:'100vh'
     },
   },
@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerContainer: {
     overflow: "auto",
-    height: '80vh',
+    height: '85vh',
     background: "#3f51b5",
 
   },
@@ -392,12 +392,16 @@ export default function ClippedDrawer({ children }) {
     history.push('/AdminAccesslist')
   }
 
+  const handleAccessReview = () => {
+    history.push('/accessreview')
+  }
+
 
   const handlerequestMenus = () => {
     history.push('/Request')
   }
 
-   console.log(ITEMlIST, 'liusdce')
+  //  console.log(ITEMlIST, 'liusdce')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -575,7 +579,7 @@ export default function ClippedDrawer({ children }) {
                 variant="body2"
                 style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                onClick={handleAdminMenus}
+                onClick={handleAccessReview}
               >
                Access Review
               </Typography>

@@ -15,6 +15,7 @@ import ProtectedRoute from './PrivateRoute';
 import MenuAppBar from '../Components/header'
 import PreviewCode from '../Features/Modules/PreviewCode';
 import EmailVerify from '../Auth/EmailVerificationPage';
+import AccessReview from '../Features/Modules/AccessReview';
 
 
 
@@ -32,6 +33,7 @@ const Routing = () => {
                     <ProtectedRoute exact path="/create" component={CreateFeature} />
                     <ProtectedRoute exact path="/PreviewCode" component={PreviewCode} />
                     <ProtectedRoute exact path="/EditFeature" component={EditFeature} />
+                    <ProtectedRoute exact path="/accessreview" component={AccessReview} />
 
                     {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
                     {/* <Route path="*" component={PageNotFound} /> */}
