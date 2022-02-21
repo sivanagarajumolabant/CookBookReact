@@ -516,8 +516,10 @@ export default function CreateFeature(props) {
           type: 'error'
         })
         setModalupdate(true)
+        // setOpen(false)
       })
     setModalupdate(false)
+    // setOpen(false);
   }
   const handleEditchange = (Feature_Id) => {
     setOpen(true);
@@ -538,6 +540,7 @@ export default function CreateFeature(props) {
           console.log(error);
         }
       );
+      
   }
 
 
@@ -896,7 +899,7 @@ export default function CreateFeature(props) {
                   }}
                 >
                   {" "}
-                  <option value="Select Predecessor">Select Predecessor</option>
+                  {/* <option value="Select Predecessor">Select Predecessor</option> */}
                   <option value="No Predecessor">No Predecessor</option>
                   {prerunval.map((item, ind) => {
                     return (
@@ -918,9 +921,9 @@ export default function CreateFeature(props) {
                 // value ={row.Keywords}
                 onChange={(e) => handleEditchangetext(e)}
                 name="Keywords"
-                // defaultValue={row.Keywords}
+                defaultValue={edithandle.Keywords}
                 // helperText={featurenamemsg}
-                value={edithandle.Keywords}
+                // value={edithandle.Keywords}
                 className={classes.textField}
                 // helperText="Some important text"
                 variant="outlined"
@@ -940,8 +943,8 @@ export default function CreateFeature(props) {
                 // value = {row.Estimations}
                 onChange={(e) => handleEditchangetext(e)}
                 name="Estimations"
-                // defaultValue={row.Estimations}
-                value={edithandle.Estimations}
+                defaultValue={edithandle.Estimations}
+                // value={edithandle.Estimations}
                 // helperText={featurenamemsg}
                 className={classes.textField}
                 // helperText="Some important text"
