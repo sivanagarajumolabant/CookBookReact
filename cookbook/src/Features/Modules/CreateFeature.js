@@ -887,11 +887,11 @@ export default function CreateFeature(props) {
                 <InputLabel>Predecessor</InputLabel>
                 <Select
                   native
-                  value={edithandle.Sequence}
+                  // value={edithandle.Sequence}
                   onChange={(e) => handleEditchangetext(e)}
                   label="Predecessor"
                   name="Sequence"
-                  // defaultValue={edithandle.Sequence}
+                  defaultValue={edithandle.Sequence}
                   required
 
                   InputLabelProps={{
