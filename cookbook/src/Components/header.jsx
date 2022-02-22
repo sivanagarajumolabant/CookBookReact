@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerContainer: {
     overflow: "auto",
-    height: '80vh',
+    height: '85vh',
     background: "#3f51b5",
 
   },
