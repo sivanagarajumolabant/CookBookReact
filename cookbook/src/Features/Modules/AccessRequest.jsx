@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { useHistory } from "react-router-dom";
 import config from "../../Config/config";
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -128,7 +129,8 @@ export default function Request() {
   const [objtype, setObjtype] = useState('Procedure')
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
-  
+  let history = useHistory();
+
 
   useEffect(() => {
     let sval = 0;
@@ -171,7 +173,7 @@ export default function Request() {
     setObjtype(v.title)
   }
 
-  const handledropdown = (e,v) => {
+  const handledropdown = (e, v) => {
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -271,7 +273,7 @@ export default function Request() {
               options={fnnames}
               groupBy={""}
               // defaultValue={{ title: "Edit" }}
-              getOptionLabel={(option) =>option.Feature_Name}
+              getOptionLabel={(option) => option.Feature_Name}
               style={{ width: 300 }}
               onChange={(e, v) => handledropdown(e, v)}
               renderInput={(params) => (
@@ -364,28 +366,33 @@ export default function Request() {
         </Grid>
       </Box>
       <Box className={classes.root}>
-      <Grid container spacing={3} justifyContent="center"
-  alignItems="center">
-        
-       
-        <Grid item xs={6} sm={3}>
-        <Button variant="contained"
-            // startIcon={<CloudUploadIcon />}
-            color="primary" component="span" style={{ marginTop: 15 }}>
-            Request Access
+        <Grid container spacing={3} justifyContent="center"
+          alignItems="center">
 
-          </Button>
-        </Grid>
-        <Grid item xs={6} sm={3}>
-        <Button variant="outlined"
-            // startIcon={<CloudUploadIcon />}
-            color="primary" component="span" style={{ marginTop: 15, width:"170px" }}>
-            Show All
 
-          </Button>
+          <Grid item xs={6} sm={3}>
+            <Button variant="contained"
+              // startIcon={<CloudUploadIcon />}
+              color="primary" component="span" style={{ marginTop: 15 }}>
+              Request Access
+
+            </Button>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Button variant="outlined"
+              onClick={() =>
+                history.push({
+                  pathname: `/requestdata`,
+                  data: { data },
+
+                })}
+              color="primary" component="span" style={{ marginTop: 15, width: "170px" }}>
+              Show All
+
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
       {/* <Box direction='row'>
         <Grid container >
 

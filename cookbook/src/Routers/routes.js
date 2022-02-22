@@ -16,6 +16,7 @@ import MenuAppBar from '../Components/header'
 import PreviewCode from '../Features/Modules/PreviewCode';
 import EmailVerify from '../Auth/EmailVerificationPage';
 import AccessReview from '../Features/Modules/AccessReview';
+import RequestFeatureData from '../Features/Modules/RequestFeatureData';
 
 
 
@@ -34,6 +35,7 @@ const Routing = () => {
                     <ProtectedRoute exact path="/PreviewCode" component={PreviewCode} />
                     <ProtectedRoute exact path="/EditFeature" component={EditFeature} />
                     <ProtectedRoute exact path="/accessreview" component={AccessReview} />
+                    <ProtectedRoute exact path="/requestdata" component={RequestFeatureData} />
 
                     {/* <ProtectedRoute exact path="/edit/:id" component={EditFeature} /> */}
                     {/* <Route path="*" component={PageNotFound} /> */}

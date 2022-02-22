@@ -119,12 +119,26 @@ export default function SignUp(props) {
         })
         .catch((error) => {
           setIsloading(false)
-          console.log(error.response.data)
-          setNotify({
-            isOpen: true,
-            message: 'Something Went Wrong Please Try Again',
-            type: 'error'
-          })
+          if(error.response.data?.username){
+            setNotify({
+              isOpen: true,
+              message: "Username: "+error.response.data?.username[0],
+              type: 'error'
+            })
+          }else if(error.response.data?.email){
+            setNotify({
+              isOpen: true,
+              message: "Email: "+error.response.data?.email[0],
+              type: 'error'
+            })
+          }else if(error.response.data?.password){
+            setNotify({
+              isOpen: true,
+              message: "Password: "+error.response.data?.password[0],
+              type: 'error'
+            })
+          }
+          
 
           })
 
