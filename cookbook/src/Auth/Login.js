@@ -72,22 +72,25 @@ function SignIn() {
     // history.push("/dashboard");
     let loginurl = config.API_BASE_URL() + '/login/'
     console.log(loginurl)
-    axios.post(loginurl, user).then((res) => {
-      if (res.status === 200 && res.data.access !== null) {
-        localStorage.setItem('isAuth', true)
-        localStorage.setItem('quadranttoken', res.data.access)
-        localStorage.setItem('quser', user.username)
-        history.push("/dashboard");
-      }
-      else if (res.status === 401 || res.status === 404) {
-        setMsg(res.data.message)
-      }
-      else {
-        setMsg("Please Enter Valid Credentials !!")
-      }
-    }).catch((error) => {
-      setMsg('Please Enter Valid Credentials !!')
-    })
+    axios.post(loginurl, user)
+      .then((res) => {
+        if (res.status === 200 && res.data.access !== null) {
+          localStorage.setItem('isAuth', true)
+          localStorage.setItem('quadranttoken', res.data.access)
+          localStorage.setItem('quser', user.username)
+          history.push("/dashboard");
+        }
+      })
+      .catch((error) => {
+        if (error.response.data?.detail) {
+          setMsg(error.response.data.detail)
+
+        } else {
+          setMsg("Something went wrong Please Try Again")
+        }
+
+      })
+
 
   }
 
@@ -100,7 +103,7 @@ function SignIn() {
       login(user)
     }
     else {
-      setMsg("Please Enter Username and Password")
+      setMsg("Please Enter All Details")
     }
 
 

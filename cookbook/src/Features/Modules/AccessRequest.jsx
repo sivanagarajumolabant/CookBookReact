@@ -129,6 +129,8 @@ export default function Request() {
   const [objtype, setObjtype] = useState('Procedure')
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
+  const [selecetd, setSelected] = useState(false)
+  
   let history = useHistory();
 
 
@@ -174,6 +176,7 @@ export default function Request() {
   }
 
   const handledropdown = (e, v) => {
+    setSelected(true)
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -380,6 +383,7 @@ export default function Request() {
           </Grid>
           <Grid item xs={6} sm={3}>
             <Button variant="outlined"
+              disabled={!selecetd}
               onClick={() =>
                 history.push({
                   pathname: `/requestdata`,
