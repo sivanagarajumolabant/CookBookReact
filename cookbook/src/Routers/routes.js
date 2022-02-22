@@ -17,6 +17,7 @@ import PreviewCode from '../Features/Modules/PreviewCode';
 import EmailVerify from '../Auth/EmailVerificationPage';
 import AccessReview from '../Features/Modules/AccessReview';
 import RequestFeatureData from '../Features/Modules/RequestFeatureData';
+import ForgotPasword from '../Auth/forgotpassword';
 
 
 
@@ -28,6 +29,7 @@ const Routing = () => {
                 <Route exact path="/" component={SignIn} />
                 <Route path="/register" component={SignUp} />
                 <Route path="/emailverification" component={EmailVerify} />
+                <Route path="/forgotpassword" component={ForgotPasword} />
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <MenuAppBar>
                     <ProtectedRoute path="/dashboard" component={Home} />
