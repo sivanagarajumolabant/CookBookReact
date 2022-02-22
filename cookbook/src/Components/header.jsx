@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   // style={{  }}
   navbarcom: {
     [theme.breakpoints.up('lg')]: {
-      // marginLeft: "200px"
+      marginLeft: "200px"
       // height:'100vh'
     },
   },
@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerContainer: {
     overflow: "auto",
-    height: '85vh',
+    height: '80vh',
     background: "#3f51b5",
 
   },
@@ -320,6 +320,7 @@ export default function ClippedDrawer({ children }) {
     }
     const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
+    dispatch( ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
   };
 
@@ -392,16 +393,12 @@ export default function ClippedDrawer({ children }) {
     history.push('/AdminAccesslist')
   }
 
-  const handleAccessReview = () => {
-    history.push('/accessreview')
-  }
-
 
   const handlerequestMenus = () => {
     history.push('/Request')
   }
 
-  //  console.log(ITEMlIST, 'liusdce')
+   console.log(ITEMlIST, 'liusdce')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -572,17 +569,9 @@ export default function ClippedDrawer({ children }) {
 
                 onClick={handleAdminMenus}
               >
-                Admin Approvals
+                Admin Access & Approvals
               </Typography>
-              <Divider />
-              <Typography
-                variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                onClick={handleAccessReview}
-              >
-               Access Review
-              </Typography>
               <Divider />
 
               <Typography

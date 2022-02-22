@@ -107,4 +107,19 @@ const UpdateMenutlist = (value) => {
    }
 }
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist}
+
+
+
+
+const DeleteMenutlist = (value) => {
+   
+   return dispatch => {
+
+      dispatch({
+         type:"DELETE_SELECTED_ITEM",
+         payload:value
+      })
+   }
+}
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist}

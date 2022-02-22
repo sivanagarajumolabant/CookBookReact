@@ -81,8 +81,13 @@ const dashboardReducer = (state = initialState, action) => {
             ...state,
            ITEMlIST:action.payload
           };
+          case "DELETE_SELECTED_ITEM":
+            return {
+              ...state,
+             ITEMlIST:action.payload
+            };
 
-        
+          
     default:
       return state;
   }

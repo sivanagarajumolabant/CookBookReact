@@ -371,7 +371,7 @@ export default function EditFeature(props) {
         }
       );
 
-    dispatch(Menuaction.reloadAction(true));
+    // dispatch(Menuaction.reloadAction(true));
   };
 
   const handleChange = (e) => {
