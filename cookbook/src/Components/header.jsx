@@ -392,6 +392,10 @@ export default function ClippedDrawer({ children }) {
   const handleAdminMenus = () => {
     history.push('/AdminAccesslist')
   }
+  const handleAcessreview = () => {
+    history.push('/accessreview')
+  }
+  
 
 
   const handlerequestMenus = () => {
@@ -569,8 +573,9 @@ export default function ClippedDrawer({ children }) {
 
                 onClick={handleAdminMenus}
               >
-                Admin Access & Approvals
+                Admin Approvals
               </Typography>
+              
 
               <Divider />
 
@@ -581,6 +586,16 @@ export default function ClippedDrawer({ children }) {
                 onClick={handlerequestMenus}
               >
                 Feature Catalog
+              </Typography>
+
+              <Divider />
+              <Typography
+                variant="body2"
+                style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+
+                onClick={handleAcessreview}
+              >
+                Access Review
               </Typography>
 
               <Divider />
