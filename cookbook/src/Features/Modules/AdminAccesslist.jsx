@@ -117,7 +117,7 @@ const StyledTableRow = withStyles((theme) => ({
 export default function AdminAccesslist() {
   const classes = useStyles();
   const classestable = useStylestable();
-  const [isData, setIsData] = useState(false);
+  const [isData, setIsData] = useState(true);
   const {
     details,
     createFeature,
@@ -428,7 +428,7 @@ export default function AdminAccesslist() {
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
-                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                  {/* <StyledTableCell align="left">Migration Type</StyledTableCell> */}
                   <StyledTableCell align="left">Object Type</StyledTableCell>
                   <StyledTableCell align="left">Feature Name</StyledTableCell>
                   <StyledTableCell align="left">
@@ -444,11 +444,11 @@ export default function AdminAccesslist() {
                         {"siva.n@quadrantresource.com"}
                       </div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={8}>
+                    {/* <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>
                         {"Oracle TO Postgres"}
                       </div>
-                    </StyledTableCell>
+                    </StyledTableCell> */}
                     <StyledTableCell item xl={10}>
                       <div className={classes.texttablecell}>
                         {"Procedures"}
@@ -458,7 +458,30 @@ export default function AdminAccesslist() {
                       <div className={classes.texttablecell}>{"XML"}</div>
                     </StyledTableCell>
                     <StyledTableCell item xl={10}>
-                      <div className={classes.texttablecell}>{"Pending"}</div>
+                      {/* <div className={classes.texttablecell}>{"Pending"}</div> */}
+                      <div className={classes.texttablecell}>
+                      <Button
+                            type="button"
+                            size="verysmall"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            style={{maxHeight: '3px', maxWidth : '2px',fontSize:'7px',marginRight:'3px'}}
+                        >
+                            APPROVE
+                      </Button>
+                      <Button
+                            type="button"
+                            size="verysmall"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            style={{maxHeight: '3px', maxWidth : '2px',fontSize:'7px'}}
+                        >
+                            DENY
+                        </Button>
+
+                      </div>
                     </StyledTableCell>
                   </StyledTableRow>
                 ) : (

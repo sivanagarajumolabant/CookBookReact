@@ -52,6 +52,15 @@ export default function EmailVerify(props) {
             }
         )
     }, [])
+    const handleResendEmail = () => {
+        // let userinfo = {
+        //     email: state.email,
+        //   }
+        //   const form = new FormData();
+        //   Object.keys(userinfo).forEach((key) => {
+        //     form.append(key, userinfo[key]);
+        //   });
+    }
 
     var display = null;
     if (msg === 'Sucessfully Email Confirmed! Please Login') {
@@ -89,7 +98,7 @@ export default function EmailVerify(props) {
                     <Grid item xs={12}>
                         <Avatar className={classes.avatar1}>
                             {/* <CheckIcon /> */}
-                            <CancelIcon/>
+                            <CancelIcon />
                         </Avatar>
                         <center>{msg}</center>
                     </Grid>
@@ -101,7 +110,7 @@ export default function EmailVerify(props) {
                                 </Button>
                             </Grid> */}
                             <Grid item xs >
-                                <Button href="#" variant="body2">
+                                <Button href="#" variant="body2" onClick={handleResendEmail()}>
                                     Resend Email?
                                 </Button>
                             </Grid>

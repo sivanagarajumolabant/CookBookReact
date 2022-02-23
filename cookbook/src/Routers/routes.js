@@ -18,6 +18,7 @@ import EmailVerify from '../Auth/EmailVerificationPage';
 import AccessReview from '../Features/Modules/AccessReview';
 import RequestFeatureData from '../Features/Modules/RequestFeatureData';
 import ForgotPasword from '../Auth/forgotpassword';
+import ResendEmail from '../Auth/resendemail';
 
 
 
@@ -30,6 +31,7 @@ const Routing = () => {
                 <Route path="/register" component={SignUp} />
                 <Route path="/emailverification" component={EmailVerify} />
                 <Route path="/forgotpassword" component={ForgotPasword} />
+                <Route path="/resendemail" component={ResendEmail} />
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <MenuAppBar>
                     <ProtectedRoute path="/dashboard" component={Home} />
