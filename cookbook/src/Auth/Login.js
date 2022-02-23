@@ -74,6 +74,7 @@ function SignIn() {
     console.log(loginurl)
     axios.post(loginurl, user)
       .then((res) => {
+        console.log(res)
         if (res.status === 200 && res.data.access !== null) {
           localStorage.setItem('isAuth', true)
           localStorage.setItem('quadranttoken', res.data.access)
