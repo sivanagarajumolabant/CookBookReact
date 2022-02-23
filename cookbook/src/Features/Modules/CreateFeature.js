@@ -208,7 +208,7 @@ export default function CreateFeature(props) {
   }
   console.log("obj 1 ", obj_type);
   const [prerunval, setPrerunval] = useState([]);
-
+console.log(edithandle)
   // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
   const history = useHistory();
 
@@ -443,6 +443,13 @@ export default function CreateFeature(props) {
   };
 
   const handleEditchangetext = (e) => {
+     if(e.target.name==="Sequence"){
+
+     
+    setEdithandle({
+      ...edithandle,
+      Sequence:e.target.value
+    })}
     setformvalues({
       ...formValues,
       [e.target.name]: e.target.value,
@@ -522,7 +529,7 @@ export default function CreateFeature(props) {
     // setOpen(false);
   }
   const handleEditchange = (Feature_Id) => {
-    setOpen(true);
+    
     // setFid(Feature_Id);
     let conf = {
       headers: {
@@ -535,6 +542,7 @@ export default function CreateFeature(props) {
         (res) => {
           console.log(res);
           setEdithandle(res.data)
+          setOpen(true);
         },
         (error) => {
           console.log(error);
@@ -887,7 +895,7 @@ export default function CreateFeature(props) {
                 <InputLabel>Predecessor</InputLabel>
                 <Select
                   native
-                  // value={edithandle.Sequence}
+                  value={edithandle.Sequence||''}
                   onChange={(e) => handleEditchangetext(e)}
                   label="Predecessor"
                   name="Sequence"
