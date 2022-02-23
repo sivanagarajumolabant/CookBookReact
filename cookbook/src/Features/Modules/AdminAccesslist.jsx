@@ -60,12 +60,15 @@ const useStyles = makeStyles((theme) => ({
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
-    width: "140px",
+    width: "210px",
     overflow: "hidden",
     textOverflow: "ellipsis",
     // '&:hover': {
     //     overflow: 'visible'
     // }
+  },
+  buttton:{
+    height:10
   },
 
   table: {
@@ -431,7 +434,7 @@ export default function AdminAccesslist() {
                   {/* <StyledTableCell align="left">Migration Type</StyledTableCell> */}
                   <StyledTableCell align="left">Object Type</StyledTableCell>
                   <StyledTableCell align="left">Feature Name</StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="center">
                     Approval Status
                   </StyledTableCell>
                 </TableRow>
@@ -449,39 +452,39 @@ export default function AdminAccesslist() {
                         {"Oracle TO Postgres"}
                       </div>
                     </StyledTableCell> */}
-                    <StyledTableCell item xl={10}>
+                    <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>
                         {"Procedures"}
                       </div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={10}>
+                    <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>{"XML"}</div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={10}>
+                    <StyledTableCell item xl={30} align="left">
                       {/* <div className={classes.texttablecell}>{"Pending"}</div> */}
-                      <div className={classes.texttablecell}>
+                      {/* <div className={classes.texttablecell}> */}
                       <Button
                             type="button"
-                            size="verysmall"
+                            size="small"
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            style={{maxHeight: '3px', maxWidth : '2px',fontSize:'7px',marginRight:'3px'}}
                         >
                             APPROVE
                       </Button>
+                      {' '}
                       <Button
                             type="button"
-                            size="verysmall"
+                            size="small"
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            style={{maxHeight: '3px', maxWidth : '2px',fontSize:'7px'}}
+                            
                         >
-                            DENY
+                            Denied
                         </Button>
 
-                      </div>
+                      {/* </div> */}
                     </StyledTableCell>
                   </StyledTableRow>
                 ) : (

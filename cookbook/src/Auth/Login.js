@@ -79,6 +79,7 @@ function SignIn() {
           localStorage.setItem('isAuth', true)
           localStorage.setItem('quadranttoken', res.data.access)
           localStorage.setItem('quser', user.username)
+          localStorage.setItem('isAdmin', user.admin)
           history.push("/dashboard");
         }
       })

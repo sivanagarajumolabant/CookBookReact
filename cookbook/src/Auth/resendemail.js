@@ -121,7 +121,7 @@ function ResendEmail() {
                             shrink: true,
                         }}
                     />
-                    <center> {loading ? <CircularProgress /> : <h3 style={{color:'blue'}}>{msg}</h3>}</center>
+                    <center> {loading ? <CircularProgress /> : <h3 style={{ color: 'blue' }}>{msg}</h3>}</center>
                     <center>
                         <Button
                             type="button"
