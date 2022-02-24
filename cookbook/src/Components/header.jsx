@@ -274,13 +274,13 @@ const StyledAutocompletesidebar = styled(Autocomplete)({
 
 export default function ClippedDrawer({ children }) {
   const classes = useStyles();
-   const IsAdmin  = localStorage.getItem('isAdmin')
+  const IsAdmin = localStorage.getItem('isAdmin')
   const [opens, setOpens] = useState(false);
   //   const classes = useStyles();
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue,ITEMlIST  } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST } = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -321,7 +321,7 @@ export default function ClippedDrawer({ children }) {
     }
     const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
-    dispatch( ActionMenu.selectedMenutlist(''))
+    dispatch(ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
   };
 
@@ -385,8 +385,8 @@ export default function ClippedDrawer({ children }) {
   }, [updatedValue])
 
   const handlefeature = (data) => {
-  
-    dispatch( ActionMenu.selectedMenutlist(data))
+
+    dispatch(ActionMenu.selectedMenutlist(data))
     setselectedItems([data])
   }
 
@@ -396,14 +396,14 @@ export default function ClippedDrawer({ children }) {
   const handleAcessreview = () => {
     history.push('/accessreview')
   }
-  
+
 
 
   const handlerequestMenus = () => {
     history.push('/Request')
   }
 
-   console.log(ITEMlIST, 'liusdce')
+  console.log(ITEMlIST, 'liusdce')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -551,19 +551,22 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-             {IsAdmin===true&&
+              {IsAdmin === "true" &&
+<>
+                <Typography
+                  variant="body2"
+                  style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-              <Typography
-                variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                  onClick={handleAdminMenus}
+                >
+                  Admin Approvals
+                </Typography>
+                <Divider/>
+                </>
+               
+              }
 
-                onClick={handleAdminMenus}
-              >
-                Admin Approvals
-              </Typography>
-}
-
-              <Divider />
+              
 
               <Typography
                 variant="body2"
@@ -575,18 +578,18 @@ export default function ClippedDrawer({ children }) {
               </Typography>
 
               <Divider />
-              {IsAdmin==true&&
-              <>
-              <Typography
-                variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+              {IsAdmin == "true" &&
+                <>
+                  <Typography
+                    variant="body2"
+                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                onClick={handleAcessreview}
-              >
-                Access Review
-              </Typography>
+                    onClick={handleAcessreview}
+                  >
+                    Access Review
+                  </Typography>
 
-              <Divider /></>}
+                  <Divider /></>}
 
 
               <Box py={1}>

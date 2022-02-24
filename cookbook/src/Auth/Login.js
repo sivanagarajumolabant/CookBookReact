@@ -83,8 +83,8 @@ function SignIn() {
         }
       })
       .catch((error) => {
-        if (error.response.data?.detail) {
-          setMsg(error.response.data.detail)
+        if (error.response?.data?.detail) {
+          setMsg(error.response?.data?.detail)
 
         } else {
           setMsg("Something went wrong Please Try Again")
