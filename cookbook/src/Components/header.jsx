@@ -274,6 +274,7 @@ const StyledAutocompletesidebar = styled(Autocomplete)({
 
 export default function ClippedDrawer({ children }) {
   const classes = useStyles();
+   const IsAdmin  = localStorage.getItem('isAdmin')
   const [opens, setOpens] = useState(false);
   //   const classes = useStyles();
   const theme = useTheme();
@@ -550,22 +551,7 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-              {/* <Typography
-                variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 60, marginTop: 0, justifyContent: 'center' }}
-              >
-                Database Objects
-              </Typography> */}
-              {/* <Typography
-
-                style={{ color: "white", paddingTop: 10, paddingLeft: 35 }}
-              >
-
-
-
-              </Typography> */}
-
-              {/* <Divider /> */}
+             {IsAdmin===true&&
 
               <Typography
                 variant="body2"
@@ -575,7 +561,7 @@ export default function ClippedDrawer({ children }) {
               >
                 Admin Approvals
               </Typography>
-              
+}
 
               <Divider />
 
@@ -589,6 +575,8 @@ export default function ClippedDrawer({ children }) {
               </Typography>
 
               <Divider />
+              {IsAdmin==true&&
+              <>
               <Typography
                 variant="body2"
                 style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
@@ -598,7 +586,7 @@ export default function ClippedDrawer({ children }) {
                 Access Review
               </Typography>
 
-              <Divider />
+              <Divider /></>}
 
 
               <Box py={1}>

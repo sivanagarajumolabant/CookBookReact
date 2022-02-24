@@ -74,12 +74,11 @@ function SignIn() {
     console.log(loginurl)
     axios.post(loginurl, user)
       .then((res) => {
-        console.log(res)
         if (res.status === 200 && res.data.access !== null) {
           localStorage.setItem('isAuth', true)
+          localStorage.setItem('isAdmin', res.data.admin)
           localStorage.setItem('quadranttoken', res.data.access)
           localStorage.setItem('quser', user.username)
-          localStorage.setItem('isAdmin', res.data.admin)
           history.push("/dashboard");
         }
       })
