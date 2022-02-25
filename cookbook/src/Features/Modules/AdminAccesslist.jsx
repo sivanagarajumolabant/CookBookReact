@@ -5,6 +5,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import SaveIcon from "@material-ui/icons/Save";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import MenuAppBar from "../../Components/header";
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     '&:hover': {
-        overflow: 'visible'
+      overflow: 'visible'
     }
   },
   buttton: {
@@ -134,6 +135,21 @@ export default function AdminAccesslist() {
   const [objtype, setObjtype] = useState("Procedure");
   const [fnnames, setFnnames] = useState([]);
   const [data, setData] = useState([]);
+  const [isEdit, setEdit] = React.useState(false);
+  const [date, setDate] = useState('24/2/2022')
+
+
+
+  // Function to handle edit
+  const handleEdit = (i) => {
+    // If edit mode is true setEdit will 
+    // set it to false and vice versa
+    setEdit(!isEdit);
+  };
+
+  const handleSaveDate=()=>{
+
+  }
 
   useEffect(() => {
     let sval = 0;
@@ -196,6 +212,10 @@ export default function AdminAccesslist() {
   };
 
   const handleversion = () => { };
+
+  const handleDate = (e) => {
+    setData(e.target.value)
+  }
 
   return (
     <>
@@ -443,27 +463,39 @@ export default function AdminAccesslist() {
               <TableBody>
                 {isData ? (
                   <StyledTableRow container>
-                    <StyledTableCell item xl={8}>
+                    <StyledTableCell item xl={10}>
                       <div className={classes.texttablecell}>
                         {"siva.n@quadrantresource.com"}
                       </div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={8}>
+                    <StyledTableCell item xl={6}>
                       <div className={classes.texttablecell}>
                         {"Procedures"}
                       </div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={8}>
+                    <StyledTableCell item xl={6}>
                       <div className={classes.texttablecell}>{"XML"}</div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={8}>
-                      <div className={classes.texttablecell}>
-                        {"24-02-2022"}
-                        <EditSharpIcon style={{ color: "blue", width: '20px' }} />
+                    <StyledTableCell item xl={6}>
+                      <div >
+                        {isEdit ? (
+                          <>
+                          <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
+                          <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()}/>
+                          </>
+                        ) :
+                          <>{date}
+                            <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /></>
+                        }
+                        {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /> */}
+                        {/* <Button align="right" > */}
+
+
+                        {/* </Button> */}
                         {/* onClick={() => handleEditchange(row.Feature_Id)} */}
                       </div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={10} align="left">
+                    <StyledTableCell item align="right" xl={10}>
                       <div className={classes.texttablecell}>
                         <Button
                           type="button"

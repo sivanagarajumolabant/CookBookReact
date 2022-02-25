@@ -683,7 +683,7 @@ console.log(edithandle)
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} sm={3} md={3} xl={3}>
+        <Grid item xs={12} sm={6} md={6} xl={6}>
           <TextField
             id="outlined-multiline-static"
             label="Keywords"
@@ -725,17 +725,17 @@ console.log(edithandle)
           />
         </Grid>
 
-        <Grid item xs={6} sm={1} md={2} xl={1}>
+        <Grid item xs={6} sm={1} md={1} xl={1}>
           <Button
             size="small"
             type="submit"
-            fullWidth
+            // fullWidth
             variant="contained"
             color="primary"
             // className={classes.submit}
             onClick={handleSubmit}
             startIcon={<SaveIcon />}
-            style={{ marginTop: 12, marginLeft: 60 }}
+            style={{ marginTop: 12, marginLeft: 450 }}
           >
             Save
           </Button>
