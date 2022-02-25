@@ -371,30 +371,32 @@ export default function Request() {
       <Box className={classes.root}>
         <Grid container spacing={3} justifyContent="center"
           alignItems="center">
-
-
           <Grid item xs={6} sm={3}>
             <Button variant="contained"
-              // startIcon={<CloudUploadIcon />}
-              color="primary" component="span" style={{ marginTop: 15 }}>
-              Request Access
-
+            // startIcon={<CloudUploadIcon />}
+            color="primary" component="span" style={{ marginTop: 15,width: "240px" }}>
+            Request View Access
             </Button>
           </Grid>
-          <Grid item xs={6} sm={3}>
-            <Button variant="outlined"
-              disabled={!selecetd}
-              onClick={() =>
+            <Grid item xs={6} sm={2}>
+                <Button variant="outlined"
+                disabled={!selecetd}
+                onClick={() =>
                 history.push({
-                  pathname: `/requestdata`,
-                  data: { data },
-
+                pathname: `/requestdata`,
+                data: { data },
                 })}
-              color="primary" component="span" style={{ marginTop: 15, width: "170px" }}>
-              Show All
-
-            </Button>
-          </Grid>
+                color="primary" component="span" style={{ marginTop: 15, width: "150px" }} >
+                Show All
+                </Button>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Button variant="contained"
+              // startIcon={<CloudUploadIcon />}
+              color="primary" component="span" style={{ marginTop: 15 ,width: "240px"}}>
+              Request Edit Access
+              </Button>
+            </Grid>
         </Grid>
       </Box>
       {/* <Box direction='row'>

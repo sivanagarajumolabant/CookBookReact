@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography, styled } from "@material-ui/core";
+import { Box, Grid, TextField, Typography, styled, Tooltip } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
@@ -17,6 +17,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
 import config from "../../Config/config";
+import EditSharpIcon from "@material-ui/icons/EditSharp";
 
 const useStylestable = makeStyles((theme) => ({
   table: {
@@ -60,15 +61,15 @@ const useStyles = makeStyles((theme) => ({
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
-    width: "210px",
+    width: "150px",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    // '&:hover': {
-    //     overflow: 'visible'
-    // }
+    '&:hover': {
+        overflow: 'visible'
+    }
   },
-  buttton:{
-    height:10
+  buttton: {
+    height: 10
   },
 
   table: {
@@ -99,7 +100,7 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   root: {
-    padding: "0px 16px",
+    padding: "0px 8px",
   },
 
   body: {
@@ -113,7 +114,7 @@ const StyledTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
 
-    height: 10,
+    height: 9,
   },
 }))(TableRow);
 
@@ -194,7 +195,7 @@ export default function AdminAccesslist() {
       );
   };
 
-  const handleversion = () => {};
+  const handleversion = () => { };
 
   return (
     <>
@@ -299,7 +300,7 @@ export default function AdminAccesslist() {
               options={[
                 { title: "Edit", code: 1 },
                 { title: "View", code: 2 },
-                { title: "Admin", code: 3 },
+                // { title: "Admin", code: 3 },
               ]}
               groupBy={""}
               defaultValue={{ title: "Edit" }}
@@ -346,7 +347,7 @@ export default function AdminAccesslist() {
             />
           </Grid>
           <Grid item xs={4} style={{ marginTop: "10px" }}>
-          <TextField
+            <TextField
               id="outlined-multiline-static"
               type="date"
               // label="End Date"
@@ -366,9 +367,9 @@ export default function AdminAccesslist() {
               disabled
               style={{ width: 300 }}
             />
-              
-              
-          
+
+
+
           </Grid>
           {/* <Grid item xs={4}>
 
@@ -416,7 +417,7 @@ export default function AdminAccesslist() {
       </Box>
 
       <Box py={2} px={2}>
-        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+        <Grid container xl={12} justifyContent="space-between" spacing={2}>
           <Grid item xs={12}>
             <Typography
               gutterBottom
@@ -431,9 +432,9 @@ export default function AdminAccesslist() {
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
-                  {/* <StyledTableCell align="left">Migration Type</StyledTableCell> */}
                   <StyledTableCell align="left">Object Type</StyledTableCell>
                   <StyledTableCell align="left">Feature Name</StyledTableCell>
+                  <StyledTableCell align="left">Date</StyledTableCell>
                   <StyledTableCell align="center">
                     Approval Status
                   </StyledTableCell>
@@ -447,11 +448,6 @@ export default function AdminAccesslist() {
                         {"siva.n@quadrantresource.com"}
                       </div>
                     </StyledTableCell>
-                    {/* <StyledTableCell item xl={8}>
-                      <div className={classes.texttablecell}>
-                        {"Oracle TO Postgres"}
-                      </div>
-                    </StyledTableCell> */}
                     <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>
                         {"Procedures"}
@@ -460,31 +456,38 @@ export default function AdminAccesslist() {
                     <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>{"XML"}</div>
                     </StyledTableCell>
-                    <StyledTableCell item xl={30} align="left">
-                      {/* <div className={classes.texttablecell}>{"Pending"}</div> */}
-                      {/* <div className={classes.texttablecell}> */}
-                      <Button
-                            type="button"
-                            size="small"
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
+                    <StyledTableCell item xl={8}>
+                      <div className={classes.texttablecell}>
+                        {"24-02-2022"}
+                        <EditSharpIcon style={{ color: "blue", width: '20px' }} />
+                        {/* onClick={() => handleEditchange(row.Feature_Id)} */}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={10} align="left">
+                      <div className={classes.texttablecell}>
+                        <Button
+                          type="button"
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
                         >
-                            APPROVE
-                      </Button>
-                      {' '}
-                      <Button
-                            type="button"
-                            size="small"
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            
+                          APPROVE
+                        </Button>
+                        {' '}
+                        <Button
+                          type="button"
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
                         >
-                            Denied
+                          Denied
                         </Button>
 
-                      {/* </div> */}
+                      </div>
                     </StyledTableCell>
                   </StyledTableRow>
                 ) : (

@@ -19,6 +19,7 @@ import AccessReview from '../Features/Modules/AccessReview';
 import RequestFeatureData from '../Features/Modules/RequestFeatureData';
 import ForgotPasword from '../Auth/forgotpassword';
 import ResendEmail from '../Auth/resendemail';
+import SuperadminFunction from '../Features/Modules/superadminpage';
 
 
 
@@ -45,8 +46,7 @@ const Routing = () => {
                     {/* <Route path="*" component={PageNotFound} /> */}
                     <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
                     <ProtectedRoute path="/Request" component={Request} />
-                    
-
+                    <ProtectedRoute path="/superadmin" component={SuperadminFunction} />
                 </MenuAppBar>
 
 

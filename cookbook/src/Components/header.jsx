@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   // style={{  }}
   navbarcom: {
     [theme.breakpoints.up('lg')]: {
-      marginLeft: "200px"
+      marginLeft: "210px"
       // height:'100vh'
     },
   },
@@ -396,6 +396,9 @@ export default function ClippedDrawer({ children }) {
   const handleAcessreview = () => {
     history.push('/accessreview')
   }
+  const handleSuperadmin = () => {
+    history.push('/superadmin')
+  }
 
 
 
@@ -403,7 +406,7 @@ export default function ClippedDrawer({ children }) {
     history.push('/Request')
   }
 
-  console.log(ITEMlIST, 'liusdce')
+  // console.log(ITEMlIST, 'liusdce')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -417,7 +420,7 @@ export default function ClippedDrawer({ children }) {
           // style={{ paddingLeft: "3rem" }}
           >
             <Grid item
-              xm={12} sm={12} md={3} lg={3}
+              xm={12} sm={12} md={3} lg={2}
               onClick={() => history.push("/dashboard")}>
               <Typography variant="h6" className={classes.title}>
                 Cookbook
@@ -425,7 +428,7 @@ export default function ClippedDrawer({ children }) {
             </Grid>
 
             <Grid item
-              xm={12} sm={6} md={5} lg={5}
+              xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
               <StyledAutocomplete
@@ -453,6 +456,21 @@ export default function ClippedDrawer({ children }) {
                   />
                 )}
               />
+            </Grid>
+            <Grid item
+              xm={12} sm={6} md={5} lg={2}
+              className={classes.navbarcom}
+            >
+            <Button
+                type="button"
+                size="small"
+                variant="contained"
+                color="orange"
+                onClick={handleSuperadmin}
+                style={{marginTop:'9px',fontSize:'14px',marginBottom:'8px',width:'130px'}}
+            >
+                Super Admin
+            </Button>
             </Grid>
             <Grid item xm={12} sm={5} md={1} lg={1}>
               <StyledAutocomplete
