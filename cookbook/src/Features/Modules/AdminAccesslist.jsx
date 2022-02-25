@@ -1,6 +1,7 @@
 import { Box, Grid, TextField, Typography, styled, Tooltip } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import React, { useEffect, useState } from "react";
@@ -126,32 +127,69 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 
-const createData = (name, calories, fat, carbs, protein) => ({
-  id: name.replace(" ", "_"),
-  name,
-  calories,
-  fat,
-  carbs,
-  protein,
-  isEditMode: false
-});
+
+
 
 export default function AdminAccesslist() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
-
-
-  // sample data
-  const [rows, setRows] = React.useState([
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0)
-  ]);
+  const [rows, setRows] = React.useState([]);
+  const [isEditMode, setIsEditMode] = React.useState(true);
   
 
+  const CustomTableCell = ({ row, name, onChange }) => {
+    const classes = useStyles();
+    // const { isEditMode } = row;
+    return (
+      <TableCell align="left" className={classes.tableCell}>
+        {isEditMode ? (
+          <Input
+            value={row[name]}
+            name={name}
+            onChange={(e) => onChange(e, row)}
+            className={classes.input}
+          />
+        ) : (
+          row[name]
+        )}
+      </TableCell>
+    );
+  };
+  
+
+  // sample data
+  
+
+  const onToggleEditMode = (id) => {
+    console.log(id, "toggle")
+    setRows((state) => {
+      return rows.map((row) => {
+        if (row.id === id) {
+          return { ...row, isEditMode: !row.isEditMode };
+        }
+        return row;
+      });
+    });
+  };
+
   const onChange = (e, row) => {
+    console.log(row)
+    if (!previous[row.id]) {
+      setPrevious((state) => ({ ...state, [row]: row }));
+    }
+    const value = e.target.value;
+    const name = e.target.name;
+    const { id } = row;
+    const newRows = rows.map((row) => {
+      if (row.id === id) {
+        return { ...row, [name]: value };
+      }
+      return row;
+    });
+    setRows(newRows);
   }
+
 
 
 
@@ -167,6 +205,10 @@ export default function AdminAccesslist() {
   const [objtype, setObjtype] = useState("Procedure");
   const [fnnames, setFnnames] = useState([]);
   const [data, setData] = useState([]);
+  const [previous, setPrevious] = React.useState({});
+  // const [isEditMode, setIsEditMode] = React.useState(false);
+
+
 
   useEffect(() => {
     let sval = 0;
@@ -202,6 +244,43 @@ export default function AdminAccesslist() {
       }
     );
   }, [objtype]);
+
+
+  useEffect(() => {
+    let sval = 0;
+    if (headerValue) {
+      if (headerValue.title === "Oracle TO Postgres") {
+        sval = 1;
+      } else if (headerValue.title === "SQLServer TO Postgres") {
+        sval = 2;
+      } else if (headerValue.title === "MYSQL TO Postgres") {
+        sval = 3;
+      }
+    }
+    let body = {
+      Object_Type: objtype,
+      Migration_TypeId: sval,
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/tablesdata/`, form, conf).then(
+      (res) => {
+        setRows(res.data);
+        // setIstdata(true);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
 
   const handleObjecttype = (v) => {
     setObjtype(v.title);
@@ -464,6 +543,7 @@ export default function AdminAccesslist() {
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
+                  <StyledTableCell align="left">Actions</StyledTableCell>
                   <StyledTableCell align="left">User Email</StyledTableCell>
                   <StyledTableCell align="left">Object Type</StyledTableCell>
                   <StyledTableCell align="left">Feature Name</StyledTableCell>
@@ -478,76 +558,36 @@ export default function AdminAccesslist() {
 
                 {rows.map(row => (
                   <StyledTableRow container >
-                    {row.isEditMode ? (
-                      <>
-                        <IconButton
-                          aria-label="done"
-                        // onClick={() => onToggleEditMode(row.id)}
-                        >
-                          <DoneIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="revert"
-                        // onClick={() => onRevert(row.id)}
-                        >
-                          <RevertIcon />
-                        </IconButton>
-                      </>
-                    ) : (
-                      <IconButton
-                        aria-label="delete"
-                      // onClick={() => onToggleEditMode(row.id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    )}
+                    <StyledTableCell>
+                      {
+                        row.isEditMode ? (
+                          <>
+                            <IconButton
+                              aria-label="done"
+                              onClick={() => onToggleEditMode(row.id)}
+                            >
+                              <DoneIcon />
+                            </IconButton>
+                            <IconButton
+                              aria-label="revert"
+                            // onClick={() => onRevert(row.id)}
+                            >
+                              <RevertIcon />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <IconButton
+                            aria-label="delete"
+                          // onClick={() => onToggleEditMode(row.id)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        )
+                      }
+                    </StyledTableCell>
 
-                    <StyledTableCell item xl={8} {...{ row, name: "name", onChange }}>
-                      {/* <div className={classes.texttablecell}>
-                        {"siva.n@quadrantresource.com"}
-                      </div> */}
-                    </StyledTableCell>
-                    <StyledTableCell item xl={8}>
-                      <div className={classes.texttablecell}>
-                        {"Procedures"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={8}>
-                      <div className={classes.texttablecell}>{"XML"}</div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={8}>
-                      <div className={classes.texttablecell}>
-                        {"24-02-2022"}
-                        {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} /> */}
-                        {/* onClick={() => handleEditchange(row.Feature_Id)} */}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={10} align="left">
-                      <div className={classes.texttablecell}>
-                        <Button
-                          type="button"
-                          size="small"
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                        >
-                          APPROVE
-                        </Button>
-                        {' '}
-                        <Button
-                          type="button"
-                          size="small"
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                        >
-                          Denied
-                        </Button>
+                    <CustomTableCell item xl={8} {...{ row, name: 'Feature_Name', onChange }} />
 
-                      </div>
-                    </StyledTableCell>
                   </StyledTableRow>
                   // {/* ) : (
                   //   <>
@@ -568,7 +608,7 @@ export default function AdminAccesslist() {
             </Table>
           </Grid>
         </Grid>
-      </Box>
+      </Box >
     </>
   );
 }
