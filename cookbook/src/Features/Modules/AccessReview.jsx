@@ -161,6 +161,7 @@ export default function AccessReview() {
                     <TableRow>
                     <StyledTableCell align="left">User Email-ID</StyledTableCell>
                     <StyledTableCell align="left">Migration Type</StyledTableCell>
+                    <StyledTableCell align="left">Object Type</StyledTableCell>
                     <StyledTableCell align="left">Roles</StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -177,6 +178,11 @@ export default function AccessReview() {
                         <StyledTableCell item xl={8} >
                         <div className={classes.texttablecell}>
                             {"Oracle TO Postgres"}
+                        </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                        <div className={classes.texttablecell}>
+                            {"Procedures"}
                         </div>
                         </StyledTableCell>
                         <StyledTableCell item xl={10} >
