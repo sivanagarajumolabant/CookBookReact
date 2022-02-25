@@ -21,6 +21,13 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import AddIcon from '@material-ui/icons/Add';
 import { Avatar } from '@material-ui/core';
 
+import {
+  Container,
+  Modal,
+  Snackbar,
+} from "@material-ui/core";
+
+
 
 const useStylestable = makeStyles((theme) => ({
   table: {
@@ -35,7 +42,7 @@ const useStylestable = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    },
+  },
 
 }))
 
@@ -101,6 +108,24 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
+
+
+  //pop up weindow
+
+  container: {
+    border: "none",
+    borderRadius: 15,
+    width: 600,
+    height: 500,
+    backgroundColor: "white",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: "auto",
+  }
+
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -129,9 +154,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+
 export default function SuperadminFunction() {
   const classes = useStyles();
   const classestable = useStylestable();
+  const [open, setOpen] = useState(false);
   const [isData, setIsData] = useState(true);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue.title)
@@ -140,7 +167,8 @@ export default function SuperadminFunction() {
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
-  
+  const [openAlert, setOpenAlert] = useState(false);
+
   let history = useHistory();
 
 
@@ -189,6 +217,14 @@ export default function SuperadminFunction() {
     setMigtype(v.title)
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
   const handledropdown = (e, v) => {
     setSelected(true)
     let conf = {
@@ -218,9 +254,9 @@ export default function SuperadminFunction() {
 
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' spacing={1}>
+        <Grid container direction='row' spacing={2}>
 
-        <Grid item xs={4} >
+          <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -247,9 +283,73 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-            {/* <Avatar className={classes.avatar}>
-                <AddIcon />
-            </Avatar> */}
+          <Grid item xs={1}>
+            <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
+              <AddIcon style={{ color: 'green' }} />
+            </Avatar>
+          </Grid>
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={4000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+          </Snackbar>
+          <Modal open={open}>
+            <Container className={classes.container}>
+              <Typography
+                gutterBottom
+                align="center"
+                variant="h6"
+                component="h2"
+                className={classes.Object_Type}
+              >
+                Create Migration Type
+              </Typography>
+              {/* <form className={classes.form} autoComplete="off"> */}
+              <div className={classes.item}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Migartion Type"
+                  style={{ width: 400, }}
+                  multiline
+                  rows={1}
+                  // value ={row.Keywords}
+                  // onChange={(e) => handleEditchangetext(e)}
+                  name="Keywords"
+                  // defaultValue={edithandle.Keywords}
+                  // helperText={featurenamemsg}
+                  // value={edithandle.Keywords}
+                  className={classes.textField}
+                  // helperText="Some important text"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+
+                  multiline
+                />
+              </div>
+              <div className={classes.item} >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: 20, marginLeft: 100 }}
+                // onClick={() => handleEditmodal(edithandle)}
+                >
+                  Create
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+              {/* </form> */}
+            </Container>
+          </Modal>
           <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
@@ -314,16 +414,81 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
+          <Grid item xs={1}>
+            <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
+              <AddIcon style={{ color: 'green' }} />
+            </Avatar>
+          </Grid>
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={4000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+          </Snackbar>
+          <Modal open={open}>
+            <Container className={classes.container}>
+              <Typography
+                gutterBottom
+                align="center"
+                variant="h6"
+                component="h2"
+                className={classes.Object_Type}
+              >
+                Create Object Type
+              </Typography>
+              {/* <form className={classes.form} autoComplete="off"> */}
+              <div className={classes.item}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Object Type"
+                  style={{ width: 400, }}
+                  multiline
+                  rows={1}
+                  // value ={row.Keywords}
+                  // onChange={(e) => handleEditchangetext(e)}
+                  name="Keywords"
+                  // defaultValue={edithandle.Keywords}
+                  // helperText={featurenamemsg}
+                  // value={edithandle.Keywords}
+                  className={classes.textField}
+                  // helperText="Some important text"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+
+                  multiline
+                />
+              </div>
+              <div className={classes.item} >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: 20, marginLeft: 100 }}
+                // onClick={() => handleEditmodal(edithandle)}
+                >
+                  Create
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+              {/* </form> */}
+            </Container>
+          </Modal>
         </Grid>
-        </Box>
-        <Box>
         <Grid container direction="row" justifyContent="center">
           <Button
             variant="contained"
             // startIcon={<CloudUploadIcon />}
             color="primary"
             component="span"
-            style={{ marginTop: 15 }}
+            style={{ marginTop: 12, marginLeft: 60 }}
           >
             {" "}
             Submit
@@ -331,120 +496,118 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-            <Grid container xl={12} justifyContent="space-between" spacing={3}>
-            <Grid item xs={12}>
-                <Typography
-                gutterBottom
-                align='center'
-                variant="h6"
-                component="h2"
-                className={classes.Object_Type}
-                >
-                Super Admin Users
-                </Typography>
-                <Table className={classestable.table} aria-label="customized table">
-                <TableHead className={classes.primary}>
-                    <TableRow>
-                    <StyledTableCell align="left">User Email-ID</StyledTableCell>
-                    <StyledTableCell align="left">Migration Type</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Super Admin Users
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Email-ID</StyledTableCell>
+                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
 
 
-                    {isData ?
+                {isData ?
+                  <StyledTableRow container>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"siva.n@quadrantresource.com"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"Oracle TO Postgres"}
+                      </div>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  : <>
                     <StyledTableRow container>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"siva.n@quadrantresource.com"}
-                        </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"Oracle TO Postgres"}
-                        </div>
-                        </StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
                     </StyledTableRow>
-                    : <>
-                        <StyledTableRow container>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="center">No Requests</StyledTableCell>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        </StyledTableRow>
-                    </>
-                    }
+                  </>
+                }
 
 
-                </TableBody>
-                </Table>
-            </Grid>
+              </TableBody>
+            </Table>
+          </Grid>
 
-            </Grid>
-        </Box>
-        <Box py={2} px={2}>
-            <Grid container xl={12} justifyContent="space-between" spacing={3}>
-            <Grid item xs={12}>
-                <Typography
-                gutterBottom
-                align='center'
-                variant="h6"
-                component="h2"
-                className={classes.Object_Type}
-                >
-                2 Super users
-                </Typography>
-                <Table className={classestable.table} aria-label="customized table">
-                <TableHead className={classes.primary}>
-                    <TableRow>
-                    <StyledTableCell align="left">User Email-ID</StyledTableCell>
-                    <StyledTableCell align="left">Migration Type</StyledTableCell>
-                    <StyledTableCell align="left">Approve</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              2 Super users
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Email-ID</StyledTableCell>
+                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                  <StyledTableCell align="left">Approve</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
 
 
-                    {isData ?
+                {isData ?
+                  <StyledTableRow container>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"siva.n@quadrantresource.com"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"Oracle TO Postgres"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} align="left">
+                      <Button
+                        type="button"
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                      >
+                        Delete
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  : <>
                     <StyledTableRow container>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"siva.n@quadrantresource.com"}
-                        </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"Oracle TO Postgres"}
-                        </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8} align="left">
-                        <Button
-                                type="button"
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                style={{marginTop:'9px',fontSize:'9px',marginBottom:'8px'}}
-                            >
-                                Delete
-                        </Button>
-                        </StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
                     </StyledTableRow>
-                    : <>
-                        <StyledTableRow container>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="center">No Requests</StyledTableCell>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        </StyledTableRow>
-                    </>
-                    }
+                  </>
+                }
+              </TableBody>
+            </Table>
+          </Grid>
 
-
-                </TableBody>
-                </Table>
-            </Grid>
-
-            </Grid>
-        </Box>
+        </Grid>
+      </Box>
 
     </>
   )

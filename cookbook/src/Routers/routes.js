@@ -20,6 +20,7 @@ import RequestFeatureData from '../Features/Modules/RequestFeatureData';
 import ForgotPasword from '../Auth/forgotpassword';
 import ResendEmail from '../Auth/resendemail';
 import SuperadminFunction from '../Features/Modules/superadminpage';
+import ResetPasword from '../Auth/ResetPassword';
 
 
 
@@ -33,6 +34,7 @@ const Routing = () => {
                 <Route path="/emailverification" component={EmailVerify} />
                 <Route path="/forgotpassword" component={ForgotPasword} />
                 <Route path="/resendemail" component={ResendEmail} />
+                <Route path="/resetpassword" component={ResetPasword} />
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <MenuAppBar>
                     <ProtectedRoute path="/dashboard" component={Home} />

@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function ForgotPasword() {
+function ResetPasword() {
     const classes = useStyles();
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -79,10 +79,10 @@ function ForgotPasword() {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Forgot Password
+                    Reset Password
                 </Typography>
                 <div className={classes.form}>
-                    <TextField
+                    {/* <TextField
                         variant="outlined"
                         margin="normal"
                         required
@@ -96,8 +96,8 @@ function ForgotPasword() {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                    />
-                    {/* <TextField
+                    /> */}
+                    <TextField
                         variant="outlined"
                         margin="normal"
                         required
@@ -126,7 +126,7 @@ function ForgotPasword() {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                    /> */}
+                    />
                     {/* {display_msg} */}
                     <center>
                         <Button
@@ -138,25 +138,21 @@ function ForgotPasword() {
                             className={classes.submit}
                         // onClick={handleLogin}
                         >
-                            Send Email
+                            Reset Password
                         </Button>
                     </center>
 
 
-                    {/* <Grid container>
+                    <Grid container>
                         <Grid item xs >
                             <center>
-                                <Grid container>
-                                    <Grid item xs>
-                                        <Link href="/resetpassword" variant="body2">
-                                            ResetPassword?
-                                        </Link>
-                                    </Grid>
-                                </Grid>
+                                <Link href="/" variant="body2">
+                                    Login?
+                                </Link>
                             </center>
                         </Grid>
 
-                    </Grid> */}
+                    </Grid>
                 </div>
             </div>
             <Box mt={8}>
@@ -166,4 +162,4 @@ function ForgotPasword() {
     );
 }
 
-export default ForgotPasword
+export default ResetPasword
