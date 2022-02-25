@@ -19,6 +19,13 @@ import axios from "axios";
 import config from "../../Config/config";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 
+import IconButton from "@material-ui/core/IconButton";
+// Icons
+import EditIcon from "@material-ui/icons/EditOutlined";
+import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
+import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+
+
 const useStylestable = makeStyles((theme) => ({
   table: {
     minWidth: 100,
@@ -65,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     '&:hover': {
-        overflow: 'visible'
+      overflow: 'visible'
     }
   },
   buttton: {
@@ -118,10 +125,36 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+
+const createData = (name, calories, fat, carbs, protein) => ({
+  id: name.replace(" ", "_"),
+  name,
+  calories,
+  fat,
+  carbs,
+  protein,
+  isEditMode: false
+});
+
 export default function AdminAccesslist() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
+
+
+  // sample data
+  const [rows, setRows] = React.useState([
+    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+    createData("Eclair", 262, 16.0, 24, 6.0)
+  ]);
+  
+
+  const onChange = (e, row) => {
+  }
+
+
+
   const {
     details,
     createFeature,
@@ -441,12 +474,38 @@ export default function AdminAccesslist() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {isData ? (
-                  <StyledTableRow container>
-                    <StyledTableCell item xl={8}>
-                      <div className={classes.texttablecell}>
+                {/* {isData ? ( */}
+
+                {rows.map(row => (
+                  <StyledTableRow container >
+                    {row.isEditMode ? (
+                      <>
+                        <IconButton
+                          aria-label="done"
+                        // onClick={() => onToggleEditMode(row.id)}
+                        >
+                          <DoneIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="revert"
+                        // onClick={() => onRevert(row.id)}
+                        >
+                          <RevertIcon />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <IconButton
+                        aria-label="delete"
+                      // onClick={() => onToggleEditMode(row.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    )}
+
+                    <StyledTableCell item xl={8} {...{ row, name: "name", onChange }}>
+                      {/* <div className={classes.texttablecell}>
                         {"siva.n@quadrantresource.com"}
-                      </div>
+                      </div> */}
                     </StyledTableCell>
                     <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>
@@ -459,7 +518,7 @@ export default function AdminAccesslist() {
                     <StyledTableCell item xl={8}>
                       <div className={classes.texttablecell}>
                         {"24-02-2022"}
-                        <EditSharpIcon style={{ color: "blue", width: '20px' }} />
+                        {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} /> */}
                         {/* onClick={() => handleEditchange(row.Feature_Id)} */}
                       </div>
                     </StyledTableCell>
@@ -490,19 +549,21 @@ export default function AdminAccesslist() {
                       </div>
                     </StyledTableCell>
                   </StyledTableRow>
-                ) : (
-                  <>
-                    <StyledTableRow container>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center">
-                        No Requests
-                      </StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                    </StyledTableRow>
-                  </>
-                )}
+                  // {/* ) : (
+                  //   <>
+                  //     <StyledTableRow container>
+                  //       <StyledTableCell align="center"></StyledTableCell>
+                  //       <StyledTableCell align="center"></StyledTableCell>
+                  //       <StyledTableCell align="center">
+                  //         No Requests
+                  //       </StyledTableCell>
+                  //       <StyledTableCell align="center"></StyledTableCell>
+                  //       <StyledTableCell align="center"></StyledTableCell>
+                  //     </StyledTableRow>
+                  //   </>
+                  // )} */}
+
+                ))}
               </TableBody>
             </Table>
           </Grid>
