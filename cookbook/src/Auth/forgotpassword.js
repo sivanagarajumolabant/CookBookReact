@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -55,14 +56,42 @@ const useStyles = makeStyles((theme) => ({
 function ForgotPasword() {
     const classes = useStyles();
     const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    // const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
     const [msg, setMsg] = useState('')
     let history = useHistory();
     const handleInputChangeUsername = (event) => {
         setUsername(event.target.value)
     }
-    const handleInputChangePassword = (event) => {
-        setPassword(event.target.value)
+   
+    const handleResendEmail = () => {
+        if (username!==''){
+            let formData = {
+                "email": username,
+
+            }
+
+            const form = new FormData();
+            Object.keys(formData).forEach((key) => {
+                form.append(key, formData[key]);
+            });
+            setLoading(true)
+            axios.post(`${config.API_BASE_URL()}/api/request-reset-email/`, form).then(
+                (res) => {
+                    console.log(res)
+                    setMsg(res.data.msg)
+                    setLoading(false)
+                },
+                (error) => {
+
+                    setMsg(error.response.data.msg)
+                }
+            )
+            setLoading(true)
+        }
+        else {
+            setMsg('Please Enter Email ID')
+        }
     }
 
 
@@ -92,7 +121,7 @@ function ForgotPasword() {
                         name="username"
                         autoComplete="username"
                         autoFocus
-                        // onChange={(e) => handleInputChangeUsername(e)}
+                        onChange={(e) => handleInputChangeUsername(e)}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -128,6 +157,7 @@ function ForgotPasword() {
                         }}
                     /> */}
                     {/* {display_msg} */}
+                    <center> {loading ? <CircularProgress /> : <h3 style={{ color: 'blue' }}>{msg}</h3>}</center>
                     <center>
                         <Button
                             type="button"
@@ -136,27 +166,27 @@ function ForgotPasword() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                        // onClick={handleLogin}
+                        onClick={handleResendEmail}
                         >
                             Send Email
                         </Button>
                     </center>
 
 
-                    {/* <Grid container>
+                    <Grid container>
                         <Grid item xs >
                             <center>
-                                <Grid container>
-                                    <Grid item xs>
-                                        <Link href="/resetpassword" variant="body2">
-                                            ResetPassword?
-                                        </Link>
-                                    </Grid>
-                                </Grid>
+                                <Link href="/" variant="body2">
+                                    Login?
+                                </Link>
+                                {/* {" "}
+                                <Link href="/register" variant="body2">
+                                    Register?
+                                </Link> */}
                             </center>
                         </Grid>
 
-                    </Grid> */}
+                    </Grid>
                 </div>
             </div>
             <Box mt={8}>

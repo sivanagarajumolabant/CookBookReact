@@ -159,6 +159,7 @@ export default function SuperadminFunction() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [isData, setIsData] = useState(true);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue.title)
@@ -284,7 +285,7 @@ export default function SuperadminFunction() {
             />
           </Grid>
           <Grid item xs={1}>
-            <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
+            <Avatar className={classes.avatar} onClick={() => setOpen1(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
           </Grid>
@@ -295,7 +296,7 @@ export default function SuperadminFunction() {
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           >
           </Snackbar>
-          <Modal open={open}>
+          <Modal open={open1}>
             <Container className={classes.container}>
               <Typography
                 gutterBottom
@@ -310,7 +311,7 @@ export default function SuperadminFunction() {
               <div className={classes.item}>
                 <TextField
                   id="outlined-multiline-static"
-                  label="Migartion Type"
+                  label="Migration Type"
                   style={{ width: 400, }}
                   multiline
                   rows={1}
@@ -342,7 +343,7 @@ export default function SuperadminFunction() {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  onClick={() => setOpen(false)}
+                  onClick={() => setOpen1(false)}
                 >
                   Cancel
                 </Button>

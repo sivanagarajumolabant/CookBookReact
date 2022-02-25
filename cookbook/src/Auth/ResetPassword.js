@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import * as queryString from 'query-string';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -52,18 +54,74 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function ResetPasword() {
+function ResetPasword(props) {
+
+    var data_tokenuid = queryString.parse(props.location.search);
+    // console.log(data_tokenuid)
+    var split_data = String(data_tokenuid.token).split('?uid=')
+    // console.log(split_data)
+    var token = split_data[0]
+    var uid = split_data[1]
+    // console.log(token,uid)
     const classes = useStyles();
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    // const [username, setUsername] = useState('')
+    const [password1, setPassword1] = useState('')
+    const [password2, setPassword2] = useState('')
+
+    const [loading, setLoading] = useState(false)
+
     const [msg, setMsg] = useState('')
     let history = useHistory();
-    const handleInputChangeUsername = (event) => {
-        setUsername(event.target.value)
+    const handleInputChangePassword1 = (event) => {
+        setPassword1(event.target.value)
     }
-    const handleInputChangePassword = (event) => {
-        setPassword(event.target.value)
+    const handleInputChangePassword2 = (event) => {
+        setPassword2(event.target.value)
     }
+    const handleResendpassword = () => {
+        if (password1 === password2) {
+            
+            let formData ={
+                'password':password1,
+                "token":token,
+                "uidb64": uid
+            }
+            const form = new FormData();
+            Object.keys(formData).forEach((key) => {
+                form.append(key, formData[key]);
+            });
+            setLoading(true)
+            axios.get(`${config.API_BASE_URL()}/api/password-reset/${uid}/${token}/`).then(
+                (res) => {
+                    // console.log(res)
+                    // setMsg(res.data.msg)
+                    if (res.data.success===true){
+                        axios.patch(`${config.API_BASE_URL()}/api/password-reset-complete/`, form).then(
+                            (res)=>{
+                                setMsg(res.data.msg)
+                            },
+                            (error)=>{
+                                setMsg(error.response.data.msg)
+                            }
+                        )
+                    }else{
+                        setMsg(res.data.msg)
+                    }
+                    setLoading(false)
+                },
+                (error) => {
+
+                    setMsg(error.response.data.msg)
+                }
+            )
+            setLoading(true)
+        }
+        else {
+            setMsg('Both Password and Retype Password Should be same')
+        }
+    }
+
+
 
 
 
@@ -107,7 +165,7 @@ function ResetPasword() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        // onChange={(e) => handleInputChangePassword(e)}
+                        onChange={(e) => handleInputChangePassword1(e)}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -122,12 +180,13 @@ function ResetPasword() {
                         type="password"
                         id="confirm_password"
                         autoComplete="current-password"
-                        // onChange={(e) => handleInputChangePassword(e)}
+                        onChange={(e) => handleInputChangePassword2(e)}
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
                     {/* {display_msg} */}
+                    <center> {loading ? <CircularProgress /> : <h3 style={{ color: 'blue' }}>{msg}</h3>}</center>
                     <center>
                         <Button
                             type="button"
@@ -136,7 +195,7 @@ function ResetPasword() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                        // onClick={handleLogin}
+                            onClick={handleResendpassword}
                         >
                             Reset Password
                         </Button>
