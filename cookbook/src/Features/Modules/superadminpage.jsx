@@ -20,6 +20,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import AddIcon from '@material-ui/icons/Add';
 import { Avatar } from '@material-ui/core';
+import Notification from "../Notifications/Notification";
 
 import {
   Container,
@@ -115,8 +116,21 @@ const useStyles = makeStyles((theme) => ({
   container: {
     border: "none",
     borderRadius: 15,
-    width: 600,
-    height: 500,
+    width: 450,
+    height: 200,
+    backgroundColor: "white",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: "auto",
+  },
+  container1: {
+    border: "none",
+    borderRadius: 15,
+    width: 450,
+    height: 280,
     backgroundColor: "white",
     position: "absolute",
     top: 0,
@@ -164,11 +178,23 @@ export default function SuperadminFunction() {
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue.title)
   const [objtype, setObjtype] = useState('Procedure')
-  const [Migtype, setMigtype] = useState('Oracle TO Postgres')
+  const [Migtype, setMigtype] = useState('')
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
+
+  const [migtype_create, setMigtype_create] = useState('')
+  const [objtype_create, setObjtype_create] = useState('')
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const [migtypelist, setMigtypeslist] = useState([])
+  const [objtypelist, setObjtypeslist] = useState([])
+  const [updatemiglist, setUpdatemiglist] = useState(false)
+  const [updateobjlist, setUpdateobjlist] = useState(false)
 
   let history = useHistory();
 
@@ -209,6 +235,46 @@ export default function SuperadminFunction() {
   }, [objtype]);
 
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+      (res) => {
+        
+          setMigtypeslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [updatemiglist]);
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${migtype_create}`, conf).then(
+      (res) => {
+        
+          setObjtypeslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [updateobjlist]);
+
+  
+
+
   // console.log(headerValue.title)
   const handleObjecttype = (v) => {
     setObjtype(v.title)
@@ -226,6 +292,25 @@ export default function SuperadminFunction() {
     setOpenAlert(false);
   };
 
+  const handleObjectviewslist =(v)=>{
+    setMigtype_create(v?.Migration_TypeId)
+    
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${v?.Migration_TypeId}`, conf).then(
+        (res) => {
+          setObjtypeslist(res.data)
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  
+  }
+
   const handledropdown = (e, v) => {
     setSelected(true)
     let conf = {
@@ -242,6 +327,79 @@ export default function SuperadminFunction() {
       }
     );
   }
+  const handleMigrationCreate = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Object_Type": objtype_create,
+      "Migration_TypeId": migtype_create,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/migrationsscreate/`, form, conf).then(
+      (res) => {
+        // setNotify("Created Migration Type")
+        setNotify({
+          isOpen: true,
+          message: "Created Migration Type",
+          type: "success",
+        });
+        setUpdatemiglist(true)
+        setOpen1(false)
+      },
+      (error) => {
+        console.log(error.response.data);
+        // setNotify("Migration Types Already Exist!")
+      }
+    );
+    setUpdatemiglist(false)
+  }
+
+
+  const handleObjectypeCreate = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Object_Type": objtype_create,
+      "Migration_TypeId": migtype_create,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/migrationsscreate/`, form, conf).then(
+      (res) => {
+        // setNotify("Created Object Type")
+        setNotify({
+          isOpen: true,
+          message: "Created Object Type",
+          type: "success",
+        });
+        setUpdateobjlist(true)
+        setOpen(false)
+
+      },
+      (error) => {
+        console.log(error.response.data);
+        // setNotify("Object Type Exist!")
+      }
+    );
+    setUpdateobjlist(false)
+    // handleObjectviewslist(body)
+    
+  }
+
+
   return (
     <>
       <Box py={1} px={1}>
@@ -262,16 +420,12 @@ export default function SuperadminFunction() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Oracle TO Postgres", code: 1 },
-                { title: "SQLServer TO Postgres", code: 2 },
-                { title: "MYSQL TO Postgres", code: 3 },
-              ]}
+              options={migtypelist}
               groupBy={""}
-              defaultValue={{ title: "Oracle TO Postgres" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Oracle TO Postgres" }}
+              getOptionLabel={(option) => option.Migration_TypeId}
               style={{ width: 300 }}
-              onChange={(e, v) => handleMigrationtype(v)}
+              onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -279,6 +433,9 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
                 />
               )}
@@ -304,6 +461,7 @@ export default function SuperadminFunction() {
                 variant="h6"
                 component="h2"
                 className={classes.Object_Type}
+                style={{ marginBottom: '20px' }}
               >
                 Create Migration Type
               </Typography>
@@ -312,11 +470,11 @@ export default function SuperadminFunction() {
                 <TextField
                   id="outlined-multiline-static"
                   label="Migration Type"
-                  style={{ width: 400, }}
+                  style={{ width: 400, marginBottom: '20px' }}
                   multiline
                   rows={1}
                   // value ={row.Keywords}
-                  // onChange={(e) => handleEditchangetext(e)}
+                  onChange={(e) => setMigtype_create(e.target.value)}
                   name="Keywords"
                   // defaultValue={edithandle.Keywords}
                   // helperText={featurenamemsg}
@@ -336,7 +494,7 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   color="primary"
                   style={{ marginRight: 20, marginLeft: 100 }}
-                // onClick={() => handleEditmodal(edithandle)}
+                  onClick={() => handleMigrationCreate()}
                 >
                   Create
                 </Button>
@@ -348,7 +506,6 @@ export default function SuperadminFunction() {
                   Cancel
                 </Button>
               </div>
-              {/* </form> */}
             </Container>
           </Modal>
           <Grid item xs={4} >
@@ -374,6 +531,9 @@ export default function SuperadminFunction() {
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                   }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               )}
             />
@@ -383,26 +543,12 @@ export default function SuperadminFunction() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Procedure" },
-                { title: "Function" },
-                { title: "View" },
-                { title: "Index" },
-                { title: "Package" },
-                { title: "Trigger" },
-                { title: "Sequence" },
-                { title: "Synonym" },
-                { title: "Material View" },
-                { title: "Type" },
-                { title: "Table" },
-                { title: "All" },
-
-              ]}
+              options={objtypelist}
               groupBy={""}
-              defaultValue={{ title: "Procedure" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Procedure" }}
+              getOptionLabel={(option) => option.Object_Type}
               style={{ width: 300 }}
-              onChange={(e, v) => handleObjecttype(v)}
+              // onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -410,6 +556,9 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
                 />
               )}
@@ -428,26 +577,55 @@ export default function SuperadminFunction() {
           >
           </Snackbar>
           <Modal open={open}>
-            <Container className={classes.container}>
+            <Container className={classes.container1} style={{ marginBottom: 100 }}>
               <Typography
                 gutterBottom
                 align="center"
                 variant="h6"
                 component="h2"
                 className={classes.Object_Type}
+                style={{ marginBottom: '20px' }}
               >
                 Create Object Type
               </Typography>
               {/* <form className={classes.form} autoComplete="off"> */}
+
+              <Grid item xs={4} >
+                <StyledAutocomplete
+                  size="small"
+                  id="grouped-demo"
+                  className={classes.inputRoottype}
+                  options={migtypelist}
+                  groupBy={""}
+                  // defaultValue={{ title: "Oracle TO Postgres" }}
+                  getOptionLabel={(option) => option.Migration_TypeId}
+                  style={{ width: 400, marginBottom: '20px', height: '60px' }}
+                  onChange={(e, v) => setMigtype_create(v.Migration_TypeId)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Migration type"
+                      variant="outlined"
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                      }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
               <div className={classes.item}>
                 <TextField
                   id="outlined-multiline-static"
                   label="Object Type"
-                  style={{ width: 400, }}
+                  style={{ width: 400, marginBottom: '20px' }}
                   multiline
                   rows={1}
                   // value ={row.Keywords}
-                  // onChange={(e) => handleEditchangetext(e)}
+                  onChange={(e) => setObjtype_create(e.target.value)}
                   name="Keywords"
                   // defaultValue={edithandle.Keywords}
                   // helperText={featurenamemsg}
@@ -467,7 +645,7 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   color="primary"
                   style={{ marginRight: 20, marginLeft: 100 }}
-                // onClick={() => handleEditmodal(edithandle)}
+                  onClick={() => handleObjectypeCreate()}
                 >
                   Create
                 </Button>
@@ -610,6 +788,7 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
 
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   )
 }
