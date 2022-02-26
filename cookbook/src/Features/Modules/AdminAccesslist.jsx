@@ -382,9 +382,9 @@ export default function AdminAccesslist() {
                 shrink: true,
               }}
               fullWidth
-              value={headerValue.title}
+              // value={headerValue.title}
               size="small"
-              disabled
+              // disabled
               style={{ width: 300 }}
             />
 
