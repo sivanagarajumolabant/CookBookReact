@@ -131,12 +131,31 @@ export default function AdminAccesslist() {
     editPreviewdetails,
     headerValue,
   } = useSelector((state) => state.dashboardReducer);
-  const [migtypeid, setMigtypeid] = useState(headerValue.title);
+  const [migtypeid, setMigtypeid] = useState(headerValue?.title);
   const [objtype, setObjtype] = useState("Procedure");
   const [fnnames, setFnnames] = useState([]);
   const [data, setData] = useState([]);
   const [isEdit, setEdit] = React.useState(false);
   const [date, setDate] = useState('24/2/2022')
+  const [objtypelist, setObjtypeslist] = useState([])
+  const [userslist, setUserslist]= useState([])
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
+      (res) => {
+        
+        setUserslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
 
 
 
@@ -147,18 +166,18 @@ export default function AdminAccesslist() {
     setEdit(!isEdit);
   };
 
-  const handleSaveDate=()=>{
+  const handleSaveDate = () => {
 
   }
 
   useEffect(() => {
     let sval = 0;
     if (headerValue) {
-      if (headerValue.title === "Oracle TO Postgres") {
+      if (headerValue?.title === "Oracle TO Postgres") {
         sval = 1;
-      } else if (headerValue.title === "SQLServer TO Postgres") {
+      } else if (headerValue?.title === "SQLServer TO Postgres") {
         sval = 2;
-      } else if (headerValue.title === "MYSQL TO Postgres") {
+      } else if (headerValue?.title === "MYSQL TO Postgres") {
         sval = 3;
       }
     }
@@ -187,7 +206,7 @@ export default function AdminAccesslist() {
   }, [objtype]);
 
   const handleObjecttype = (v) => {
-    setObjtype(v.title);
+    setObjtype(v?.title);
   };
 
   const handledropdown = (e, v) => {
@@ -210,6 +229,31 @@ export default function AdminAccesslist() {
         }
       );
   };
+
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${headerValue?.title}`, conf).then(
+      (res) => {
+
+        setObjtypeslist(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [headerValue?.title]);
+
+
+
+
+
 
   const handleversion = () => { };
 
@@ -243,7 +287,7 @@ export default function AdminAccesslist() {
                 shrink: true,
               }}
               fullWidth
-              value={headerValue.title}
+              value={headerValue?.title}
               size="small"
               disabled
               style={{ width: 300 }}
@@ -254,23 +298,10 @@ export default function AdminAccesslist() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Procedure" },
-                { title: "Function" },
-                { title: "View" },
-                { title: "Index" },
-                { title: "Package" },
-                { title: "Trigger" },
-                { title: "Sequence" },
-                { title: "Synonym" },
-                { title: "Material View" },
-                { title: "Type" },
-                { title: "Table" },
-                { title: "All" },
-              ]}
+              options={objtypelist}
               groupBy={""}
-              defaultValue={{ title: "Procedure" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Procedure" }}
+              getOptionLabel={(option) => option.Object_Type}
               style={{ width: 300 }}
               onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
@@ -280,6 +311,9 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
                 />
               )}
@@ -324,7 +358,7 @@ export default function AdminAccesslist() {
               ]}
               groupBy={""}
               defaultValue={{ title: "Edit" }}
-              getOptionLabel={(option) => option.title}
+              getOptionLabel={(option) => option?.title}
               style={{ width: 300, marginTop: 10 }}
               onChange={(e, v) => handleversion(v)}
               renderInput={(params) => (
@@ -344,14 +378,10 @@ export default function AdminAccesslist() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "abc@gmail.com", code: 1 },
-                { title: "123@gmail.com", code: 2 },
-                { title: "abc123@gmail.com", code: 3 },
-              ]}
+              options={userslist}
               groupBy={""}
-              defaultValue={{ title: "Select email" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Select email" }}
+              getOptionLabel={(option) => option.email}
               style={{ width: 300, marginTop: 10 }}
               onChange={(e, v) => handleversion(v)}
               renderInput={(params) => (
@@ -361,6 +391,7 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                    shrink: true,
                   }}
                 />
               )}
@@ -370,6 +401,8 @@ export default function AdminAccesslist() {
             <TextField
               id="outlined-multiline-static"
               type="date"
+              label="Expiry Date"
+              variant="outlined"
               // label="End Date"
               // onChange={(e) => handleChange(e)}
               name="date_id"
@@ -452,6 +485,7 @@ export default function AdminAccesslist() {
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
+                  <StyledTableCell align="left">Access Type</StyledTableCell>
                   <StyledTableCell align="left">Object Type</StyledTableCell>
                   <StyledTableCell align="left">Feature Name</StyledTableCell>
                   <StyledTableCell align="left">Date</StyledTableCell>
@@ -470,6 +504,11 @@ export default function AdminAccesslist() {
                     </StyledTableCell>
                     <StyledTableCell item xl={6}>
                       <div className={classes.texttablecell}>
+                        {"Edit"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={6}>
+                      <div className={classes.texttablecell}>
                         {"Procedures"}
                       </div>
                     </StyledTableCell>
@@ -480,8 +519,8 @@ export default function AdminAccesslist() {
                       <div >
                         {isEdit ? (
                           <>
-                          <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
-                          <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()}/>
+                            <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
+                            <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
                           </>
                         ) :
                           <>{date}

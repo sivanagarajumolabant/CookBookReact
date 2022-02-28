@@ -130,6 +130,7 @@ export default function Request() {
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
+  const [objtypeslist, setObjtypeslist] = useState(false)
 
   let history = useHistory();
 
@@ -168,6 +169,24 @@ export default function Request() {
       }
     );
   }, [objtype]);
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${headerValue?.title}`, conf).then(
+      (res) => {
+        
+          setObjtypeslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [headerValue?.title]);
 
 
   // console.log(headerValue.title)
@@ -234,24 +253,10 @@ export default function Request() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Procedure" },
-                { title: "Function" },
-                { title: "View" },
-                { title: "Index" },
-                { title: "Package" },
-                { title: "Trigger" },
-                { title: "Sequence" },
-                { title: "Synonym" },
-                { title: "Material View" },
-                { title: "Type" },
-                { title: "Table" },
-                { title: "All" },
-
-              ]}
+              options={objtypeslist}
               groupBy={""}
-              defaultValue={{ title: "Procedure" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Procedure" }}
+              getOptionLabel={(option) => option.Object_Type}
               style={{ width: 300 }}
               onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
@@ -261,6 +266,9 @@ export default function Request() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
                 />
               )}

@@ -176,7 +176,7 @@ export default function SuperadminFunction() {
   const [open1, setOpen1] = useState(false);
   const [isData, setIsData] = useState(true);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-  const [migtypeid, setMigtypeid] = useState(headerValue.title)
+  const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState('Procedure')
   const [Migtype, setMigtype] = useState('')
   const [fnnames, setFnnames] = useState([])
@@ -195,6 +195,7 @@ export default function SuperadminFunction() {
   const [objtypelist, setObjtypeslist] = useState([])
   const [updatemiglist, setUpdatemiglist] = useState(false)
   const [updateobjlist, setUpdateobjlist] = useState(false)
+  const [userslist, setUserslist] = useState([])
 
   let history = useHistory();
 
@@ -243,7 +244,7 @@ export default function SuperadminFunction() {
     };
     axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
       (res) => {
-        
+          console.log("mig list ", res.data)
           setMigtypeslist(res.data)
         
       },
@@ -252,6 +253,25 @@ export default function SuperadminFunction() {
       }
     );
   }, [updatemiglist]);
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
+      (res) => {
+        
+        setUserslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
 
 
   useEffect(() => {
@@ -513,14 +533,10 @@ export default function SuperadminFunction() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "abc@gmail.com", code: 1 },
-                { title: "123@gmail.com", code: 2 },
-                { title: "abc123@gmail.com", code: 3 },
-              ]}
+              options={userslist}
               groupBy={""}
-              defaultValue={{ title: "Select Email" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Select Email" }}
+              getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
               onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (

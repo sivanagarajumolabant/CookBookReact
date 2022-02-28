@@ -289,6 +289,7 @@ export default function ClippedDrawer({ children }) {
     name: "Oracle TO Postgres",
   });
   const [selectedItems, setselectedItems] = React.useState([])
+  const [migtypelist, setMigtypeslist] = useState([])
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -297,6 +298,25 @@ export default function ClippedDrawer({ children }) {
   const handleChange = (event) => {
     setAuth(event.target.checked);
   };
+
+  React.useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+      (res) => {
+        
+          setMigtypeslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -452,6 +472,7 @@ export default function ClippedDrawer({ children }) {
                     variant="outlined"
                     InputLabelProps={{
                       className: classes.floatingLabelFocusStyle,
+                      shrink: true,
                     }}
                   />
                 )}
@@ -496,6 +517,7 @@ export default function ClippedDrawer({ children }) {
                     // borderColor = 'text.primary'
                     InputLabelProps={{
                       className: classes.floatingLabelFocusStyle,
+                      shrink: true,
                     }}
 
 

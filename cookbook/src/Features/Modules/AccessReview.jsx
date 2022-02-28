@@ -93,7 +93,7 @@ export default function AccessReview() {
     const classestable = useStylestable();
     const [isData, setIsData] = useState(true);
     const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-    const [migtypeid, setMigtypeid] = useState(headerValue.title)
+    const [migtypeid, setMigtypeid] = useState(headerValue?.title)
     const [objtype, setObjtype] = useState('Procedure')
     const [fnnames, setFnnames] = useState([])
     const [data, setData] = useState([])
@@ -102,11 +102,11 @@ export default function AccessReview() {
     useEffect(() => {
       let sval = 0;
       if (headerValue) {
-        if (headerValue.title === "Oracle TO Postgres") {
+        if (headerValue?.title === "Oracle TO Postgres") {
           sval = 1;
-        } else if (headerValue.title === "SQLServer TO Postgres") {
+        } else if (headerValue?.title === "SQLServer TO Postgres") {
           sval = 2;
-        } else if (headerValue.title === "MYSQL TO Postgres") {
+        } else if (headerValue?.title === "MYSQL TO Postgres") {
           sval = 3;
         }
       }

@@ -239,11 +239,11 @@ console.log(edithandle)
   // const [seq, setSeq]=useState({})
   let sval = 0;
   if (headerValue) {
-    if (headerValue.title === "Oracle TO Postgres") {
+    if (headerValue?.title === "Oracle TO Postgres") {
       sval = 1;
-    } else if (headerValue.title === "SQLServer TO Postgres") {
+    } else if (headerValue?.title === "SQLServer TO Postgres") {
       sval = 2;
-    } else if (headerValue.title === "MYSQL TO Postgres") {
+    } else if (headerValue?.title === "MYSQL TO Postgres") {
       sval = 3;
     }
   }
@@ -294,7 +294,7 @@ console.log(edithandle)
         console.log(error);
       }
     );
-  }, [modalupdate]);
+  }, [modalupdate, headerValue?.title]);
 
   useEffect(() => { }, [formValues]);
 
@@ -332,11 +332,11 @@ console.log(edithandle)
     e.preventDefault();
     if (headerValue) {
       // debugger
-      if (headerValue.title === "Oracle TO Postgres") {
+      if (headerValue?.title === "Oracle TO Postgres") {
         val = 1;
-      } else if (headerValue.title === "SQLServer TO Postgres") {
+      } else if (headerValue?.title === "SQLServer TO Postgres") {
         val = 2;
-      } else if (headerValue.title === "MYSQL TO Postgres") {
+      } else if (headerValue?.title === "MYSQL TO Postgres") {
         val = 3;
       }
     }
@@ -375,11 +375,11 @@ console.log(edithandle)
           type: "success",
         });
         dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
-        let UpdateItem = {
-          Label: ITEMlIST[0]?.Label,
-          subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
-        }
-        dispatach(Menuaction.UpdateMenutlist(UpdateItem))
+        // let UpdateItem = {
+        //   Label: ITEMlIST[0]?.Label,
+        //   subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
+        // }
+        // dispatach(Menuaction.UpdateMenutlist(UpdateItem))
 
         history.push("/EditFeature");
       },
@@ -459,7 +459,7 @@ console.log(edithandle)
   const handlechangedropdownlevel = (v) => {
     setformvalues({
       ...formValues,
-      Level: v.title,
+      Level: v?.title,
     });
   };
 
@@ -632,7 +632,7 @@ console.log(edithandle)
             options={[{ title: "Programlevel" }, { title: "Statementlevel" }]}
             groupBy={""}
             // defaultValue={{ title: 'Programlevel' }}
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option?.title}
             name="Level"
             onChange={(e, v) => handlechangedropdownlevel(v)}
             renderInput={(params) => (
