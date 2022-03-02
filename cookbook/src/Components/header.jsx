@@ -457,7 +457,7 @@ export default function ClippedDrawer({ children }) {
                 className={classes.inputRoottype}
                 options={DropDownValues}
                 groupBy={""}
-                defaultValue={{ title: DropDownValues[0].title }}
+                defaultValue={{ title: DropDownValues[0]?.title }}
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
                 onChange={(e, v) => handleversion(v)}

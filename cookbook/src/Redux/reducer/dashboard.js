@@ -4,7 +4,7 @@ const initialState = {
   drawerOpen: false,
 
   menuitem: null,
-  headerValue: { title: "Oracle TO Postgres", code: "Oracle TO Postgres"},
+  headerValue: { title: "Oracle TO Postgres", code: "Oracle_TO_Postgres"},
   updatedValue: false,
   createFeature: false,
   preview: false,
@@ -81,7 +81,8 @@ const dashboardReducer = (state = initialState, action) => {
     case "DROP_DOWN_LIST":
       return {
         ...state,
-        DropDownValues: action.payload
+        DropDownValues: action.payload,
+        headerValue: action.payload[0]
       };
 
 

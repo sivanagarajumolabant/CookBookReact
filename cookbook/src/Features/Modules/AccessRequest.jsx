@@ -130,7 +130,7 @@ export default function Request() {
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
-  const [objtypeslist, setObjtypeslist] = useState(false)
+  const [objtypeslist, setObjtypeslist] = useState([])
 
   let history = useHistory();
 
