@@ -172,18 +172,18 @@ export default function AdminAccesslist() {
 
   useEffect(() => {
     let sval = 0;
-    if (headerValue) {
-      if (headerValue?.title === "Oracle TO Postgres") {
-        sval = 1;
-      } else if (headerValue?.title === "SQLServer TO Postgres") {
-        sval = 2;
-      } else if (headerValue?.title === "MYSQL TO Postgres") {
-        sval = 3;
-      }
-    }
+    // if (headerValue) {
+    //   if (headerValue?.title === "Oracle TO Postgres") {
+    //     sval = 1;
+    //   } else if (headerValue?.title === "SQLServer TO Postgres") {
+    //     sval = 2;
+    //   } else if (headerValue?.title === "MYSQL TO Postgres") {
+    //     sval = 3;
+    //   }
+    // }
     let body = {
       Object_Type: objtype,
-      Migration_TypeId: sval,
+      Migration_TypeId: headerValue.title,
     };
     let conf = {
       headers: {
@@ -206,7 +206,7 @@ export default function AdminAccesslist() {
   }, [objtype]);
 
   const handleObjecttype = (v) => {
-    setObjtype(v?.title);
+    setObjtype(v?.Object_Type);
   };
 
   const handledropdown = (e, v) => {

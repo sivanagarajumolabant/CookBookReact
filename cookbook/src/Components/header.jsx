@@ -346,11 +346,11 @@ export default function ClippedDrawer({ children }) {
   };
 
   React.useEffect(() => {
-    getmenus(1);
+    getmenus(headerValue.title);
   }, []);
 
   const handleversion = (v) => {
-    getmenus(v?.code);
+    getmenus(v?.title);
     setselectedItems([])
 
     setdropdown(v);
@@ -400,7 +400,7 @@ export default function ClippedDrawer({ children }) {
 
   React.useEffect(() => {
     if (updatedValue) {
-      getmenus(headerValue.code || 1);
+      getmenus(headerValue.title);
     }
   }, [updatedValue])
 

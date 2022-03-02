@@ -206,7 +206,7 @@ export default function CreateFeature(props) {
   } else {
     obj_type = obj_type?.slice(0, -1);
   }
-  console.log("obj 1 ", obj_type);
+  // console.log("obj 1 ", obj_type);
   const [prerunval, setPrerunval] = useState([]);
 console.log(edithandle)
   // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
@@ -237,21 +237,21 @@ console.log(edithandle)
   // const [migtypeid, setMigtypeid] = useState()
 
   // const [seq, setSeq]=useState({})
-  let sval = 0;
-  if (headerValue) {
-    if (headerValue?.title === "Oracle TO Postgres") {
-      sval = 1;
-    } else if (headerValue?.title === "SQLServer TO Postgres") {
-      sval = 2;
-    } else if (headerValue?.title === "MYSQL TO Postgres") {
-      sval = 3;
-    }
-  }
+  // let sval = 0;
+  // if (headerValue) {
+  //   if (headerValue?.title === "Oracle TO Postgres") {
+  //     sval = 1;
+  //   } else if (headerValue?.title === "SQLServer TO Postgres") {
+  //     sval = 2;
+  //   } else if (headerValue?.title === "MYSQL TO Postgres") {
+  //     sval = 3;
+  //   }
+  // }
 
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: sval,
+      Migration_TypeId: formValues.Migration_TypeId,
     };
     let conf = {
       headers: {
@@ -274,7 +274,7 @@ console.log(edithandle)
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: sval,
+      Migration_TypeId: formValues.Migration_TypeId,
     };
     let conf = {
       headers: {
@@ -301,7 +301,7 @@ console.log(edithandle)
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: sval,
+      Migration_TypeId: formValues.Migration_TypeId,
     };
     let conf = {
       headers: {
@@ -332,18 +332,18 @@ console.log(edithandle)
     e.preventDefault();
     if (headerValue) {
       // debugger
-      if (headerValue?.title === "Oracle TO Postgres") {
-        val = 1;
-      } else if (headerValue?.title === "SQLServer TO Postgres") {
-        val = 2;
-      } else if (headerValue?.title === "MYSQL TO Postgres") {
-        val = 3;
-      }
+      // if (headerValue?.title === "Oracle TO Postgres") {
+      //   val = 1;
+      // } else if (headerValue?.title === "SQLServer TO Postgres") {
+      //   val = 2;
+      // } else if (headerValue?.title === "MYSQL TO Postgres") {
+      //   val = 3;
+      // }
     }
 
     let formData = {
       ...formValues,
-      Migration_TypeId: val, //props.headerValue?.code,
+      Migration_TypeId: headerValue?.title, //props.headerValue?.code,
       Object_Type: obj_type,
       // 'Source_Attachment': source_att,
       // "Conversion_Attachment": target_att,

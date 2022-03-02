@@ -310,21 +310,21 @@ export default function EditFeature(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    var val = 0;
-    if (editdata.detaildata) {
-      if (editdata.detaildata.Migration_TypeId === "Oracle TO Postgres") {
-        val = 1;
-      } else if (
-        editdata.detaildata.Migration_TypeId === "SQLServer TO Postgres"
-      ) {
-        val = 2;
-      } else if (editdata.detaildata.Migration_TypeId === "MYSQL TO Postgres") {
-        val = 3;
-      }
-    }
+    // var val = 0;
+    // if (editdata.detaildata) {
+    //   if (editdata.detaildata.Migration_TypeId === "Oracle TO Postgres") {
+    //     val = 1;
+    //   } else if (
+    //     editdata.detaildata.Migration_TypeId === "SQLServer TO Postgres"
+    //   ) {
+    //     val = 2;
+    //   } else if (editdata.detaildata.Migration_TypeId === "MYSQL TO Postgres") {
+    //     val = 3;
+    //   }
+    // }
     let formData = {
       ...formValues,
-      Migration_TypeId: val,
+      Migration_TypeId: editdata.detaildata?.Migration_TypeId,
       Object_Type: editdata.detaildata.Object_Type,
       Feature_Name: editdata.detaildata.Feature_Name.substr(5),
       // Source_FeatureDescription, Target_FeatureDescription,
@@ -405,18 +405,18 @@ export default function EditFeature(props) {
     setTarget_FeatureDescription(data);
   };
 
-  if (editdata?.detaildata) {
-    if (editdata.detaildata.Migration_TypeId === "1") {
-      editdata.detaildata.Migration_TypeId = "Oracle TO Postgres";
-      // setMigtypeid(1)
-    } else if (editdata.detaildata.Migration_TypeId === "2") {
-      editdata.detaildata.Migration_TypeId = "SQLServer TO Postgres";
-      // setMigtypeid(2)
-    } else if (editdata.detaildata.Migration_TypeId === "3") {
-      editdata.detaildata.Migration_TypeId = "MYSQL TO Postgres";
-      // setMigtypeid(3)
-    }
-  }
+  // if (editdata?.detaildata) {
+  //   if (editdata.detaildata.Migration_TypeId === "1") {
+  //     editdata.detaildata.Migration_TypeId = "Oracle TO Postgres";
+  //     // setMigtypeid(1)
+  //   } else if (editdata.detaildata.Migration_TypeId === "2") {
+  //     editdata.detaildata.Migration_TypeId = "SQLServer TO Postgres";
+  //     // setMigtypeid(2)
+  //   } else if (editdata.detaildata.Migration_TypeId === "3") {
+  //     editdata.detaildata.Migration_TypeId = "MYSQL TO Postgres";
+  //     // setMigtypeid(3)
+  //   }
+  // }
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name, fid) => {
     let body = {
