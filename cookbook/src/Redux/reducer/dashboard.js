@@ -11,7 +11,10 @@ const initialState = {
   editpreview: false,
   details: {},
   editPreviewdetails: {},
-   ITEMlIST:[]
+   ITEMlIST:[],
+   DropDownValues:[ { title: "Oracle TO Postgres", code:'Oracle_TO_Postgres' },
+   { title: "SQLServer TO Postgres", code: '"SQLServer_TO_Postgres'},
+   { title: "MYSQL TO Postgres", code: 'MYSQL_TO_Postgres' },]
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -75,7 +78,15 @@ const dashboardReducer = (state = initialState, action) => {
           ...state,
          ITEMlIST:action.payload
         };
+        case "DROP_DOWN_LIST":
+          return {
+            ...state,
+           DropDownValues:action.payload
+          };
+  
 
+
+        
         case "UPDATE_SELECTED_ITEM":
           return {
             ...state,

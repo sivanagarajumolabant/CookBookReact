@@ -280,7 +280,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue, ITEMlIST } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST ,DropDownValues} = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -309,7 +309,7 @@ export default function ClippedDrawer({ children }) {
       (res) => {
         
           setMigtypeslist(res.data)
-        
+          // dispatch(Menuaction.getdropdownlist(res.data))
       },
       (error) => {
         console.log(error);
@@ -455,13 +455,9 @@ export default function ClippedDrawer({ children }) {
                 size="small"
                 id="grouped-demo"
                 className={classes.inputRoottype}
-                options={[
-                  { title: "Oracle TO Postgres", code: 1 },
-                  { title: "SQLServer TO Postgres", code: 2 },
-                  { title: "MYSQL TO Postgres", code: 3 },
-                ]}
+                options={DropDownValues}
                 groupBy={""}
-                defaultValue={{ title: "Oracle TO Postgres" }}
+                defaultValue={{ title: DropDownValues[0].title }}
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
                 onChange={(e, v) => handleversion(v)}
