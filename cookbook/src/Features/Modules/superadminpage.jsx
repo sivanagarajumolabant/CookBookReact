@@ -313,14 +313,14 @@ export default function SuperadminFunction() {
   };
 
   const handleObjectviewslist =(v)=>{
-    setMigtype_create(v?.Migration_TypeId)
+    setMigtype_create(v?.title)
     
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
-      axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${v?.Migration_TypeId}`, conf).then(
+      axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${v?.title}`, conf).then(
         (res) => {
           setObjtypeslist(res.data)
         },
@@ -443,7 +443,7 @@ export default function SuperadminFunction() {
               options={migtypelist}
               groupBy={""}
               // defaultValue={{ title: "Oracle TO Postgres" }}
-              getOptionLabel={(option) => option.Migration_TypeId}
+              getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
               onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
@@ -614,9 +614,9 @@ export default function SuperadminFunction() {
                   options={migtypelist}
                   groupBy={""}
                   // defaultValue={{ title: "Oracle TO Postgres" }}
-                  getOptionLabel={(option) => option.Migration_TypeId}
+                  getOptionLabel={(option) => option.title}
                   style={{ width: 400, marginBottom: '20px', height: '60px' }}
-                  onChange={(e, v) => setMigtype_create(v.Migration_TypeId)}
+                  onChange={(e, v) => setMigtype_create(v.title)}
                   renderInput={(params) => (
                     <TextField
                       {...params}

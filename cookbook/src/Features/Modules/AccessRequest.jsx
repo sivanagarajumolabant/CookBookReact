@@ -6,6 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
+import Notification from "../Notifications/Notification";
 import config from "../../Config/config";
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -126,11 +127,17 @@ export default function Request() {
   const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
-  const [objtype, setObjtype] = useState('Procedure')
+  const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
   const [objtypeslist, setObjtypeslist] = useState([])
+  const [fnname, setFnname] = useState()
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
 
   let history = useHistory();
 
@@ -196,6 +203,7 @@ export default function Request() {
 
   const handledropdown = (e, v) => {
     setSelected(true)
+    setFnname(v.Feature_Name)
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -207,6 +215,52 @@ export default function Request() {
       },
       (error) => {
         console.log(error);
+      }
+    );
+  }
+
+
+  const handleRequestAccess =(type)=>{
+    let access = ''
+    if (type==='Edit'){
+      access= 'Edit'
+    }else{
+      access= 'View'
+    }
+
+    let body = {
+      "Object_Type": objtype,
+      "Migration_TypeId": headerValue.title,
+      "User_Email":localStorage.getItem('uemail'),
+      "Feature_Name":fnname,
+      "Approval_Status":'Pending',
+      "Access_Type":access
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    
+    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`,form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "Request Sent to Admin and Wait for the Approval",
+          type: "success",
+        });
+      },
+      (error) => {
+        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: "Something Went Wrong Please Try Again!",
+          type: "error",
+        });
       }
     );
   }
@@ -383,7 +437,8 @@ export default function Request() {
             <Button variant="contained"
               // startIcon={<CloudUploadIcon />}
               size='small'
-              color="primary" component="span" style={{ marginTop: 15, width: "190px" }}>
+              color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
+              onClick={(e)=>{handleRequestAccess('View')}}>
               Request View Access
             </Button>
             {" "}
@@ -402,13 +457,16 @@ export default function Request() {
             <Button variant="contained"
               // startIcon={<CloudUploadIcon />}
               size='small'
-              color="primary" component="span" style={{ marginTop: 15, width: "180px" }}>
+              color="primary" component="span" style={{ marginTop: 15, width: "180px" }}
+              onClick={(e)=>{handleRequestAccess('Edit')}}>
+              
               Request Edit Access
             </Button>
           </Grid>
 
         </Grid>
       </Box>
+      <Notification notify={notify} setNotify={setNotify} />
       {/* <Box direction='row'>
         <Grid container >
 

@@ -138,7 +138,8 @@ export default function AdminAccesslist() {
   const [isEdit, setEdit] = React.useState(false);
   const [date, setDate] = useState('24/2/2022')
   const [objtypelist, setObjtypeslist] = useState([])
-  const [userslist, setUserslist]= useState([])
+  const [userslist, setUserslist] = useState([])
+  const [approvalslist, setApprovallist] = useState([])
   useEffect(() => {
     let conf = {
       headers: {
@@ -147,9 +148,27 @@ export default function AdminAccesslist() {
     };
     axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
       (res) => {
-        
+
         setUserslist(res.data)
-        
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/approvalslist`, conf).then(
+      (res) => {
+
+        setApprovallist(res.data)
+
       },
       (error) => {
         console.log(error);
@@ -496,71 +515,78 @@ export default function AdminAccesslist() {
               </TableHead>
               <TableBody>
                 {isData ? (
-                  <StyledTableRow container>
-                    <StyledTableCell item xl={10}>
-                      <div className={classes.texttablecell}>
-                        {"siva.n@quadrantresource.com"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={6}>
-                      <div className={classes.texttablecell}>
-                        {"Edit"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={6}>
-                      <div className={classes.texttablecell}>
-                        {"Procedures"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={6}>
-                      <div className={classes.texttablecell}>{"XML"}</div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={6}>
-                      <div >
-                        {isEdit ? (
-                          <>
-                            <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
-                            <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
-                          </>
-                        ) :
-                          <>{date}
-                            <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /></>
-                        }
-                        {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /> */}
-                        {/* <Button align="right" > */}
+                  <>
+                    {approvalslist.map((item) =>
+
+                      <StyledTableRow container>
+                        <StyledTableCell item xl={10}>
+                          <div className={classes.texttablecell}>
+                            {item.User_Email}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={6}>
+                          <div className={classes.texttablecell}>
+                            {item.Access_Type}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={6}>
+                          <div className={classes.texttablecell}>
+                          {item.Object_Type}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={6}>
+                          <div className={classes.texttablecell}>
+                            {item.Feature_Name}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={6}>
+                          <div >
+                            {isEdit ? (
+                              <>
+                                <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
+                                <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
+                              </>
+                            ) :
+                              <>{date}
+                                <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /></>
+                            }
+                            {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /> */}
+                            {/* <Button align="right" > */}
 
 
-                        {/* </Button> */}
-                        {/* onClick={() => handleEditchange(row.Feature_Id)} */}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item align="right" xl={10}>
-                      <div className={classes.texttablecell}>
-                        <Button
-                          type="button"
-                          size="small"
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                        >
-                          APPROVE
-                        </Button>
-                        {' '}
-                        <Button
-                          type="button"
-                          size="small"
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                        >
-                          Denied
-                        </Button>
+                            {/* </Button> */}
+                            {/* onClick={() => handleEditchange(row.Feature_Id)} */}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item align="right" xl={10}>
+                          <div className={classes.texttablecell}>
+                            <Button
+                              type="button"
+                              size="small"
+                              variant="contained"
+                              color="primary"
+                              className={classes.submit}
+                              style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                            >
+                              APPROVE
+                            </Button>
+                            {' '}
+                            <Button
+                              type="button"
+                              size="small"
+                              variant="contained"
+                              color="primary"
+                              className={classes.submit}
+                              style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                            >
+                              Denied
+                            </Button>
 
-                      </div>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                          </div>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
+                  </>
                 ) : (
                   <>
                     <StyledTableRow container>
@@ -573,7 +599,10 @@ export default function AdminAccesslist() {
                       <StyledTableCell align="center"></StyledTableCell>
                     </StyledTableRow>
                   </>
-                )}
+
+                )
+
+                }
               </TableBody>
             </Table>
           </Grid>
