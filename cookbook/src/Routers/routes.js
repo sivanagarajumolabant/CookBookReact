@@ -21,10 +21,19 @@ import ForgotPasword from '../Auth/forgotpassword';
 import ResendEmail from '../Auth/resendemail';
 import SuperadminFunction from '../Features/Modules/superadminpage';
 import ResetPasword from '../Auth/ResetPassword';
+import { useHistory } from 'react-router-dom';
 
 
 
 const Routing = () => {
+    const history = useHistory()
+    let isAuth = localStorage.getItem('isAuth')
+    React.useEffect(() => {
+        if (isAuth) {
+            // history.push('/dashboard')
+        }
+
+    }, [isAuth])
     return (
         <BrowserRouter>
 

@@ -71,7 +71,7 @@ function SignIn() {
     // localStorage.setItem('isAuth', true)
     // history.push("/dashboard");
     let loginurl = config.API_BASE_URL() + '/login/'
-    console.log(loginurl)
+    // console.log(loginurl)
     axios.post(loginurl, user)
       .then((res) => {
         if (res.status === 200 && res.data.access !== null) {
@@ -116,6 +116,15 @@ function SignIn() {
   if (msg.length > 0) {
     display_msg = <Alert variant="filled" severity="error">{msg}</Alert>
   }
+  let isAuth=localStorage.getItem('isAuth')
+  React.useEffect(()=>{
+       if(isAuth){
+         debugger
+      history.push('/dashboard')
+       }
+
+  },[isAuth])
+   console.log(isAuth)
   return (
     <Container component="main" maxWidth="xs" >
       <CssBaseline />
