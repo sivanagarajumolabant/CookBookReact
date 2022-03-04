@@ -20,10 +20,20 @@ import RequestFeatureData from '../Features/Modules/RequestFeatureData';
 import ForgotPasword from '../Auth/forgotpassword';
 import ResendEmail from '../Auth/resendemail';
 import SuperadminFunction from '../Features/Modules/superadminpage';
+import ResetPasword from '../Auth/ResetPassword';
+import { useHistory } from 'react-router-dom';
 
 
 
 const Routing = () => {
+    const history = useHistory()
+    let isAuth = localStorage.getItem('isAuth')
+    React.useEffect(() => {
+        if (isAuth) {
+            // history.push('/dashboard')
+        }
+
+    }, [isAuth])
     return (
         <BrowserRouter>
 
@@ -33,6 +43,7 @@ const Routing = () => {
                 <Route path="/emailverification" component={EmailVerify} />
                 <Route path="/forgotpassword" component={ForgotPasword} />
                 <Route path="/resendemail" component={ResendEmail} />
+                <Route path="/resetpassword" component={ResetPasword} />
                 {/* <Route path="*" component={PageNotFound} /> */}
                 <MenuAppBar>
                     <ProtectedRoute path="/dashboard" component={Home} />

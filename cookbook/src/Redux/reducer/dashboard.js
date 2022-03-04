@@ -4,18 +4,19 @@ const initialState = {
   drawerOpen: false,
 
   menuitem: null,
-  headerValue: { title: "Oracle TO Postgres" , code:1},
+  headerValue: { title: "Oracle TO Postgres", code: "Oracle_TO_Postgres"},
   updatedValue: false,
   createFeature: false,
   preview: false,
   editpreview: false,
   details: {},
   editPreviewdetails: {},
-   ITEMlIST:[]
+  ITEMlIST: [],
+  DropDownValues: []
 };
 
 const dashboardReducer = (state = initialState, action) => {
-  
+
   switch (action.type) {
     case "SELECTED_MENU":
       return {
@@ -69,25 +70,34 @@ const dashboardReducer = (state = initialState, action) => {
         createFeature: action.payload,
         details: {}
       };
-    
-      case "SELECTED_ITEM":
-        return {
-          ...state,
-         ITEMlIST:action.payload
-        };
 
-        case "UPDATE_SELECTED_ITEM":
-          return {
-            ...state,
-           ITEMlIST:action.payload
-          };
-          case "DELETE_SELECTED_ITEM":
-            return {
-              ...state,
-             ITEMlIST:action.payload
-            };
+    case "SELECTED_ITEM":
+      return {
+        ...state,
+        ITEMlIST: action.payload
+      };
+    case "DROP_DOWN_LIST":
+      return {
+        ...state,
+        DropDownValues: action.payload,
+        headerValue: action.payload[0]
+      };
 
-          
+
+
+
+    case "UPDATE_SELECTED_ITEM":
+      return {
+        ...state,
+        ITEMlIST: action.payload
+      };
+    case "DELETE_SELECTED_ITEM":
+      return {
+        ...state,
+        ITEMlIST: action.payload
+      };
+
+
     default:
       return state;
   }

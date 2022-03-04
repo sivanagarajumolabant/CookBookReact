@@ -13,6 +13,21 @@ const ActionMenu = (value) => {
 
 }
 
+const getdropdownlist = (value) => {
+   return dispatch => {
+
+      dispatch({
+         type: "DROP_DOWN_LIST",
+         payload: value
+      })
+   }
+
+
+
+
+}
+
+
 const dropdown = (value) => {
    return dispatch => {
 
@@ -122,4 +137,4 @@ const DeleteMenutlist = (value) => {
    }
 }
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist}
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist}

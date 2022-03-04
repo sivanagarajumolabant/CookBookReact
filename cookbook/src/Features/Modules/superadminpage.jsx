@@ -20,6 +20,14 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import AddIcon from '@material-ui/icons/Add';
 import { Avatar } from '@material-ui/core';
+import Notification from "../Notifications/Notification";
+
+import {
+  Container,
+  Modal,
+  Snackbar,
+} from "@material-ui/core";
+
 
 
 const useStylestable = makeStyles((theme) => ({
@@ -35,7 +43,7 @@ const useStylestable = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    },
+  },
 
 }))
 
@@ -101,6 +109,37 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
+
+
+  //pop up weindow
+
+  container: {
+    border: "none",
+    borderRadius: 15,
+    width: 450,
+    height: 200,
+    backgroundColor: "white",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: "auto",
+  },
+  container1: {
+    border: "none",
+    borderRadius: 15,
+    width: 450,
+    height: 280,
+    backgroundColor: "white",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: "auto",
+  }
+
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -129,35 +168,52 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+
 export default function SuperadminFunction() {
   const classes = useStyles();
   const classestable = useStylestable();
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [isData, setIsData] = useState(true);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-  const [migtypeid, setMigtypeid] = useState(headerValue.title)
+  const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState('Procedure')
-  const [Migtype, setMigtype] = useState('Oracle TO Postgres')
+  const [Migtype, setMigtype] = useState('')
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
-  
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const [migtype_create, setMigtype_create] = useState('')
+  const [objtype_create, setObjtype_create] = useState('')
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const [migtypelist, setMigtypeslist] = useState([])
+  const [objtypelist, setObjtypeslist] = useState([])
+  const [updatemiglist, setUpdatemiglist] = useState(false)
+  const [updateobjlist, setUpdateobjlist] = useState(false)
+  const [userslist, setUserslist] = useState([])
+
   let history = useHistory();
 
 
   useEffect(() => {
-    let sval = 0;
-    if (headerValue) {
-      if (headerValue.title === "Oracle TO Postgres") {
-        sval = 1;
-      } else if (headerValue.title === "SQLServer TO Postgres") {
-        sval = 2;
-      } else if (headerValue.title === "MYSQL TO Postgres") {
-        sval = 3;
-      }
-    }
+    // let sval = 0;
+    // if (headerValue) {
+    //   if (headerValue.title === "Oracle TO Postgres") {
+    //     sval = 1;
+    //   } else if (headerValue.title === "SQLServer TO Postgres") {
+    //     sval = 2;
+    //   } else if (headerValue.title === "MYSQL TO Postgres") {
+    //     sval = 3;
+    //   }
+    // }
     let body = {
       "Object_Type": objtype,
-      "Migration_TypeId": sval,
+      "Migration_TypeId": headerValue.title,
     };
     let conf = {
       headers: {
@@ -180,6 +236,65 @@ export default function SuperadminFunction() {
   }, [objtype]);
 
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+      (res) => {
+          // console.log("mig list ", res.data)
+          setMigtypeslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [updatemiglist]);
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
+      (res) => {
+        
+        setUserslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${migtype_create}`, conf).then(
+      (res) => {
+        
+          setObjtypeslist(res.data)
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [updateobjlist]);
+
+  
+
+
   // console.log(headerValue.title)
   const handleObjecttype = (v) => {
     setObjtype(v.title)
@@ -187,6 +302,33 @@ export default function SuperadminFunction() {
 
   const handleMigrationtype = (v) => {
     setMigtype(v.title)
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
+  const handleObjectviewslist =(v)=>{
+    setMigtype_create(v?.title)
+    
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${v?.title}`, conf).then(
+        (res) => {
+          setObjtypeslist(res.data)
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  
   }
 
   const handledropdown = (e, v) => {
@@ -205,6 +347,79 @@ export default function SuperadminFunction() {
       }
     );
   }
+  const handleMigrationCreate = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Object_Type": objtype_create,
+      "Migration_TypeId": migtype_create,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/migrationsscreate/`, form, conf).then(
+      (res) => {
+        // setNotify("Created Migration Type")
+        setNotify({
+          isOpen: true,
+          message: "Created Migration Type",
+          type: "success",
+        });
+        setUpdatemiglist(true)
+        setOpen1(false)
+      },
+      (error) => {
+        console.log(error.response.data);
+        // setNotify("Migration Types Already Exist!")
+      }
+    );
+    setUpdatemiglist(false)
+  }
+
+
+  const handleObjectypeCreate = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "Object_Type": objtype_create,
+      "Migration_TypeId": migtype_create,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/migrationsscreate/`, form, conf).then(
+      (res) => {
+        // setNotify("Created Object Type")
+        setNotify({
+          isOpen: true,
+          message: "Created Object Type",
+          type: "success",
+        });
+        setUpdateobjlist(true)
+        setOpen(false)
+
+      },
+      (error) => {
+        console.log(error.response.data);
+        // setNotify("Object Type Exist!")
+      }
+    );
+    setUpdateobjlist(false)
+    // handleObjectviewslist(body)
+    
+  }
+
+
   return (
     <>
       <Box py={1} px={1}>
@@ -218,23 +433,19 @@ export default function SuperadminFunction() {
 
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' spacing={1}>
+        <Grid container direction='row' spacing={2}>
 
-        <Grid item xs={4} >
+          <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Oracle TO Postgres", code: 1 },
-                { title: "SQLServer TO Postgres", code: 2 },
-                { title: "MYSQL TO Postgres", code: 3 },
-              ]}
+              options={migtypelist}
               groupBy={""}
-              defaultValue={{ title: "Oracle TO Postgres" }}
+              // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
-              onChange={(e, v) => handleMigrationtype(v)}
+              onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -243,26 +454,89 @@ export default function SuperadminFunction() {
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                   }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               )}
             />
           </Grid>
-            {/* <Avatar className={classes.avatar}>
-                <AddIcon />
-            </Avatar> */}
+          <Grid item xs={1}>
+            <Avatar className={classes.avatar} onClick={() => setOpen1(true)}>
+              <AddIcon style={{ color: 'green' }} />
+            </Avatar>
+          </Grid>
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={4000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+          </Snackbar>
+          <Modal open={open1}>
+            <Container className={classes.container}>
+              <Typography
+                gutterBottom
+                align="center"
+                variant="h6"
+                component="h2"
+                className={classes.Object_Type}
+                style={{ marginBottom: '20px' }}
+              >
+                Create Migration Type
+              </Typography>
+              {/* <form className={classes.form} autoComplete="off"> */}
+              <div className={classes.item}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Migration Type"
+                  style={{ width: 400, marginBottom: '20px' }}
+                  multiline
+                  rows={1}
+                  // value ={row.Keywords}
+                  onChange={(e) => setMigtype_create(e.target.value)}
+                  name="Keywords"
+                  // defaultValue={edithandle.Keywords}
+                  // helperText={featurenamemsg}
+                  // value={edithandle.Keywords}
+                  className={classes.textField}
+                  // helperText="Some important text"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+
+                  multiline
+                />
+              </div>
+              <div className={classes.item} >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: 20, marginLeft: 100 }}
+                  onClick={() => handleMigrationCreate()}
+                >
+                  Create
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setOpen1(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Container>
+          </Modal>
           <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "abc@gmail.com", code: 1 },
-                { title: "123@gmail.com", code: 2 },
-                { title: "abc123@gmail.com", code: 3 },
-              ]}
+              options={userslist}
               groupBy={""}
-              defaultValue={{ title: "Select Email" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Select Email" }}
+              getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
               onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
@@ -273,6 +547,9 @@ export default function SuperadminFunction() {
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                   }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               )}
             />
@@ -282,26 +559,12 @@ export default function SuperadminFunction() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Procedure" },
-                { title: "Function" },
-                { title: "View" },
-                { title: "Index" },
-                { title: "Package" },
-                { title: "Trigger" },
-                { title: "Sequence" },
-                { title: "Synonym" },
-                { title: "Material View" },
-                { title: "Type" },
-                { title: "Table" },
-                { title: "All" },
-
-              ]}
+              options={objtypelist}
               groupBy={""}
-              defaultValue={{ title: "Procedure" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Procedure" }}
+              getOptionLabel={(option) => option.Object_Type}
               style={{ width: 300 }}
-              onChange={(e, v) => handleObjecttype(v)}
+              // onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -310,20 +573,117 @@ export default function SuperadminFunction() {
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                   }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               )}
             />
           </Grid>
+          <Grid item xs={1}>
+            <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
+              <AddIcon style={{ color: 'green' }} />
+            </Avatar>
+          </Grid>
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={4000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+          </Snackbar>
+          <Modal open={open}>
+            <Container className={classes.container1} style={{ marginBottom: 100 }}>
+              <Typography
+                gutterBottom
+                align="center"
+                variant="h6"
+                component="h2"
+                className={classes.Object_Type}
+                style={{ marginBottom: '20px' }}
+              >
+                Create Object Type
+              </Typography>
+              {/* <form className={classes.form} autoComplete="off"> */}
+
+              <Grid item xs={4} >
+                <StyledAutocomplete
+                  size="small"
+                  id="grouped-demo"
+                  className={classes.inputRoottype}
+                  options={migtypelist}
+                  groupBy={""}
+                  // defaultValue={{ title: "Oracle TO Postgres" }}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 400, marginBottom: '20px', height: '60px' }}
+                  onChange={(e, v) => setMigtype_create(v.title)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Migration type"
+                      variant="outlined"
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                      }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <div className={classes.item}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Object Type"
+                  style={{ width: 400, marginBottom: '20px' }}
+                  multiline
+                  rows={1}
+                  // value ={row.Keywords}
+                  onChange={(e) => setObjtype_create(e.target.value)}
+                  name="Keywords"
+                  // defaultValue={edithandle.Keywords}
+                  // helperText={featurenamemsg}
+                  // value={edithandle.Keywords}
+                  className={classes.textField}
+                  // helperText="Some important text"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+
+                  multiline
+                />
+              </div>
+              <div className={classes.item} >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: 20, marginLeft: 100 }}
+                  onClick={() => handleObjectypeCreate()}
+                >
+                  Create
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+              {/* </form> */}
+            </Container>
+          </Modal>
         </Grid>
-        </Box>
-        <Box>
         <Grid container direction="row" justifyContent="center">
           <Button
             variant="contained"
             // startIcon={<CloudUploadIcon />}
             color="primary"
             component="span"
-            style={{ marginTop: 15 }}
+            style={{ marginTop: 12, marginLeft: 60 }}
           >
             {" "}
             Submit
@@ -331,121 +691,120 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-            <Grid container xl={12} justifyContent="space-between" spacing={3}>
-            <Grid item xs={12}>
-                <Typography
-                gutterBottom
-                align='center'
-                variant="h6"
-                component="h2"
-                className={classes.Object_Type}
-                >
-                Super Admin Users
-                </Typography>
-                <Table className={classestable.table} aria-label="customized table">
-                <TableHead className={classes.primary}>
-                    <TableRow>
-                    <StyledTableCell align="left">User Email-ID</StyledTableCell>
-                    <StyledTableCell align="left">Migration Type</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Super Admin Users
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Email-ID</StyledTableCell>
+                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
 
 
-                    {isData ?
+                {isData ?
+                  <StyledTableRow container>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"siva.n@quadrantresource.com"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"Oracle TO Postgres"}
+                      </div>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  : <>
                     <StyledTableRow container>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"siva.n@quadrantresource.com"}
-                        </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"Oracle TO Postgres"}
-                        </div>
-                        </StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
                     </StyledTableRow>
-                    : <>
-                        <StyledTableRow container>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="center">No Requests</StyledTableCell>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        </StyledTableRow>
-                    </>
-                    }
+                  </>
+                }
 
 
-                </TableBody>
-                </Table>
-            </Grid>
+              </TableBody>
+            </Table>
+          </Grid>
 
-            </Grid>
-        </Box>
-        <Box py={2} px={2}>
-            <Grid container xl={12} justifyContent="space-between" spacing={3}>
-            <Grid item xs={12}>
-                <Typography
-                gutterBottom
-                align='center'
-                variant="h6"
-                component="h2"
-                className={classes.Object_Type}
-                >
-                2 Super users
-                </Typography>
-                <Table className={classestable.table} aria-label="customized table">
-                <TableHead className={classes.primary}>
-                    <TableRow>
-                    <StyledTableCell align="left">User Email-ID</StyledTableCell>
-                    <StyledTableCell align="left">Migration Type</StyledTableCell>
-                    <StyledTableCell align="left">Approve</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              2 Super users
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Email-ID</StyledTableCell>
+                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                  <StyledTableCell align="left">Approve</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
 
 
-                    {isData ?
+                {isData ?
+                  <StyledTableRow container>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"siva.n@quadrantresource.com"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} >
+                      <div className={classes.texttablecell}>
+                        {"Oracle TO Postgres"}
+                      </div>
+                    </StyledTableCell>
+                    <StyledTableCell item xl={8} align="left">
+                      <Button
+                        type="button"
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                      >
+                        Delete
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  : <>
                     <StyledTableRow container>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"siva.n@quadrantresource.com"}
-                        </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8} >
-                        <div className={classes.texttablecell}>
-                            {"Oracle TO Postgres"}
-                        </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8} align="left">
-                        <Button
-                                type="button"
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                style={{marginTop:'9px',fontSize:'9px',marginBottom:'8px'}}
-                            >
-                                Delete
-                        </Button>
-                        </StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
                     </StyledTableRow>
-                    : <>
-                        <StyledTableRow container>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="center">No Requests</StyledTableCell>
-                        <StyledTableCell align="center"></StyledTableCell>
-                        </StyledTableRow>
-                    </>
-                    }
+                  </>
+                }
+              </TableBody>
+            </Table>
+          </Grid>
 
+        </Grid>
+      </Box>
 
-                </TableBody>
-                </Table>
-            </Grid>
-
-            </Grid>
-        </Box>
-
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   )
 }

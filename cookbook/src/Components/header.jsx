@@ -280,7 +280,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue, ITEMlIST } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST ,DropDownValues} = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -289,6 +289,7 @@ export default function ClippedDrawer({ children }) {
     name: "Oracle TO Postgres",
   });
   const [selectedItems, setselectedItems] = React.useState([])
+  const [migtypelist, setMigtypeslist] = useState([])
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -297,6 +298,25 @@ export default function ClippedDrawer({ children }) {
   const handleChange = (event) => {
     setAuth(event.target.checked);
   };
+
+  React.useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+      (res) => {
+        
+          setMigtypeslist(res.data)
+          dispatch(Menuaction.getdropdownlist(res.data))
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -326,11 +346,11 @@ export default function ClippedDrawer({ children }) {
   };
 
   React.useEffect(() => {
-    getmenus(1);
+    getmenus(headerValue.title);
   }, []);
 
   const handleversion = (v) => {
-    getmenus(v?.code);
+    getmenus(v?.title);
     setselectedItems([])
 
     setdropdown(v);
@@ -380,7 +400,7 @@ export default function ClippedDrawer({ children }) {
 
   React.useEffect(() => {
     if (updatedValue) {
-      getmenus(headerValue.code || 1);
+      getmenus(headerValue.title);
     }
   }, [updatedValue])
 
@@ -435,13 +455,9 @@ export default function ClippedDrawer({ children }) {
                 size="small"
                 id="grouped-demo"
                 className={classes.inputRoottype}
-                options={[
-                  { title: "Oracle TO Postgres", code: 1 },
-                  { title: "SQLServer TO Postgres", code: 2 },
-                  { title: "MYSQL TO Postgres", code: 3 },
-                ]}
+                options={DropDownValues}
                 groupBy={""}
-                defaultValue={{ title: "Oracle TO Postgres" }}
+                defaultValue={{ title: DropDownValues[0]?.title }}
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
                 onChange={(e, v) => handleversion(v)}
@@ -452,6 +468,7 @@ export default function ClippedDrawer({ children }) {
                     variant="outlined"
                     InputLabelProps={{
                       className: classes.floatingLabelFocusStyle,
+                      shrink: true,
                     }}
                   />
                 )}
@@ -496,6 +513,7 @@ export default function ClippedDrawer({ children }) {
                     // borderColor = 'text.primary'
                     InputLabelProps={{
                       className: classes.floatingLabelFocusStyle,
+                      shrink: true,
                     }}
 
 

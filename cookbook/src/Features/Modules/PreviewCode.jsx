@@ -241,16 +241,16 @@ export default function PreviewCode(props) {
   }, [menuitem, att_update]);
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name, fid) => {
-    if (migtypeid === "1") {
-      migtypeid = "Oracle TO Postgres";
-      // setMigtypeid(1)
-    } else if (migtypeid === "2") {
-      migtypeid = "SQLServer TO Postgres";
-      // setMigtypeid(2)
-    } else if (migtypeid === "3") {
-      migtypeid = "MYSQL TO Postgres";
-      // setMigtypeid(3)
-    }
+    // if (migtypeid === "1") {
+    //   migtypeid = "Oracle TO Postgres";
+    //   // setMigtypeid(1)
+    // } else if (migtypeid === "2") {
+    //   migtypeid = "SQLServer TO Postgres";
+    //   // setMigtypeid(2)
+    // } else if (migtypeid === "3") {
+    //   migtypeid = "MYSQL TO Postgres";
+    //   // setMigtypeid(3)
+    // }
     let body = {
       file_name: att_name,
       migration_typeid: migtypeid,

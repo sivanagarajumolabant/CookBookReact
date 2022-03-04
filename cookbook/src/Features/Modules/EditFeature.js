@@ -132,8 +132,8 @@ export default function EditFeature(props) {
   const [Target_ActualCode, setTarget_ActualCode] = useState("");
   const [Target_Expected_Output, setTarget_Expected_Output] = useState("");
   const [Conversion_Code, setConversion_Code] = useState("");
-  const [precon_val, setPrecon_val]= useState('')
-  const [presource_code_val, setSource_code_val]= useState('')
+  const [precon_val, setPrecon_val] = useState('')
+  const [presource_code_val, setSource_code_val] = useState('')
 
   const [isTable, setIsTable] = useState(false);
   const [drop, setDrop] = useState("Sourcedescription");
@@ -310,21 +310,21 @@ export default function EditFeature(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    var val = 0;
-    if (editdata.detaildata) {
-      if (editdata.detaildata.Migration_TypeId === "Oracle TO Postgres") {
-        val = 1;
-      } else if (
-        editdata.detaildata.Migration_TypeId === "SQLServer TO Postgres"
-      ) {
-        val = 2;
-      } else if (editdata.detaildata.Migration_TypeId === "MYSQL TO Postgres") {
-        val = 3;
-      }
-    }
+    // var val = 0;
+    // if (editdata.detaildata) {
+    //   if (editdata.detaildata.Migration_TypeId === "Oracle TO Postgres") {
+    //     val = 1;
+    //   } else if (
+    //     editdata.detaildata.Migration_TypeId === "SQLServer TO Postgres"
+    //   ) {
+    //     val = 2;
+    //   } else if (editdata.detaildata.Migration_TypeId === "MYSQL TO Postgres") {
+    //     val = 3;
+    //   }
+    // }
     let formData = {
       ...formValues,
-      Migration_TypeId: val,
+      Migration_TypeId: editdata.detaildata?.Migration_TypeId,
       Object_Type: editdata.detaildata.Object_Type,
       Feature_Name: editdata.detaildata.Feature_Name.substr(5),
       // Source_FeatureDescription, Target_FeatureDescription,
@@ -405,18 +405,18 @@ export default function EditFeature(props) {
     setTarget_FeatureDescription(data);
   };
 
-  if (editdata?.detaildata) {
-    if (editdata.detaildata.Migration_TypeId === "1") {
-      editdata.detaildata.Migration_TypeId = "Oracle TO Postgres";
-      // setMigtypeid(1)
-    } else if (editdata.detaildata.Migration_TypeId === "2") {
-      editdata.detaildata.Migration_TypeId = "SQLServer TO Postgres";
-      // setMigtypeid(2)
-    } else if (editdata.detaildata.Migration_TypeId === "3") {
-      editdata.detaildata.Migration_TypeId = "MYSQL TO Postgres";
-      // setMigtypeid(3)
-    }
-  }
+  // if (editdata?.detaildata) {
+  //   if (editdata.detaildata.Migration_TypeId === "1") {
+  //     editdata.detaildata.Migration_TypeId = "Oracle TO Postgres";
+  //     // setMigtypeid(1)
+  //   } else if (editdata.detaildata.Migration_TypeId === "2") {
+  //     editdata.detaildata.Migration_TypeId = "SQLServer TO Postgres";
+  //     // setMigtypeid(2)
+  //   } else if (editdata.detaildata.Migration_TypeId === "3") {
+  //     editdata.detaildata.Migration_TypeId = "MYSQL TO Postgres";
+  //     // setMigtypeid(3)
+  //   }
+  // }
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name, fid) => {
     let body = {
@@ -486,20 +486,20 @@ export default function EditFeature(props) {
 
   const handleConvert = (e) => {
     e.preventDefault();
-    if (Conversion_Code==='') {
+    if (Conversion_Code === '') {
       setNotify({
         isOpen: true,
         message: "No Conversion Module, please add Conversion Module before Convert",
         type: "error",
       });
 
-    }else if(Conversion_Code===precon_val && Source_Code=== presource_code_val){
+    } else if (Conversion_Code === precon_val && Source_Code === presource_code_val) {
       setNotify({
         isOpen: true,
         message: "Please make change to either Source code or conversion Module before clicking on the Convert button",
         type: "error",
       });
-    } 
+    }
     else {
 
       // console.log(formValues.Conversion_Code)
@@ -954,6 +954,18 @@ export default function EditFeature(props) {
               </div>
             </Grid>
 
+            <Grid container style={{ justifyContent: "flex-end", marginRight: "20px" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                size="small"
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 id="outlined-multiline-static"
@@ -1041,7 +1053,7 @@ export default function EditFeature(props) {
                   Convert
                 </Button>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Button
                   // type="submit"
                   // className={classes.convertbutton}
@@ -1055,7 +1067,7 @@ export default function EditFeature(props) {
                 >
                   Save
                 </Button>
-              </Grid>
+              </Grid> */}
 
             </Grid>
             {/* </Box> */}

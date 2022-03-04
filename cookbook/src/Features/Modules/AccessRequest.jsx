@@ -6,6 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
+import Notification from "../Notifications/Notification";
 import config from "../../Config/config";
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -125,29 +126,36 @@ export default function Request() {
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-  const [migtypeid, setMigtypeid] = useState(headerValue.title)
-  const [objtype, setObjtype] = useState('Procedure')
+  const [migtypeid, setMigtypeid] = useState(headerValue?.title)
+  const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
-  
+  const [objtypeslist, setObjtypeslist] = useState([])
+  const [fnname, setFnname] = useState()
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   let history = useHistory();
 
 
   useEffect(() => {
-    let sval = 0;
-    if (headerValue) {
-      if (headerValue.title === "Oracle TO Postgres") {
-        sval = 1;
-      } else if (headerValue.title === "SQLServer TO Postgres") {
-        sval = 2;
-      } else if (headerValue.title === "MYSQL TO Postgres") {
-        sval = 3;
-      }
-    }
+    // let sval = 0;
+    // if (headerValue) {
+    //   if (headerValue.title === "Oracle TO Postgres") {
+    //     sval = 1;
+    //   } else if (headerValue.title === "SQLServer TO Postgres") {
+    //     sval = 2;
+    //   } else if (headerValue.title === "MYSQL TO Postgres") {
+    //     sval = 3;
+    //   }
+    // }
     let body = {
       "Object_Type": objtype,
-      "Migration_TypeId": sval,
+      "Migration_TypeId": headerValue.title,
     };
     let conf = {
       headers: {
@@ -169,14 +177,33 @@ export default function Request() {
     );
   }, [objtype]);
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${headerValue?.title}`, conf).then(
+      (res) => {
+
+        setObjtypeslist(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [headerValue?.title]);
+
 
   // console.log(headerValue.title)
   const handleObjecttype = (v) => {
-    setObjtype(v.title)
+    setObjtype(v.Object_Type)
   }
 
   const handledropdown = (e, v) => {
     setSelected(true)
+    setFnname(v.Feature_Name)
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -188,6 +215,52 @@ export default function Request() {
       },
       (error) => {
         console.log(error);
+      }
+    );
+  }
+
+
+  const handleRequestAccess = (type) => {
+    let access = ''
+    if (type === 'Edit') {
+      access = 'Edit'
+    } else {
+      access = 'View'
+    }
+
+    let body = {
+      "Object_Type": objtype,
+      "Migration_TypeId": headerValue.title,
+      "User_Email": localStorage.getItem('uemail'),
+      "Feature_Name": fnname,
+      "Approval_Status": 'Pending',
+      "Access_Type": access
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "Request Sent to Admin and Wait for the Approval",
+          type: "success",
+        });
+      },
+      (error) => {
+        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: "Something Went Wrong Please Try Again!",
+          type: "error",
+        });
       }
     );
   }
@@ -221,7 +294,7 @@ export default function Request() {
                 shrink: true,
               }}
               fullWidth
-              value={headerValue.title}
+              value={headerValue?.title}
               size='small'
               disabled
               style={{ width: 300 }}
@@ -234,24 +307,10 @@ export default function Request() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "Procedure" },
-                { title: "Function" },
-                { title: "View" },
-                { title: "Index" },
-                { title: "Package" },
-                { title: "Trigger" },
-                { title: "Sequence" },
-                { title: "Synonym" },
-                { title: "Material View" },
-                { title: "Type" },
-                { title: "Table" },
-                { title: "All" },
-
-              ]}
+              options={objtypeslist}
               groupBy={""}
-              defaultValue={{ title: "Procedure" }}
-              getOptionLabel={(option) => option.title}
+              // defaultValue={{ title: "Procedure" }}
+              getOptionLabel={(option) => option.Object_Type}
               style={{ width: 300 }}
               onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
@@ -261,6 +320,9 @@ export default function Request() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
                 />
               )}
@@ -371,34 +433,41 @@ export default function Request() {
       <Box className={classes.root}>
         <Grid container spacing={3} justifyContent="center"
           alignItems="center">
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={7}>
             <Button variant="contained"
-            // startIcon={<CloudUploadIcon />}
-            color="primary" component="span" style={{ marginTop: 15,width: "240px" }}>
-            Request View Access
+              disabled={!selecetd}
+              // startIcon={<CloudUploadIcon />}
+              size='small'
+              color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
+              onClick={(e) => { handleRequestAccess('View') }}>
+              Request View Access
+            </Button>
+            {" "}
+            <Button variant="contained"
+              disabled={!selecetd}
+              size='small'
+              onClick={() =>
+                history.push({
+                  pathname: `/requestdata`,
+                  data: { data },
+                })}
+              color="primary" component="span" style={{ marginTop: 15, width: "100px" }} >
+              Show All
+            </Button>
+            {"   "}
+            <Button variant="contained"
+              disabled={!selecetd}
+              // startIcon={<CloudUploadIcon />}
+              size='small'
+              color="primary" component="span" style={{ marginTop: 15, width: "180px" }}
+              onClick={(e) => { handleRequestAccess('Edit') }}>
+              Request Edit Access
             </Button>
           </Grid>
-            <Grid item xs={6} sm={2}>
-                <Button variant="outlined"
-                disabled={!selecetd}
-                onClick={() =>
-                history.push({
-                pathname: `/requestdata`,
-                data: { data },
-                })}
-                color="primary" component="span" style={{ marginTop: 15, width: "150px" }} >
-                Show All
-                </Button>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Button variant="contained"
-              // startIcon={<CloudUploadIcon />}
-              color="primary" component="span" style={{ marginTop: 15 ,width: "240px"}}>
-              Request Edit Access
-              </Button>
-            </Grid>
+
         </Grid>
       </Box>
+      <Notification notify={notify} setNotify={setNotify} />
       {/* <Box direction='row'>
         <Grid container >
 

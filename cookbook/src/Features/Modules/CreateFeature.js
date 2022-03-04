@@ -206,7 +206,7 @@ export default function CreateFeature(props) {
   } else {
     obj_type = obj_type?.slice(0, -1);
   }
-  console.log("obj 1 ", obj_type);
+  // console.log("obj 1 ", obj_type);
   const [prerunval, setPrerunval] = useState([]);
 console.log(edithandle)
   // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
@@ -237,21 +237,21 @@ console.log(edithandle)
   // const [migtypeid, setMigtypeid] = useState()
 
   // const [seq, setSeq]=useState({})
-  let sval = 0;
-  if (headerValue) {
-    if (headerValue.title === "Oracle TO Postgres") {
-      sval = 1;
-    } else if (headerValue.title === "SQLServer TO Postgres") {
-      sval = 2;
-    } else if (headerValue.title === "MYSQL TO Postgres") {
-      sval = 3;
-    }
-  }
+  // let sval = 0;
+  // if (headerValue) {
+  //   if (headerValue?.title === "Oracle TO Postgres") {
+  //     sval = 1;
+  //   } else if (headerValue?.title === "SQLServer TO Postgres") {
+  //     sval = 2;
+  //   } else if (headerValue?.title === "MYSQL TO Postgres") {
+  //     sval = 3;
+  //   }
+  // }
 
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: sval,
+      Migration_TypeId: formValues.Migration_TypeId,
     };
     let conf = {
       headers: {
@@ -274,7 +274,7 @@ console.log(edithandle)
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: sval,
+      Migration_TypeId: formValues.Migration_TypeId,
     };
     let conf = {
       headers: {
@@ -294,14 +294,14 @@ console.log(edithandle)
         console.log(error);
       }
     );
-  }, [modalupdate]);
+  }, [modalupdate, headerValue?.title]);
 
   useEffect(() => { }, [formValues]);
 
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: sval,
+      Migration_TypeId: formValues.Migration_TypeId,
     };
     let conf = {
       headers: {
@@ -332,18 +332,18 @@ console.log(edithandle)
     e.preventDefault();
     if (headerValue) {
       // debugger
-      if (headerValue.title === "Oracle TO Postgres") {
-        val = 1;
-      } else if (headerValue.title === "SQLServer TO Postgres") {
-        val = 2;
-      } else if (headerValue.title === "MYSQL TO Postgres") {
-        val = 3;
-      }
+      // if (headerValue?.title === "Oracle TO Postgres") {
+      //   val = 1;
+      // } else if (headerValue?.title === "SQLServer TO Postgres") {
+      //   val = 2;
+      // } else if (headerValue?.title === "MYSQL TO Postgres") {
+      //   val = 3;
+      // }
     }
 
     let formData = {
       ...formValues,
-      Migration_TypeId: val, //props.headerValue?.code,
+      Migration_TypeId: headerValue?.title, //props.headerValue?.code,
       Object_Type: obj_type,
       // 'Source_Attachment': source_att,
       // "Conversion_Attachment": target_att,
@@ -375,11 +375,11 @@ console.log(edithandle)
           type: "success",
         });
         dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
-        let UpdateItem = {
-          Label: ITEMlIST[0]?.Label,
-          subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
-        }
-        dispatach(Menuaction.UpdateMenutlist(UpdateItem))
+        // let UpdateItem = {
+        //   Label: ITEMlIST[0]?.Label,
+        //   subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
+        // }
+        // dispatach(Menuaction.UpdateMenutlist(UpdateItem))
 
         history.push("/EditFeature");
       },
@@ -459,7 +459,7 @@ console.log(edithandle)
   const handlechangedropdownlevel = (v) => {
     setformvalues({
       ...formValues,
-      Level: v.title,
+      Level: v?.title,
     });
   };
 
@@ -632,7 +632,7 @@ console.log(edithandle)
             options={[{ title: "Programlevel" }, { title: "Statementlevel" }]}
             groupBy={""}
             // defaultValue={{ title: 'Programlevel' }}
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option?.title}
             name="Level"
             onChange={(e, v) => handlechangedropdownlevel(v)}
             renderInput={(params) => (
@@ -683,7 +683,7 @@ console.log(edithandle)
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} sm={3} md={3} xl={3}>
+        <Grid item xs={12} sm={6} md={6} xl={6}>
           <TextField
             id="outlined-multiline-static"
             label="Keywords"
@@ -725,17 +725,17 @@ console.log(edithandle)
           />
         </Grid>
 
-        <Grid item xs={6} sm={1} md={2} xl={1}>
+        <Grid item xs={6} sm={1} md={1} xl={1}>
           <Button
             size="small"
             type="submit"
-            fullWidth
+            // fullWidth
             variant="contained"
             color="primary"
             // className={classes.submit}
             onClick={handleSubmit}
             startIcon={<SaveIcon />}
-            style={{ marginTop: 12, marginLeft: 60 }}
+            style={{ marginTop: 12, marginLeft: 450 }}
           >
             Save
           </Button>

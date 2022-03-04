@@ -93,26 +93,26 @@ export default function AccessReview() {
     const classestable = useStylestable();
     const [isData, setIsData] = useState(true);
     const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-    const [migtypeid, setMigtypeid] = useState(headerValue.title)
+    const [migtypeid, setMigtypeid] = useState(headerValue?.title)
     const [objtype, setObjtype] = useState('Procedure')
     const [fnnames, setFnnames] = useState([])
     const [data, setData] = useState([])
   
   
     useEffect(() => {
-      let sval = 0;
-      if (headerValue) {
-        if (headerValue.title === "Oracle TO Postgres") {
-          sval = 1;
-        } else if (headerValue.title === "SQLServer TO Postgres") {
-          sval = 2;
-        } else if (headerValue.title === "MYSQL TO Postgres") {
-          sval = 3;
-        }
-      }
+      // let sval = 0;
+      // if (headerValue) {
+      //   if (headerValue?.title === "Oracle TO Postgres") {
+      //     sval = 1;
+      //   } else if (headerValue?.title === "SQLServer TO Postgres") {
+      //     sval = 2;
+      //   } else if (headerValue?.title === "MYSQL TO Postgres") {
+      //     sval = 3;
+      //   }
+      // }
       let body = {
         "Object_Type": objtype,
-        "Migration_TypeId": sval,
+        "Migration_TypeId": headerValue.title,
       };
       let conf = {
         headers: {
@@ -136,9 +136,6 @@ export default function AccessReview() {
   
 
 
-    const handleversion = () => {
-
-    }
 
     return (
     <>
