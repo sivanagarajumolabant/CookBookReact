@@ -132,6 +132,11 @@ export default function PreviewCode(props) {
   const [isscattdata, setIsscattdata] = useState(false);
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const [migtypeid, setMigtypeid] = useState(headerValue?.title)
+  const [objtype, setObjtype] = useState()
+  const [fnnames, setFnnames] = useState([])
+  const [fnname, setFnname] = useState()
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -162,6 +167,10 @@ export default function PreviewCode(props) {
       setDetaildata();
     }
   }, [menuitem, att_update]);
+
+  const handleObjecttype = (v) => {
+    setObjtype(v.Object_Type)
+  }
 
   useEffect(() => {
     console.log("menus ", menuitem);
@@ -273,7 +282,7 @@ export default function PreviewCode(props) {
       .then((res) => {
         fileDownload(res.data, att_name);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const handleAttachment_delete = (
@@ -346,6 +355,45 @@ export default function PreviewCode(props) {
     },
   }))(TableRow);
 
+
+  const handleRequestAccess = () => {
+    let body = {
+      "Object_Type": objtype,
+      "Migration_TypeId": migtypeid.title,
+      "User_Email": localStorage.getItem('uemail'),
+      "Feature_Name": fnname,
+      "Approval_Status": 'Pending',
+      "Access_Type": 'Edit'
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "Request Sent to Admin and Wait for the Approval",
+          type: "success",
+        });
+      },
+      (error) => {
+        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: "Something Went Wrong Please Try Again!",
+          type: "error",
+        });
+      }
+    );
+  }
+
   var data = null;
   let seq = null;
   if (detaildata) {
@@ -358,28 +406,24 @@ export default function PreviewCode(props) {
       <>
         <Grid container>
           <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }} spacing={2}>
-          <Grid item>
+            <Grid item>
               <Button
                 variant="outlined"
                 color="primary"
                 component="span"
                 // startIcon={<EditSharpIcon />}
-                onClick={
-                  () => {
-                    dispatch(
-                      ActionMenu.EditPreviewFeature({ data: detaildata })
-                    );
+                // onClick={
+                //   () => {
+                //     dispatch(
+                //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                //     );
 
-                    history.push("/EditFeature");
-                  }
-                  // history.push({
-                  //   pathname: `/edit/${detaildata.Feature_Id}`,
-                  //   data: { detaildata },
+                //     history.push("/EditFeature");
+                //   }
+                // }
+                onClick={(e) => { handleRequestAccess('Edit') }}>
 
-                  // })
-                }
-              >
-               Request Edit Access
+                Request Edit Access
               </Button>
             </Grid>
             <Grid item>

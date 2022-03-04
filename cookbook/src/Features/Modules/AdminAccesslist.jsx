@@ -19,6 +19,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
 import config from "../../Config/config";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
+import { TableContainer } from "@material-ui/core";
 
 const useStylestable = makeStyles((theme) => ({
   table: {
@@ -499,117 +500,121 @@ export default function AdminAccesslist() {
             >
               Approval Requests
             </Typography>
-            <Table className={classestable.table} aria-label="simple table">
-              <TableHead className={classes.primary}>
-                <TableRow>
-                  <StyledTableCell align="left">User Email</StyledTableCell>
-                  <StyledTableCell align="left">Access Type</StyledTableCell>
-                  <StyledTableCell align="left">Object Type</StyledTableCell>
-                  <StyledTableCell align="left">Feature Name</StyledTableCell>
-                  <StyledTableCell align="left">Approved By</StyledTableCell>
-                  <StyledTableCell align="left">Date</StyledTableCell>
-                  <StyledTableCell align="center">
-                    Approval Status
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {isData ? (
-                  <>
-                    {approvalslist.map((item) =>
+            <TableContainer className={classestable.table}>
+              <Table stickyHeader aria-label="sticky table">
+                {/* <Table className={classestable.table} aria-label="simple table"> */}
+                <TableHead className={classes.primary}>
+                  <TableRow>
+                    <StyledTableCell align="left">User Email</StyledTableCell>
+                    <StyledTableCell align="left">Access Type</StyledTableCell>
+                    <StyledTableCell align="left">Object Type</StyledTableCell>
+                    <StyledTableCell align="left">Feature Name</StyledTableCell>
+                    <StyledTableCell align="left">Approved By</StyledTableCell>
+                    <StyledTableCell align="left">Date</StyledTableCell>
+                    <StyledTableCell align="center">
+                      Approval Status
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {isData ? (
+                    <>
+                      {approvalslist.map((item) =>
 
+                        <StyledTableRow container>
+                          <StyledTableCell item xl={10}>
+                            <div className={classes.texttablecell}>
+                              {item.User_Email}
+                            </div>
+                          </StyledTableCell>
+                          <StyledTableCell item xl={6}>
+                            <div className={classes.texttablecell}>
+                              {item.Access_Type}
+                            </div>
+                          </StyledTableCell>
+                          <StyledTableCell item xl={6}>
+                            <div className={classes.texttablecell}>
+                              {item.Object_Type}
+                            </div>
+                          </StyledTableCell>
+                          <StyledTableCell item xl={6}>
+                            <div className={classes.texttablecell}>
+                              {item.Feature_Name}
+                            </div>
+                          </StyledTableCell>
+                          <StyledTableCell item xl={6}>
+                            <div className={classes.texttablecell}>
+                              {"SivaNagaraju"}
+                            </div>
+                          </StyledTableCell>
+                          <StyledTableCell item xl={6}>
+                            <div className={classes.texttablecell}>
+                              {isEdit ? (
+                                <>
+                                  <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
+                                  <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
+                                </>
+                              ) :
+                                <>{date}
+                                  <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /></>
+                              }
+                              {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /> */}
+                              {/* <Button align="right" > */}
+
+
+                              {/* </Button> */}
+                              {/* onClick={() => handleEditchange(row.Feature_Id)} */}
+                            </div>
+                          </StyledTableCell>
+                          <StyledTableCell item align="right" xl={10}>
+                            <div className={classes.texttablecell}>
+                              <Button
+                                type="button"
+                                size="small"
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                              >
+                                APPROVE
+                              </Button>
+                              {' '}
+                              <Button
+                                type="button"
+                                size="small"
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                              >
+                                Denied
+                              </Button>
+
+                            </div>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      )}
+                    </>
+                  ) : (
+                    <>
                       <StyledTableRow container>
-                        <StyledTableCell item xl={10}>
-                          <div className={classes.texttablecell}>
-                            {item.User_Email}
-                          </div>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="center">
+                          No Requests
                         </StyledTableCell>
-                        <StyledTableCell item xl={6}>
-                          <div className={classes.texttablecell}>
-                            {item.Access_Type}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={6}>
-                          <div className={classes.texttablecell}>
-                          {item.Object_Type}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={6}>
-                          <div className={classes.texttablecell}>
-                            {item.Feature_Name}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={6}>
-                          <div className={classes.texttablecell}>
-                            {"SivaNagaraju"}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={6}>
-                        <div className={classes.texttablecell}>
-                            {isEdit ? (
-                              <>
-                                <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
-                                <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
-                              </>
-                            ) :
-                              <>{date}
-                                <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /></>
-                            }
-                            {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /> */}
-                            {/* <Button align="right" > */}
-
-
-                            {/* </Button> */}
-                            {/* onClick={() => handleEditchange(row.Feature_Id)} */}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item align="right" xl={10}>
-                          <div className={classes.texttablecell}>
-                            <Button
-                              type="button"
-                              size="small"
-                              variant="contained"
-                              color="primary"
-                              className={classes.submit}
-                              style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                            >
-                              APPROVE
-                            </Button>
-                            {' '}
-                            <Button
-                              type="button"
-                              size="small"
-                              variant="contained"
-                              color="primary"
-                              className={classes.submit}
-                              style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                            >
-                              Denied
-                            </Button>
-
-                          </div>
-                        </StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
                       </StyledTableRow>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <StyledTableRow container>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center">
-                        No Requests
-                      </StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                    </StyledTableRow>
-                  </>
+                    </>
 
-                )
+                  )
 
-                }
-              </TableBody>
-            </Table>
+                  }
+                </TableBody>
+                {/* </Table> */}
+              </Table>
+            </TableContainer>
           </Grid>
         </Grid>
       </Box>
