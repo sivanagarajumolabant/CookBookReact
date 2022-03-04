@@ -132,8 +132,8 @@ export default function EditFeature(props) {
   const [Target_ActualCode, setTarget_ActualCode] = useState("");
   const [Target_Expected_Output, setTarget_Expected_Output] = useState("");
   const [Conversion_Code, setConversion_Code] = useState("");
-  const [precon_val, setPrecon_val]= useState('')
-  const [presource_code_val, setSource_code_val]= useState('')
+  const [precon_val, setPrecon_val] = useState('')
+  const [presource_code_val, setSource_code_val] = useState('')
 
   const [isTable, setIsTable] = useState(false);
   const [drop, setDrop] = useState("Sourcedescription");
@@ -486,20 +486,20 @@ export default function EditFeature(props) {
 
   const handleConvert = (e) => {
     e.preventDefault();
-    if (Conversion_Code==='') {
+    if (Conversion_Code === '') {
       setNotify({
         isOpen: true,
         message: "No Conversion Module, please add Conversion Module before Convert",
         type: "error",
       });
 
-    }else if(Conversion_Code===precon_val && Source_Code=== presource_code_val){
+    } else if (Conversion_Code === precon_val && Source_Code === presource_code_val) {
       setNotify({
         isOpen: true,
         message: "Please make change to either Source code or conversion Module before clicking on the Convert button",
         type: "error",
       });
-    } 
+    }
     else {
 
       // console.log(formValues.Conversion_Code)
@@ -954,6 +954,18 @@ export default function EditFeature(props) {
               </div>
             </Grid>
 
+            <Grid container style={{ justifyContent: "flex-end", marginRight: "20px" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                size="small"
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 id="outlined-multiline-static"
@@ -1041,7 +1053,7 @@ export default function EditFeature(props) {
                   Convert
                 </Button>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Button
                   // type="submit"
                   // className={classes.convertbutton}
@@ -1055,7 +1067,7 @@ export default function EditFeature(props) {
                 >
                   Save
                 </Button>
-              </Grid>
+              </Grid> */}
 
             </Grid>
             {/* </Box> */}

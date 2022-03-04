@@ -185,9 +185,9 @@ export default function Request() {
     };
     axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${headerValue?.title}`, conf).then(
       (res) => {
-        
-          setObjtypeslist(res.data)
-        
+
+        setObjtypeslist(res.data)
+
       },
       (error) => {
         console.log(error);
@@ -220,21 +220,21 @@ export default function Request() {
   }
 
 
-  const handleRequestAccess =(type)=>{
+  const handleRequestAccess = (type) => {
     let access = ''
-    if (type==='Edit'){
-      access= 'Edit'
-    }else{
-      access= 'View'
+    if (type === 'Edit') {
+      access = 'Edit'
+    } else {
+      access = 'View'
     }
 
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue.title,
-      "User_Email":localStorage.getItem('uemail'),
-      "Feature_Name":fnname,
-      "Approval_Status":'Pending',
-      "Access_Type":access
+      "User_Email": localStorage.getItem('uemail'),
+      "Feature_Name": fnname,
+      "Approval_Status": 'Pending',
+      "Access_Type": access
     };
     let conf = {
       headers: {
@@ -245,8 +245,8 @@ export default function Request() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    
-    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`,form, conf).then(
+
+    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
       (res) => {
         setNotify({
           isOpen: true,
@@ -435,10 +435,11 @@ export default function Request() {
           alignItems="center">
           <Grid item xs={7}>
             <Button variant="contained"
+              disabled={!selecetd}
               // startIcon={<CloudUploadIcon />}
               size='small'
               color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
-              onClick={(e)=>{handleRequestAccess('View')}}>
+              onClick={(e) => { handleRequestAccess('View') }}>
               Request View Access
             </Button>
             {" "}
@@ -455,11 +456,11 @@ export default function Request() {
             </Button>
             {"   "}
             <Button variant="contained"
+              disabled={!selecetd}
               // startIcon={<CloudUploadIcon />}
               size='small'
               color="primary" component="span" style={{ marginTop: 15, width: "180px" }}
-              onClick={(e)=>{handleRequestAccess('Edit')}}>
-              
+              onClick={(e) => { handleRequestAccess('Edit') }}>
               Request Edit Access
             </Button>
           </Grid>

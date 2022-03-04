@@ -105,7 +105,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 
   body: {
-    fontSize: 14,
+    fontSize: 13,
   },
 }))(TableCell);
 
@@ -507,6 +507,7 @@ export default function AdminAccesslist() {
                   <StyledTableCell align="left">Access Type</StyledTableCell>
                   <StyledTableCell align="left">Object Type</StyledTableCell>
                   <StyledTableCell align="left">Feature Name</StyledTableCell>
+                  <StyledTableCell align="left">Approved By</StyledTableCell>
                   <StyledTableCell align="left">Date</StyledTableCell>
                   <StyledTableCell align="center">
                     Approval Status
@@ -537,6 +538,11 @@ export default function AdminAccesslist() {
                         <StyledTableCell item xl={6}>
                           <div className={classes.texttablecell}>
                             {item.Feature_Name}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={6}>
+                          <div className={classes.texttablecell}>
+                            {"SivaNagaraju"}
                           </div>
                         </StyledTableCell>
                         <StyledTableCell item xl={6}>
