@@ -22,8 +22,7 @@ import EditSharpIcon from "@material-ui/icons/EditSharp";
 
 const useStylestable = makeStyles((theme) => ({
   table: {
-    minWidth: 100,
-    // width:10
+    minWidth: 650
   },
   formControl: {
     margin: theme.spacing(0),
@@ -115,7 +114,7 @@ const StyledTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
 
-    height: 9,
+    // height: 9,
   },
 }))(TableRow);
 
@@ -500,7 +499,7 @@ export default function AdminAccesslist() {
             >
               Approval Requests
             </Typography>
-            <Table className={classestable.table} aria-label="customized table">
+            <Table className={classestable.table} aria-label="simple table">
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
@@ -546,7 +545,7 @@ export default function AdminAccesslist() {
                           </div>
                         </StyledTableCell>
                         <StyledTableCell item xl={6}>
-                          <div >
+                        <div className={classes.texttablecell}>
                             {isEdit ? (
                               <>
                                 <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />

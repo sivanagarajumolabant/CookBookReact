@@ -309,7 +309,7 @@ export default function ClippedDrawer({ children }) {
       (res) => {
         
           setMigtypeslist(res.data)
-          // dispatch(Menuaction.getdropdownlist(res.data))
+          dispatch(Menuaction.getdropdownlist(res.data))
       },
       (error) => {
         console.log(error);

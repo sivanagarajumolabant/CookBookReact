@@ -7,13 +7,13 @@ import { useHistory } from 'react-router-dom';
 
 function App() {
   const history = useHistory()
-  let isAuth = localStorage.getItem('isAuth')
-  React.useEffect(() => {
-    if (isAuth) {
-      // history.push('/dashboard')
-    }
+  // let isAuth = localStorage.getItem('isAuth')
+  // React.useEffect(() => {
+  //   if (isAuth) {
+  //     history.push('/dashboard')
+  //   }
 
-  }, [isAuth])
+  // }, [isAuth])
   return (
     <React.StrictMode>
       <Provider store={store}>
