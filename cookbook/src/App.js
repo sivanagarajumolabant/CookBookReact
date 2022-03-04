@@ -10,7 +10,7 @@ function App() {
   let isAuth = localStorage.getItem('isAuth')
   React.useEffect(() => {
     if (isAuth) {
-      history.push('/dashboard')
+      // history.push('/dashboard')
     }
 
   }, [isAuth])
