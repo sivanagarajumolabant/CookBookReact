@@ -44,6 +44,7 @@ import ActionMenu from "../../src/Redux/actions/Menuaction";
 import { useDispatch, useSelector } from "react-redux";
 import DehazeSharpIcon from '@material-ui/icons/DehazeSharp';
 import { useState } from "react";
+import Qmig from '../Images/Qmig.png'
 // import config from "../../src/Config/config";
 
 const drawerWidth = 375;
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0
   },
   title: {
-    marginLeft: 50,
+    marginLeft: 27,
     marginTop: 10
   },
   floatingLabelFocusStyle: {
@@ -280,7 +281,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue, ITEMlIST ,DropDownValues} = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues } = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -307,9 +308,9 @@ export default function ClippedDrawer({ children }) {
     };
     axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
       (res) => {
-        
-          setMigtypeslist(res.data)
-          dispatch(Menuaction.getdropdownlist(res.data))
+
+        setMigtypeslist(res.data)
+        dispatch(Menuaction.getdropdownlist(res.data))
       },
       (error) => {
         console.log(error);
@@ -426,7 +427,15 @@ export default function ClippedDrawer({ children }) {
     history.push('/Request')
   }
 
-  // console.log(ITEMlIST, 'liusdce')
+
+React.useEffect(()=>{
+if(menuList.length>0){
+  dispatch(ActionMenu.selectedMenutlist(menuList[0]))
+  
+setmenuList([menuList[0]])
+}
+},[menuList])
+ 
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -439,18 +448,24 @@ export default function ClippedDrawer({ children }) {
             spacing={2}
           // style={{ paddingLeft: "3rem" }}
           >
-            <Grid item
+            {/* <Grid item
               xm={12} sm={12} md={3} lg={2}
               onClick={() => history.push("/dashboard")}>
               <Typography variant="h6" className={classes.title}>
                 Cookbook
               </Typography>
+            </Grid> */}
+            <Grid item
+              xm={12} sm={12} md={3} lg={2}>
+              <div>
+                <img src={Qmig} className={classes.title} />
+              </div>
             </Grid>
-
             <Grid item
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
+              {DropDownValues.length>0&&
               <StyledAutocomplete
                 size="small"
                 id="grouped-demo"
@@ -472,22 +487,22 @@ export default function ClippedDrawer({ children }) {
                     }}
                   />
                 )}
-              />
+              />}
             </Grid>
             <Grid item
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-            <Button
+              <Button
                 type="button"
                 size="small"
                 variant="contained"
                 color="orange"
                 onClick={handleSuperadmin}
-                style={{marginTop:'9px',fontSize:'14px',marginBottom:'8px',width:'130px'}}
-            >
+                style={{ marginTop: '9px', fontSize: '14px', marginBottom: '8px', width: '130px' }}
+              >
                 Super Admin
-            </Button>
+              </Button>
             </Grid>
             <Grid item xm={12} sm={5} md={1} lg={1}>
               <StyledAutocomplete
@@ -588,21 +603,21 @@ export default function ClippedDrawer({ children }) {
 
             <div className={classes.drawerContainer}>
               {IsAdmin === "true" &&
-<>
-                <Typography
-                  variant="body2"
-                  style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                <>
+                  <Typography
+                    variant="body2"
+                    style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                  onClick={handleAdminMenus}
-                >
-                  Admin Approvals
-                </Typography>
-                <Divider/>
+                    onClick={handleAdminMenus}
+                  >
+                    Admin Approvals
+                  </Typography>
+                  <Divider />
                 </>
-               
+
               }
 
-              
+
 
               <Typography
                 variant="body2"
@@ -643,14 +658,14 @@ export default function ClippedDrawer({ children }) {
                 {/* new code start */}
                 <Grid container direction="column" spacing={0}>
                   <Grid item>
-
+                {menuList.length>0&&
                     <StyledAutocompletesidebar
                       size="medium"
                       id="grouped-demo"
                       className={classes.inputRoottype}
                       options={menuList}
                       groupBy={""}
-                      // defaultValue={{ title: "Oracle To Postgres" }}
+                      defaultValue={{ Label:menuList[0]?.Label}}
                       getOptionLabel={(option) => option.Label}
                       style={{ width: 230, height: 50 }}
                       onChange={(e, v) => handlefeature(v)}
@@ -661,10 +676,11 @@ export default function ClippedDrawer({ children }) {
                           variant="outlined"
                           InputLabelProps={{
                             className: classes.floatingLabelFocusStyle,
+                            shrink:true
                           }}
                         />
                       )}
-                    />
+                    />}
                   </Grid>
 
 

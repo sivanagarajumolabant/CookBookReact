@@ -248,11 +248,19 @@ export default function Request() {
 
     axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
       (res) => {
-        setNotify({
-          isOpen: true,
-          message: "Request Sent to Admin and Wait for the Approval",
-          type: "success",
-        });
+        if (res.data==='Request Already Sent'){
+          setNotify({
+            isOpen: true,
+            message: "Request Already Sent to Admin Please Wait for the Approval",
+            type: "error",
+          });
+        }else{
+          setNotify({
+            isOpen: true,
+            message: "Request Sent Please Wiat For The Admin Approval",
+            type: "success",
+          });
+        }
       },
       (error) => {
         console.log(error);
