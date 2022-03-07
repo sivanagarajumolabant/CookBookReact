@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import config from "../../Config/config";
 import TableBody from '@material-ui/core/TableBody';
@@ -21,6 +22,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import AddIcon from '@material-ui/icons/Add';
 import { Avatar } from '@material-ui/core';
 import Notification from "../Notifications/Notification";
+import Menuaction from '../../Redux/actions/Menuaction';
 
 import {
   Container,
@@ -171,6 +173,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function SuperadminFunction() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const classestable = useStylestable();
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
@@ -379,6 +382,22 @@ export default function SuperadminFunction() {
       }
     );
     setUpdatemiglist(false)
+
+    let conf1 = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf1).then(
+      (res) => {
+
+        setMigtypeslist(res.data)
+        dispatch(Menuaction.getdropdownlist(res.data))
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
 
@@ -453,10 +472,9 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
+                
                 />
               )}
             />
@@ -505,8 +523,6 @@ export default function SuperadminFunction() {
                   InputLabelProps={{
                     shrink: true,
                   }}
-
-                  multiline
                 />
               </div>
               <div className={classes.item} >

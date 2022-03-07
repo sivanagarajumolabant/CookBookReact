@@ -4,7 +4,7 @@ const initialState = {
   drawerOpen: false,
 
   menuitem: null,
-  headerValue: { title: "Oracle TO Postgres", code: "Oracle_TO_Postgres"},
+  headerValue: {},
   updatedValue: false,
   createFeature: false,
   preview: false,
@@ -12,7 +12,7 @@ const initialState = {
   details: {},
   editPreviewdetails: {},
   ITEMlIST: [],
-  DropDownValues: [{ title: "Oracle TO Postgres", code: "Oracle_TO_Postgres"}]
+  DropDownValues: []
 };
 
 const dashboardReducer = (state = initialState, action) => {
