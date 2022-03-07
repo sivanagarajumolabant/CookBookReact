@@ -187,8 +187,8 @@ export default function SuperadminFunction() {
   const [selecetd, setSelected] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
 
-  const [migtype_create, setMigtype_create] = useState('')
-  const [objtype_create, setObjtype_create] = useState('')
+  const [migtype_create, setMigtype_create] = useState()
+  const [objtype_create, setObjtype_create] = useState()
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -216,7 +216,7 @@ export default function SuperadminFunction() {
     // }
     let body = {
       "Object_Type": objtype,
-      "Migration_TypeId": headerValue.title,
+      "Migration_TypeId": headerValue?.title,
     };
     let conf = {
       headers: {
@@ -283,7 +283,7 @@ export default function SuperadminFunction() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${migtype_create}`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${migtype_create || null}`, conf).then(
       (res) => {
         
           setObjtypeslist(res.data)
@@ -357,8 +357,8 @@ export default function SuperadminFunction() {
       }
     }
     let body = {
-      "Object_Type": objtype_create,
-      "Migration_TypeId": migtype_create,
+      "Object_Type": objtype_create || null,
+      "Migration_TypeId": migtype_create || null,
     };
 
     const form = new FormData();

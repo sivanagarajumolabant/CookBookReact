@@ -112,7 +112,7 @@ export default function AccessReview() {
       // }
       let body = {
         "Object_Type": objtype,
-        "Migration_TypeId": headerValue.title,
+        "Migration_TypeId": headerValue?.title,
       };
       let conf = {
         headers: {

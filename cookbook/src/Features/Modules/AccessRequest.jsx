@@ -155,7 +155,7 @@ export default function Request() {
     // }
     let body = {
       "Object_Type": objtype,
-      "Migration_TypeId": headerValue.title,
+      "Migration_TypeId": headerValue?.title,
     };
     let conf = {
       headers: {
@@ -230,7 +230,7 @@ export default function Request() {
 
     let body = {
       "Object_Type": objtype,
-      "Migration_TypeId": headerValue.title,
+      "Migration_TypeId": headerValue?.title,
       "User_Email": localStorage.getItem('uemail'),
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
