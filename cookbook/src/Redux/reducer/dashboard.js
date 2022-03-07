@@ -12,7 +12,7 @@ const initialState = {
   details: {},
   editPreviewdetails: {},
   ITEMlIST: [],
-  DropDownValues: []
+  DropDownValues: [{ title: "Oracle TO Postgres", code: "Oracle_TO_Postgres"}]
 };
 
 const dashboardReducer = (state = initialState, action) => {
