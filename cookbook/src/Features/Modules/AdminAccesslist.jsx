@@ -202,7 +202,7 @@ export default function AdminAccesslist() {
     // }
     let body = {
       Object_Type: objtype,
-      Migration_TypeId: headerValue.title,
+      Migration_TypeId: headerValue?.title,
     };
     let conf = {
       headers: {
@@ -330,10 +330,9 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
+                
                 />
               )}
             />
@@ -357,10 +356,9 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
+                 
                 />
               )}
             />
@@ -421,7 +419,7 @@ export default function AdminAccesslist() {
               id="outlined-multiline-static"
               type="date"
               label="Expiry Date"
-              variant="outlined"
+              // variant="outlined"
               // label="End Date"
               // onChange={(e) => handleChange(e)}
               name="date_id"

@@ -347,7 +347,7 @@ export default function ClippedDrawer({ children }) {
   };
 
   React.useEffect(() => {
-    getmenus(headerValue.title);
+    getmenus(headerValue?.title);
   }, []);
 
   const handleversion = (v) => {
@@ -401,7 +401,7 @@ export default function ClippedDrawer({ children }) {
 
   React.useEffect(() => {
     if (updatedValue) {
-      getmenus(headerValue.title);
+      getmenus(headerValue?.title);
     }
   }, [updatedValue])
 
