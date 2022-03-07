@@ -427,15 +427,7 @@ export default function ClippedDrawer({ children }) {
     history.push('/Request')
   }
 
-
-React.useEffect(()=>{
-if(menuList.length>0){
-  dispatch(ActionMenu.selectedMenutlist(menuList[0]))
-  
-setmenuList([menuList[0]])
-}
-},[menuList])
- 
+  // console.log(ITEMlIST, 'liusdce')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -465,7 +457,6 @@ setmenuList([menuList[0]])
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-              {DropDownValues.length>0&&
               <StyledAutocomplete
                 size="small"
                 id="grouped-demo"
@@ -487,7 +478,7 @@ setmenuList([menuList[0]])
                     }}
                   />
                 )}
-              />}
+              />
             </Grid>
             <Grid item
               xm={12} sm={6} md={5} lg={2}
@@ -658,14 +649,14 @@ setmenuList([menuList[0]])
                 {/* new code start */}
                 <Grid container direction="column" spacing={0}>
                   <Grid item>
-                {menuList.length>0&&
+
                     <StyledAutocompletesidebar
                       size="medium"
                       id="grouped-demo"
                       className={classes.inputRoottype}
                       options={menuList}
                       groupBy={""}
-                      defaultValue={{ Label:menuList[0]?.Label}}
+                      // defaultValue={{ title: "Oracle To Postgres" }}
                       getOptionLabel={(option) => option.Label}
                       style={{ width: 230, height: 50 }}
                       onChange={(e, v) => handlefeature(v)}
@@ -676,11 +667,10 @@ setmenuList([menuList[0]])
                           variant="outlined"
                           InputLabelProps={{
                             className: classes.floatingLabelFocusStyle,
-                            shrink:true
                           }}
                         />
                       )}
-                    />}
+                    />
                   </Grid>
 
 
