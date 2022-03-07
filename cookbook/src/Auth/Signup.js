@@ -138,6 +138,13 @@ export default function SignUp(props) {
               type: 'error'
             })
           }
+          else {
+            setNotify({
+              isOpen: true,
+              message: "Something Went Wrong Please Try Again",
+              type: 'error'
+            })
+          }
           
 
           })
