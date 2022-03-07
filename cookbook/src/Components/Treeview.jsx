@@ -202,7 +202,7 @@ export default function GmailTreeView({
     // history.push("/dashboard");
   };
 
-   console.log(menuList, "frdtdrtt")
+   console.log(menuList)
   return (
     <TreeView
       className={classes.root}
