@@ -200,12 +200,12 @@ export default function CreateFeature(props) {
   } = useSelector((state) => state.dashboardReducer);
 
   var obj_type = props.location?.state?.data?.Label;
-  console.log("obj type ", obj_type);
-  if (obj_type === "Indexes") {
-    obj_type = obj_type?.slice(0, -2);
-  } else {
-    obj_type = obj_type?.slice(0, -1);
-  }
+  // console.log("obj type ", obj_type);
+  // if (obj_type === "Indexes") {
+  //   obj_type = obj_type?.slice(0, -2);
+  // } else {
+  //   obj_type = obj_type?.slice(0, -1);
+  // }
   // console.log("obj 1 ", obj_type);
   const [prerunval, setPrerunval] = useState([]);
 console.log(edithandle)

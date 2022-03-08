@@ -311,6 +311,10 @@ export default function ClippedDrawer({ children }) {
 
         setMigtypeslist(res.data)
         dispatch(Menuaction.getdropdownlist(res.data))
+        if (res.data.length>0){
+          getmenus(res.data[0].title);
+        }
+        
       },
       (error) => {
         console.log(error);
@@ -334,21 +338,42 @@ export default function ClippedDrawer({ children }) {
     localStorage.clear();
     history.push("/");
   };
+
   const getmenus = async (value) => {
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
+    let body = {
+      "uemail": localStorage.getItem('uemail'),
+      Migration_TypeId: value,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+
+    const res = await axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`,form, conf)
+    // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
     dispatch(ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
   };
 
+  
   React.useEffect(() => {
     getmenus(headerValue?.title);
   }, []);
+  React.useEffect(() => {
+    if (updatedValue) {
+      getmenus(headerValue?.title);
+    }
+  }, [updatedValue])
+
+
 
   const handleversion = (v) => {
     getmenus(v?.title);
@@ -399,11 +424,6 @@ export default function ClippedDrawer({ children }) {
     link.click();
   };
 
-  React.useEffect(() => {
-    if (updatedValue) {
-      getmenus(headerValue?.title);
-    }
-  }, [updatedValue])
 
   const handlefeature = (data) => {
 
@@ -428,14 +448,14 @@ export default function ClippedDrawer({ children }) {
   }
 
 
-// React.useEffect(()=>{
-// if(menuList.length>0){
-//   dispatch(ActionMenu.selectedMenutlist(menuList[0]))
-  
-// setmenuList([menuList[0]])
-// }
-// },[menuList])
- 
+  // React.useEffect(()=>{
+  // if(menuList.length>0){
+  //   dispatch(ActionMenu.selectedMenutlist(menuList[0]))
+
+  // setmenuList([menuList[0]])
+  // }
+  // },[menuList])
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -465,29 +485,29 @@ export default function ClippedDrawer({ children }) {
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-              {DropDownValues.length>0&&
-              <StyledAutocomplete
-                size="small"
-                id="grouped-demo"
-                className={classes.inputRoottype}
-                options={DropDownValues}
-                groupBy={""}
-                defaultValue={{ title: DropDownValues[0]?.title }}
-                getOptionLabel={(option) => option.title}
-                style={{ width: 300 }}
-                onChange={(e, v) => handleversion(v)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="MigrationTypes"
-                    variant="outlined"
-                    InputLabelProps={{
-                      className: classes.floatingLabelFocusStyle,
-                      shrink: true,
-                    }}
-                  />
-                )}
-              />}
+              {DropDownValues.length > 0 &&
+                <StyledAutocomplete
+                  size="small"
+                  id="grouped-demo"
+                  className={classes.inputRoottype}
+                  options={DropDownValues}
+                  groupBy={""}
+                  defaultValue={{ title: DropDownValues[0]?.title }}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 300 }}
+                  onChange={(e, v) => handleversion(v)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="MigrationTypes"
+                      variant="outlined"
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />}
             </Grid>
             <Grid item
               xm={12} sm={6} md={5} lg={2}
@@ -658,29 +678,29 @@ export default function ClippedDrawer({ children }) {
                 {/* new code start */}
                 <Grid container direction="column" spacing={0}>
                   <Grid item>
-                {menuList.length>0&&
-                    <StyledAutocompletesidebar
-                      size="medium"
-                      id="grouped-demo"
-                      className={classes.inputRoottype}
-                      options={menuList}
-                      groupBy={""}
-                      defaultValue={{ Label:menuList[0]?.Label}}
-                      getOptionLabel={(option) => option.Label}
-                      style={{ width: 230, height: 50 }}
-                      onChange={(e, v) => handlefeature(v)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Migration Objects"
-                          variant="outlined"
-                          InputLabelProps={{
-                            className: classes.floatingLabelFocusStyle,
-                            shrink:true
-                          }}
-                        />
-                      )}
-                    />}
+                    {menuList.length > 0 &&
+                      <StyledAutocompletesidebar
+                        size="medium"
+                        id="grouped-demo"
+                        className={classes.inputRoottype}
+                        options={menuList}
+                        groupBy={""}
+                        defaultValue={{ Label: menuList[0]?.Label }}
+                        getOptionLabel={(option) => option.Label}
+                        style={{ width: 230, height: 50 }}
+                        onChange={(e, v) => handlefeature(v)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Migration Objects"
+                            variant="outlined"
+                            InputLabelProps={{
+                              className: classes.floatingLabelFocusStyle,
+                              shrink: true
+                            }}
+                          />
+                        )}
+                      />}
                   </Grid>
 
 

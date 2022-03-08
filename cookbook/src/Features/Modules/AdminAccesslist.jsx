@@ -140,6 +140,12 @@ export default function AdminAccesslist() {
   const [objtypelist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
   const [approvalslist, setApprovallist] = useState([])
+  const [selecetd, setSelected] = useState(false)
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   useEffect(() => {
     let conf = {
       headers: {
@@ -189,6 +195,10 @@ export default function AdminAccesslist() {
 
   }
 
+  const handledatedesible = () => {
+    setSelected(true)
+  }
+
   useEffect(() => {
     let sval = 0;
     // if (headerValue) {
@@ -202,7 +212,7 @@ export default function AdminAccesslist() {
     // }
     let body = {
       Object_Type: objtype,
-      Migration_TypeId: headerValue?.title,
+      Migration_TypeId: headerValue.title,
     };
     let conf = {
       headers: {
@@ -280,6 +290,48 @@ export default function AdminAccesslist() {
     setData(e.target.value)
   }
 
+
+  // const handleRequestAccess = () => {
+  //   let body = {
+  //     "Object_Type": objtype,
+  //     "Migration_TypeId": migtypeid.title,
+  //     "Feature_Name": fnnames,
+  //     "User_Email": localStorage.getItem('uemail'),
+  //     "Access_Type": 'Edit',
+  //     "Expiary_date": date,
+  //   };
+  //   let conf = {
+  //     headers: {
+  //       Authorization: "Bearer " + config.ACCESS_TOKEN(),
+  //     },
+  //   };
+  //   const form = new FormData();
+  //   Object.keys(body).forEach((key) => {
+  //     form.append(key, body[key]);
+  //   });
+
+  //   axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
+  //     (res) => {
+  //       setNotify({
+  //         isOpen: true,
+  //         message: "Request Sent to Admin and Wait for the Approval",
+  //         type: "success",
+  //       });
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //       setNotify({
+  //         isOpen: true,
+  //         message: "Something Went Wrong Please Try Again!",
+  //         type: "error",
+  //       });
+  //     }
+  //   );
+  // }
+
+
+
+
   return (
     <>
       <Box py={1} px={1}>
@@ -330,9 +382,10 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
                     shrink: true,
                   }}
-                
                 />
               )}
             />
@@ -356,9 +409,10 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                  }}
+                  InputLabelProps={{
                     shrink: true,
                   }}
-                 
                 />
               )}
             />
@@ -419,9 +473,9 @@ export default function AdminAccesslist() {
               id="outlined-multiline-static"
               type="date"
               label="Expiry Date"
-              // variant="outlined"
+              variant="outlined"
               // label="End Date"
-              // onChange={(e) => handleChange(e)}
+              onChange={(e) => handledatedesible()}
               name="date_id"
               // defaultValue="Default Value"
               // helperText={featurenamemsg}
@@ -475,6 +529,7 @@ export default function AdminAccesslist() {
         <Grid container direction="row" justifyContent="center">
           <Button
             variant="contained"
+            disabled={!selecetd}
             // startIcon={<CloudUploadIcon />}
             color="primary"
             component="span"
