@@ -1,6 +1,13 @@
 import { Box, Grid, TextField, Typography, styled, Tooltip } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker
+} from '@material-ui/pickers';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import React, { useEffect, useState } from "react";
@@ -417,7 +424,7 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4} md={4} xl={4}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -444,7 +451,7 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4} md={4} xl={4}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -468,31 +475,24 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          <Grid item xs={4} style={{ marginTop: "10px" }}>
-            <TextField
-              id="outlined-multiline-static"
-              type="date"
-              label="Expiry Date"
-              variant="outlined"
-              // label="End Date"
-              onChange={(e) => handledatedesible()}
-              name="date_id"
-              // defaultValue="Default Value"
-              // helperText={featurenamemsg}
-              className={classes.textField}
-              // helperText="Some important text"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              // value={headerValue.title}
-              size="small"
-              // disabled
-              style={{ width: 300 }}
-            />
+          <Grid item xs={12} sm={4} md={4} xl={4}>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
+              <DateTimePicker
+                // value={selectedDate}
+                inputVariant="outlined"
+                disablePast
+                size="small"
+                id="grouped-demo"
+                // onChange={handleDateChange}
+                label="Expiry Date"
+                showTodayButton
+                style={{ width: 300, marginTop: '10px' }}
+                className={classes.inputRoottype}
+              />
 
 
+            </MuiPickersUtilsProvider>
 
           </Grid>
           {/* <Grid item xs={4}>
@@ -582,7 +582,33 @@ export default function AdminAccesslist() {
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
-                              {item.Access_Type}
+                              {/* {item.Access_Type} */}
+                              <StyledAutocomplete
+                                size="small"
+                                // id="grouped-demo"
+                                className={classes.inputRoottype}
+                                options={[
+                                  { title: "Edit", code: 1 },
+                                  { title: "View", code: 2 },
+                                  // { title: "Admin", code: 3 },
+                                ]}
+                                groupBy={""}
+                                defaultValue={{ title: "Edit" }}
+                                getOptionLabel={(option) => option?.title}
+                                style={{ width: 100, marginTop: 0 }}
+                                onChange={(e, v) => handleversion(v)}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    // label="Accesstype"
+                                    // variant="outlined"
+                                    InputLabelProps={{
+                                      className: classes.floatingLabelFocusStyle,
+                                    }}
+                                  />
+                                )}
+                              />
+
                             </div>
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>
@@ -604,8 +630,25 @@ export default function AdminAccesslist() {
                             <div className={classes.texttablecell}>
                               {isEdit ? (
                                 <>
-                                  <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
-                                  <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
+                                  {/* <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
+                                  <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} /> */}
+
+                                  <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                                    <DateTimePicker
+                                      // value={selectedDate}
+                                      // inputVariant="outlined"
+                                      disablePast
+                                      size="small"
+                                      // id="grouped-demo"
+                                      // onChange={handleDateChange}
+                                      // label="Expiry Date"
+                                      // showTodayButton
+                                      style={{ width: 150, marginTop: '10px' }}
+                                      className={classes.inputRoottype}
+                                    />
+
+
+                                  </MuiPickersUtilsProvider>
                                 </>
                               ) :
                                 <>{date}
