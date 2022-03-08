@@ -219,7 +219,7 @@ export default function AdminAccesslist() {
     // }
     let body = {
       Object_Type: objtype,
-      Migration_TypeId: headerValue.title,
+      Migration_TypeId: headerValue?.title,
     };
     let conf = {
       headers: {
