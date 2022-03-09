@@ -311,10 +311,10 @@ export default function ClippedDrawer({ children }) {
 
         setMigtypeslist(res.data)
         dispatch(Menuaction.getdropdownlist(res.data))
-        if (res.data.length>0){
+        if (res.data.length > 0) {
           getmenus(res.data[0].title);
         }
-        
+
       },
       (error) => {
         console.log(error);
@@ -356,14 +356,14 @@ export default function ClippedDrawer({ children }) {
     });
 
 
-    const res = await axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`,form, conf)
+    const res = await axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
     // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
     dispatch(ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
   };
 
-  
+
   React.useEffect(() => {
     getmenus(headerValue?.title);
   }, []);
@@ -570,6 +570,7 @@ export default function ClippedDrawer({ children }) {
                 >
                   <AccountCircle />
                 </IconButton>
+               
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}

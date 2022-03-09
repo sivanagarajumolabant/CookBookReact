@@ -274,7 +274,7 @@ console.log(edithandle)
   useEffect(() => {
     let body = {
       Object_Type: obj_type,
-      Migration_TypeId: formValues.Migration_TypeId,
+      Migration_TypeId: headerValue?.title,
     };
     let conf = {
       headers: {
@@ -567,7 +567,7 @@ console.log(edithandle)
         <Grid item xs={12} sm={3} md={3} xl={3}>
           <TextField
             id="outlined-multiline-static"
-            label="Migration Type"
+            // label="Migration Type"
             multiline
             rows={1}
             onChange={(e) => handleChange(e)}
@@ -600,7 +600,7 @@ console.log(edithandle)
             InputLabelProps={{
               shrink: true,
             }}
-            fullWidth
+            // fullWidth
           />
         </Grid>
 
@@ -700,7 +700,7 @@ console.log(edithandle)
               shrink: true,
             }}
             fullWidth
-            multiline
+            // multiline
           />
         </Grid>
 
@@ -720,7 +720,7 @@ console.log(edithandle)
             InputLabelProps={{
               shrink: true,
             }}
-            multiline
+            // multiline
             fullWidth
           />
         </Grid>
@@ -938,15 +938,12 @@ console.log(edithandle)
                 InputLabelProps={{
                   shrink: true,
                 }}
-
-                multiline
               />
             </div>
             <div className={classes.item}>
               <TextField
                 id="outlined-multiline-static"
                 label="Estimation"
-                multiline
                 rows={1}
                 // value = {row.Estimations}
                 onChange={(e) => handleEditchangetext(e)}

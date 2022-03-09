@@ -157,6 +157,8 @@ export default function PreviewCode(props) {
           (res) => {
             console.log(res);
             setDetaildata(res.data);
+            setFnname(res.data?.Feature_Name)
+            setObjtype(res.data?.Object_Type)
             setIsdata(true);
           },
           (error) => {
@@ -168,9 +170,9 @@ export default function PreviewCode(props) {
     }
   }, [menuitem, att_update]);
 
-  const handleObjecttype = (v) => {
-    setObjtype(v.Object_Type)
-  }
+  // const handleObjecttype = (v) => {
+  //   setObjtype(v.Object_Type)
+  // }
 
   useEffect(() => {
     console.log("menus ", menuitem);
@@ -359,7 +361,7 @@ export default function PreviewCode(props) {
   const handleRequestAccess = () => {
     let body = {
       "Object_Type": objtype,
-      "Migration_TypeId": migtypeid.title,
+      "Migration_TypeId": headerValue?.title,
       "User_Email": localStorage.getItem('uemail'),
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
@@ -377,11 +379,19 @@ export default function PreviewCode(props) {
 
     axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
       (res) => {
-        setNotify({
-          isOpen: true,
-          message: "Request Sent to Admin and Wait for the Approval",
-          type: "success",
-        });
+        if (res.data==='Request Already Sent'){
+          setNotify({
+            isOpen: true,
+            message: "Request Already Sent to Admin Please Wait for the Approval",
+            type: "error",
+          });
+        }else{
+          setNotify({
+            isOpen: true,
+            message: "Request Sent Please Wiat For The Admin Approval",
+            type: "success",
+          });
+        }
       },
       (error) => {
         console.log(error);

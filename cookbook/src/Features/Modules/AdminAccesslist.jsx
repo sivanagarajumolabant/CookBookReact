@@ -131,21 +131,15 @@ export default function AdminAccesslist() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
-  const {
-    details,
-    createFeature,
-    preview,
-    editpreview,
-    editPreviewdetails,
-    headerValue,
-  } = useSelector((state) => state.dashboardReducer);
-  const [migtypeid, setMigtypeid] = useState(headerValue?.title);
+
   const [objtype, setObjtype] = useState("Procedure");
   const [fnnames, setFnnames] = useState([]);
   const [data, setData] = useState([]);
   const [isEdit, setEdit] = React.useState(false);
   const [isEditaccess, setEditaccess] = React.useState(false);
-  const [date, setDate] = useState('24/2/2022')
+  const [date, setDate] = useState()
+  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedDateTable, handleDateChangeTable] = useState(new Date());
   const [objtypelist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
   const [approvalslist, setApprovallist] = useState([])
@@ -157,6 +151,16 @@ export default function AdminAccesslist() {
     message: "",
     type: "",
   });
+
+  const {
+    details,
+    createFeature,
+    preview,
+    editpreview,
+    editPreviewdetails,
+    headerValue,
+  } = useSelector((state) => state.dashboardReducer);
+  const [migtypeid, setMigtypeid] = useState(headerValue?.title);
   useEffect(() => {
     let conf = {
       headers: {
@@ -213,7 +217,7 @@ export default function AdminAccesslist() {
   }
 
   const handleaccess = () => {
-
+    // setEditaccess(!isEditaccess);
   }
 
   const handledatedesible = () => {
@@ -233,7 +237,7 @@ export default function AdminAccesslist() {
     // }
     let body = {
       Object_Type: objtype,
-      Migration_TypeId: headerValue.title,
+      Migration_TypeId: headerValue?.title,
     };
     let conf = {
       headers: {
@@ -257,6 +261,29 @@ export default function AdminAccesslist() {
 
   const handleObjecttype = (v) => {
     setObjtype(v?.Object_Type);
+    let body = {
+      Object_Type: v?.Object_Type,
+      Migration_TypeId: headerValue?.title,
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+      (res) => {
+        setFnnames(res.data);
+        console.log(res.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
   };
 
   const handledropdown = (e, v) => {
@@ -296,7 +323,7 @@ export default function AdminAccesslist() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`,form, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
 
         setObjtypeslist(res.data)
@@ -317,15 +344,19 @@ export default function AdminAccesslist() {
   }
 
 
-  const handleRequestAccess = () => {
+  const handleRequestAccess = (item, action) => {
+    if (action === 'Deny') {
+      action = 'Deny'
+    }
     let body = {
-      "User_Email": localStorage.getItem('uemail'),
-      "Migration_TypeId": headerValue.title,
-      // "Object_Type": item.Object_Type,
-      // "Feature_Name": item.Feature_Name,
-      // "Access_Type": item.Access_Type,
-      'Start_Date': '08-03-2022',
-      'End_Date': '15-03-2022',
+      "User_Email": item.User_Email,
+      "Migration_TypeId": item.Migration_TypeId,
+      "Object_Type": item.Object_Type,
+      "Feature_Name": item.Feature_Name,
+      "Access_Type": item.Access_Type,
+      'Start_Date': item.Start_Date,
+      'End_Date': item.End_Date,
+      "Approval_Status": action
     };
     let conf = {
       headers: {
@@ -339,19 +370,19 @@ export default function AdminAccesslist() {
 
     axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
       (res) => {
-        setNotify({
-          isOpen: true,
-          message: "Request Sent to Admin and Wait for the Approval",
-          type: "success",
-        });
+        // setNotify({
+        //   isOpen: true,
+        //   message: "Request Accepted",
+        //   type: "success",
+        // });
       },
       (error) => {
         console.log(error);
-        setNotify({
-          isOpen: true,
-          message: "Something Went Wrong Please Try Again!",
-          type: "error",
-        });
+        // setNotify({
+        //   isOpen: true,
+        //   message: "Something Went Wrong Please Try Again!",
+        //   type: "error",
+        // });
       }
     );
   }
@@ -407,10 +438,9 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
+
                 />
               )}
             />
@@ -434,10 +464,9 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
+
                 />
               )}
             />
@@ -448,12 +477,12 @@ export default function AdminAccesslist() {
               id="grouped-demo"
               className={classes.inputRoottype}
               options={[
-                { title: "Edit", code: 1 },
-                { title: "View", code: 2 },
+                { title: "Edit", code: 'Edit' },
+                { title: "View", code: 'View' },
                 // { title: "Admin", code: 3 },
               ]}
               groupBy={""}
-              defaultValue={{ title: "Edit" }}
+              // defaultValue={{ title: "Edit" }}
               getOptionLabel={(option) => option?.title}
               style={{ width: 300, marginTop: 10 }}
               onChange={(e, v) => handleversion(v)}
@@ -464,6 +493,7 @@ export default function AdminAccesslist() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
+                    shrink: true,
                   }}
                 />
               )}
@@ -496,17 +526,34 @@ export default function AdminAccesslist() {
           <Grid item xs={12} sm={4} md={4} xl={4}>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-              <DateTimePicker
-                // value={selectedDate}
+              {/* <DateTimePicker
+                value={selectedDate}
                 inputVariant="outlined"
                 disablePast
                 size="small"
                 id="grouped-demo"
-                // onChange={handleDateChange}
+                onChange={handleDateChange}
                 label="Expiry Date"
                 showTodayButton
                 style={{ width: 300, marginTop: '10px' }}
                 className={classes.inputRoottype}
+              /> */}
+              <KeyboardDatePicker
+                disableToolbar
+                inputVariant="outlined"
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                showTodayButton
+                label="Expiry Date"
+                style={{ width: 300, marginTop: '10px' }}
+                size="small"
+                id="grouped-demo"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
               />
 
 
@@ -582,6 +629,7 @@ export default function AdminAccesslist() {
                     <StyledTableCell align="left">Feature Name</StyledTableCell>
                     <StyledTableCell align="left">Approved By</StyledTableCell>
                     <StyledTableCell align="left">Date</StyledTableCell>
+                    <StyledTableCell align="left">Actions</StyledTableCell>
                     <StyledTableCell align="center">
                       Approval Status
                     </StyledTableCell>
@@ -600,41 +648,9 @@ export default function AdminAccesslist() {
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
-                              {/* {item.Access_Type} */}
-                              {isEditaccess ? (
-                                <>
-                                  <StyledAutocomplete
-                                    size="small"
-                                    // id="grouped-demo"
-                                    className={classes.inputRoottype}
-                                    options={[
-                                      { title: "Edit", code: 1 },
-                                      { title: "View", code: 2 },
-                                      // { title: "Admin", code: 3 },
-                                    ]}
-                                    groupBy={""}
-                                    defaultValue={item.Access_Type}
-                                    getOptionLabel={(option) => option?.title}
-                                    style={{ width: 90 }}
-                                    onChange={(e, v) => handleversion(v)}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        // label="Accesstype"
-                                        // variant="outlined"
-                                        InputLabelProps={{
-                                          className: classes.floatingLabelFocusStyle,
-                                        }}
-                                      />
 
-                                    )}
-                                  />
-                                  <SaveIcon item xl={2} style={{ color: "blue", width: '20px', marginLeft: '110px' }} onClick={handleaccess()} />
-                                </>
-                              ) :
-                                <>{item.Access_Type}
-                                  <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEditaccess} /></>
-                              }
+                              {item.Access_Type}
+
                             </div>
                           </StyledTableCell>
                           <StyledTableCell item xl={5}>
@@ -654,67 +670,74 @@ export default function AdminAccesslist() {
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
-                              {isEdit ? (
-                                <>
-                                  {/* <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
-                                  */}
-
+                              {/*                              
                                   <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                                    <DateTimePicker
-                                      // value={selectedDate}
+
+
+                                    <KeyboardDatePicker
+                                      disableToolbar
                                       // inputVariant="outlined"
-                                      disablePast
+                                      variant="inline"
+                                      format="MM/dd/yyyy"
+                                      margin="normal"
+                                      showTodayButton
+                                      // label="Expiry Date"
+                                      style={{ width: 160, marginTop: '15px' }}
                                       size="small"
                                       // id="grouped-demo"
-                                      // onChange={handleDateChange}
-                                      // label="Expiry Date"
-                                      // showTodayButton
-                                      style={{ width: 150, marginTop: '10px' }}
-                                      className={classes.inputRoottype}
+                                      value={selectedDateTable}
+                                      onChange={handleDateChangeTable}
+                                      KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                      }}
                                     />
-                                    <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
 
 
-                                  </MuiPickersUtilsProvider>
-                                </>
-                              ) :
-                                <>{date}
-                                  <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /></>
-                              }
-                              {/* <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEdit} /> */}
-                              {/* <Button align="right" > */}
+                                  </MuiPickersUtilsProvider> */}
+                              {item.End_Date}
 
-
-                              {/* </Button> */}
-                              {/* onClick={() => handleEditchange(row.Feature_Id)} */}
                             </div>
                           </StyledTableCell>
-                          <StyledTableCell item align="right" xl={10}>
+                          
+                          <StyledTableCell>
+                          <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
-                              <Button
-                                type="button"
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                onClick={(e) => { handleRequestAccess() }}
-                              >
-                                APPROVE
-                              </Button>
-                              {' '}
-                              <Button
-                                type="button"
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                              >
-                                Denied
-                              </Button>
-
+                              {"Edit"}
                             </div>
+                          </StyledTableCell>
+                          </StyledTableCell>
+                          <StyledTableCell item align="right" xl={10}>
+                            {item.Approval_Status === "Pending" ? (
+                              <div className={classes.texttablecell}>
+                                <Button
+                                  type="button"
+                                  size="small"
+                                  variant="contained"
+                                  color="primary"
+                                  className={classes.submit}
+                                  style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                  onClick={(e) => { handleRequestAccess(item, "Approved") }}
+                                >
+                                  APPROVE
+                                </Button>
+                                {' '}
+                                <Button
+                                  type="button"
+                                  size="small"
+                                  variant="contained"
+                                  color="primary"
+                                  className={classes.submit}
+                                  style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                  onClick={(e) => { handleRequestAccess(item, "Deny") }}
+                                >
+                                  Deny
+                                </Button>
+
+                              </div>
+                            ) : <div className={classes.texttablecell}>
+                              {item.Approval_Status}
+                            </div>
+                            }
                           </StyledTableCell>
                         </StyledTableRow>
                       )}
