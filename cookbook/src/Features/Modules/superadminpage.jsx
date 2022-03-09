@@ -445,6 +445,7 @@ export default function SuperadminFunction() {
         });
         setUpdateobjlist(true)
         setOpen(false)
+        dispatch(Menuaction.reloadAction(true));
 
       },
       (error) => {
