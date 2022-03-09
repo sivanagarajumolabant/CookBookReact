@@ -27,6 +27,7 @@ import axios from "axios";
 import config from "../../Config/config";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 import { TableContainer } from "@material-ui/core";
+import Notification from "../Notifications/Notification";
 
 const useStylestable = makeStyles((theme) => ({
   table: {
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
-    width: "150px",
+    width: "180px",
     overflow: "hidden",
     textOverflow: "ellipsis",
     '&:hover': {
@@ -143,11 +144,14 @@ export default function AdminAccesslist() {
   const [fnnames, setFnnames] = useState([]);
   const [data, setData] = useState([]);
   const [isEdit, setEdit] = React.useState(false);
+  const [isEditaccess, setEditaccess] = React.useState(false);
   const [date, setDate] = useState('24/2/2022')
   const [objtypelist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
   const [approvalslist, setApprovallist] = useState([])
   const [selecetd, setSelected] = useState(false)
+  const [permissionslist, setpermissionslist] = useState([])
+  const [fnname, setFnname] = useState()
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -198,7 +202,17 @@ export default function AdminAccesslist() {
     setEdit(!isEdit);
   };
 
+  const handleEditaccess = (i) => {
+    // If edit mode is true setEdit will 
+    // set it to false and vice versa
+    setEditaccess(!isEditaccess);
+  };
+
   const handleSaveDate = () => {
+
+  }
+
+  const handleaccess = () => {
 
   }
 
@@ -219,7 +233,7 @@ export default function AdminAccesslist() {
     // }
     let body = {
       Object_Type: objtype,
-      Migration_TypeId: headerValue?.title,
+      Migration_TypeId: headerValue.title,
     };
     let conf = {
       headers: {
@@ -288,9 +302,6 @@ export default function AdminAccesslist() {
 
 
 
-
-
-
   const handleversion = () => { };
 
   const handleDate = (e) => {
@@ -298,45 +309,44 @@ export default function AdminAccesslist() {
   }
 
 
-  // const handleRequestAccess = () => {
-  //   let body = {
-  //     "Object_Type": objtype,
-  //     "Migration_TypeId": migtypeid.title,
-  //     "Feature_Name": fnnames,
-  //     "User_Email": localStorage.getItem('uemail'),
-  //     "Access_Type": 'Edit',
-  //     "Expiary_date": date,
-  //   };
-  //   let conf = {
-  //     headers: {
-  //       Authorization: "Bearer " + config.ACCESS_TOKEN(),
-  //     },
-  //   };
-  //   const form = new FormData();
-  //   Object.keys(body).forEach((key) => {
-  //     form.append(key, body[key]);
-  //   });
+  const handleRequestAccess = () => {
+    let body = {
+      "User_Email": localStorage.getItem('uemail'),
+      "Migration_TypeId": headerValue.title,
+      // "Object_Type": item.Object_Type,
+      // "Feature_Name": item.Feature_Name,
+      // "Access_Type": item.Access_Type,
+      'Start_Date': '08-03-2022',
+      'End_Date': '15-03-2022',
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
 
-  //   axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
-  //     (res) => {
-  //       setNotify({
-  //         isOpen: true,
-  //         message: "Request Sent to Admin and Wait for the Approval",
-  //         type: "success",
-  //       });
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //       setNotify({
-  //         isOpen: true,
-  //         message: "Something Went Wrong Please Try Again!",
-  //         type: "error",
-  //       });
-  //     }
-  //   );
-  // }
-
-
+    axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "Request Sent to Admin and Wait for the Approval",
+          type: "success",
+        });
+      },
+      (error) => {
+        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: "Something Went Wrong Please Try Again!",
+          type: "error",
+        });
+      }
+    );
+  }
 
 
   return (
@@ -583,35 +593,43 @@ export default function AdminAccesslist() {
                           <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
                               {/* {item.Access_Type} */}
-                              <StyledAutocomplete
-                                size="small"
-                                // id="grouped-demo"
-                                className={classes.inputRoottype}
-                                options={[
-                                  { title: "Edit", code: 1 },
-                                  { title: "View", code: 2 },
-                                  // { title: "Admin", code: 3 },
-                                ]}
-                                groupBy={""}
-                                defaultValue={{ title: "Edit" }}
-                                getOptionLabel={(option) => option?.title}
-                                style={{ width: 100, marginTop: 0 }}
-                                onChange={(e, v) => handleversion(v)}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    // label="Accesstype"
-                                    // variant="outlined"
-                                    InputLabelProps={{
-                                      className: classes.floatingLabelFocusStyle,
-                                    }}
-                                  />
-                                )}
-                              />
+                              {isEditaccess ? (
+                                <>
+                                  <StyledAutocomplete
+                                    size="small"
+                                    // id="grouped-demo"
+                                    className={classes.inputRoottype}
+                                    options={[
+                                      { title: "Edit", code: 1 },
+                                      { title: "View", code: 2 },
+                                      // { title: "Admin", code: 3 },
+                                    ]}
+                                    groupBy={""}
+                                    defaultValue={item.Access_Type}
+                                    getOptionLabel={(option) => option?.title}
+                                    style={{ width: 90 }}
+                                    onChange={(e, v) => handleversion(v)}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        // label="Accesstype"
+                                        // variant="outlined"
+                                        InputLabelProps={{
+                                          className: classes.floatingLabelFocusStyle,
+                                        }}
+                                      />
 
+                                    )}
+                                  />
+                                  <SaveIcon item xl={2} style={{ color: "blue", width: '20px', marginLeft: '110px' }} onClick={handleaccess()} />
+                                </>
+                              ) :
+                                <>{item.Access_Type}
+                                  <EditSharpIcon style={{ color: "blue", width: '20px' }} onClick={handleEditaccess} /></>
+                              }
                             </div>
                           </StyledTableCell>
-                          <StyledTableCell item xl={6}>
+                          <StyledTableCell item xl={5}>
                             <div className={classes.texttablecell}>
                               {item.Object_Type}
                             </div>
@@ -631,7 +649,7 @@ export default function AdminAccesslist() {
                               {isEdit ? (
                                 <>
                                   {/* <input type="date" id="date" name="Date" onChange={event => { setDate(event.target.value) }} />
-                                  <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} /> */}
+                                  */}
 
                                   <MuiPickersUtilsProvider utils={DateFnsUtils} >
                                     <DateTimePicker
@@ -646,6 +664,7 @@ export default function AdminAccesslist() {
                                       style={{ width: 150, marginTop: '10px' }}
                                       className={classes.inputRoottype}
                                     />
+                                    <SaveIcon style={{ color: "blue", width: '20px' }} onClick={handleSaveDate()} />
 
 
                                   </MuiPickersUtilsProvider>
@@ -671,6 +690,7 @@ export default function AdminAccesslist() {
                                 color="primary"
                                 className={classes.submit}
                                 style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                onClick={(e) => { handleRequestAccess() }}
                               >
                                 APPROVE
                               </Button>
@@ -714,6 +734,7 @@ export default function AdminAccesslist() {
           </Grid>
         </Grid>
       </Box>
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 }
