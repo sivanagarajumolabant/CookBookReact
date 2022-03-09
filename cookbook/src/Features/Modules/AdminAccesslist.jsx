@@ -288,7 +288,15 @@ export default function AdminAccesslist() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${headerValue?.title}`, conf).then(
+    let body = {
+      "Migration_TypeId": headerValue?.title,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`,form, conf).then(
       (res) => {
 
         setObjtypeslist(res.data)

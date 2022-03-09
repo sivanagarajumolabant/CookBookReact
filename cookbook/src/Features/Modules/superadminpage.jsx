@@ -247,9 +247,9 @@ export default function SuperadminFunction() {
     };
     axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
       (res) => {
-          // console.log("mig list ", res.data)
-          setMigtypeslist(res.data)
-        
+        // console.log("mig list ", res.data)
+        setMigtypeslist(res.data)
+        dispatch(Menuaction.getdropdownlist(res.data))
       },
       (error) => {
         console.log(error);
@@ -266,9 +266,9 @@ export default function SuperadminFunction() {
     };
     axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
       (res) => {
-        
+
         setUserslist(res.data)
-        
+
       },
       (error) => {
         console.log(error);
@@ -283,11 +283,20 @@ export default function SuperadminFunction() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${migtype_create || null}`, conf).then(
+    let body = {
+
+      "Migration_TypeId": migtype_create,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
-        
-          setObjtypeslist(res.data)
-        
+
+        setObjtypeslist(res.data)
+
       },
       (error) => {
         console.log(error);
@@ -295,7 +304,7 @@ export default function SuperadminFunction() {
     );
   }, [updateobjlist]);
 
-  
+
 
 
   // console.log(headerValue.title)
@@ -315,23 +324,33 @@ export default function SuperadminFunction() {
     setOpenAlert(false);
   };
 
-  const handleObjectviewslist =(v)=>{
+  const handleObjectviewslist = (v) => {
     setMigtype_create(v?.title)
-    
-      let conf = {
-        headers: {
-          Authorization: "Bearer " + config.ACCESS_TOKEN(),
-        },
-      };
-      axios.get(`${config.API_BASE_URL()}/api/objectviewtlist/${v?.title}`, conf).then(
-        (res) => {
-          setObjtypeslist(res.data)
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  
+
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    let body = {
+
+      "Migration_TypeId": v?.title,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
+      (res) => {
+        setObjtypeslist(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
   }
 
   const handledropdown = (e, v) => {
@@ -357,7 +376,7 @@ export default function SuperadminFunction() {
       }
     }
     let body = {
-      "Object_Type": objtype_create || null,
+      // "Object_Type": objtype_create || null,
       "Migration_TypeId": migtype_create || null,
     };
 
@@ -435,7 +454,7 @@ export default function SuperadminFunction() {
     );
     setUpdateobjlist(false)
     // handleObjectviewslist(body)
-    
+
   }
 
 
@@ -474,7 +493,7 @@ export default function SuperadminFunction() {
                     className: classes.floatingLabelFocusStyle,
                     shrink: true,
                   }}
-                
+
                 />
               )}
             />
