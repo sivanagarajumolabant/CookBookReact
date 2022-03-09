@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import clsx from "clsx";
 import config from '../../src/Config/config'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -410,6 +410,8 @@ export default function ClippedDrawer({ children }) {
   //   // history.push("/dashboard");
   // };
 
+ 
+
 
   const onDownload1 = () => {
     const link = document.createElement("a");
@@ -448,6 +450,10 @@ export default function ClippedDrawer({ children }) {
   }
 
 
+
+  // localStorage.setItem('quser', user.username)
+
+
   // React.useEffect(()=>{
   // if(menuList.length>0){
   //   dispatch(ActionMenu.selectedMenutlist(menuList[0]))
@@ -476,7 +482,7 @@ export default function ClippedDrawer({ children }) {
               </Typography>
             </Grid> */}
             <Grid item
-              xm={12} sm={12} md={3} lg={2}>
+              xm={12} sm={12} md={3} lg={1}>
               <div>
                 <img src={Qmig} className={classes.title} />
               </div>
@@ -524,7 +530,7 @@ export default function ClippedDrawer({ children }) {
                 Super Admin
               </Button>
             </Grid>
-            <Grid item xm={12} sm={5} md={1} lg={1}>
+            <Grid item xm={12} sm={5} md={1} lg={2}>
               <StyledAutocomplete
                 size="small"
                 id="grouped-demo"
@@ -557,10 +563,12 @@ export default function ClippedDrawer({ children }) {
                 )}
               />
             </Grid>
-
-
+            <Grid style={{marginTop:'25px',fontSize:16}}>
+              {localStorage.getItem('quser')}
+            </Grid>
             {auth && (
               <Grid item xs={6} sm={1} md={1} lg={1} className={classes.logoutbtn}>
+
                 <IconButton
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
@@ -570,7 +578,7 @@ export default function ClippedDrawer({ children }) {
                 >
                   <AccountCircle />
                 </IconButton>
-               
+
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
@@ -585,11 +593,13 @@ export default function ClippedDrawer({ children }) {
                   }}
                   open={openview}
                   onClose={handleClose}
+
                 >
                   <MenuItem
-
-                    onClick={handleroute}>Logout</MenuItem>
+                    onClick={handleroute}>Logout
+                  </MenuItem>
                 </Menu>
+
               </Grid>
             )}
             {/* <Grid item xm={6} sm={6} md={6} lg={1}>

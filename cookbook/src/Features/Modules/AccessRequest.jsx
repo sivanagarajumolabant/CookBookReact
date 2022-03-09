@@ -218,9 +218,16 @@ export default function Request() {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
-    axios.get(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, conf).then(
+    let body = {
+      'User_Email': localStorage.getItem('uemail')
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`,form, conf).then(
       (res) => {
-        setData(res.data)
+        setData(res.data?.serializer)
       },
       (error) => {
         console.log(error);

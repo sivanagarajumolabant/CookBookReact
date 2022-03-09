@@ -137,6 +137,7 @@ export default function PreviewCode(props) {
   const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
   const [fnname, setFnname] = useState()
+  const [checkIsEdit, setCheckIsEdit] = useState(0)
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -151,15 +152,24 @@ export default function PreviewCode(props) {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
+
+      let body = {
+        'User_Email': localStorage.getItem('uemail')
+      }
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
       axios
-        .get(`${config.API_BASE_URL()}/api/fdetail/${menuitem || null}`, conf)
+        .post(`${config.API_BASE_URL()}/api/fdetail/${menuitem || null}`, form, conf)
         .then(
           (res) => {
             console.log(res);
-            setDetaildata(res.data);
-            setFnname(res.data?.Feature_Name)
-            setObjtype(res.data?.Object_Type)
+            setDetaildata(res.data.serializer);
+            setFnname(res.data?.serializer?.Feature_Name)
+            setObjtype(res.data?.serializer?.Object_Type)
             setIsdata(true);
+            setCheckIsEdit(res.data?.edit)
           },
           (error) => {
             console.log(error);
@@ -379,13 +389,13 @@ export default function PreviewCode(props) {
 
     axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
       (res) => {
-        if (res.data==='Request Already Sent'){
+        if (res.data === 'Request Already Sent') {
           setNotify({
             isOpen: true,
             message: "Request Already Sent to Admin Please Wait for the Approval",
             type: "error",
           });
-        }else{
+        } else {
           setNotify({
             isOpen: true,
             message: "Request Sent Please Wiat For The Admin Approval",
@@ -416,50 +426,53 @@ export default function PreviewCode(props) {
       <>
         <Grid container>
           <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }} spacing={2}>
-            <Grid item>
-              <Button
-                variant="outlined"
-                color="primary"
-                component="span"
-                // startIcon={<EditSharpIcon />}
-                // onClick={
-                //   () => {
-                //     dispatch(
-                //       ActionMenu.EditPreviewFeature({ data: detaildata })
-                //     );
+            {checkIsEdit === 0 ?
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  component="span"
+                  // startIcon={<EditSharpIcon />}
+                  // onClick={
+                  //   () => {
+                  //     dispatch(
+                  //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                  //     );
 
-                //     history.push("/EditFeature");
-                //   }
-                // }
-                onClick={(e) => { handleRequestAccess('Edit') }}>
+                  //     history.push("/EditFeature");
+                  //   }
+                  // }
+                  onClick={(e) => { handleRequestAccess('Edit') }}>
 
-                Request Edit Access
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="primary"
-                component="span"
-                startIcon={<EditSharpIcon />}
-                onClick={
-                  () => {
-                    dispatch(
-                      ActionMenu.EditPreviewFeature({ data: detaildata })
-                    );
+                  Request Edit Access
+                </Button>
+              </Grid>
+              :
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  startIcon={<EditSharpIcon />}
+                  onClick={
+                    () => {
+                      dispatch(
+                        ActionMenu.EditPreviewFeature({ data: detaildata })
+                      );
 
-                    history.push("/EditFeature");
+                      history.push("/EditFeature");
+                    }
+                    // history.push({
+                    //   pathname: `/edit/${detaildata.Feature_Id}`,
+                    //   data: { detaildata },
+
+                    // })
                   }
-                  // history.push({
-                  //   pathname: `/edit/${detaildata.Feature_Id}`,
-                  //   data: { detaildata },
-
-                  // })
-                }
-              >
-                Edit
-              </Button>
-            </Grid>
+                >
+                  Edit
+                </Button>
+              </Grid>
+            }
           </Grid>
 
           <Grid item xs={12} sm={6} md={6} lg={3}>
@@ -1090,27 +1103,30 @@ export default function PreviewCode(props) {
 
         <Grid container justifyContent="center" spacing={1}>
           <Grid item style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              startIcon={<EditSharpIcon />}
-              // onClick={() =>
-              //   // history.push({
-              //   //   pathname: `/edit/${detaildata.Feature_Id}`,
-              //   //   data: { detaildata },
 
-              //   // })
-              //   dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
-              // }
-              onClick={() => {
-                dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }));
+            {checkIsEdit === 1 ?
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                startIcon={<EditSharpIcon />}
+                // onClick={() =>
+                //   // history.push({
+                //   //   pathname: `/edit/${detaildata.Feature_Id}`,
+                //   //   data: { detaildata },
 
-                history.push("/EditFeature");
-              }}
-            >
-              Edit
-            </Button>
+                //   // })
+                //   dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }))
+                // }
+                onClick={() => {
+                  dispatch(ActionMenu.EditPreviewFeature({ data: detaildata }));
+
+                  history.push("/EditFeature");
+                }}
+              >
+                Edit
+              </Button> : null
+            }
           </Grid>
         </Grid>
       </>

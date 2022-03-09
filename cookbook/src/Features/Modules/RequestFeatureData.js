@@ -158,12 +158,19 @@ export default function RequestFeatureData(props) {
                     Authorization: "Bearer " + config.ACCESS_TOKEN(),
                 },
             };
+            let body = {
+                'User_Email': localStorage.getItem('uemail')
+              }
+              const form = new FormData();
+              Object.keys(body).forEach((key) => {
+                form.append(key, body[key]);
+              });
             axios
-                .get(`${config.API_BASE_URL()}/api/fdetail/${previewdata?.Feature_Id || null}`, conf)
+                .post(`${config.API_BASE_URL()}/api/fdetail/${previewdata?.Feature_Id || null}`,form, conf)
                 .then(
                     (res) => {
                         console.log(res);
-                        setDetaildata(res.data);
+                        setDetaildata(res.data?.serializer);
                         setIsdata(true);
                     },
                     (error) => {
