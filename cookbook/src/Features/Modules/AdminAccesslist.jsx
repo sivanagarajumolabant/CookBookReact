@@ -160,7 +160,7 @@ export default function AdminAccesslist() {
   const [isEditaccess, setEditaccess] = React.useState(false);
   const [date, setDate] = useState()
   const [selectedDate, handleDateChange] = useState(new Date());
-  const [selectedDateTable, handleDateChangeTable] = useState(new Date())
+  const [selectedDateTable, handleDateChangeTable] = useState()
   const [objtypelist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
   const [approvalslist, setApprovallist] = useState([])
@@ -181,11 +181,16 @@ export default function AdminAccesslist() {
   // ])
 
   // const [grant_mig_type, setGrant_mig_type]= useState()
-  const [grant_obj_type, setGrant_obj_type]= useState()
-  const [grant_access_type, setGrant_access_type]= useState()
-  const [grant_user, setGrant_user]= useState()
-  const [grant_featurename, setGrant_featurename]= useState()
+  const [grant_obj_type, setGrant_obj_type] = useState()
+  const [grant_access_type, setGrant_access_type] = useState()
+  const [grant_user, setGrant_user] = useState()
+  const [grant_featurename, setGrant_featurename] = useState()
   // const [grant_expiry_date, setGrant_expiry_date]= useState()
+  const [edithandle, setEdithandle] = useState([])
+  const [model_Item, setModel_Item] = useState([])
+
+
+
 
 
   const {
@@ -384,7 +389,7 @@ export default function AdminAccesslist() {
 
 
   const handleversion = (v) => { setGrant_access_type(v?.title) };
-  const handleUsername=(v)=>{setGrant_user(v?.email)};
+  const handleUsername = (v) => { setGrant_user(v?.email) };
 
   const handleDate = (e) => {
     setData(e.target.value)
@@ -499,13 +504,13 @@ export default function AdminAccesslist() {
   const handleUpdateApproval = (selectedDateTable, accesschnage, item, action) => {
     const form = new FormData();
     let Expiry_date;
-    
-      Expiry_date = moment(selectedDateTable).format('YYYY-MM-DD')
-    
+
+    Expiry_date = moment(selectedDateTable).format('YYYY-MM-DD')
+
 
     let body = {
       "User_Email": localStorage.getItem('uemail'),
-      "Access_Type": item.Access_Type,
+      "Access_Type": accesschnage,
       "Expiry_date": Expiry_date,
       "Migration_TypeId": item.Migration_TypeId,
       "Object_Type": item.Object_Type,
@@ -529,12 +534,12 @@ export default function AdminAccesslist() {
 
     axios.put(`${config.API_BASE_URL()}/api/approvalsupdate/${item.id}`, form, conf).then(
       (res) => {
-        
+
         setOpen1(false)
         setupdateTable(true)
       },
       (error) => {
-       
+
         setOpen1(false)
       }
     );
@@ -544,8 +549,6 @@ export default function AdminAccesslist() {
   const handleEditAcesschange = (e) => {
     setaccesschange(e.target.value)
   }
-
-  
 
 
   const handleGrant_permission_create = (item, action) => {
@@ -585,18 +588,18 @@ export default function AdminAccesslist() {
 
       (error) => {
         console.log(error);
-      
+
       }
     );
   }
 
 
   const handleGrantAcess = () => {
-    
+
     let body = {
       "Object_Type": grant_obj_type,
       "Migration_TypeId": headerValue?.title,
-      "User_Email": localStorage.getItem('uemail'),
+      "User_Email": grant_user,
       "Feature_Name": grant_featurename,
       "Approval_Status": 'Approved',
       "Access_Type": grant_access_type,
@@ -616,13 +619,13 @@ export default function AdminAccesslist() {
       (res) => {
         handleGrant_permission_create(res.data, 'Approved')
 
-          setNotify({
-            isOpen: true,
-            message: "Request Creted and acepted Permissions",
-            type: "success",
-          });
-          setupdateTable(true)
-        
+        setNotify({
+          isOpen: true,
+          message: "Request Creted and acepted Permissions",
+          type: "success",
+        });
+        setupdateTable(true)
+
       },
       (error) => {
         console.log(error);
@@ -634,6 +637,11 @@ export default function AdminAccesslist() {
       }
     );
     setupdateTable(false)
+  }
+
+  const handleModelopen = (item) => {
+    setOpen1(true)
+    setModel_Item(item)
   }
   return (
     <>
@@ -773,34 +781,21 @@ export default function AdminAccesslist() {
           <Grid item xs={12} sm={4} md={4} xl={4}>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-              {/* <DateTimePicker
-                value={selectedDate}
-                inputVariant="outlined"
-                disablePast
-                size="small"
-                id="grouped-demo"
-                onChange={handleDateChange}
-                label="Expiry Date"
-                showTodayButton
-                style={{ width: 300, marginTop: '10px' }}
-                className={classes.inputRoottype}
-              /> */}
+              
               <KeyboardDatePicker
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                format="MM-dd-yyyy"
                 margin="normal"
-                showTodayButton
+                size='small'
+                id="date-picker-dialog"
+                inputVariant="outlined"
                 label="Expiry Date"
                 style={{ width: 300, marginTop: '10px' }}
-                size="small"
-                id="grouped-demo"
+                format="MM/dd/yyyy"
                 value={selectedDate}
-                onChange={e=>{handleDateChange(e);handledatedesible()}}
+                onChange={handleDateChange}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
+                
               />
 
 
@@ -841,12 +836,12 @@ export default function AdminAccesslist() {
         <Grid container direction="row" justifyContent="center">
           <Button
             variant="contained"
-            disabled={!selecetd}
+            // disabled={!selecetd}
             // startIcon={<CloudUploadIcon />}
             color="primary"
             component="span"
             style={{ marginTop: 15 }}
-            onClick={()=>{handleGrantAcess()}}
+            onClick={() => { handleGrantAcess() }}
           >
             {" "}
             Grant Access
@@ -930,102 +925,13 @@ export default function AdminAccesslist() {
                                     title="Edit"
                                     label='Edit'
                                     aria-label="Edit"
-                                    onClick={() => setOpen1(true)}
+                                    onClick={() => { handleModelopen(item) }}
                                   >
 
                                     <EditSharpIcon style={{ color: "blue" }} />
                                   </Tooltip>
-                                ):"No Actions"}
-                                <Snackbar
-                                  open={openAlert}
-                                  autoHideDuration={4000}
-                                  onClose={handleClose}
-                                  anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                                >
-                                </Snackbar>
-                                <Modal open={open1}>
-                                  <Container className={classes.container1} style={{ marginBottom: 200 }}>
-                                    <Typography
-                                      gutterBottom
-                                      align="center"
-                                      variant="h6"
-                                      component="h2"
-                                      style={{ marginBottom: '20px' }}
-                                    >
-                                      Edit Data
-                                    </Typography>
-                                    {/* <FormControl fullWidth variant="outlined" className={classes.formControl}> */}
-                                    <Grid item xs={12} sm={4} md={4} xl={4}>
-                                      <StyledAutocomplete
-                                        size="small"
-                                        id="grouped-demo"
-                                        className={classes.inputRoottype}
-                                        options={[
-                                          { title: "Edit", code: 'Edit' },
-                                          { title: "View", code: 'View' },
-                                        ]}
-                                        groupBy={""}
-                                        defaultValue={item.Access_Type}
-                                        value={accesschnage}
-                                        getOptionLabel={(option) => option?.title}
-                                        style={{ width: 330, marginTop: 20 }}
-                                        onChange={(e, v) => setaccesschange(v?.title)}
-                                        renderInput={(params) => (
-                                          <TextField
-                                            {...params}
-                                            label="Accesstype"
-                                            variant="outlined"
-                                            InputLabelProps={{
-                                              className: classes.floatingLabelFocusStyle,
-                                              shrink: true,
-                                            }}
-                                          />
-                                        )}
-                                      />
+                                ) : "No Actions"}
 
-
-                                    </Grid>
-                                    <Grid item xs={12} sm={4} md={4} xl={4}>
-                                      <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                                        <KeyboardDatePicker
-                                          // disableToolbar
-                                          inputVariant="outlined"
-                                          variant="inline"
-                                          format="yyyy-MM-dd"
-                                          margin="normal"
-                                          // showTodayButton
-                                          label="Expiry Date"
-                                          style={{ width: 330, marginTop: '30px' }}
-                                          size="small"
-                                          id="grouped-demo"
-                                          value={selectedDateTable}
-                                          onChange={handleDateChangeTable}
-                                          KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                          }}
-                                        />
-                                      </MuiPickersUtilsProvider>
-                                    </Grid>
-                                    <div className={classes.item} >
-                                      <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        style={{ marginRight: 20, marginLeft: 70, marginTop: '20px' }}
-                                        onClick={() => handleUpdateApproval(selectedDateTable, accesschnage, item, 'Pending')}
-                                      >
-                                        Save
-                                      </Button>
-                                      <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={() => setOpen1(false)}
-                                        style={{ marginTop: '20px' }}
-                                      >
-                                        Cancel
-                                      </Button>
-                                    </div>
-                                  </Container>
-                                </Modal>
                               </Grid>
                             </StyledTableCell>
                           </StyledTableCell>
@@ -1086,6 +992,95 @@ export default function AdminAccesslist() {
               </Table>
             </TableContainer>
           </Grid>
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={4000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+          </Snackbar>
+          <Modal open={open1}>
+            <Container className={classes.container1} style={{ marginBottom: 200 }}>
+              <Typography
+                gutterBottom
+                align="center"
+                variant="h6"
+                component="h2"
+                style={{ marginBottom: '20px' }}
+              >
+                Edit Data
+              </Typography>
+              {/* <FormControl fullWidth variant="outlined" className={classes.formControl}> */}
+              <Grid item xs={12} sm={4} md={4} xl={4}>
+                <StyledAutocomplete
+                  size="small"
+                  id="grouped-demo"
+                  className={classes.inputRoottype}
+                  options={[
+                    { title: "Edit", code: 'Edit' },
+                    { title: "View", code: 'View' },
+                  ]}
+                  groupBy={""}
+                  defaultValue={model_Item.Access_Type}
+                  value={model_Item.Access_Type}
+                  getOptionLabel={(option) => option?.title}
+                  style={{ width: 330, marginTop: 20 }}
+                  onChange={(e, v) => setaccesschange(v?.title)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Accesstype"
+                      variant="outlined"
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />
+
+
+              </Grid>
+              <Grid item xs={12} sm={4} md={4} xl={4}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                  
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    inputVariant="outlined"
+                    label="Expiry Date"
+                    style={{ width: 330, marginTop: '30px' }}
+                    format="MM/dd/yyyy"
+                    value={model_Item.Expiry_date}
+                    size="small"
+                    onChange={val =>handleDateChangeTable(val)}
+                    defaultValue={model_Item.Expiry_date}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <div className={classes.item} >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: 20, marginLeft: 70, marginTop: '20px' }}
+                  onClick={() => handleUpdateApproval(selectedDateTable, accesschnage, model_Item, 'Pending')}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setOpen1(false)}
+                  style={{ marginTop: '20px' }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Container>
+          </Modal>
         </Grid>
       </Box>
       <Notification notify={notify} setNotify={setNotify} />
