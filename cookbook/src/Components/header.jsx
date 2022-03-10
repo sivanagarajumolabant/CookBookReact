@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import clsx from "clsx";
+import Avatar from "@material-ui/core/Avatar";
 import config from '../../src/Config/config'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -162,13 +163,15 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
 
       padding: theme.spacing(1),
-
+      right: 30,
+      position: 'fixed',
     },
     [theme.breakpoints.up('md')]: {
-
+      right: 30,
+      position: 'fixed',
     },
     [theme.breakpoints.up('lg')]: {
-      right: 0,
+      right: 30,
       position: 'fixed',
     },
 
@@ -410,7 +413,7 @@ export default function ClippedDrawer({ children }) {
   //   // history.push("/dashboard");
   // };
 
- 
+
 
 
   const onDownload1 = () => {
@@ -519,16 +522,20 @@ export default function ClippedDrawer({ children }) {
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-              <Button
-                type="button"
-                size="small"
-                variant="contained"
-                color="orange"
-                onClick={handleSuperadmin}
-                style={{ marginTop: '9px', fontSize: '14px', marginBottom: '8px', width: '130px' }}
-              >
-                Super Admin
-              </Button>
+              {IsAdmin == "true" &&
+                <>
+                  <Button
+                    type="button"
+                    size="small"
+                    variant="contained"
+                    color="orange"
+                    onClick={handleSuperadmin}
+                    style={{ marginTop: '9px', fontSize: '14px', marginBottom: '8px', width: '130px' }}
+                  >
+                    Super Admin
+                  </Button>
+                </>
+              }
             </Grid>
             <Grid item xm={12} sm={5} md={1} lg={2}>
               <StyledAutocomplete
@@ -563,9 +570,12 @@ export default function ClippedDrawer({ children }) {
                 )}
               />
             </Grid>
-            <Grid style={{marginTop:'25px',fontSize:16}}>
-              {localStorage.getItem('quser')}
-            </Grid>
+            {/* <Grid >
+              <div style={{ marginTop: '42px', fontSize: 16, marginLeft: 25 }}>
+                <center>{localStorage.getItem('quser')}</center>
+              </div>
+
+            </Grid> */}
             {auth && (
               <Grid item xs={6} sm={1} md={1} lg={1} className={classes.logoutbtn}>
 
@@ -576,8 +586,12 @@ export default function ClippedDrawer({ children }) {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <div style={{ fontSize: 14, marginTop: 5 }}>{localStorage.getItem('quser')}</div>
+                  {/* <AccountCircle>{localStorage.getItem('quser')}</AccountCircle> */}
                 </IconButton>
+                {/* <div style={{ paddingBottom:20, fontSize: 16 }}> */}
+                {/*  */}
+                {/* </div> */}
 
                 <Menu
                   id="menu-appbar"

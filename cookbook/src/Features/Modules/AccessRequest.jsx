@@ -1,5 +1,6 @@
 import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
+import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
@@ -250,7 +251,8 @@ export default function Request() {
       "User_Email": localStorage.getItem('uemail'),
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
-      "Access_Type": access
+      "Access_Type": access,
+      "Expiry_date": moment(new Date()).format('YYYY-MM-DD'),
     };
     let conf = {
       headers: {

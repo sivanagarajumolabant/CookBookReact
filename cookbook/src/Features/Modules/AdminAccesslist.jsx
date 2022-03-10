@@ -175,6 +175,18 @@ export default function AdminAccesslist() {
   });
   const [updatetable, setupdateTable] = useState(false)
   const [accesschnage, setaccesschange] = useState()
+  // const [accesstypeslist, setAccesstypeslist] = useState([
+  //   { title: "Edit", code: 'Edit' },
+  //   { title: "View", code: 'View' },
+  // ])
+
+  // const [grant_mig_type, setGrant_mig_type]= useState()
+  const [grant_obj_type, setGrant_obj_type]= useState()
+  const [grant_access_type, setGrant_access_type]= useState()
+  const [grant_user, setGrant_user]= useState()
+  const [grant_featurename, setGrant_featurename]= useState()
+  // const [grant_expiry_date, setGrant_expiry_date]= useState()
+
 
   const {
     details,
@@ -293,6 +305,7 @@ export default function AdminAccesslist() {
 
   const handleObjecttype = (v) => {
     setObjtype(v?.Object_Type);
+    setGrant_obj_type(v?.Object_Type)
     let body = {
       Object_Type: v?.Object_Type,
       Migration_TypeId: headerValue?.title,
@@ -319,6 +332,7 @@ export default function AdminAccesslist() {
   };
 
   const handledropdown = (e, v) => {
+    setGrant_featurename(v?.Feature_Name)
     let conf = {
       headers: {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
@@ -369,52 +383,33 @@ export default function AdminAccesslist() {
 
 
 
-  const handleversion = () => { };
+  const handleversion = (v) => { setGrant_access_type(v?.title) };
+  const handleUsername=(v)=>{setGrant_user(v?.email)};
 
   const handleDate = (e) => {
     setData(e.target.value)
   }
 
 
-  const handleRequestAccess = (item, action) => {
+  const handleRequestAccessApproved = (item, action) => {
     const form = new FormData();
-    if (action === 'Deny') {
-      action = 'Deny'
-    }
 
-    if (action === 'Deny') {
-      let body = {
-        "User_Email": item.User_Email,
-        "Migration_TypeId": item.Migration_TypeId,
-        "Object_Type": item.Object_Type,
-        "Feature_Name": item.Feature_Name,
-        "Access_Type": item.Access_Type,
-        'Created_at': item.Created_at,
-        'Expiry_date': item.Expiry_date,
-        "Approval_Status": action,
-        "Approved_by": localStorage.getItem('uemail')
-      };
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
-  
-    } else {
-      let body = {
-        "User_Email": item.User_Email,
-        "Migration_TypeId": item.Migration_TypeId,
-        "Object_Type": item.Object_Type,
-        "Feature_Name": item.Feature_Name,
-        "Access_Type": item.Access_Type,
-        'Created_at': item.Created_at,
-        'Expiry_date': moment(item.Expiry_date).format("YYYY-MM-DD"),
-        "Approval_Status": action,
-        "Approved_by": localStorage.getItem('uemail')
-      };
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
-  
-    }
+    let body = {
+      "User_Email": item.User_Email,
+      "Migration_TypeId": item.Migration_TypeId,
+      "Object_Type": item.Object_Type,
+      "Feature_Name": item.Feature_Name,
+      "Access_Type": item.Access_Type,
+      'Created_at': item.Created_at,
+      'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
+      "Approval_Status": action,
+      "Approved_by": localStorage.getItem('uemail')
+    };
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+
 
 
     let conf = {
@@ -423,12 +418,62 @@ export default function AdminAccesslist() {
       },
     };
 
-    
+
     axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
       (res) => {
-        if (action === 'Deny') {
-          handleUpdateApproval(null, res.data.Created_at, item, action)
-        } else {
+
+        handleUpdateApproval(res.data.Expiry_date, res.data.Created_at, item, action)
+
+
+        // setNotify({
+        //   isOpen: true,
+        //   message: "Request Accepted",
+        //   type: "success",
+        // });
+      },
+
+      (error) => {
+        console.log(error);
+        // setNotify({
+        //   isOpen: true,
+        //   message: "Something Went Wrong Please Try Again!",
+        //   type: "error",
+        // });
+      }
+    );
+  }
+
+  const handleRequestAccessDeny = (item, action) => {
+    const form = new FormData();
+
+    let body = {
+      "User_Email": item.User_Email,
+      "Migration_TypeId": item.Migration_TypeId,
+      "Object_Type": item.Object_Type,
+      "Feature_Name": item.Feature_Name,
+      "Access_Type": item.Access_Type,
+      'Created_at': item.Created_at,
+      'Expiry_date': item.Expiry_date,
+      "Approval_Status": action,
+      "Approved_by": localStorage.getItem('uemail')
+    };
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+
+
+
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+
+
+    axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
+      (res) => {
+        if (action === 'Denied') {
           handleUpdateApproval(res.data.Expiry_date, res.data.Created_at, item, action)
         }
 
@@ -450,43 +495,30 @@ export default function AdminAccesslist() {
     );
   }
 
+
   const handleUpdateApproval = (selectedDateTable, accesschnage, item, action) => {
     const form = new FormData();
-    if (action === 'Deny') {
+    let Expiry_date;
+    
+      Expiry_date = moment(selectedDateTable).format('YYYY-MM-DD')
+    
 
-      let body = {
-        "User_Email": localStorage.getItem('uemail'),
-        "Access_Type": accesschnage,
-        "Expiry_date": null,
-        "Migration_TypeId": item.Migration_TypeId,
-        "Object_Type": item.Object_Type,
-        "Feature_Name": item.Feature_Name,
-        'Created_at': item.Created_at,
-        "Approval_Status": action,
-        "id": item.id
-      }
-
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
-
-    } else {
-      let body = {
-        "User_Email": localStorage.getItem('uemail'),
-        "Access_Type": accesschnage,
-        "Expiry_date": moment(selectedDateTable).format("YYYY-MM-DD"),
-        "Migration_TypeId": item.Migration_TypeId,
-        "Object_Type": item.Object_Type,
-        "Feature_Name": item.Feature_Name,
-        'Created_at': item.Created_at,
-        "Approval_Status": action,
-        "id": item.id
-      }
-
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
+    let body = {
+      "User_Email": localStorage.getItem('uemail'),
+      "Access_Type": item.Access_Type,
+      "Expiry_date": Expiry_date,
+      "Migration_TypeId": item.Migration_TypeId,
+      "Object_Type": item.Object_Type,
+      "Feature_Name": item.Feature_Name,
+      'Created_at': item.Created_at,
+      "Approval_Status": action,
+      "id": item.id
     }
+
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
 
     let conf = {
       headers: {
@@ -497,28 +529,110 @@ export default function AdminAccesslist() {
 
     axios.put(`${config.API_BASE_URL()}/api/approvalsupdate/${item.id}`, form, conf).then(
       (res) => {
-        console.log(res.data)
-        setNotify({
-          isOpen: true,
-          message: "Request Updated",
-          type: "success",
-        });
+        
         setOpen1(false)
         setupdateTable(true)
       },
       (error) => {
-        console.log(error);
-        setNotify({
-          isOpen: true,
-          message: "Something Went Wrong!",
-          type: "error",
-        });
+       
         setOpen1(false)
       }
     );
     setupdateTable(false)
   }
 
+  const handleEditAcesschange = (e) => {
+    setaccesschange(e.target.value)
+  }
+
+
+  const handleGrant_permission_create = (item, action) => {
+    const form = new FormData();
+
+    let body = {
+      "User_Email": item.User_Email,
+      "Migration_TypeId": item.Migration_TypeId,
+      "Object_Type": item.Object_Type,
+      "Feature_Name": item.Feature_Name,
+      "Access_Type": item.Access_Type,
+      'Created_at': item.Created_at,
+      'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
+      "Approval_Status": action,
+      "Approved_by": localStorage.getItem('uemail')
+    };
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+
+
+
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+
+
+    axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
+      (res) => {
+
+        // handleUpdateApproval(res.data.Expiry_date, res.data.Created_at, item, action)
+
+      },
+
+      (error) => {
+        console.log(error);
+      
+      }
+    );
+  }
+
+
+  const handleGrantAcess = () => {
+    
+    let body = {
+      "Object_Type": grant_obj_type,
+      "Migration_TypeId": headerValue?.title,
+      "User_Email": localStorage.getItem('uemail'),
+      "Feature_Name": grant_featurename,
+      "Approval_Status": 'Approved',
+      "Access_Type": grant_access_type,
+      "Expiry_date": moment(selectedDate).format('YYYY-MM-DD'),
+    };
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
+      (res) => {
+        handleGrant_permission_create(res.data, 'Approved')
+
+          setNotify({
+            isOpen: true,
+            message: "Request Creted and acepted Permissions",
+            type: "success",
+          });
+          setupdateTable(true)
+        
+      },
+      (error) => {
+        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: "Something Went Wrong Please Try Again!",
+          type: "error",
+        });
+      }
+    );
+    setupdateTable(false)
+  }
   return (
     <>
       <Box py={1} px={1}>
@@ -640,7 +754,7 @@ export default function AdminAccesslist() {
               // defaultValue={{ title: "Select email" }}
               getOptionLabel={(option) => option.email}
               style={{ width: 300, marginTop: 10 }}
-              onChange={(e, v) => handleversion(v)}
+              onChange={(e, v) => handleUsername(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -673,7 +787,7 @@ export default function AdminAccesslist() {
                 disableToolbar
                 inputVariant="outlined"
                 variant="inline"
-                format="MM/dd/yyyy"
+                format="MM-dd-yyyy"
                 margin="normal"
                 showTodayButton
                 label="Expiry Date"
@@ -725,11 +839,12 @@ export default function AdminAccesslist() {
         <Grid container direction="row" justifyContent="center">
           <Button
             variant="contained"
-            disabled={!selecetd}
+            // disabled={!selecetd}
             // startIcon={<CloudUploadIcon />}
             color="primary"
             component="span"
             style={{ marginTop: 15 }}
+            onClick={()=>{handleGrantAcess()}}
           >
             {" "}
             Grant Access
@@ -796,7 +911,7 @@ export default function AdminAccesslist() {
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
-                              {"SivaNagaraju"}
+                              {/* {"SivaNagaraju"} */}
                             </div>
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>
@@ -808,13 +923,17 @@ export default function AdminAccesslist() {
                           <StyledTableCell>
                             <StyledTableCell item xl={6}>
                               <Grid item xs={1}>
-                                <Tooltip
-                                  title="Edit"
-                                  aria-label="Edit"
-                                  onClick={() => setOpen1(true)}
-                                >
-                                  <EditSharpIcon style={{ color: "blue" }} />
-                                </Tooltip>
+                                {item.Approval_Status === "Pending" ? (
+                                  <Tooltip
+                                    title="Edit"
+                                    label='Edit'
+                                    aria-label="Edit"
+                                    onClick={() => setOpen1(true)}
+                                  >
+
+                                    <EditSharpIcon style={{ color: "blue" }} />
+                                  </Tooltip>
+                                ):"No Actions"}
                                 <Snackbar
                                   open={openAlert}
                                   autoHideDuration={4000}
@@ -833,6 +952,7 @@ export default function AdminAccesslist() {
                                     >
                                       Edit Data
                                     </Typography>
+                                    {/* <FormControl fullWidth variant="outlined" className={classes.formControl}> */}
                                     <Grid item xs={12} sm={4} md={4} xl={4}>
                                       <StyledAutocomplete
                                         size="small"
@@ -843,7 +963,8 @@ export default function AdminAccesslist() {
                                           { title: "View", code: 'View' },
                                         ]}
                                         groupBy={""}
-                                        // defaultValue={ item.Access_Type }
+                                        defaultValue={item.Access_Type}
+                                        value={accesschnage}
                                         getOptionLabel={(option) => option?.title}
                                         style={{ width: 330, marginTop: 20 }}
                                         onChange={(e, v) => setaccesschange(v?.title)}
@@ -859,16 +980,18 @@ export default function AdminAccesslist() {
                                           />
                                         )}
                                       />
+
+
                                     </Grid>
                                     <Grid item xs={12} sm={4} md={4} xl={4}>
                                       <MuiPickersUtilsProvider utils={DateFnsUtils} >
                                         <KeyboardDatePicker
-                                          disableToolbar
+                                          // disableToolbar
                                           inputVariant="outlined"
                                           variant="inline"
                                           format="yyyy-MM-dd"
                                           margin="normal"
-                                          showTodayButton
+                                          // showTodayButton
                                           label="Expiry Date"
                                           style={{ width: 330, marginTop: '30px' }}
                                           size="small"
@@ -904,7 +1027,7 @@ export default function AdminAccesslist() {
                               </Grid>
                             </StyledTableCell>
                           </StyledTableCell>
-                          <StyledTableCell item align="right" xl={10}>
+                          <StyledTableCell item align="center" xl={10}>
                             {item.Approval_Status === "Pending" ? (
                               <div className={classes.texttablecell}>
                                 <Button
@@ -914,7 +1037,7 @@ export default function AdminAccesslist() {
                                   color="primary"
                                   className={classes.submit}
                                   style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                  onClick={(e) => { handleRequestAccess(item, "Approved") }}
+                                  onClick={(e) => { handleRequestAccessApproved(item, "Approved") }}
                                 >
                                   APPROVE
                                 </Button>
@@ -926,7 +1049,7 @@ export default function AdminAccesslist() {
                                   color="primary"
                                   className={classes.submit}
                                   style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                  onClick={(e) => { handleRequestAccess(item, "Deny") }}
+                                  onClick={(e) => { handleRequestAccessDeny(item, "Denied") }}
                                 >
                                   Deny
                                 </Button>

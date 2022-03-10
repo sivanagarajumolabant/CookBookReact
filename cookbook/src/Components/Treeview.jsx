@@ -32,9 +32,9 @@ const useTreeItemStyles = makeStyles((theme) => ({
       color: "",
     },
     "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label":
-      {
-        backgroundColor: "transparent",
-      },
+    {
+      backgroundColor: "transparent",
+    },
   },
   content: {
     color: theme.palette.text.secondary,
@@ -76,6 +76,7 @@ function StyledTreeItem(props) {
   const history = useHistory();
   const classes = useTreeItemStyles();
   const dispatch = useDispatch();
+  const IsAdmin = localStorage.getItem('isAdmin')
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const {
     labelText,
@@ -112,24 +113,27 @@ function StyledTreeItem(props) {
             >
               {labelInfo}
             </Typography>
-
-            {mainheader && (
-              <AddIcon
-                color="inherit"
-                className={classes.labelIcon}
-                style={{ color: "#0BCD19" }}
-                onClick={
-                  () =>
-                    history.push({
-                      pathname: "/Create",
-                      state: {
-                        data: { ...data, type: props.dropdown?.name },
-                      },
-                    })
-                  // dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }, id:'createFeature'}))
-                }
-              />
-            )}
+            {IsAdmin == "true" &&
+              <>
+                {mainheader && (
+                  <AddIcon
+                    color="inherit"
+                    className={classes.labelIcon}
+                    style={{ color: "#0BCD19" }}
+                    onClick={
+                      () =>
+                        history.push({
+                          pathname: "/Create",
+                          state: {
+                            data: { ...data, type: props.dropdown?.name },
+                          },
+                        })
+                      // dispatch(ActionMenu.CreateFeature({data: { ...data, type: props.dropdown?.name }, id:'createFeature'}))
+                    }
+                  />
+                )}
+              </>
+            }
             {/* {sub && (
               <Delete
                 color="inherit"
@@ -202,7 +206,7 @@ export default function GmailTreeView({
     // history.push("/dashboard");
   };
 
-   console.log(menuList, "frdtdrtt")
+  console.log(menuList, "frdtdrtt")
   return (
     <TreeView
       className={classes.root}
@@ -213,50 +217,50 @@ export default function GmailTreeView({
       defaultEndIcon={<div style={{ width: 24 }} />}
     >
       <>
-       {menuList?.length>=0&&
-      <>
-      {menuList?.map((Data, Index) => {
-         if(Data){
+        {menuList?.length >= 0 &&
+          <>
+            {menuList?.map((Data, Index) => {
+              if (Data) {
 
-         
-        return (
-          <StyledTreeItem
-            nodeId={Index}
-            labelText={Data?.Label}
-            labelIcon={Label}
-            key={Index}
-            data={Data}
-            dropdown={dropdown}
-            style={{ color: "white" }}
-            mainheader={true}
-          >
-            {Data?.SubMenu?.map((data, index) => {
-              return (
-                <StyledTreeItem
-                  style={{ color: "white" }}
-                  sub={true}
-                  onClick={() => {
-                    // dispatch(ActionMenu.PreviewFeature())
-                    MenuSelected(data.Feature_Id);
 
-                    history.push("/PreviewCode");
-                  }}
-                  nodeId={"S" + Index + index}
-                  labelText={data.Feature_Name.substr(5)}
-                  labelIcon={ViewModuleIcon}
-                  deleteitem={deleteitem}
-                  datavalue={data}
-                  confirmDialog={confirmDialog}
-                  setConfirmDialog={setConfirmDialog}
-                  // data={data}
-                />
-              );
+                return (
+                  <StyledTreeItem
+                    nodeId={Index}
+                    labelText={Data?.Label}
+                    labelIcon={Label}
+                    key={Index}
+                    data={Data}
+                    dropdown={dropdown}
+                    style={{ color: "white" }}
+                    mainheader={true}
+                  >
+                    {Data?.SubMenu?.map((data, index) => {
+                      return (
+                        <StyledTreeItem
+                          style={{ color: "white" }}
+                          sub={true}
+                          onClick={() => {
+                            // dispatch(ActionMenu.PreviewFeature())
+                            MenuSelected(data.Feature_Id);
+
+                            history.push("/PreviewCode");
+                          }}
+                          nodeId={"S" + Index + index}
+                          labelText={data.Feature_Name.substr(5)}
+                          labelIcon={ViewModuleIcon}
+                          deleteitem={deleteitem}
+                          datavalue={data}
+                          confirmDialog={confirmDialog}
+                          setConfirmDialog={setConfirmDialog}
+                        // data={data}
+                        />
+                      );
+                    })}
+                  </StyledTreeItem>
+                );
+              }
             })}
-          </StyledTreeItem>
-        );
-          }
-      })}
-      </>}
+          </>}
       </>
     </TreeView>
   );
