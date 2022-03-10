@@ -13,6 +13,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
+import NotificationsSharpIcon from '@material-ui/icons/NotificationsSharp';
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -530,10 +531,13 @@ export default function ClippedDrawer({ children }) {
                     variant="contained"
                     color="orange"
                     onClick={handleSuperadmin}
-                    style={{ marginTop: '9px', fontSize: '14px', marginBottom: '8px', width: '130px' }}
+                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px' }}
                   >
                     Super Admin
                   </Button>
+                  {"   "}
+                  
+              {/* <NotificationsSharpIcon style={{marginTop:15}}/> */}
                 </>
               }
             </Grid>
@@ -576,6 +580,11 @@ export default function ClippedDrawer({ children }) {
               </div>
 
             </Grid> */}
+
+           
+             
+
+
             {auth && (
               <Grid item xs={6} sm={1} md={1} lg={1} className={classes.logoutbtn}>
 
@@ -616,6 +625,8 @@ export default function ClippedDrawer({ children }) {
 
               </Grid>
             )}
+
+
             {/* <Grid item xm={6} sm={6} md={6} lg={1}>
             <IconButton 
             color="inherit"

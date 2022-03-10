@@ -156,6 +156,7 @@ export default function EditFeature(props) {
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
   const [fupdate, setFupdate] = useState(false);
+  const IsAdmin = localStorage.getItem('isAdmin')
 
   const dispatch = useDispatch();
 
@@ -1634,27 +1635,31 @@ export default function EditFeature(props) {
                 </Button>
               </Grid> */}
               <Grid item>
-                <Button
-                  // type="submit"
-                  fullWidth
-                  variant="contained"
-                  style={{ backgroundColor: "red", color: "white" }}
-                  // className={classes.submit}
-                  // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
-                  startIcon={<DeleteIcon />}
-                  onClick={() => {
-                    setConfirmDialog({
-                      isOpen: true,
-                      title: "Are you sure to delete this record?",
-                      // subTitle: "You can't undo this operation",
-                      onConfirm: () => {
-                        deleteitem(editdata.detaildata.Feature_Id);
-                      },
-                    });
-                  }}
-                >
-                  Delete
-                </Button>
+                {IsAdmin == "true" &&
+                  <>
+                    <Button
+                      // type="submit"
+                      fullWidth
+                      variant="contained"
+                      style={{ backgroundColor: "red", color: "white" }}
+                      // className={classes.submit}
+                      // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                      startIcon={<DeleteIcon />}
+                      onClick={() => {
+                        setConfirmDialog({
+                          isOpen: true,
+                          title: "Are you sure to delete this record?",
+                          // subTitle: "You can't undo this operation",
+                          onConfirm: () => {
+                            deleteitem(editdata.detaildata.Feature_Id);
+                          },
+                        });
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                }
               </Grid>
             </Grid>
           </Box>

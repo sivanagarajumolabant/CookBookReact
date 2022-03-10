@@ -545,6 +545,8 @@ export default function AdminAccesslist() {
     setaccesschange(e.target.value)
   }
 
+  
+
 
   const handleGrant_permission_create = (item, action) => {
     const form = new FormData();
@@ -795,7 +797,7 @@ export default function AdminAccesslist() {
                 size="small"
                 id="grouped-demo"
                 value={selectedDate}
-                onChange={handleDateChange}
+                onChange={e=>{handleDateChange(e);handledatedesible()}}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
@@ -839,7 +841,7 @@ export default function AdminAccesslist() {
         <Grid container direction="row" justifyContent="center">
           <Button
             variant="contained"
-            // disabled={!selecetd}
+            disabled={!selecetd}
             // startIcon={<CloudUploadIcon />}
             color="primary"
             component="span"

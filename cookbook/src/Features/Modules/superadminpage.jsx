@@ -284,7 +284,6 @@ export default function SuperadminFunction() {
       },
     };
     let body = {
-
       "Migration_TypeId": migtype_create,
     };
 
