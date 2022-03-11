@@ -85,10 +85,10 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     width: "140px",
     overflow: "hidden",
-    textOverflow: "ellipsis",
-    // '&:hover': {
-    //     overflow: 'visible'
-    // }
+    // textOverflow: "ellipsis",
+    '&:hover': {
+        overflow: 'visible'
+    }
   },
 
   table: {
@@ -199,6 +199,11 @@ export default function SuperadminFunction() {
   const [updatemiglist, setUpdatemiglist] = useState(false)
   const [updateobjlist, setUpdateobjlist] = useState(false)
   const [userslist, setUserslist] = useState([])
+  const [adminlistdata, setadminlistdata] = useState([])
+  const [superadminlist, setsuperadminlist] = useState([])
+
+  const [useremail, setuseremail] = useState()
+  const [updateAdminTable, setUpdateAdminTable]= useState(false)
 
 
   let history = useHistory();
@@ -304,6 +309,40 @@ export default function SuperadminFunction() {
     );
   }, [updateobjlist]);
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/adminlist/`, conf).then(
+      (res) => {
+        setadminlistdata(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  },[updateAdminTable]);
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/superuserlist/`, conf).then(
+      (res) => {
+        setsuperadminlist(res.data)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  },[]);
+
+
 
 
 
@@ -355,7 +394,7 @@ export default function SuperadminFunction() {
   }
 
   // const handledropdown = (e, v) => {
-    
+
   //   let conf = {
   //     headers: {
   //       'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -468,7 +507,7 @@ export default function SuperadminFunction() {
       }
     }
     let body = {
-      "email": localStorage.getItem('uemail'),
+      "email": useremail,
       "mig_type": headerValue?.title,
     };
 
@@ -484,6 +523,7 @@ export default function SuperadminFunction() {
           type: "success",
         });
         setUpdateobjlist(true)
+        setUpdateAdminTable(true)
         setOpen(false)
         dispatch(Menuaction.reloadAction(true));
       },
@@ -492,7 +532,13 @@ export default function SuperadminFunction() {
       }
     );
     setUpdateobjlist(false)
+    setUpdateAdminTable(false)
   }
+
+
+  
+
+
 
 
   return (
@@ -610,7 +656,7 @@ export default function SuperadminFunction() {
               // defaultValue={{ title: "Select Email" }}
               getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
-              onChange={(e, v) => handleObjecttype(v)}
+              onChange={(e, v) => setuseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -618,27 +664,26 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
+                  
                 />
               )}
             />
           </Grid>
           <Grid>
-          <Button
-            variant="contained"
-            disabled={!selecetd}
-            color="primary"
-            component="span"
-            style={{ marginTop: 7, marginLeft: 60 }}
-            onClick={() => { handlecreateadmin() }}
-          >
-            {" "}
-            Create Admin
-          </Button>
-        </Grid>
+            <Button
+              variant="contained"
+              // disabled={!selecetd}
+              color="primary"
+              component="span"
+              style={{ marginTop: 7, marginLeft: 60 }}
+              onClick={() => { handlecreateadmin() }}
+            >
+              {" "}
+              Create Admin
+            </Button>
+          </Grid>
           <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
@@ -656,8 +701,6 @@ export default function SuperadminFunction() {
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
-                  }}
-                  InputLabelProps={{
                     shrink: true,
                   }}
                 />
@@ -708,10 +751,9 @@ export default function SuperadminFunction() {
                       variant="outlined"
                       InputLabelProps={{
                         className: classes.floatingLabelFocusStyle,
-                      }}
-                      InputLabelProps={{
                         shrink: true,
                       }}
+                      
                     />
                   )}
                 />
@@ -737,7 +779,7 @@ export default function SuperadminFunction() {
                     shrink: true,
                   }}
 
-                  multiline
+                  
                 />
               </div>
               <div className={classes.item} >
@@ -777,26 +819,31 @@ export default function SuperadminFunction() {
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
-                  <StyledTableCell align="left">User Email-ID</StyledTableCell>
-                  <StyledTableCell align="left">Migration Type</StyledTableCell>
+                  <StyledTableCell align="left">User Email</StyledTableCell>
+                  <StyledTableCell align="left">Migration Types</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
 
 
-                {isData ?
-                  <StyledTableRow container>
-                    <StyledTableCell item xl={8} >
-                      <div className={classes.texttablecell}>
-                        {"siva.n@quadrantresource.com"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={8} >
-                      <div className={classes.texttablecell}>
-                        {"Oracle TO Postgres"}
-                      </div>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                {isData ? (
+                  <>
+                    {adminlistdata.map((item) =>
+                      <StyledTableRow container>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Email}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Migration_Types}
+                          </div>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
+                  </>
+                )
                   : <>
                     <StyledTableRow container>
                       <StyledTableCell align="center"></StyledTableCell>
@@ -828,39 +875,35 @@ export default function SuperadminFunction() {
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
-                  <StyledTableCell align="left">User Email-ID</StyledTableCell>
-                  <StyledTableCell align="left">Migration Type</StyledTableCell>
-                  <StyledTableCell align="left">Approve</StyledTableCell>
+                  <StyledTableCell align="left">User Name</StyledTableCell>
+                  <StyledTableCell align="left">User Email</StyledTableCell>
+                  <StyledTableCell align="left">Actions</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-
-
-                {isData ?
-                  <StyledTableRow container>
-                    <StyledTableCell item xl={8} >
-                      <div className={classes.texttablecell}>
-                        {"siva.n@quadrantresource.com"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={8} >
-                      <div className={classes.texttablecell}>
-                        {"Oracle TO Postgres"}
-                      </div>
-                    </StyledTableCell>
-                    <StyledTableCell item xl={8} align="left">
-                      <Button
-                        type="button"
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                      >
-                        Delete
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                {isData ? (
+                  <>
+                    {superadminlist.map((item) =>
+                      <StyledTableRow container>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.User_Name}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Email}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {/* {'Pending'} */}
+                          </div>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
+                  </>
+                )
                   : <>
                     <StyledTableRow container>
                       <StyledTableCell align="center"></StyledTableCell>

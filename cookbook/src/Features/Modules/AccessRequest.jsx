@@ -255,9 +255,9 @@ export default function Request() {
       access = 'View'
     }
 
-    if (objtype) {
-      fnname = 'All'
-    }
+    // if (objtype) {
+    //   fnname = 'All'
+    // }
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue?.title,

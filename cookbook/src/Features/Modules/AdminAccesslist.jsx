@@ -622,8 +622,8 @@ export default function AdminAccesslist() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-
-    axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
+    // console.log(`${config.API_BASE_URL()}/api/grantaccess/`)
+    axios.post(`${config.API_BASE_URL()}/api/grantaccess/`, form, conf).then(
       (res) => {
         handleGrant_permission_create(res.data, 'Approved')
 
