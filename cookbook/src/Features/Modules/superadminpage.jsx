@@ -200,6 +200,7 @@ export default function SuperadminFunction() {
   const [updateobjlist, setUpdateobjlist] = useState(false)
   const [userslist, setUserslist] = useState([])
 
+
   let history = useHistory();
 
 
@@ -308,6 +309,7 @@ export default function SuperadminFunction() {
 
   // console.log(headerValue.title)
   const handleObjecttype = (v) => {
+    setSelected(true)
     setObjtype(v.title)
   }
 
@@ -352,22 +354,23 @@ export default function SuperadminFunction() {
 
   }
 
-  const handledropdown = (e, v) => {
-    setSelected(true)
-    let conf = {
-      headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-      }
-    }
-    axios.get(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, conf).then(
-      (res) => {
-        setData(res.data)
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+  // const handledropdown = (e, v) => {
+    
+  //   let conf = {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+  //     }
+  //   }
+  //   axios.get(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, conf).then(
+  //     (res) => {
+  //       setData(res.data)
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
   const handleMigrationCreate = () => {
     let conf = {
       headers: {
@@ -455,6 +458,40 @@ export default function SuperadminFunction() {
     setUpdateobjlist(false)
     // handleObjectviewslist(body)
 
+  }
+
+
+  const handlecreateadmin = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "email": localStorage.getItem('uemail'),
+      "mig_type": headerValue?.title,
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/adminpermission/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "Created Admin Access",
+          type: "success",
+        });
+        setUpdateobjlist(true)
+        setOpen(false)
+        dispatch(Menuaction.reloadAction(true));
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+    setUpdateobjlist(false)
   }
 
 
@@ -589,6 +626,19 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
+          <Grid>
+          <Button
+            variant="contained"
+            disabled={!selecetd}
+            color="primary"
+            component="span"
+            style={{ marginTop: 7, marginLeft: 60 }}
+            onClick={() => { handlecreateadmin() }}
+          >
+            {" "}
+            Create Admin
+          </Button>
+        </Grid>
           <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
@@ -599,7 +649,6 @@ export default function SuperadminFunction() {
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.Object_Type}
               style={{ width: 300 }}
-              // onChange={(e, v) => handleObjecttype(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -712,18 +761,6 @@ export default function SuperadminFunction() {
             </Container>
           </Modal>
         </Grid>
-        <Grid container direction="row" justifyContent="center">
-          <Button
-            variant="contained"
-            // startIcon={<CloudUploadIcon />}
-            color="primary"
-            component="span"
-            style={{ marginTop: 12, marginLeft: 60 }}
-          >
-            {" "}
-            Submit
-          </Button>
-        </Grid>
       </Box>
       <Box py={2} px={2}>
         <Grid container xl={12} justifyContent="space-between" spacing={3}>
@@ -735,7 +772,7 @@ export default function SuperadminFunction() {
               component="h2"
               className={classes.Object_Type}
             >
-              Super Admin Users
+              Admin Users
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
@@ -786,7 +823,7 @@ export default function SuperadminFunction() {
               component="h2"
               className={classes.Object_Type}
             >
-              2 Super users
+              Super Users
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>

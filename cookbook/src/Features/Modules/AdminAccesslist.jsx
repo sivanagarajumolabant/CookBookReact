@@ -36,6 +36,7 @@ import {
   Modal,
   Snackbar,
 } from "@material-ui/core";
+import { LocalActivity } from "@material-ui/icons";
 
 const useStylestable = makeStyles((theme) => ({
   table: {
@@ -188,6 +189,7 @@ export default function AdminAccesslist() {
   // const [grant_expiry_date, setGrant_expiry_date]= useState()
   const [edithandle, setEdithandle] = useState([])
   const [model_Item, setModel_Item] = useState([])
+  
 
 
 
@@ -427,7 +429,7 @@ export default function AdminAccesslist() {
     axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
       (res) => {
 
-        handleUpdateApproval(res.data.Expiry_date, res.data.Created_at, item, action)
+        handleUpdateApproval(res.data.Expiry_date, res.data.Access_Type, item, action)
 
 
         // setNotify({
@@ -475,29 +477,33 @@ export default function AdminAccesslist() {
       },
     };
 
+    if (action === 'Denied') {
+      handleUpdateApproval(item.Expiry_date,item.Access_Type, item, action)
+    }
 
-    axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
-      (res) => {
-        if (action === 'Denied') {
-          handleUpdateApproval(res.data.Expiry_date, res.data.Created_at, item, action)
-        }
 
-        // setNotify({
-        //   isOpen: true,
-        //   message: "Request Accepted",
-        //   type: "success",
-        // });
-      },
+    // axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
+    //   (res) => {
+    //     // if (action === 'Denied') {
+    //     //   handleUpdateApproval(res.data.Expiry_date, res.data.Access_Type, item, action)
+    //     // }
 
-      (error) => {
-        console.log(error);
-        // setNotify({
-        //   isOpen: true,
-        //   message: "Something Went Wrong Please Try Again!",
-        //   type: "error",
-        // });
-      }
-    );
+    //     // setNotify({
+    //     //   isOpen: true,
+    //     //   message: "Request Accepted",
+    //     //   type: "success",
+    //     // });
+    //   },
+
+    //   (error) => {
+    //     console.log(error);
+    //     // setNotify({
+    //     //   isOpen: true,
+    //     //   message: "Something Went Wrong Please Try Again!",
+    //     //   type: "error",
+    //     // });
+    //   }
+    // );
   }
 
 
@@ -509,7 +515,7 @@ export default function AdminAccesslist() {
 
 
     let body = {
-      "User_Email": localStorage.getItem('uemail'),
+      "User_Email": item.User_Email,
       "Access_Type": accesschnage,
       "Expiry_date": Expiry_date,
       "Migration_TypeId": item.Migration_TypeId,
@@ -517,7 +523,8 @@ export default function AdminAccesslist() {
       "Feature_Name": item.Feature_Name,
       'Created_at': item.Created_at,
       "Approval_Status": action,
-      "id": item.id
+      "id": item.id,
+      "Approved_by": localStorage.getItem('uemail')
     }
 
     Object.keys(body).forEach((key) => {
@@ -604,6 +611,7 @@ export default function AdminAccesslist() {
       "Approval_Status": 'Approved',
       "Access_Type": grant_access_type,
       "Expiry_date": moment(selectedDate).format('YYYY-MM-DD'),
+      "Approved_by": localStorage.getItem('uemail')
     };
     let conf = {
       headers: {
@@ -924,6 +932,7 @@ export default function AdminAccesslist() {
                           <StyledTableCell item xl={6}>
                             <div className={classes.texttablecell}>
                               {/* {"SivaNagaraju"} */}
+                              {item.Approved_by}
                             </div>
                           </StyledTableCell>
                           <StyledTableCell item xl={6}>

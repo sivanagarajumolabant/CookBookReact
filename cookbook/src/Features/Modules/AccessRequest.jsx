@@ -140,6 +140,8 @@ export default function Request() {
     type: "",
   });
 
+  const [flag, setFlag] = useState(0)
+  const [editflag, setEditflag] = useState(0)
   let history = useHistory();
 
 
@@ -167,15 +169,21 @@ export default function Request() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
-      (res) => {
-        setFnnames(res.data)
-        console.log(res.data)
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    // if (objtype !== 'All') {
+      axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+        (res) => {
+          setFnnames(res.data)
+          console.log(res.data)
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    // }
+    // else{
+    //   setFnnames({Feature_Name:'All'})
+      
+    // }
   }, [objtype]);
 
   useEffect(() => {
@@ -193,7 +201,7 @@ export default function Request() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`,form, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
 
         setObjtypeslist(res.data)
@@ -226,9 +234,11 @@ export default function Request() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`,form, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, form, conf).then(
       (res) => {
         setData(res.data?.serializer)
+        setEditflag(res.data?.edit)
+        setFlag(res.data?.flag)
       },
       (error) => {
         console.log(error);
@@ -245,6 +255,9 @@ export default function Request() {
       access = 'View'
     }
 
+    if (objtype) {
+      fnname = 'All'
+    }
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue?.title,
@@ -266,13 +279,13 @@ export default function Request() {
 
     axios.post(`${config.API_BASE_URL()}/api/approvalscreate`, form, conf).then(
       (res) => {
-        if (res.data==='Request Already Sent'){
+        if (res.data === 'Request Already Sent') {
           setNotify({
             isOpen: true,
             message: "Request Already Sent to Admin Please Wait for the Approval",
             type: "error",
           });
-        }else{
+        } else {
           setNotify({
             isOpen: true,
             message: "Request Sent Please Wiat For The Admin Approval",
@@ -348,7 +361,7 @@ export default function Request() {
                     className: classes.floatingLabelFocusStyle,
                     shrink: true,
                   }}
-               
+
                 />
               )}
             />
@@ -362,7 +375,7 @@ export default function Request() {
               className={classes.inputRoottype}
               options={fnnames}
               groupBy={""}
-              // defaultValue={{ title: "Edit" }}
+              // defaultValue={{ Feature_Name: "All" }}
               getOptionLabel={(option) => option.Feature_Name}
               style={{ width: 300 }}
               onChange={(e, v) => handledropdown(e, v)}
@@ -375,7 +388,7 @@ export default function Request() {
                     className: classes.floatingLabelFocusStyle,
                     shrink: true
                   }}
-                 
+
                 />
 
               )}
@@ -458,35 +471,66 @@ export default function Request() {
         <Grid container spacing={3} justifyContent="center"
           alignItems="center">
           <Grid item xs={7}>
-            <Button variant="contained"
-              disabled={!selecetd}
-              // startIcon={<CloudUploadIcon />}
-              size='small'
-              color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
-              onClick={(e) => { handleRequestAccess('View') }}>
-              Request View Access
-            </Button>
+            {flag === 1 ?
+              <Button variant="contained"
+                disabled={!selecetd}
+                // startIcon={<CloudUploadIcon />}
+                size='small'
+                color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
+                onClick={(e) => { handleRequestAccess('View') }}>
+                Request View Access
+              </Button> : <Button variant="contained"
+                disabled
+                // startIcon={<CloudUploadIcon />}
+                size='small'
+                color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
+                onClick={(e) => { handleRequestAccess('View') }}>
+                Request View Access
+              </Button>
+            }
             {" "}
-            <Button variant="contained"
-              disabled={!selecetd}
-              size='small'
-              onClick={() =>
-                history.push({
-                  pathname: `/requestdata`,
-                  data: { data },
-                })}
-              color="primary" component="span" style={{ marginTop: 15, width: "100px" }} >
-              Show All
-            </Button>
+
+            {flag !== 1 || flag === 2 || flag === 3 ?
+              <Button variant="contained"
+                disabled={!selecetd}
+                size='small'
+                onClick={() =>
+                  history.push({
+                    pathname: `/requestdata`,
+                    data: { data },
+                  })}
+                color="primary" component="span" style={{ marginTop: 15, width: "100px" }} >
+                Show All
+              </Button> : <Button variant="contained"
+                disabled
+                size='small'
+                onClick={() =>
+                  history.push({
+                    pathname: `/requestdata`,
+                    data: { data },
+                  })}
+                color="primary" component="span" style={{ marginTop: 15, width: "100px" }} >
+                Show All
+              </Button>
+            }
             {"   "}
-            <Button variant="contained"
-              disabled={!selecetd}
-              // startIcon={<CloudUploadIcon />}
-              size='small'
-              color="primary" component="span" style={{ marginTop: 15, width: "180px" }}
-              onClick={(e) => { handleRequestAccess('Edit') }}>
-              Request Edit Access
-            </Button>
+            {flag === 2 || flag === 1 ?
+              <Button variant="contained"
+                disabled={!selecetd}
+                // startIcon={<CloudUploadIcon />}
+                size='small'
+                color="primary" component="span" style={{ marginTop: 15, width: "180px" }}
+                onClick={(e) => { handleRequestAccess('Edit') }}>
+                Request Edit Access
+              </Button> : <Button variant="contained"
+                disabled
+                // startIcon={<CloudUploadIcon />}
+                size='small'
+                color="primary" component="span" style={{ marginTop: 15, width: "180px" }}
+                onClick={(e) => { handleRequestAccess('Edit') }}>
+                Request Edit Access
+              </Button>
+            }
           </Grid>
 
         </Grid>

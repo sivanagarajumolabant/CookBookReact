@@ -279,7 +279,7 @@ const StyledAutocompletesidebar = styled(Autocomplete)({
 
 export default function ClippedDrawer({ children }) {
   const classes = useStyles();
-  const IsAdmin = localStorage.getItem('isAdmin')
+  const IsSuperAdmin = localStorage.getItem('isSuperAdmin')
   const [opens, setOpens] = useState(false);
   //   const classes = useStyles();
   const theme = useTheme();
@@ -350,7 +350,7 @@ export default function ClippedDrawer({ children }) {
       }
     }
     let body = {
-      "uemail": localStorage.getItem('uemail'),
+      "User_Email": localStorage.getItem('uemail'),
       Migration_TypeId: value,
     };
 
@@ -491,39 +491,46 @@ export default function ClippedDrawer({ children }) {
                 <img src={Qmig} className={classes.title} />
               </div>
             </Grid>
+
+
             <Grid item
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-              {DropDownValues.length > 0 &&
-                <StyledAutocomplete
-                  size="small"
-                  id="grouped-demo"
-                  className={classes.inputRoottype}
-                  options={DropDownValues}
-                  groupBy={""}
-                  defaultValue={{ title: DropDownValues[0]?.title }}
-                  getOptionLabel={(option) => option.title}
-                  style={{ width: 300 }}
-                  onChange={(e, v) => handleversion(v)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="MigrationTypes"
-                      variant="outlined"
-                      InputLabelProps={{
-                        className: classes.floatingLabelFocusStyle,
-                        shrink: true,
-                      }}
+              {IsSuperAdmin !== 'true' ?<>
+                {
+                  DropDownValues.length > 0 &&
+                    <StyledAutocomplete
+                      size="small"
+                      id="grouped-demo"
+                      className={classes.inputRoottype}
+                      options={DropDownValues}
+                      groupBy={""}
+                      defaultValue={{ title: DropDownValues[0]?.title }}
+                      getOptionLabel={(option) => option.title}
+                      style={{ width: 300 }}
+                      onChange={(e, v) => handleversion(v)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="MigrationTypes"
+                          variant="outlined"
+                          InputLabelProps={{
+                            className: classes.floatingLabelFocusStyle,
+                            shrink: true,
+                          }}
+                        />
+                      )}
                     />
-                  )}
-                />}
+                } </>: null
+              }
             </Grid>
+
             <Grid item
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-              {IsAdmin == "true" &&
+              {IsSuperAdmin == "true" &&
                 <>
                   <Button
                     type="button"
@@ -536,8 +543,8 @@ export default function ClippedDrawer({ children }) {
                     Super Admin
                   </Button>
                   {"   "}
-                  
-              {/* <NotificationsSharpIcon style={{marginTop:15}}/> */}
+
+                  {/* <NotificationsSharpIcon style={{marginTop:15}}/> */}
                 </>
               }
             </Grid>
@@ -581,8 +588,8 @@ export default function ClippedDrawer({ children }) {
 
             </Grid> */}
 
-           
-             
+
+
 
 
             {auth && (
@@ -658,7 +665,7 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-              {IsAdmin === "true" &&
+              {IsSuperAdmin === "true" &&
                 <>
                   <Typography
                     variant="body2"
@@ -685,7 +692,7 @@ export default function ClippedDrawer({ children }) {
               </Typography>
 
               <Divider />
-              {IsAdmin == "true" &&
+              {IsSuperAdmin == "true" &&
                 <>
                   <Typography
                     variant="body2"

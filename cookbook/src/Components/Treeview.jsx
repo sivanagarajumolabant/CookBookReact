@@ -76,7 +76,7 @@ function StyledTreeItem(props) {
   const history = useHistory();
   const classes = useTreeItemStyles();
   const dispatch = useDispatch();
-  const IsAdmin = localStorage.getItem('isAdmin')
+  const IsSuperAdmin = localStorage.getItem('isSuperAdmin')
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const {
     labelText,
@@ -113,7 +113,7 @@ function StyledTreeItem(props) {
             >
               {labelInfo}
             </Typography>
-            {IsAdmin == "true" &&
+            {IsSuperAdmin == "true" &&
               <>
                 {mainheader && (
                   <AddIcon

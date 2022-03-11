@@ -151,7 +151,7 @@ export default function AccessReview() {
                 component="h2"
                 className={classes.Object_Type}
                 >
-                Admin Users
+                User Permissions
                 </Typography>
                 <Table className={classestable.table} aria-label="customized table">
                 <TableHead className={classes.primary}>

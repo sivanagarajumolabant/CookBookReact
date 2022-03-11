@@ -76,7 +76,7 @@ function SignIn() {
       .then((res) => {
         if (res.status === 200 && res.data.access !== null) {
           localStorage.setItem('isAuth', true)
-          localStorage.setItem('isAdmin', res.data.admin)
+          localStorage.setItem('isSuperAdmin', res.data.superadmin)
           localStorage.setItem('quadranttoken', res.data.access)
           localStorage.setItem('quser', user.username)
           localStorage.setItem('uemail', res.data.email)

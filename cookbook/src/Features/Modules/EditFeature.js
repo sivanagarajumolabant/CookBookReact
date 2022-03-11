@@ -156,7 +156,7 @@ export default function EditFeature(props) {
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
   const [fupdate, setFupdate] = useState(false);
-  const IsAdmin = localStorage.getItem('isAdmin')
+  const IsSuperAdmin = localStorage.getItem('isSuperAdmin')
 
   const dispatch = useDispatch();
 
@@ -1635,7 +1635,7 @@ export default function EditFeature(props) {
                 </Button>
               </Grid> */}
               <Grid item>
-                {IsAdmin == "true" &&
+                {IsSuperAdmin == "true" &&
                   <>
                     <Button
                       // type="submit"
