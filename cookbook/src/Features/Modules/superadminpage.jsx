@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     // textOverflow: "ellipsis",
     '&:hover': {
-        overflow: 'visible'
+      overflow: 'visible'
     }
   },
 
@@ -203,7 +203,7 @@ export default function SuperadminFunction() {
   const [superadminlist, setsuperadminlist] = useState([])
 
   const [useremail, setuseremail] = useState()
-  const [updateAdminTable, setUpdateAdminTable]= useState(false)
+  const [updateAdminTable, setUpdateAdminTable] = useState(false)
 
 
   let history = useHistory();
@@ -323,7 +323,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  },[updateAdminTable]);
+  }, [updateAdminTable]);
 
 
   useEffect(() => {
@@ -340,7 +340,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  },[]);
+  }, []);
 
 
 
@@ -536,7 +536,7 @@ export default function SuperadminFunction() {
   }
 
 
-  
+
 
 
 
@@ -547,7 +547,7 @@ export default function SuperadminFunction() {
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
             <Typography variant='h6'>
-              Super Admin
+              Admin Creation
             </Typography>
           </Grid>
         </Grid>
@@ -666,7 +666,7 @@ export default function SuperadminFunction() {
                     className: classes.floatingLabelFocusStyle,
                     shrink: true,
                   }}
-                  
+
                 />
               )}
             />
@@ -753,7 +753,7 @@ export default function SuperadminFunction() {
                         className: classes.floatingLabelFocusStyle,
                         shrink: true,
                       }}
-                      
+
                     />
                   )}
                 />
@@ -779,7 +779,7 @@ export default function SuperadminFunction() {
                     shrink: true,
                   }}
 
-                  
+
                 />
               </div>
               <div className={classes.item} >
@@ -804,6 +804,58 @@ export default function SuperadminFunction() {
           </Modal>
         </Grid>
       </Box>
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Super User Creation
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={4} >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={userslist}
+              groupBy={""}
+              getOptionLabel={(option) => option.email}
+              style={{ width: 300, marginLeft: 100 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="username/email"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              style={{ marginTop: 10, marginLeft: 240 }}
+            >
+              {" "}
+              Create Super User
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+
+
+
+
+
+
       <Box py={2} px={2}>
         <Grid container xl={12} justifyContent="space-between" spacing={3}>
           <Grid item xs={12}>
@@ -896,9 +948,16 @@ export default function SuperadminFunction() {
                           </div>
                         </StyledTableCell>
                         <StyledTableCell item xl={8}>
-                          <div className={classes.texttablecell}>
-                            {/* {'Pending'} */}
-                          </div>
+                          <Button
+                            type="button"
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                          >
+                            Delete
+                          </Button>
                         </StyledTableCell>
                       </StyledTableRow>
                     )}

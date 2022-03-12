@@ -428,8 +428,12 @@ export default function AdminAccesslist() {
 
     axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
       (res) => {
+        if(res.data!=='User already has permission'){
+          handleUpdateApproval(res.data.Expiry_date, res.data.Access_Type, item, action)
+        }else{
+          handleUpdateApproval(item.Expiry_date, item.Access_Type, item, action)
+        }
 
-        handleUpdateApproval(res.data.Expiry_date, res.data.Access_Type, item, action)
 
 
         // setNotify({

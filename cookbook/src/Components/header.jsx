@@ -310,7 +310,8 @@ export default function ClippedDrawer({ children }) {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+    // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, { 'email': localStorage.getItem('uemail') }, conf).then(
       (res) => {
 
         setMigtypeslist(res.data)
@@ -497,32 +498,32 @@ export default function ClippedDrawer({ children }) {
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
-              {IsSuperAdmin !== 'true' ?<>
+              {/* {IsSuperAdmin !== 'true' ? <> */}
                 {
                   DropDownValues.length > 0 &&
-                    <StyledAutocomplete
-                      size="small"
-                      id="grouped-demo"
-                      className={classes.inputRoottype}
-                      options={DropDownValues}
-                      groupBy={""}
-                      defaultValue={{ title: DropDownValues[0]?.title }}
-                      getOptionLabel={(option) => option.title}
-                      style={{ width: 300 }}
-                      onChange={(e, v) => handleversion(v)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="MigrationTypes"
-                          variant="outlined"
-                          InputLabelProps={{
-                            className: classes.floatingLabelFocusStyle,
-                            shrink: true,
-                          }}
-                        />
-                      )}
-                    />
-                } </>: null
+                  <StyledAutocomplete
+                    size="small"
+                    id="grouped-demo"
+                    className={classes.inputRoottype}
+                    options={DropDownValues}
+                    groupBy={""}
+                    defaultValue={{ title: DropDownValues[0]?.title }}
+                    getOptionLabel={(option) => option.title}
+                    style={{ width: 300 }}
+                    onChange={(e, v) => handleversion(v)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="MigrationTypes"
+                        variant="outlined"
+                        InputLabelProps={{
+                          className: classes.floatingLabelFocusStyle,
+                          shrink: true,
+                        }}
+                      />
+                    )}
+                  />
+                // } </> : null
               }
             </Grid>
 

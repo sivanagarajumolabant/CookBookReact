@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 import config from "../../Config/config";
 import { TableContainer } from "@material-ui/core";
+import { Autocomplete } from '@material-ui/lab';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -165,22 +166,122 @@ export default function AccessReview() {
   }, [headerValue?.title]);
 
 
+  const StyledAutocomplete = styled(Autocomplete)({
+    "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+      // Default transform is "translate(14px, 20px) scale(1)""
+      // This lines up the label with the initial cursor position in the input
+      // after changing its padding-left.
+      transform: "translate(34px, 20px) scale(1);",
+    },
+    "& .MuiAutocomplete-inputRoot": {
+      color: "black",
+      // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
+      '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+        // Default left padding is 6px
+        paddingLeft: 26,
+        // height: '1rem'
+      },
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "grey",
+      },
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "black",
+      },
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#3f51b5",
+      },
+    },
+  });
+
+
+
   return (
     <>
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              User Permissions
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={4} >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              // options={userslist}
+              groupBy={""}
+              getOptionLabel={(option) => option.email}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="username/email"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={4} >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              // options={userslist}
+              groupBy={""}
+              // getOptionLabel={(option) => option.email}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Migration Type"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={4} >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              // options={userslist}
+              groupBy={""}
+              // getOptionLabel={(option) => option.email}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Object Type"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+        </Grid>
+      </Box>
+
 
 
       <Box py={2} px={2}>
         <Grid container xl={12} justifyContent="space-between" spacing={3}>
           <Grid item xs={12}>
-            <Typography
-              gutterBottom
-              align='center'
-              variant="h6"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              User Permissions
-            </Typography>
             <TableContainer className={classestable.table}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead className={classes.primary}>
@@ -191,7 +292,7 @@ export default function AccessReview() {
                     <StyledTableCell align="left">Feature Name</StyledTableCell>
                     <StyledTableCell align="left">Access Type</StyledTableCell>
                     <StyledTableCell align="left">Approved by</StyledTableCell>
-                    <StyledTableCell align="left">Created at</StyledTableCell>
+                    <StyledTableCell align="left">Created date</StyledTableCell>
                     <StyledTableCell align="left">Expiry date</StyledTableCell>
                     {/* <StyledTableCell align="left">Roles</StyledTableCell> */}
                   </TableRow>
