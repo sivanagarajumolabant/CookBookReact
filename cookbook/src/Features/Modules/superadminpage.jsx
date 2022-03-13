@@ -203,7 +203,10 @@ export default function SuperadminFunction() {
   const [superadminlist, setsuperadminlist] = useState([])
 
   const [useremail, setuseremail] = useState()
+  // const [superuseremail, setsuperuseremail] = useState()
   const [updateAdminTable, setUpdateAdminTable] = useState(false)
+  const [updateSuperAdminTable, setUpdateSuperAdminTable] = useState(false)
+  const [updatermSuperAdminTable, setUpdatermSuperAdminTable] = useState(false)
 
 
   let history = useHistory();
@@ -340,7 +343,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  }, []);
+  }, [updateSuperAdminTable,updatermSuperAdminTable]);
 
 
 
@@ -535,12 +538,70 @@ export default function SuperadminFunction() {
     setUpdateAdminTable(false)
   }
 
+  const handlesuperadmincreation = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "email": useremail,
+    }; const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/createsuperadmin/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "super admin created successfully",
+          type: "success",
+        });
+        // setOpen(false)
+        // dispatch(Menuaction.reloadAction(true));
+        setUpdateSuperAdminTable(true)
+
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+    setUpdateSuperAdminTable(false)
+  }
 
 
+  const handledeletesuperadmin = (email) => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "email": email,
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/removesuperadmin/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "super admin removed successfully",
+          type: "success",
+        });
+        setUpdatermSuperAdminTable(true)
+       
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+    setUpdatermSuperAdminTable(false)
+  }
+  
 
-
-
-
+ 
   return (
     <>
       <Box py={1} px={1}>
@@ -824,6 +885,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               getOptionLabel={(option) => option.email}
               style={{ width: 300, marginLeft: 100 }}
+              onChange={(e, v) => setuseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -843,17 +905,14 @@ export default function SuperadminFunction() {
               color="primary"
               component="span"
               style={{ marginTop: 10, marginLeft: 240 }}
+              onClick={() => handlesuperadmincreation()}
             >
               {" "}
-              Create Super User
+              Create Super Admin
             </Button>
           </Grid>
         </Grid>
       </Box>
-
-
-
-
 
 
       <Box py={2} px={2}>
@@ -955,6 +1014,7 @@ export default function SuperadminFunction() {
                             color="primary"
                             className={classes.submit}
                             style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                            onClick={() => handledeletesuperadmin(item.Email)}
                           >
                             Delete
                           </Button>

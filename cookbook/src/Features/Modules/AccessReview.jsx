@@ -213,9 +213,13 @@ export default function AccessReview() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              // options={userslist}
+              options={[
+                { title: "quadrant@gail.com", code: 1 },
+                { title: "abc@gmail.com", code: 2 },
+                { title: "def@gmail.com", code: 3 },
+              ]}
               groupBy={""}
-              getOptionLabel={(option) => option.email}
+              getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField
@@ -235,9 +239,13 @@ export default function AccessReview() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              // options={userslist}
+              options={[
+                { title: "Oracle To Postgres", code: 1 },
+                { title: "Sql To Postgres", code: 2 },
+                { title: "Mysql To Postgres", code: 3 },
+              ]}
               groupBy={""}
-              // getOptionLabel={(option) => option.email}
+              getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField
@@ -257,9 +265,13 @@ export default function AccessReview() {
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              // options={userslist}
+              options={[
+                { title: "Procedue", code: 1 },
+                { title: "Package", code: 2 },
+                { title: "Function", code: 3 },
+              ]}
               groupBy={""}
-              // getOptionLabel={(option) => option.email}
+              getOptionLabel={(option) => option.title}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField

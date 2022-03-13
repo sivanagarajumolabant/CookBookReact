@@ -151,6 +151,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AdminAccesslist() {
   const classes = useStyles();
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
@@ -190,19 +191,6 @@ export default function AdminAccesslist() {
   const [edithandle, setEdithandle] = useState([])
   const [model_Item, setModel_Item] = useState([])
   
-
-
-
-
-
-  const {
-    details,
-    createFeature,
-    preview,
-    editpreview,
-    editPreviewdetails,
-    headerValue,
-  } = useSelector((state) => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title);
   useEffect(() => {
     let conf = {
@@ -223,12 +211,20 @@ export default function AdminAccesslist() {
   }, []);
 
   useEffect(() => {
+    let body = {
+      "User_Email": localStorage.getItem('uemail'),
+      "Migration_TypeId": headerValue?.title,
+    };
     let conf = {
       headers: {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/approvalslist`, conf).then(
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/approvalslist`,form, conf).then(
       (res) => {
 
         setApprovallist(res.data)
