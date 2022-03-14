@@ -208,14 +208,14 @@ export default function CreateFeature(props) {
   // }
   // console.log("obj 1 ", obj_type);
   const [prerunval, setPrerunval] = useState([]);
-console.log(edithandle)
+  // console.log(edithandle)
   // const [featureslist, setFeatureslist] = useState(["ex1", "Sample"])
   const history = useHistory();
 
   const [formValues, setformvalues] = useState({
     Migration_TypeId: props.location?.state?.data?.type,
     Object_Type: props.location?.state?.data?.Label,
-    
+
   });
   const [file, setfile] = useState([]);
   // const [AttachmentList, setAttachmentList] = useState({})
@@ -443,13 +443,24 @@ console.log(edithandle)
   };
 
   const handleEditchangetext = (e) => {
-     if(e.target.name==="Sequence"){
+    if (e.target.name === "Sequence") {
 
-     
-    setEdithandle({
-      ...edithandle,
-      Sequence:e.target.value
-    })}
+
+      setEdithandle({
+        ...edithandle,
+        Sequence: e.target.value
+      })
+    }else if (e.target.name === "Keywords"){
+      setEdithandle({
+        ...edithandle,
+        'Keywords': e.target.value
+      })
+    }else if(e.target.name === "Estimations"){
+      setEdithandle({
+        ...edithandle,
+        'Estimations': e.target.value
+      })
+    }
     setformvalues({
       ...formValues,
       [e.target.name]: e.target.value,
@@ -485,15 +496,15 @@ console.log(edithandle)
       Object_Type: featuredata.Object_Type,
       Feature_Name: String(featuredata.Feature_Name).substr(5),
       // Source_FeatureDescription, Target_FeatureDescription,
-      // "Sequence": '',
+      "Sequence": featuredata.Sequence,
       "Source_FeatureDescription": featuredata.Source_FeatureDescription,
       "Target_FeatureDescription": featuredata.Target_FeatureDescription,
       "Target_Expected_Output": featuredata.Target_Expected_Output,
       "Target_ActualCode": featuredata.Target_ActualCode,
       "Source_Code": featuredata.Source_Code,
       "Conversion_Code": featuredata.Conversion_Code,
-      // "Keywords":,
-      // "Estimations":'',
+      "Keywords":featuredata.Keywords,
+      "Estimations":featuredata.Estimations,
     }
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -529,26 +540,33 @@ console.log(edithandle)
     // setOpen(false);
   }
   const handleEditchange = (Feature_Id) => {
-    
+    setOpen(true);
     // setFid(Feature_Id);
     let conf = {
       headers: {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
+    let body = {
+      'User_Email': localStorage.getItem('uemail')
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
     axios
-      .get(`${config.API_BASE_URL()}/api/fdetail/${Feature_Id}`, conf)
+      .post(`${config.API_BASE_URL()}/api/fdetail/${Feature_Id}`, form, conf)
       .then(
         (res) => {
           console.log(res);
-          setEdithandle(res.data)
+          setEdithandle(res.data?.serializer)
           setOpen(true);
         },
         (error) => {
           console.log(error);
         }
       );
-      
+
   }
 
 
@@ -600,7 +618,7 @@ console.log(edithandle)
             InputLabelProps={{
               shrink: true,
             }}
-            // fullWidth
+          // fullWidth
           />
         </Grid>
 
@@ -700,7 +718,7 @@ console.log(edithandle)
               shrink: true,
             }}
             fullWidth
-            // multiline
+          // multiline
           />
         </Grid>
 
@@ -895,7 +913,7 @@ console.log(edithandle)
                 <InputLabel>Predecessor</InputLabel>
                 <Select
                   native
-                  value={edithandle.Sequence||''}
+                  value={edithandle.Sequence || ''}
                   onChange={(e) => handleEditchangetext(e)}
                   label="Predecessor"
                   name="Sequence"
