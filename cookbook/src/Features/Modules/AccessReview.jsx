@@ -11,6 +11,7 @@ import axios from "axios";
 import config from "../../Config/config";
 import { TableContainer } from "@material-ui/core";
 import { Autocomplete } from '@material-ui/lab';
+import Button from '@material-ui/core/Button';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -100,6 +101,10 @@ export default function AccessReview() {
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [objtypeslist, setObjtypeslist] = useState([])
+  const [grant_user, setGrant_user] = useState()
+  const [userslist, setUserslist] = useState([])
+  const [selecetd, setSelected] = useState(false)
+  const [useremail, setuseremail] = useState()
 
 
   useEffect(() => {
@@ -166,6 +171,25 @@ export default function AccessReview() {
   }, [headerValue?.title]);
 
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
+      (res) => {
+
+        setUserslist(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+
   const StyledAutocomplete = styled(Autocomplete)({
     "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
       // Default transform is "translate(14px, 20px) scale(1)""
@@ -208,19 +232,33 @@ export default function AccessReview() {
       </Box>
       <Box py={2} px={2}>
         <Grid container direction='row' spacing={2}>
-          <Grid item xs={4} >
+          <Grid item xs={4}>
+            <TextField
+              id="outlined-multiline-static"
+              label="Migration Type"
+              name="MigrationType_Id"
+              className={classes.textField}
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              value={headerValue?.title}
+              size="small"
+              disabled
+              style={{ width: 300 }}
+            />
+          </Grid>
+          <Grid item xs={4}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={[
-                { title: "quadrant@gail.com", code: 1 },
-                { title: "abc@gmail.com", code: 2 },
-                { title: "def@gmail.com", code: 3 },
-              ]}
+              options={userslist}
               groupBy={""}
-              getOptionLabel={(option) => option.title}
+              getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
+              onChange={(e, v) => setuseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -234,57 +272,18 @@ export default function AccessReview() {
               )}
             />
           </Grid>
-          <Grid item xs={4} >
-            <StyledAutocomplete
-              size="small"
-              id="grouped-demo"
-              className={classes.inputRoottype}
-              options={[
-                { title: "Oracle To Postgres", code: 1 },
-                { title: "Sql To Postgres", code: 2 },
-                { title: "Mysql To Postgres", code: 3 },
-              ]}
-              groupBy={""}
-              getOptionLabel={(option) => option.title}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Migration Type"
-                  variant="outlined"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={4} >
-            <StyledAutocomplete
-              size="small"
-              id="grouped-demo"
-              className={classes.inputRoottype}
-              options={[
-                { title: "Procedue", code: 1 },
-                { title: "Package", code: 2 },
-                { title: "Function", code: 3 },
-              ]}
-              groupBy={""}
-              getOptionLabel={(option) => option.title}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Object Type"
-                  variant="outlined"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
+
+          <Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              style={{ marginTop: 8, marginLeft: 40 }}
+            // onClick={() => handlesuperadmincreation()}
+            >
+              {" "}
+              Submit
+            </Button>
           </Grid>
         </Grid>
       </Box>
