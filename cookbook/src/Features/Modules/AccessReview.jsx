@@ -96,15 +96,12 @@ export default function AccessReview() {
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-  const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState('Procedure')
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [objtypeslist, setObjtypeslist] = useState([])
-  const [grant_user, setGrant_user] = useState()
   const [userslist, setUserslist] = useState([])
-  const [selecetd, setSelected] = useState(false)
-  const [useremail, setuseremail] = useState()
+  const [useremail, setUseremail] = useState()
 
 
   useEffect(() => {
@@ -158,7 +155,7 @@ export default function AccessReview() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.get(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
       (res) => {
 
         setObjtypeslist(res.data)
@@ -189,6 +186,36 @@ export default function AccessReview() {
     );
   }, []);
 
+  const handleUseremail = (v) => {
+    setUseremail(v?.email)
+  }
+  const handleAccessReview = () => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+
+    let body = {
+      "Migration_TypeId": headerValue?.title,
+      "User_Email": useremail
+    };
+
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
+      (res) => {
+
+        setObjtypeslist(res.data)
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
   const StyledAutocomplete = styled(Autocomplete)({
     "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
@@ -232,7 +259,7 @@ export default function AccessReview() {
       </Box>
       <Box py={2} px={2}>
         <Grid container direction='row' spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -249,7 +276,7 @@ export default function AccessReview() {
               style={{ width: 300 }}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -258,7 +285,7 @@ export default function AccessReview() {
               groupBy={""}
               getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
-              onChange={(e, v) => setuseremail(v?.email)}
+              onChange={(e, v) => handleUseremail(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -279,7 +306,7 @@ export default function AccessReview() {
               color="primary"
               component="span"
               style={{ marginTop: 8, marginLeft: 40 }}
-            // onClick={() => handlesuperadmincreation()}
+              onClick={() => handleAccessReview()}
             >
               {" "}
               Submit

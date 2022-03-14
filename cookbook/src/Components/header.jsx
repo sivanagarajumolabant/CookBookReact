@@ -310,8 +310,16 @@ export default function ClippedDrawer({ children }) {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
+    let body={
+      'email': localStorage.getItem('uemail')
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
     // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
-    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, { 'email': localStorage.getItem('uemail') }, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`,form, conf).then(
       (res) => {
 
         setMigtypeslist(res.data)
