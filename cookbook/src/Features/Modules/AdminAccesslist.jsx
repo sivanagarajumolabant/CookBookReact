@@ -210,31 +210,35 @@ export default function AdminAccesslist() {
     );
   }, []);
 
+
   useEffect(() => {
-    let body = {
-      "User_Email": localStorage.getItem('uemail'),
-      "Migration_TypeId": headerValue?.title,
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/approvalslist`,form, conf).then(
-      (res) => {
-
-        setApprovallist(res.data)
-
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [updatetable]);
+    if (Object.keys(headerValue).length>0){
+      let body = {
+        "User_Email": localStorage.getItem('uemail'),
+        "Migration_TypeId": headerValue?.title,
+      };
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
+      axios.post(`${config.API_BASE_URL()}/api/approvalslist`,form, conf).then(
+        (res) => {
+  
+          setApprovallist(res.data)
+  
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    
+  }, [updatetable, headerValue]);
 
 
 
