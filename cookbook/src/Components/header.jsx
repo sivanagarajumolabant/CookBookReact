@@ -319,6 +319,7 @@ export default function ClippedDrawer({ children }) {
         if (res.data.length > 0) {
           getmenus(res.data[0].title);
         }
+        
 
       },
       (error) => {
