@@ -21,9 +21,16 @@ const getdropdownlist = (value) => {
          payload: value
       })
    }
+}
 
+const admin = (value) => {
+   return dispatch => {
 
-
+      dispatch({
+         type: "ADMIN_USER",
+         payload: value
+      })
+   }
 
 }
 
@@ -137,4 +144,6 @@ const DeleteMenutlist = (value) => {
    }
 }
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist}
+
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin}

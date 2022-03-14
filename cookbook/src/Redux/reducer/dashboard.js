@@ -12,7 +12,8 @@ const initialState = {
   details: {},
   editPreviewdetails: {},
   ITEMlIST: [],
-  DropDownValues: []
+  DropDownValues: [],
+  admin :0
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -80,7 +81,8 @@ const dashboardReducer = (state = initialState, action) => {
       return {
         ...state,
         DropDownValues: action.payload,
-        headerValue: action.payload[0]
+        headerValue: action.payload[0],
+        admin: action.payload[0].admin
       };
 
 
@@ -96,7 +98,12 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         ITEMlIST: action.payload
       };
-
+      
+    case "ADMIN_USER":
+      return {
+        ...state,
+        admin: action.payload
+      };
 
     default:
       return state;

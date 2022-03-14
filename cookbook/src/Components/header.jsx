@@ -285,7 +285,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue, ITEMlIST, DropDownValues } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin } = useSelector(state => state.dashboardReducer);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -310,7 +310,7 @@ export default function ClippedDrawer({ children }) {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    let body={
+    let body = {
       'email': localStorage.getItem('uemail')
     }
     const form = new FormData();
@@ -319,15 +319,16 @@ export default function ClippedDrawer({ children }) {
     });
 
     // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
-    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`,form, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
       (res) => {
 
         setMigtypeslist(res.data)
         dispatch(Menuaction.getdropdownlist(res.data))
         if (res.data.length > 0) {
           getmenus(res.data[0].title);
+          dispatch(Menuaction.admin(res.data[0].admin))
         }
-        
+
 
       },
       (error) => {
@@ -396,6 +397,8 @@ export default function ClippedDrawer({ children }) {
     setdropdown(v);
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
+    dispatch(Menuaction.admin(v.admin))
+    
   };
 
   // const deleteitem = async (data) => {
@@ -476,6 +479,7 @@ export default function ClippedDrawer({ children }) {
   // }
   // },[menuList])
 
+  // console.log(admin," ========", headerValue?.title)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -508,30 +512,30 @@ export default function ClippedDrawer({ children }) {
               className={classes.navbarcom}
             >
               {/* {IsSuperAdmin !== 'true' ? <> */}
-                {
-                  DropDownValues.length > 0 &&
-                  <StyledAutocomplete
-                    size="small"
-                    id="grouped-demo"
-                    className={classes.inputRoottype}
-                    options={DropDownValues}
-                    groupBy={""}
-                    defaultValue={{ title: DropDownValues[0]?.title }}
-                    getOptionLabel={(option) => option.title}
-                    style={{ width: 300 }}
-                    onChange={(e, v) => handleversion(v)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="MigrationTypes"
-                        variant="outlined"
-                        InputLabelProps={{
-                          className: classes.floatingLabelFocusStyle,
-                          shrink: true,
-                        }}
-                      />
-                    )}
-                  />
+              {
+                DropDownValues.length > 0 &&
+                <StyledAutocomplete
+                  size="small"
+                  id="grouped-demo"
+                  className={classes.inputRoottype}
+                  options={DropDownValues}
+                  groupBy={""}
+                  defaultValue={{ title: DropDownValues[0]?.title }}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 300 }}
+                  onChange={(e, v) => handleversion(v)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="MigrationTypes"
+                      variant="outlined"
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />
                 // } </> : null
               }
             </Grid>
@@ -675,7 +679,7 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-              {IsSuperAdmin === "true" &&
+              {admin === 1 &&
                 <>
                   <Typography
                     variant="body2"
@@ -702,7 +706,8 @@ export default function ClippedDrawer({ children }) {
               </Typography>
 
               <Divider />
-              {IsSuperAdmin == "true" &&
+              {/* {(IsSuperAdmin === "true" || admin===1) && */}
+              {admin === 1 &&
                 <>
                   <Typography
                     variant="body2"

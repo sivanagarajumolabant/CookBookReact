@@ -190,7 +190,7 @@ export default function AdminAccesslist() {
   // const [grant_expiry_date, setGrant_expiry_date]= useState()
   const [edithandle, setEdithandle] = useState([])
   const [model_Item, setModel_Item] = useState([])
-  
+
   const [migtypeid, setMigtypeid] = useState(headerValue?.title);
   useEffect(() => {
     let conf = {
@@ -212,32 +212,33 @@ export default function AdminAccesslist() {
 
 
   useEffect(() => {
-    if (Object.keys(headerValue).length>0){
-      let body = {
-        "User_Email": localStorage.getItem('uemail'),
-        "Migration_TypeId": headerValue?.title,
-      };
-      let conf = {
-        headers: {
-          Authorization: "Bearer " + config.ACCESS_TOKEN(),
-        },
-      };
-      const form = new FormData();
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
-      axios.post(`${config.API_BASE_URL()}/api/approvalslist`,form, conf).then(
-        (res) => {
-  
-          setApprovallist(res.data)
-  
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    if (headerValue) {
+      if (Object.keys(headerValue).length > 0) {
+        let body = {
+          "User_Email": localStorage.getItem('uemail'),
+          "Migration_TypeId": headerValue?.title,
+        };
+        let conf = {
+          headers: {
+            Authorization: "Bearer " + config.ACCESS_TOKEN(),
+          },
+        };
+        const form = new FormData();
+        Object.keys(body).forEach((key) => {
+          form.append(key, body[key]);
+        });
+        axios.post(`${config.API_BASE_URL()}/api/approvalslist`, form, conf).then(
+          (res) => {
+
+            setApprovallist(res.data)
+
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     }
-    
   }, [updatetable, headerValue]);
 
 
@@ -428,9 +429,9 @@ export default function AdminAccesslist() {
 
     axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
       (res) => {
-        if(res.data!=='User already has permission'){
+        if (res.data !== 'User already has permission') {
           handleUpdateApproval(res.data.Expiry_date, res.data.Access_Type, item, action)
-        }else{
+        } else {
           handleUpdateApproval(item.Expiry_date, item.Access_Type, item, action)
         }
 
@@ -482,7 +483,7 @@ export default function AdminAccesslist() {
     };
 
     if (action === 'Denied') {
-      handleUpdateApproval(item.Expiry_date,item.Access_Type, item, action)
+      handleUpdateApproval(item.Expiry_date, item.Access_Type, item, action)
     }
 
 
@@ -656,20 +657,20 @@ export default function AdminAccesslist() {
     setOpen1(true)
     setModel_Item(item)
   }
-   const handleChangeDate=(date)=>{
+  const handleChangeDate = (date) => {
     date = moment(date).format('YYYY-MM-DD');
     setModel_Item({
       ...model_Item,
-      Expiry_date:date
+      Expiry_date: date
     })
-   }
+  }
 
-    const handleSelectgroup=(value)=>{
-      setModel_Item({
-        ...model_Item,
-        Access_Type:value
-      })
-    }
+  const handleSelectgroup = (value) => {
+    setModel_Item({
+      ...model_Item,
+      Access_Type: value
+    })
+  }
   return (
     <>
       <Box py={1} px={1}>
@@ -808,7 +809,7 @@ export default function AdminAccesslist() {
           <Grid item xs={12} sm={4} md={4} xl={4}>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-              
+
               <KeyboardDatePicker
                 margin="normal"
                 size='small'
@@ -822,7 +823,7 @@ export default function AdminAccesslist() {
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
-                
+
               />
 
 
@@ -1049,7 +1050,7 @@ export default function AdminAccesslist() {
                     { title: "View", code: 'View' },
                   ]}
                   groupBy={""}
-                  defaultValue={{title:model_Item.Access_Type}}
+                  defaultValue={{ title: model_Item.Access_Type }}
                   // value={model_Item.Access_Type}
                   getOptionLabel={(option) => option?.title}
                   style={{ width: 330, marginTop: 20 }}
@@ -1071,7 +1072,7 @@ export default function AdminAccesslist() {
               </Grid>
               <Grid item xs={12} sm={4} md={4} xl={4}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                  
+
                   <KeyboardDatePicker
                     margin="normal"
                     id="date-picker-dialog"
@@ -1081,7 +1082,7 @@ export default function AdminAccesslist() {
                     format="MM/dd/yyyy"
                     value={model_Item.Expiry_date}
                     size="small"
-                    onChange={date =>handleChangeDate(date)}
+                    onChange={date => handleChangeDate(date)}
                     defaultValue={model_Item.Expiry_date}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
