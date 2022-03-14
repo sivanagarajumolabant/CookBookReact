@@ -398,7 +398,7 @@ export default function ClippedDrawer({ children }) {
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
     dispatch(Menuaction.admin(v.admin))
-    history.push('/dashboard');
+    // history.push('/dashboard');
   };
 
   // const deleteitem = async (data) => {
@@ -679,7 +679,8 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-              {admin === 1 &&
+            {(IsSuperAdmin === "true" || admin===1) &&
+              // {admin === 1 &&
                 <>
                   <Typography
                     variant="body2"
@@ -706,8 +707,8 @@ export default function ClippedDrawer({ children }) {
               </Typography>
 
               <Divider />
-              {/* {(IsSuperAdmin === "true" || admin===1) && */}
-              {admin === 1 &&
+              {(IsSuperAdmin === "true" || admin===1) &&
+              // {admin === 1 &&
                 <>
                   <Typography
                     variant="body2"
