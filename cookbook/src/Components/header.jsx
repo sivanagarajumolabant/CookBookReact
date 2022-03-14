@@ -398,7 +398,7 @@ export default function ClippedDrawer({ children }) {
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
     dispatch(Menuaction.admin(v.admin))
-    
+    history.push('/dashboard');
   };
 
   // const deleteitem = async (data) => {
