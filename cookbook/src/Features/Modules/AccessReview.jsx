@@ -140,32 +140,32 @@ export default function AccessReview() {
   }, [objtype]);
 
 
-  useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
+  // useEffect(() => {
+  //   let conf = {
+  //     headers: {
+  //       Authorization: "Bearer " + config.ACCESS_TOKEN(),
+  //     },
+  //   };
 
-    let body = {
-      "Migration_TypeId": headerValue?.title,
-    };
+  //   let body = {
+  //     "Migration_TypeId": headerValue?.title,
+  //   };
 
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
-      (res) => {
+  //   const form = new FormData();
+  //   Object.keys(body).forEach((key) => {
+  //     form.append(key, body[key]);
+  //   });
+  //   axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
+  //     (res) => {
 
-        setObjtypeslist(res.data)
+  //       setObjtypeslist(res.data)
 
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [headerValue?.title]);
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }, [headerValue?.title]);
 
 
   useEffect(() => {
@@ -186,9 +186,6 @@ export default function AccessReview() {
     );
   }, []);
 
-  const handleUseremail = (v) => {
-    setUseremail(v?.email)
-  }
   const handleAccessReview = () => {
     let conf = {
       headers: {
@@ -244,7 +241,7 @@ export default function AccessReview() {
     },
   });
 
-   console.log(userslist)
+  console.log(userslist)
 
 
   return (
@@ -259,44 +256,52 @@ export default function AccessReview() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' spacing={2}>
-          <Grid item xs={5}>
+        <Grid container direction='row' spacing={1}>
+
+          <Grid item xs={4}>
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
-              name="MigrationType_Id"
+              // onChange={(e) => handleChange(e)}
+              name='MigrationType_Id'
+              // defaultValue="Default Value"
+              // helperText={featurenamemsg}
               className={classes.textField}
+              // helperText="Some important text"
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
               value={headerValue?.title}
-              size="small"
+              size='small'
               disabled
               style={{ width: 300 }}
+
             />
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={4} >
+
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
               options={userslist}
               groupBy={""}
-              value={useremail}
+              // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
-              onChange={(e, v) => handleUseremail(e, v)}
+              onChange={(e, v) => setUseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="username/email"
+                  label="ID"
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                     shrink: true,
                   }}
+
                 />
               )}
             />
