@@ -254,11 +254,12 @@ export default function SuperadminFunction() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/migrationlistperuser/`, conf).then(
       (res) => {
         // console.log("mig list ", res.data)
         setMigtypeslist(res.data)
         dispatch(Menuaction.getdropdownlist(res.data))
+        dispatch(Menuaction.admin(res.data[0].admin))
       },
       (error) => {
         console.log(error);
