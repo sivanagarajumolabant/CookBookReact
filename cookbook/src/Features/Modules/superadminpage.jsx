@@ -519,7 +519,7 @@ export default function SuperadminFunction() {
     }
     let body = {
       "email": useremail,
-      "mig_type": headerValue?.title,
+      "mig_type": migtype_create,
     };
 
     const form = new FormData();
