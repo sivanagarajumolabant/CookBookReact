@@ -244,6 +244,7 @@ export default function AccessReview() {
     },
   });
 
+   console.log(userslist)
 
 
   return (
@@ -283,9 +284,10 @@ export default function AccessReview() {
               className={classes.inputRoottype}
               options={userslist}
               groupBy={""}
+              value={useremail}
               getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
-              onChange={(e, v) => handleUseremail(v)}
+              onChange={(e, v) => handleUseremail(e, v)}
               renderInput={(params) => (
                 <TextField
                   {...params}

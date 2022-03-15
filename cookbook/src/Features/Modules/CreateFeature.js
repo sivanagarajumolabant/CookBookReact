@@ -489,7 +489,7 @@ export default function CreateFeature(props) {
 
   const handleEditmodal = (featuredata) => {
     // console.log(featuredata)
-
+   
     let formData = {
       ...formValues,
       Migration_TypeId: featuredata.Migration_TypeId,
@@ -506,6 +506,7 @@ export default function CreateFeature(props) {
       "Keywords":featuredata.Keywords,
       "Estimations":featuredata.Estimations,
     }
+    setEdithandle(formData)
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
 
@@ -917,7 +918,7 @@ export default function CreateFeature(props) {
                   onChange={(e) => handleEditchangetext(e)}
                   label="Predecessor"
                   name="Sequence"
-                  defaultValue={edithandle.Sequence}
+                  // defaultValue={edithandle.Sequence}
                   required
 
                   InputLabelProps={{
@@ -947,9 +948,9 @@ export default function CreateFeature(props) {
                 // value ={row.Keywords}
                 onChange={(e) => handleEditchangetext(e)}
                 name="Keywords"
-                defaultValue={edithandle.Keywords}
+                // defaultValue={edithandle.Keywords}
                 // helperText={featurenamemsg}
-                // value={edithandle.Keywords}
+                value={edithandle.Keywords}
                 className={classes.textField}
                 // helperText="Some important text"
                 variant="outlined"
@@ -966,8 +967,8 @@ export default function CreateFeature(props) {
                 // value = {row.Estimations}
                 onChange={(e) => handleEditchangetext(e)}
                 name="Estimations"
-                defaultValue={edithandle.Estimations}
-                // value={edithandle.Estimations}
+                // defaultValue={edithandle.Estimations}
+                value={edithandle.Estimations}
                 // helperText={featurenamemsg}
                 className={classes.textField}
                 // helperText="Some important text"
