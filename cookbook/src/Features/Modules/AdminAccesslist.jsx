@@ -155,7 +155,7 @@ export default function AdminAccesslist() {
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
-  const [objtype, setObjtype] = useState("Procedure");
+  const [objtype, setObjtype] = useState();
   const [fnnames, setFnnames] = useState([]);
   const [data, setData] = useState([]);
   const [isEdit, setEdit] = React.useState(false);
@@ -175,6 +175,7 @@ export default function AdminAccesslist() {
     message: "",
     type: "",
   });
+  const [objcount, setobjcount] = useState(0)
   const [updatetable, setupdateTable] = useState(false)
   const [accesschnage, setaccesschange] = useState()
   // const [accesstypeslist, setAccesstypeslist] = useState([
@@ -300,15 +301,25 @@ export default function AdminAccesslist() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
-      (res) => {
-        setFnnames(res.data);
-        console.log(res.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (objtype === 'All') {
+      setFnnames([{ 'Feature_Name': "All" }])
+    }
+    else if (!objcount) {
+      setFnnames([])
+    }
+    else {
+      axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+        (res) => {
+          // setFnnames(res.data);
+          // console.log(res.data);
+          setFnnames([{ 'Feature_Name': "All" }].concat(res.data))
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+
   }, [objtype]);
 
   const handleObjecttype = (v) => {
@@ -327,15 +338,23 @@ export default function AdminAccesslist() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
-      (res) => {
-        setFnnames(res.data);
-        console.log(res.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (objcount === 0) {
+      setFnnames([])
+    }
+    else if (v?.Object_Type === 'All') {
+      setFnnames([{ 'Feature_Name': "All" }])
+    } else {
+      axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+        (res) => {
+          // setFnnames(res.data);
+          setFnnames([{ 'Feature_Name': "All" }].concat(res.data))
+          console.log(res.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
 
   };
 
@@ -346,6 +365,7 @@ export default function AdminAccesslist() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
+
     axios
       .get(
         `${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`,
@@ -359,6 +379,7 @@ export default function AdminAccesslist() {
           console.log(error);
         }
       );
+
   };
 
 
@@ -379,8 +400,11 @@ export default function AdminAccesslist() {
     });
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
+        if (res.data.length > 0) {
+          setObjtypeslist(([{ Object_Type: "All" }]).concat(res.data))
+          setobjcount(1)
+        } 
 
-        setObjtypeslist(res.data)
 
       },
       (error) => {
@@ -671,6 +695,7 @@ export default function AdminAccesslist() {
       Access_Type: value
     })
   }
+  console.log(objtypelist)
   return (
     <>
       <Box py={1} px={1}>
@@ -783,11 +808,10 @@ export default function AdminAccesslist() {
             />
           </Grid>
           <Grid item xs={12} sm={4} md={4} xl={4}>
-          
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
-              // className={classes.inputRoottype}
+              className={classes.inputRoottype}
               options={userslist}
               groupBy={""}
               // defaultValue={{ title: "Select email" }}

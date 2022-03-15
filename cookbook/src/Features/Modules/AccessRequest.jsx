@@ -141,6 +141,7 @@ export default function Request() {
   });
 
   const [flag, setFlag] = useState(0)
+  const [objcount, setobjcount] = useState(0)
   const [editflag, setEditflag] = useState(0)
   let history = useHistory();
 
@@ -170,20 +171,26 @@ export default function Request() {
       form.append(key, body[key]);
     });
     // if (objtype !== 'All') {
+    if (objtype === 'All') {
+      setFnnames([{ 'Feature_Name': "All" }])
+    }
+    else if (!objcount) {
+      setFnnames([])
+    }
+    else {
       axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
         (res) => {
-          setFnnames(res.data)
-          console.log(res.data)
+          setFnnames([{ 'Feature_Name': "All" }].concat(res.data))
         },
         (error) => {
           console.log(error);
         }
       );
-    // }
-    // else{
-    //   setFnnames({Feature_Name:'All'})
-      
-    // }
+      // }
+      // else{
+      //   setFnnames({Feature_Name:'All'})
+
+    }
   }, [objtype]);
 
   useEffect(() => {
@@ -203,8 +210,10 @@ export default function Request() {
     });
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
-
-        setObjtypeslist(res.data)
+        if (res.data.length > 0) {
+          setObjtypeslist(([{ Object_Type: "All" }]).concat(res.data))
+          setobjcount(1)
+        }
 
       },
       (error) => {
@@ -220,30 +229,37 @@ export default function Request() {
   }
 
   const handledropdown = (e, v) => {
-    setSelected(true)
-    setFnname(v.Feature_Name)
-    let conf = {
-      headers: {
-        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+    if (v?.Feature_Name === 'All') {
+      setSelected(false)
+      setEditflag(0)
+      setFlag(0)
+      setFnname(v.Feature_Name)
+    } else {
+      setSelected(true)
+      setFnname(v.Feature_Name)
+      let conf = {
+        headers: {
+          'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+        }
       }
-    }
-    let body = {
-      'User_Email': localStorage.getItem('uemail')
-    }
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, form, conf).then(
-      (res) => {
-        setData(res.data?.serializer)
-        setEditflag(res.data?.edit)
-        setFlag(res.data?.flag)
-      },
-      (error) => {
-        console.log(error);
+      let body = {
+        'User_Email': localStorage.getItem('uemail')
       }
-    );
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
+      axios.post(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, form, conf).then(
+        (res) => {
+          setData(res.data?.serializer)
+          setEditflag(res.data?.edit)
+          setFlag(res.data?.flag)
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }
 
 
@@ -396,74 +412,79 @@ export default function Request() {
             />
           </Grid>
 
-          <Grid item xs={6}>
+          {fnname !== 'All' ? <>
+            <Grid item xs={6}>
 
 
-            <div className="App">
-              <p>{'Source Description'}</p>
-              <CKEditor
-                editor={ClassicEditor}
-                data={data?.Source_FeatureDescription}
-                onReady={editor => {
-                  // You can store the "editor" and use when it is needed.
-                  console.log('Editor is ready to use!', editor);
-                }}
-                // onChange={(event, editor) => {
-                //   const data = editor.getData();
-                //   handletarget(data)
-                //   // console.log( { event, editor, data } );
-                // }}
-                // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
+              <div className="App">
+                <p>{'Source Description'}</p>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={data?.Source_FeatureDescription}
+                  onReady={editor => {
+                    // You can store the "editor" and use when it is needed.
+                    console.log('Editor is ready to use!', editor);
+                  }}
+                  // onChange={(event, editor) => {
+                  //   const data = editor.getData();
+                  //   handletarget(data)
+                  //   // console.log( { event, editor, data } );
+                  // }}
+                  // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
 
-                // config={{
-                //   extraPlugins: [uploadPlugin]
-                // }}
-                onBlur={(event, editor) => {
-                  console.log('Blur.', editor);
-                }}
-                onFocus={(event, editor) => {
-                  console.log('Focus.', editor);
-                }}
-                disabled
-              />
-            </div>
+                  // config={{
+                  //   extraPlugins: [uploadPlugin]
+                  // }}
+                  onBlur={(event, editor) => {
+                    console.log('Blur.', editor);
+                  }}
+                  onFocus={(event, editor) => {
+                    console.log('Focus.', editor);
+                  }}
+                  disabled
+                />
+              </div>
 
-          </Grid>
-
-
-          <Grid item xs={6}>
+            </Grid>
 
 
-            <div className="App">
-              <p>{'Target Description'}</p>
-              <CKEditor
-                editor={ClassicEditor}
-                data={data?.Target_FeatureDescription}
-                onReady={editor => {
-                  // You can store the "editor" and use when it is needed.
-                  console.log('Editor is ready to use!', editor);
-                }}
-                // onChange={(event, editor) => {
-                //   const data = editor.getData();
-                //   handletarget(data)
-                //   // console.log( { event, editor, data } );
-                // }}
-                // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
+            <Grid item xs={6}>
 
-                // config={{
-                //   extraPlugins: [uploadPlugin]
-                // }}
-                onBlur={(event, editor) => {
-                  console.log('Blur.', editor);
-                }}
-                onFocus={(event, editor) => {
-                  console.log('Focus.', editor);
-                }}
-                disabled
-              />
-            </div>
 
-          </Grid>
+              <div className="App">
+                <p>{'Target Description'}</p>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={data?.Target_FeatureDescription}
+                  onReady={editor => {
+                    // You can store the "editor" and use when it is needed.
+                    console.log('Editor is ready to use!', editor);
+                  }}
+                  // onChange={(event, editor) => {
+                  //   const data = editor.getData();
+                  //   handletarget(data)
+                  //   // console.log( { event, editor, data } );
+                  // }}
+                  // onChange={(e) => setTarget_FeatureDescription(e.target.value)}
+
+                  // config={{
+                  //   extraPlugins: [uploadPlugin]
+                  // }}
+                  onBlur={(event, editor) => {
+                    console.log('Blur.', editor);
+                  }}
+                  onFocus={(event, editor) => {
+                    console.log('Focus.', editor);
+                  }}
+                  disabled
+                />
+              </div>
+
+            </Grid>
+          </>
+            : <>
+
+            </>}
 
         </Grid>
       </Box>
