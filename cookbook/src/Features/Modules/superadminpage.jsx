@@ -254,7 +254,14 @@ export default function SuperadminFunction() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    axios.get(`${config.API_BASE_URL()}/api/migrationlistperuser/`, conf).then(
+    let body = {
+      'email': localStorage.getItem('uemail')
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`,form, conf).then(
       (res) => {
         // console.log("mig list ", res.data)
         setMigtypeslist(res.data)
@@ -523,7 +530,7 @@ export default function SuperadminFunction() {
       (res) => {
         setNotify({
           isOpen: true,
-          message: "Created Admin Access",
+          message: res.data,
           type: "success",
         });
         setUpdateobjlist(true)
@@ -533,6 +540,11 @@ export default function SuperadminFunction() {
       },
       (error) => {
         console.log(error.response.data);
+        // setNotify({
+        //   isOpen: true,
+        //   message: res.data,
+        //   type: "success",
+        // });
       }
     );
     setUpdateobjlist(false)
