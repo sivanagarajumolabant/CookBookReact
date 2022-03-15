@@ -14,6 +14,35 @@ import { Autocomplete } from '@material-ui/lab';
 import Button from '@material-ui/core/Button';
 
 
+
+const StyledAutocomplete = styled(Autocomplete)({
+  "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+    // Default transform is "translate(14px, 20px) scale(1)""
+    // This lines up the label with the initial cursor position in the input
+    // after changing its padding-left.
+    transform: "translate(34px, 20px) scale(1);",
+  },
+  "& .MuiAutocomplete-inputRoot": {
+    color: "black",
+    // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
+    '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+      // Default left padding is 6px
+      paddingLeft: 26,
+      // height: '1rem'
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "grey",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "black",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#3f51b5",
+    },
+  },
+});
+
+
 const useStyles = makeStyles((theme) => ({
   texttablecell: {
     overflowX: 'hidden',
@@ -214,34 +243,9 @@ export default function AccessReview() {
     );
   }
 
-  const StyledAutocomplete = styled(Autocomplete)({
-    "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
-      // Default transform is "translate(14px, 20px) scale(1)""
-      // This lines up the label with the initial cursor position in the input
-      // after changing its padding-left.
-      transform: "translate(34px, 20px) scale(1);",
-    },
-    "& .MuiAutocomplete-inputRoot": {
-      color: "black",
-      // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
-      '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
-        // Default left padding is 6px
-        paddingLeft: 26,
-        // height: '1rem'
-      },
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "grey",
-      },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "black",
-      },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#3f51b5",
-      },
-    },
-  });
 
-  console.log(userslist)
+
+  // console.log(userslist)
 
 
   return (
