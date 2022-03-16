@@ -81,10 +81,10 @@ const StyledAutocomplete = styled(Autocomplete)({
 
 const useStyles = makeStyles((theme) => ({
   texttablecell: {
-    overflowX: 'hidden',
+    // overflowX: 'hidden',
     whiteSpace: "nowrap",
     width: "140px",
-    overflow: "hidden",
+    // overflow: "hidden",
     // textOverflow: "ellipsis",
     '&:hover': {
       overflow: 'visible'
@@ -428,7 +428,7 @@ export default function SuperadminFunction() {
       }
     }
     let body = {
-      // "Object_Type": objtype_create || null,
+      "Object_Type": '',
       "Migration_TypeId": migtype_create || null,
     };
 

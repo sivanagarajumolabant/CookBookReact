@@ -187,7 +187,7 @@ export default function AdminAccesslist() {
   const [grant_obj_type, setGrant_obj_type] = useState()
   const [grant_access_type, setGrant_access_type] = useState()
   const [grant_user, setGrant_user] = useState()
-  const [grant_featurename, setGrant_featurename] = useState()
+  const [grant_featurename, setGrant_featurename] = useState('')
   // const [grant_expiry_date, setGrant_expiry_date]= useState()
   const [edithandle, setEdithandle] = useState([])
   const [model_Item, setModel_Item] = useState([])
@@ -288,31 +288,33 @@ export default function AdminAccesslist() {
     //     sval = 3;
     //   }
     // }
-    let body = {
-      Object_Type: objtype,
-      Migration_TypeId: headerValue?.title,
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    if (objtype === 'All') {
-      setFnnames([{ 'Feature_Name': "All" }])
+
+    if (objtype === 'ALL') {
+      setFnnames([{ 'Feature_Name': "ALL" }])
     }
-    else if (!objcount) {
+    else if (objcount === 0) {
       setFnnames([])
     }
     else {
+      let body = {
+        Object_Type: objtype,
+        Migration_TypeId: headerValue?.title,
+        "Feature_Name": grant_featurename
+      };
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
       axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
         (res) => {
           // setFnnames(res.data);
           // console.log(res.data);
-          setFnnames([{ 'Feature_Name': "All" }].concat(res.data))
+          setFnnames([{ 'Feature_Name': "ALL" }].concat(res.data))
         },
         (error) => {
           console.log(error);
@@ -341,13 +343,13 @@ export default function AdminAccesslist() {
     if (objcount === 0) {
       setFnnames([])
     }
-    else if (v?.Object_Type === 'All') {
-      setFnnames([{ 'Feature_Name': "All" }])
+    else if (v?.Object_Type === 'ALL') {
+      setFnnames([{ 'Feature_Name': "ALL" }])
     } else {
       axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
         (res) => {
           // setFnnames(res.data);
-          setFnnames([{ 'Feature_Name': "All" }].concat(res.data))
+          setFnnames([{ 'Feature_Name': "ALL" }].concat(res.data))
           console.log(res.data);
         },
         (error) => {
@@ -401,9 +403,9 @@ export default function AdminAccesslist() {
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
         if (res.data.length > 0) {
-          setObjtypeslist(([{ Object_Type: "All" }]).concat(res.data))
+          setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
           setobjcount(1)
-        } 
+        }
 
 
       },
@@ -617,9 +619,20 @@ export default function AdminAccesslist() {
 
     axios.post(`${config.API_BASE_URL()}/api/permissionscreate/`, form, conf).then(
       (res) => {
-
+        if (res.data === 'User already has permission') {
+          setNotify({
+            isOpen: true,
+            message: res.data,
+            type: "error",
+          });
+        } else {
+          setNotify({
+            isOpen: true,
+            message: "Request Creted and acepted Permissions",
+            type: "success",
+          });
+        }
         // handleUpdateApproval(res.data.Expiry_date, res.data.Created_at, item, action)
-
       },
 
       (error) => {
@@ -656,11 +669,11 @@ export default function AdminAccesslist() {
       (res) => {
         handleGrant_permission_create(res.data, 'Approved')
 
-        setNotify({
-          isOpen: true,
-          message: "Request Creted and acepted Permissions",
-          type: "success",
-        });
+        // setNotify({
+        //   isOpen: true,
+        //   message: "Request Creted and acepted Permissions",
+        //   type: "success",
+        // });
         setupdateTable(true)
 
       },
@@ -787,7 +800,7 @@ export default function AdminAccesslist() {
               options={[
                 { title: "Edit", code: 'Edit' },
                 { title: "View", code: 'View' },
-                // { title: "Admin", code: 3 },
+                { title: "ALL", code: 'ALL' },
               ]}
               groupBy={""}
               // defaultValue={{ title: "Edit" }}
@@ -1073,6 +1086,7 @@ export default function AdminAccesslist() {
                   options={[
                     { title: "Edit", code: 'Edit' },
                     { title: "View", code: 'View' },
+                    { title: "ALL", code: 'ALL' },
                   ]}
                   groupBy={""}
                   defaultValue={{ title: model_Item.Access_Type }}

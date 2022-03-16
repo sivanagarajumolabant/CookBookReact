@@ -768,6 +768,7 @@ export default function ClippedDrawer({ children }) {
                     <GmailTreeView
                       menuList={ITEMlIST}
                       dropdown={dropdown}
+                      admin={admin}
 
                     />
                   </Grid>

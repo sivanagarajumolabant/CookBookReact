@@ -392,7 +392,7 @@ export default function PreviewCode(props) {
         if (res.data === 'Request Already Sent') {
           setNotify({
             isOpen: true,
-            message: "Request Already Sent to Admin Please Wait for the Approval",
+            message: res.data,
             type: "error",
           });
         } else {

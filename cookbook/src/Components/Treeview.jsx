@@ -89,6 +89,7 @@ function StyledTreeItem(props) {
     // deleteitem,
     datavalue,
     sub,
+    admin,
     ...other
   } = props;
 
@@ -113,7 +114,8 @@ function StyledTreeItem(props) {
             >
               {labelInfo}
             </Typography>
-            {IsSuperAdmin == "true" &&
+            {/* {IsSuperAdmin == "true" && */}
+            {(IsSuperAdmin === "true" || admin===1) && 
               <>
                 {mainheader && (
                   <AddIcon
@@ -197,6 +199,7 @@ export default function GmailTreeView({
   deleteitem,
   confirmDialog,
   setConfirmDialog,
+  admin,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -233,6 +236,7 @@ export default function GmailTreeView({
                     dropdown={dropdown}
                     style={{ color: "white" }}
                     mainheader={true}
+                    admin={admin}
                   >
                     {Data?.SubMenu?.map((data, index) => {
                       return (

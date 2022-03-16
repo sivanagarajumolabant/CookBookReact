@@ -133,7 +133,7 @@ export default function Request() {
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
   const [objtypeslist, setObjtypeslist] = useState([])
-  const [fnname, setFnname] = useState()
+  const [fnname, setFnname] = useState('')
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -157,30 +157,32 @@ export default function Request() {
     //     sval = 3;
     //   }
     // }
-    let body = {
-      "Object_Type": objtype,
-      "Migration_TypeId": headerValue?.title,
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
+
     // if (objtype !== 'All') {
-    if (objtype === 'All') {
-      setFnnames([{ 'Feature_Name': "All" }])
+    if (objtype === 'ALL') {
+      setFnnames([{ 'Feature_Name': "ALL" }])
     }
-    else if (!objcount) {
+    else if (objcount === 0) {
       setFnnames([])
     }
     else {
+      let body = {
+        "Object_Type": objtype,
+        "Migration_TypeId": headerValue?.title,
+        "Feature_Name": fnname
+      };
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
       axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
         (res) => {
-          setFnnames([{ 'Feature_Name': "All" }].concat(res.data))
+          setFnnames([{ 'Feature_Name': "ALL" }].concat(res.data))
         },
         (error) => {
           console.log(error);
@@ -211,7 +213,7 @@ export default function Request() {
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
         if (res.data.length > 0) {
-          setObjtypeslist(([{ Object_Type: "All" }]).concat(res.data))
+          setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
           setobjcount(1)
         }
 
@@ -229,37 +231,41 @@ export default function Request() {
   }
 
   const handledropdown = (e, v) => {
-    if (v?.Feature_Name === 'All') {
+
+    if (v?.Feature_Name === 'ALL') {
       setSelected(false)
-      setEditflag(0)
-      setFlag(0)
-      setFnname(v.Feature_Name)
+      // setEditflag(0)
+      // setFlag(0)
+      setFnname(v?.Feature_Name)
     } else {
       setSelected(true)
-      setFnname(v.Feature_Name)
-      let conf = {
-        headers: {
-          'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
-        }
-      }
-      let body = {
-        'User_Email': localStorage.getItem('uemail')
-      }
-      const form = new FormData();
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
-      axios.post(`${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`, form, conf).then(
-        (res) => {
-          setData(res.data?.serializer)
-          setEditflag(res.data?.edit)
-          setFlag(res.data?.flag)
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      setFnname(v?.Feature_Name)
     }
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      'User_Email': localStorage.getItem('uemail'),
+      "Migration_Type": headerValue?.title,
+      "Object_Type": objtype,
+      "Feature_Name": v?.Feature_Name,
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/fdetailcatlog/`, form, conf).then(
+      (res) => {
+        setData(res.data?.serializer)
+        // setEditflag(res.data?.edit)
+        setFlag(res.data?.flag)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
 
@@ -304,7 +310,7 @@ export default function Request() {
         } else {
           setNotify({
             isOpen: true,
-            message: "Request Sent Please Wiat For The Admin Approval",
+            message: "Request Sent Please Wait For The Admin Approval",
             type: "success",
           });
         }
@@ -412,7 +418,7 @@ export default function Request() {
             />
           </Grid>
 
-          {fnname !== 'All' ? <>
+          {fnname !== 'ALL' ? <>
             <Grid item xs={6}>
 
 
@@ -492,9 +498,11 @@ export default function Request() {
         <Grid container spacing={3} justifyContent="center"
           alignItems="center">
           <Grid item xs={7}>
+
+
             {flag === 1 ?
               <Button variant="contained"
-                disabled={!selecetd}
+                // disabled={!selecetd}
                 // startIcon={<CloudUploadIcon />}
                 size='small'
                 color="primary" component="span" style={{ marginTop: 15, width: "190px" }}
@@ -511,7 +519,9 @@ export default function Request() {
             }
             {" "}
 
-            {flag !== 1 || flag === 2 || flag === 3 ?
+
+            {flag !== 1 || flag === 2 ?
+
               <Button variant="contained"
                 disabled={!selecetd}
                 size='small'
@@ -537,7 +547,7 @@ export default function Request() {
             {"   "}
             {flag === 2 || flag === 1 ?
               <Button variant="contained"
-                disabled={!selecetd}
+                // disabled={!selecetd}
                 // startIcon={<CloudUploadIcon />}
                 size='small'
                 color="primary" component="span" style={{ marginTop: 15, width: "180px" }}

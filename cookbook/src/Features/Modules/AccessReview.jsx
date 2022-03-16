@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
     width: "140px",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    // '&:hover': {
-    //     overflow: 'visible'
-    // }
+    '&:hover': {
+        overflow: 'visible'
+    }
   },
 
   table: {
@@ -123,9 +123,9 @@ const useStylestable = makeStyles((theme) => ({
 export default function AccessReview() {
   const classes = useStyles();
   const classestable = useStylestable();
-  const [isData, setIsData] = useState(true);
+  const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-  const [objtype, setObjtype] = useState('Procedure')
+  const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
   const [objtypeslist, setObjtypeslist] = useState([])
@@ -133,68 +133,7 @@ export default function AccessReview() {
   const [useremail, setUseremail] = useState()
 
 
-  useEffect(() => {
-    // let sval = 0;
-    // if (headerValue) {
-    //   if (headerValue?.title === "Oracle TO Postgres") {
-    //     sval = 1;
-    //   } else if (headerValue?.title === "SQLServer TO Postgres") {
-    //     sval = 2;
-    //   } else if (headerValue?.title === "MYSQL TO Postgres") {
-    //     sval = 3;
-    //   }
-    // }
-    let body = {
-      "Object_Type": objtype,
-      "Migration_TypeId": headerValue?.title,
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
-      (res) => {
-        setFnnames(res.data)
-        console.log(res.data)
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [objtype]);
 
-
-  // useEffect(() => {
-  //   let conf = {
-  //     headers: {
-  //       Authorization: "Bearer " + config.ACCESS_TOKEN(),
-  //     },
-  //   };
-
-  //   let body = {
-  //     "Migration_TypeId": headerValue?.title,
-  //   };
-
-  //   const form = new FormData();
-  //   Object.keys(body).forEach((key) => {
-  //     form.append(key, body[key]);
-  //   });
-  //   axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
-  //     (res) => {
-
-  //       setObjtypeslist(res.data)
-
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }, [headerValue?.title]);
 
 
   useEffect(() => {
@@ -214,6 +153,40 @@ export default function AccessReview() {
       }
     );
   }, []);
+
+  useEffect(()=>{
+    if (headerValue){
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+  
+      let body = {
+        "Migration_TypeId": headerValue?.title,
+      };
+  
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
+      axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
+        (res) => {
+  
+          setObjtypeslist(res.data)
+          if (res.data.length>0){
+            setIsData(true)
+          }else{
+            setIsData(false)
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    
+  },[headerValue])
 
   const handleAccessReview = () => {
     let conf = {
@@ -235,12 +208,19 @@ export default function AccessReview() {
       (res) => {
 
         setObjtypeslist(res.data)
+        if (res.data.length>0){
+          setIsData(true)
+        }else{
+          setIsData(false)
+        }
+        
 
       },
       (error) => {
         console.log(error);
       }
     );
+    // setIsData(false)
   }
 
 
@@ -262,7 +242,7 @@ export default function AccessReview() {
       <Box py={2} px={2}>
         <Grid container direction='row' spacing={1}>
 
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -316,7 +296,7 @@ export default function AccessReview() {
               variant="contained"
               color="primary"
               component="span"
-              style={{ marginTop: 8, marginLeft: 40 }}
+              style={{ marginTop: 5, marginLeft: 100 }}
               onClick={() => handleAccessReview()}
             >
               {" "}
@@ -403,7 +383,12 @@ export default function AccessReview() {
                     : <>
                       <StyledTableRow container>
                         <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="center">No Requests</StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="left">No Requests</StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="center"></StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
                       </StyledTableRow>
                     </>
