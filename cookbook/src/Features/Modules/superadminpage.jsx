@@ -264,7 +264,7 @@ export default function SuperadminFunction() {
     });
     axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
       (res) => {
-        // console.log("mig list ", res.data)
+        console.log("mig list ", res.data)
         setMigtypeslist(res.data)
         // dispatch(Menuaction.getdropdownlist(res.data))
         // dispatch(Menuaction.admin(res.data[0].admin))
@@ -453,7 +453,7 @@ export default function SuperadminFunction() {
         // setNotify("Migration Types Already Exist!")
       }
     );
-    setUpdatemiglist(false)
+    // setUpdatemiglist(false)
 
     let conf1 = {
       headers: {
