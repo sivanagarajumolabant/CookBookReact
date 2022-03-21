@@ -262,12 +262,12 @@ export default function SuperadminFunction() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`,form, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
       (res) => {
         // console.log("mig list ", res.data)
         setMigtypeslist(res.data)
-        dispatch(Menuaction.getdropdownlist(res.data))
-        dispatch(Menuaction.admin(res.data[0].admin))
+        // dispatch(Menuaction.getdropdownlist(res.data))
+        // dispatch(Menuaction.admin(res.data[0].admin))
       },
       (error) => {
         console.log(error);
@@ -352,7 +352,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  }, [updateSuperAdminTable,updatermSuperAdminTable]);
+  }, [updateSuperAdminTable, updatermSuperAdminTable]);
 
 
 
@@ -490,15 +490,24 @@ export default function SuperadminFunction() {
     });
     axios.post(`${config.API_BASE_URL()}/api/migrationsscreate/`, form, conf).then(
       (res) => {
-        // setNotify("Created Object Type")
-        setNotify({
-          isOpen: true,
-          message: "Created Object Type",
-          type: "success",
-        });
-        setUpdateobjlist(true)
-        setOpen(false)
-        dispatch(Menuaction.reloadAction(true));
+        if (res.data === 'Object Type Already Existed') {
+          setNotify({
+            isOpen: true,
+            message: "Object Type Already Existed",
+            type: "error",
+          });
+        } else {
+          // setNotify("Created Object Type")
+          setNotify({
+            isOpen: true,
+            message: "Created Object Type",
+            type: "success",
+          });
+          setUpdateobjlist(true)
+          setOpen(false)
+          dispatch(Menuaction.reloadAction(true));
+
+        }
 
       },
       (error) => {
@@ -605,7 +614,7 @@ export default function SuperadminFunction() {
           type: "success",
         });
         setUpdatermSuperAdminTable(true)
-       
+
       },
       (error) => {
         console.log(error.response.data);
@@ -613,9 +622,9 @@ export default function SuperadminFunction() {
     );
     setUpdatermSuperAdminTable(false)
   }
-  
 
- 
+
+
   return (
     <>
       <Box py={1} px={1}>
