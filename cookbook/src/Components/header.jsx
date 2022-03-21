@@ -286,6 +286,7 @@ export default function ClippedDrawer({ children }) {
 
   const [isOpened, setIsOpened] = React.useState(true);
   const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin } = useSelector(state => state.dashboardReducer);
+  console.log("admin flag ",admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);

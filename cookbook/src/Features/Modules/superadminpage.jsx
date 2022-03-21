@@ -226,6 +226,7 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue?.title,
+      "Feature_Name": ''
     };
     let conf = {
       headers: {
