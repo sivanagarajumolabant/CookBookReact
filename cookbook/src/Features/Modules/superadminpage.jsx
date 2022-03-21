@@ -186,6 +186,8 @@ export default function SuperadminFunction() {
   const [data, setData] = useState([])
   const [selecetd, setSelected] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
+  // const [openAlert1, setOpenAlert1] = useState(false);
+  const [open2, setOpen2] = useState(false)
 
   const [migtype_create, setMigtype_create] = useState()
   const [objtype_create, setObjtype_create] = useState()
@@ -207,7 +209,10 @@ export default function SuperadminFunction() {
   const [updateAdminTable, setUpdateAdminTable] = useState(false)
   const [updateSuperAdminTable, setUpdateSuperAdminTable] = useState(false)
   const [updatermSuperAdminTable, setUpdatermSuperAdminTable] = useState(false)
-
+  const [updateaccessAdminTable, setupdateaccessAdminTable] = useState(false)
+  const [rmitememail, setrmitemsemail] = useState()
+  const [rmitemmig, setrmitemsmig] = useState()
+  const [rm_miglist, setrm_miglist] = useState([])
 
   let history = useHistory();
 
@@ -223,6 +228,7 @@ export default function SuperadminFunction() {
     //     sval = 3;
     //   }
     // }
+
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue?.title,
@@ -266,10 +272,10 @@ export default function SuperadminFunction() {
       (res) => {
         // console.log("mig list ", res.data)
         setMigtypeslist(res.data)
-        res.data.map((key)=>{
+        res.data.map((key) => {
           console.log(headerValue?.title)
-          if (key.Migration_TypeId===headerValue?.title){
-            console.log("============ ", key.Migration_TypeId===headerValue?.title)
+          if (key.Migration_TypeId === headerValue?.title) {
+            console.log("============ ", key.Migration_TypeId === headerValue?.title)
             dispatch(Menuaction.getdropdownlist(key))
             dispatch(Menuaction.admin(key.admin))
           }
@@ -343,7 +349,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  }, [updateAdminTable]);
+  }, [updateAdminTable,updateaccessAdminTable]);
 
 
   useEffect(() => {
@@ -631,6 +637,72 @@ export default function SuperadminFunction() {
     setUpdatermSuperAdminTable(false)
   }
 
+  const handle_rm_mig_list_data = (email) => {
+
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "User_Email": email,
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/adminrmmigrationlist/`, form, conf).then(
+      (res) => {
+        setUpdatermSuperAdminTable(true)
+        setrm_miglist(res.data)
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+  }
+
+  const handleModelopen = (item) => {
+    setrmitemsemail(item.Email)
+    setrmitemsmig(item.Migration_TypeId)
+    handle_rm_mig_list_data(item.Email)
+    // debugger
+    setOpen2(true)
+  }
+
+
+
+  const handleremoveadminaccess = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "User_Email": rmitememail,
+      "Migration_Type": rmitemmig,
+    }; const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.put(`${config.API_BASE_URL()}/api/removeadminmigrations/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: "Admin removed successfully",
+          type: "success",
+        });
+        setupdateaccessAdminTable(true)
+        setOpen2(false)
+        // dispatch(Menuaction.reloadAction(true));
+
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+    setupdateaccessAdminTable(false)
+  }
 
 
   return (
@@ -963,6 +1035,7 @@ export default function SuperadminFunction() {
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
                   <StyledTableCell align="left">Migration Types</StyledTableCell>
+                  <StyledTableCell align="left">Actions</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -982,6 +1055,19 @@ export default function SuperadminFunction() {
                             {item.Migration_Types}
                           </div>
                         </StyledTableCell>
+                        <StyledTableCell>
+                          <Button
+                            type="button"
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                            onClick={() => { handleModelopen(item) }}
+                          >
+                            Remove
+                          </Button>
+                        </StyledTableCell>
                       </StyledTableRow>
                     )}
                   </>
@@ -998,6 +1084,91 @@ export default function SuperadminFunction() {
 
               </TableBody>
             </Table>
+
+            <Snackbar
+              open={openAlert}
+              autoHideDuration={4000}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            >
+            </Snackbar>
+            <Modal open={open2}>
+              <Container className={classes.container1}>
+                <Typography
+                  gutterBottom
+                  align="center"
+                  variant="h6"
+                  component="h2"
+                  className={classes.Object_Type}
+                  style={{ marginBottom: '20px' }}
+                >
+                  Admin Access
+                </Typography>
+                <Grid item xs={4} >
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="username/email"
+                    name="username_ID"
+                    className={classes.textField}
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    value={rmitememail}
+                    size="small"
+                    disabled
+                    style={{ width: 400, marginBottom: '20px', height: '60px' }}
+                  />
+
+
+                </Grid>
+                <Grid item xs={4} >
+                  <StyledAutocomplete
+                    size="small"
+                    id="grouped-demo"
+                    className={classes.inputRoottype}
+                    options={rm_miglist}
+                    groupBy={""}
+                    // defaultValue={{ title: "Oracle TO Postgres" }}
+                    value={rmitemmig}
+                    getOptionLabel={(option) => option.Migration_Type}
+                    style={{ width: 400, marginBottom: '20px', height: '60px' }}
+                    onChange={(e, v) => setrmitemsmig(v?.Migration_Type)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Migration type"
+                        variant="outlined"
+                        InputLabelProps={{
+                          className: classes.floatingLabelFocusStyle,
+                          shrink: true,
+                        }}
+
+                      />
+                    )}
+                  />
+                </Grid>
+                <div className={classes.item} >
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    style={{ marginRight: 20, marginLeft: 100 }}
+                    onClick={() => handleremoveadminaccess()}
+                  >
+                    Remove
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => setOpen2(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </Container>
+            </Modal>
+
           </Grid>
 
         </Grid>
