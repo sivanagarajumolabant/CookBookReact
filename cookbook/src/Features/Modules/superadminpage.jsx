@@ -264,8 +264,16 @@ export default function SuperadminFunction() {
     });
     axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
       (res) => {
-        console.log("mig list ", res.data)
+        // console.log("mig list ", res.data)
         setMigtypeslist(res.data)
+        res.data.map((key)=>{
+          console.log(headerValue?.title)
+          if (key.Migration_TypeId===headerValue?.title){
+            console.log("============ ", key.Migration_TypeId===headerValue?.title)
+            dispatch(Menuaction.getdropdownlist(key))
+            dispatch(Menuaction.admin(key.admin))
+          }
+        })
         // dispatch(Menuaction.getdropdownlist(res.data))
         // dispatch(Menuaction.admin(res.data[0].admin))
       },
