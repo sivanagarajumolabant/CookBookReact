@@ -213,6 +213,7 @@ export default function SuperadminFunction() {
   const [rmitememail, setrmitemsemail] = useState()
   const [rmitemmig, setrmitemsmig] = useState()
   const [rm_miglist, setrm_miglist] = useState([])
+  const [objectTypeAdmin,setObjectTypeAdmin] = useState()
 
   let history = useHistory();
 
@@ -326,7 +327,12 @@ export default function SuperadminFunction() {
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
 
-        setObjtypeslist(res.data)
+        // setObjtypeslist(res.data)
+        if (res.data.length > 0) {
+          setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
+        }else{
+          setObjtypeslist([])
+        }
 
       },
       (error) => {
@@ -410,11 +416,16 @@ export default function SuperadminFunction() {
 
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
-        if (res.data.length>0){
+        if (res.data.length > 0) {
           // setObjtypeslist(res.data)
           setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
+
+        }else{
+          
+            setObjtypeslist([])
+          
         }
-        
+
       },
       (error) => {
         console.log(error);
@@ -548,6 +559,7 @@ export default function SuperadminFunction() {
     let body = {
       "email": useremail,
       "mig_type": migtype_create,
+      // "object_type": objectTypeAdmin
     };
 
     const form = new FormData();
@@ -978,6 +990,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.Object_Type}
+              onChange={(e, v) => setObjectTypeAdmin(v?.Object_Type)}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField
