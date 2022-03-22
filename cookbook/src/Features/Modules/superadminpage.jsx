@@ -410,7 +410,11 @@ export default function SuperadminFunction() {
 
     axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
       (res) => {
-        setObjtypeslist(res.data)
+        if (res.data.length>0){
+          // setObjtypeslist(res.data)
+          setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
+        }
+        
       },
       (error) => {
         console.log(error);
