@@ -349,7 +349,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  }, [updateAdminTable,updateaccessAdminTable]);
+  }, [updateAdminTable, updateaccessAdminTable]);
 
 
   useEffect(() => {
@@ -707,6 +707,123 @@ export default function SuperadminFunction() {
 
   return (
     <>
+
+
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Super User Creation
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={4} >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={userslist}
+              groupBy={""}
+              getOptionLabel={(option) => option.email}
+              style={{ width: 300, marginLeft: 100 }}
+              onChange={(e, v) => setuseremail(v?.email)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="username/email"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              style={{ marginTop: 10, marginLeft: 240 }}
+              onClick={() => handlesuperadmincreation()}
+            >
+              {" "}
+              Create Super Admin
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Super Users
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Name</StyledTableCell>
+                  <StyledTableCell align="left">User Email</StyledTableCell>
+                  <StyledTableCell align="left">Actions</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {isData ? (
+                  <>
+                    {superadminlist.map((item) =>
+                      <StyledTableRow container>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.User_Name}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Email}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <Button
+                            type="button"
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                            onClick={() => handledeletesuperadmin(item.Email)}
+                          >
+                            Delete
+                          </Button>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
+                  </>
+                )
+                  : <>
+                    <StyledTableRow container>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                    </StyledTableRow>
+                  </>
+                }
+              </TableBody>
+            </Table>
+          </Grid>
+
+        </Grid>
+      </Box>
+
       <Box py={1} px={1}>
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
@@ -968,56 +1085,6 @@ export default function SuperadminFunction() {
           </Modal>
         </Grid>
       </Box>
-      <Box py={1} px={1}>
-        <Grid container direction='row' justifyContent='center'>
-          <Grid item>
-            <Typography variant='h6'>
-              Super User Creation
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box py={2} px={2}>
-        <Grid container direction='row' spacing={2}>
-          <Grid item xs={4} >
-            <StyledAutocomplete
-              size="small"
-              id="grouped-demo"
-              className={classes.inputRoottype}
-              options={userslist}
-              groupBy={""}
-              getOptionLabel={(option) => option.email}
-              style={{ width: 300, marginLeft: 100 }}
-              onChange={(e, v) => setuseremail(v?.email)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="username/email"
-                  variant="outlined"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          </Grid>
-          <Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              style={{ marginTop: 10, marginLeft: 240 }}
-              onClick={() => handlesuperadmincreation()}
-            >
-              {" "}
-              Create Super Admin
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-
-
       <Box py={2} px={2}>
         <Grid container xl={12} justifyContent="space-between" spacing={3}>
           <Grid item xs={12}>
@@ -1173,73 +1240,6 @@ export default function SuperadminFunction() {
 
         </Grid>
       </Box>
-      <Box py={2} px={2}>
-        <Grid container xl={12} justifyContent="space-between" spacing={3}>
-          <Grid item xs={12}>
-            <Typography
-              gutterBottom
-              align='center'
-              variant="h6"
-              component="h2"
-              className={classes.Object_Type}
-            >
-              Super Users
-            </Typography>
-            <Table className={classestable.table} aria-label="customized table">
-              <TableHead className={classes.primary}>
-                <TableRow>
-                  <StyledTableCell align="left">User Name</StyledTableCell>
-                  <StyledTableCell align="left">User Email</StyledTableCell>
-                  <StyledTableCell align="left">Actions</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {isData ? (
-                  <>
-                    {superadminlist.map((item) =>
-                      <StyledTableRow container>
-                        <StyledTableCell item xl={8}>
-                          <div className={classes.texttablecell}>
-                            {item.User_Name}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8}>
-                          <div className={classes.texttablecell}>
-                            {item.Email}
-                          </div>
-                        </StyledTableCell>
-                        <StyledTableCell item xl={8}>
-                          <Button
-                            type="button"
-                            size="small"
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                            onClick={() => handledeletesuperadmin(item.Email)}
-                          >
-                            Delete
-                          </Button>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    )}
-                  </>
-                )
-                  : <>
-                    <StyledTableRow container>
-                      <StyledTableCell align="center"></StyledTableCell>
-                      <StyledTableCell align="center">No Requests</StyledTableCell>
-                      <StyledTableCell align="center"></StyledTableCell>
-                    </StyledTableRow>
-                  </>
-                }
-              </TableBody>
-            </Table>
-          </Grid>
-
-        </Grid>
-      </Box>
-
       <Notification notify={notify} setNotify={setNotify} />
     </>
   )

@@ -46,9 +46,9 @@ const useStyles = makeStyles((theme) => ({
     width: "140px",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    // '&:hover': {
-    //     overflow: 'visible'
-    // }
+    '&:hover': {
+        overflow: 'visible'
+    }
   },
   convertbutton: {
     // color: "white",
