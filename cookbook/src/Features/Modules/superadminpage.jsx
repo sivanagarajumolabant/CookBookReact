@@ -132,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     borderRadius: 15,
     width: 450,
-    height: 280,
+    height: 380,
     backgroundColor: "white",
     position: "absolute",
     top: 0,
@@ -213,7 +213,9 @@ export default function SuperadminFunction() {
   const [rmitememail, setrmitemsemail] = useState()
   const [rmitemmig, setrmitemsmig] = useState()
   const [rm_miglist, setrm_miglist] = useState([])
-  const [objectTypeAdmin,setObjectTypeAdmin] = useState()
+  const [objectTypeAdmin, setObjectTypeAdmin] = useState()
+  const [rm_objectslist, setrm_objectslist] = useState([])
+  const [objecttype_rm, setObjecttype_rm] = useState()
 
   let history = useHistory();
 
@@ -330,7 +332,7 @@ export default function SuperadminFunction() {
         // setObjtypeslist(res.data)
         if (res.data.length > 0) {
           setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
-        }else{
+        } else {
           setObjtypeslist([])
         }
 
@@ -420,10 +422,10 @@ export default function SuperadminFunction() {
           // setObjtypeslist(res.data)
           setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
 
-        }else{
-          
-            setObjtypeslist([])
-          
+        } else {
+
+          setObjtypeslist([])
+
         }
 
       },
@@ -559,7 +561,7 @@ export default function SuperadminFunction() {
     let body = {
       "email": useremail,
       "mig_type": migtype_create,
-      // "object_type": objectTypeAdmin
+      "Object_Type": objectTypeAdmin
     };
 
     const form = new FormData();
@@ -680,8 +682,34 @@ export default function SuperadminFunction() {
 
   const handleModelopen = (item) => {
     setrmitemsemail(item.Email)
-    setrmitemsmig(item.Migration_TypeId)
+    setrmitemsmig(item.Migration_Type)
     handle_rm_mig_list_data(item.Email)
+
+    // calling rm admins objects list based on mig value and email
+
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      "User_Email":item.Email ,
+      "Migration_Type":item.Migration_Type
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/adminsobjectslist/`, form, conf).then(
+      (res) => {
+        setUpdatermSuperAdminTable(true)
+        // setrm_miglist(res.data)
+        setrm_objectslist(res.data)
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
     // debugger
     setOpen2(true)
   }
@@ -697,6 +725,7 @@ export default function SuperadminFunction() {
     let body = {
       "User_Email": rmitememail,
       "Migration_Type": rmitemmig,
+      "Object_type": objecttype_rm
     }; const form = new FormData();
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -1119,6 +1148,7 @@ export default function SuperadminFunction() {
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
                   <StyledTableCell align="left">Migration Types</StyledTableCell>
+                  <StyledTableCell align="left">Object Types</StyledTableCell>
                   <StyledTableCell align="left">Actions</StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -1136,7 +1166,19 @@ export default function SuperadminFunction() {
                         </StyledTableCell>
                         <StyledTableCell item xl={8}>
                           <div className={classes.texttablecell}>
-                            {item.Migration_Types}
+                            {item.Migration_Type}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {/* {item.Object_types} */}
+
+                            {
+                              item.Object_types.map((key)=>{
+                                
+                                return key+','
+                              })
+                            }
                           </div>
                         </StyledTableCell>
                         <StyledTableCell>
@@ -1207,22 +1249,39 @@ export default function SuperadminFunction() {
 
 
                 </Grid>
+
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Migration Type"
+                  name="migrationtype"
+                  className={classes.textField}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  value={rmitemmig}
+                  size="small"
+                  disabled
+                  style={{ width: 400, marginBottom: '20px', height: '60px' }}
+                />
+
                 <Grid item xs={4} >
                   <StyledAutocomplete
                     size="small"
                     id="grouped-demo"
                     className={classes.inputRoottype}
-                    options={rm_miglist}
+                    options= {rm_objectslist}
                     groupBy={""}
                     // defaultValue={{ title: "Oracle TO Postgres" }}
-                    value={rmitemmig}
-                    getOptionLabel={(option) => option.Migration_Type}
+                    value={objecttype_rm}
+                    getOptionLabel={(option) => option.Object_type}
                     style={{ width: 400, marginBottom: '20px', height: '60px' }}
-                    onChange={(e, v) => setrmitemsmig(v?.Migration_Type)}
+                    onChange={(e, v) => setObjecttype_rm(v?.Object_type)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Migration type"
+                        label="Object types"
                         variant="outlined"
                         InputLabelProps={{
                           className: classes.floatingLabelFocusStyle,
