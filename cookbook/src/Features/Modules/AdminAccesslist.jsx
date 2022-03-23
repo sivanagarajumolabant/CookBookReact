@@ -218,6 +218,7 @@ export default function AdminAccesslist() {
         let body = {
           "User_Email": localStorage.getItem('uemail'),
           "Migration_TypeId": headerValue?.title,
+          
         };
         let conf = {
           headers: {

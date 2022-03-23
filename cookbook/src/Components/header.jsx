@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import clsx from "clsx";
 import Avatar from "@material-ui/core/Avatar";
 import config from '../../src/Config/config'
@@ -286,7 +286,7 @@ export default function ClippedDrawer({ children }) {
 
   const [isOpened, setIsOpened] = React.useState(true);
   const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin } = useSelector(state => state.dashboardReducer);
-  console.log("admin flag ",admin)
+  console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -296,6 +296,9 @@ export default function ClippedDrawer({ children }) {
   });
   const [selectedItems, setselectedItems] = React.useState([])
   const [migtypelist, setMigtypeslist] = useState([])
+  const [create_flag, setcreate_flag] = useState([])
+  const [create_check_flag, setcreate_check_flag]= useState(0)
+
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
@@ -327,7 +330,7 @@ export default function ClippedDrawer({ children }) {
         dispatch(Menuaction.getdropdownlist(res.data))
         if (res.data.length > 0) {
           getmenus(res.data[0].title);
-          dispatch(Menuaction.admin(res.data[0].admin))
+          // dispatch(Menuaction.admin(res.data[0].admin))
         }
 
 
@@ -338,6 +341,37 @@ export default function ClippedDrawer({ children }) {
     );
   }, []);
 
+
+  useEffect(() => {
+    if (headerValue) {
+
+      if (Object.keys(headerValue).length > 0) {
+        let conf = {
+          headers: {
+            Authorization: "Bearer " + config.ACCESS_TOKEN(),
+          },
+        };
+        let body = {
+          'User_Email': localStorage.getItem('uemail'),
+          "Migration_Type": headerValue?.title
+        }
+        const form = new FormData();
+        Object.keys(body).forEach((key) => {
+          form.append(key, body[key]);
+        });
+
+        // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+        axios.post(`${config.API_BASE_URL()}/api/createflagcheck/`, form, conf).then(
+          (res) => {
+            setcreate_flag(res.data)
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    }
+  }, [headerValue])
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -375,8 +409,10 @@ export default function ClippedDrawer({ children }) {
     const res = await axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
     // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
+    // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
     dispatch(ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
+
   };
 
 
@@ -446,9 +482,15 @@ export default function ClippedDrawer({ children }) {
 
 
   const handlefeature = (data) => {
-
+    dispatch(Menuaction.admin(data.Admin_Flag))
     dispatch(ActionMenu.selectedMenutlist(data))
     setselectedItems([data])
+
+    create_flag.map((val)=>{
+      if (val.Label===data.Label){
+        setcreate_check_flag(val.Create_Flag)
+      }
+    })
   }
 
   const handleAdminMenus = () => {
@@ -680,7 +722,7 @@ export default function ClippedDrawer({ children }) {
 
 
             <div className={classes.drawerContainer}>
-            {/* {(IsSuperAdmin === "true" || admin===1) && */}
+              {/* {(IsSuperAdmin === "true" || admin===1) && */}
               {admin === 1 &&
                 <>
                   <Typography
@@ -770,7 +812,7 @@ export default function ClippedDrawer({ children }) {
                       menuList={ITEMlIST}
                       dropdown={dropdown}
                       admin={admin}
-
+                      createflag ={create_check_flag}
                     />
                   </Grid>
 
