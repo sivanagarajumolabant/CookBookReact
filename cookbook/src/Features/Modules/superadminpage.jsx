@@ -388,7 +388,7 @@ export default function SuperadminFunction() {
   }
 
   // const handleuseremail1 = (v) => {
-    
+
   // }
 
   const handleobjecttype = (v) => {
@@ -898,7 +898,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.title}
-              style={{ width: 300,marginLeft:100 }}
+              style={{ width: 300, marginLeft: 100 }}
               onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
                 <TextField
@@ -914,7 +914,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1} style={{marginLeft:100}}>
+          <Grid item xs={1} style={{ marginLeft: 100 }}>
             <Avatar className={classes.avatar} onClick={() => setOpen1(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -1014,7 +1014,7 @@ export default function SuperadminFunction() {
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.Object_Type}
               onChange={(e, v) => handleobjecttype(v)}
-              style={{ width: 300,marginLeft:100 }}
+              style={{ width: 300, marginLeft: 100 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -1028,7 +1028,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1} style={{marginLeft:100}}>
+          <Grid item xs={1} style={{ marginLeft: 100 }}>
             <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -1181,9 +1181,13 @@ export default function SuperadminFunction() {
                             {/* {item.Object_types} */}
 
                             {
-                              item.Object_types.map((key) => {
+                              item.Object_types.map((value, index, array) => {
+                                if (array.length-1===index) {
+                                  return value 
+                                } else {
+                                  return value + ','
+                                }
 
-                                return key + ','
                               })
                             }
                           </div>
