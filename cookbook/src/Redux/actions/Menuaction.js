@@ -144,6 +144,17 @@ const DeleteMenutlist = (value) => {
    }
 }
 
+const lableselect = (value) => {
+   
+   return dispatch => {
+
+      dispatch({
+         type:"LABLE",
+         payload:value
+      })
+   }
+}
 
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin}
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect}

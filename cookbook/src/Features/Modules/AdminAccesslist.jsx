@@ -151,7 +151,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AdminAccesslist() {
   const classes = useStyles();
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable } = useSelector(state => state.dashboardReducer);
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
@@ -218,7 +218,7 @@ export default function AdminAccesslist() {
         let body = {
           "User_Email": localStorage.getItem('uemail'),
           "Migration_TypeId": headerValue?.title,
-          
+          "Object_Type":lable
         };
         let conf = {
           headers: {
@@ -241,7 +241,7 @@ export default function AdminAccesslist() {
         );
       }
     }
-  }, [updatetable, headerValue]);
+  }, [updatetable, headerValue, lable]);
 
 
 

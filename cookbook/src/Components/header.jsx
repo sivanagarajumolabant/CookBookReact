@@ -285,8 +285,8 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin } = useSelector(state => state.dashboardReducer);
-  console.log("admin flag ", admin)
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin,lable } = useSelector(state => state.dashboardReducer);
+  // console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openview = Boolean(anchorEl);
@@ -412,6 +412,7 @@ export default function ClippedDrawer({ children }) {
     // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
     dispatch(ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
+    dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
 
   };
 
@@ -489,6 +490,8 @@ export default function ClippedDrawer({ children }) {
     create_flag.map((val)=>{
       if (val.Label===data.Label){
         setcreate_check_flag(val.Create_Flag)
+        dispatch(Menuaction.lableselect(data.Label))
+        // history.push('/dashboard')
       }
     })
   }

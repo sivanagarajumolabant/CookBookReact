@@ -13,7 +13,8 @@ const initialState = {
   editPreviewdetails: {},
   ITEMlIST: [],
   DropDownValues: [],
-  admin :0
+  admin :0,
+  lable:null
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -104,7 +105,12 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         admin: action.payload
       };
-
+    case "LABLE":
+      return {
+        ...state,
+        lable: action.payload
+      };
+  
     default:
       return state;
   }
