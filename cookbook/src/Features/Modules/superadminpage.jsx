@@ -184,6 +184,7 @@ export default function SuperadminFunction() {
   const [Migtype, setMigtype] = useState('')
   const [fnnames, setFnnames] = useState([])
   const [data, setData] = useState([])
+  const [selecetd1, setSelected1] = useState(false)
   const [selecetd, setSelected] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
   // const [openAlert1, setOpenAlert1] = useState(false);
@@ -381,13 +382,18 @@ export default function SuperadminFunction() {
 
 
   // console.log(headerValue.title)
-  const handleObjecttype = (v) => {
-    setSelected(true)
-    setObjtype(v.title)
+  const handleuseremail = (v) => {
+    setSelected1(true)
+    setuseremail(v?.email)
   }
 
-  const handleMigrationtype = (v) => {
-    setMigtype(v.title)
+  // const handleuseremail1 = (v) => {
+    
+  // }
+
+  const handleobjecttype = (v) => {
+    setSelected(true)
+    setObjectTypeAdmin(v?.Object_Type)
   }
 
   const handleClose = (event, reason) => {
@@ -693,8 +699,8 @@ export default function SuperadminFunction() {
       }
     }
     let body = {
-      "User_Email":item.Email ,
-      "Migration_Type":item.Migration_Type
+      "User_Email": item.Email,
+      "Migration_Type": item.Migration_Type
     };
     const form = new FormData();
     Object.keys(body).forEach((key) => {
@@ -774,7 +780,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               getOptionLabel={(option) => option.email}
               style={{ width: 300, marginLeft: 100 }}
-              onChange={(e, v) => setuseremail(v?.email)}
+              onChange={(e, v) => handleuseremail(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -791,6 +797,7 @@ export default function SuperadminFunction() {
           <Grid>
             <Button
               variant="contained"
+              disabled={!selecetd1}
               color="primary"
               component="span"
               style={{ marginTop: 10, marginLeft: 240 }}
@@ -891,7 +898,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.title}
-              style={{ width: 300 }}
+              style={{ width: 300,marginLeft:100 }}
               onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
                 <TextField
@@ -907,7 +914,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={1} style={{marginLeft:100}}>
             <Avatar className={classes.avatar} onClick={() => setOpen1(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -997,19 +1004,6 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid>
-            <Button
-              variant="contained"
-              // disabled={!selecetd}
-              color="primary"
-              component="span"
-              style={{ marginTop: 7, marginLeft: 60 }}
-              onClick={() => { handlecreateadmin() }}
-            >
-              {" "}
-              Create Admin
-            </Button>
-          </Grid>
           <Grid item xs={4} >
             <StyledAutocomplete
               size="small"
@@ -1019,8 +1013,8 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.Object_Type}
-              onChange={(e, v) => setObjectTypeAdmin(v?.Object_Type)}
-              style={{ width: 300 }}
+              onChange={(e, v) => handleobjecttype(v)}
+              style={{ width: 300,marginLeft:100 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -1034,7 +1028,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={1} style={{marginLeft:100}}>
             <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -1129,6 +1123,19 @@ export default function SuperadminFunction() {
               {/* </form> */}
             </Container>
           </Modal>
+          <Grid>
+            <Button
+              variant="contained"
+              disabled={!selecetd}
+              color="primary"
+              component="span"
+              style={{ marginTop: 9, marginLeft: 60 }}
+              onClick={() => { handlecreateadmin() }}
+            >
+              {" "}
+              Create Admin
+            </Button>
+          </Grid>
         </Grid>
       </Box>
       <Box py={2} px={2}>
@@ -1174,9 +1181,9 @@ export default function SuperadminFunction() {
                             {/* {item.Object_types} */}
 
                             {
-                              item.Object_types.map((key)=>{
-                                
-                                return key+','
+                              item.Object_types.map((key) => {
+
+                                return key + ','
                               })
                             }
                           </div>
@@ -1271,7 +1278,7 @@ export default function SuperadminFunction() {
                     size="small"
                     id="grouped-demo"
                     className={classes.inputRoottype}
-                    options= {rm_objectslist}
+                    options={rm_objectslist}
                     groupBy={""}
                     // defaultValue={{ title: "Oracle TO Postgres" }}
                     value={objecttype_rm}
