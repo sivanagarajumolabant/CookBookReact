@@ -116,7 +116,7 @@ function StyledTreeItem(props) {
               {labelInfo}
             </Typography>
             {/* {IsSuperAdmin == "true" && */}
-            {(IsSuperAdmin === "true" || admin===1 || createflag===1) && 
+            {( admin===1 || createflag===1) && 
               <>
                 {mainheader && (
                   <AddIcon
