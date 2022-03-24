@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import clsx from "clsx";
+import fileDownload from "js-file-download";
 import Avatar from "@material-ui/core/Avatar";
 import config from '../../src/Config/config'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -285,7 +286,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = React.useState(true);
-  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin,lable } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable } = useSelector(state => state.dashboardReducer);
   // console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -297,7 +298,7 @@ export default function ClippedDrawer({ children }) {
   const [selectedItems, setselectedItems] = React.useState([])
   const [migtypelist, setMigtypeslist] = useState([])
   const [create_flag, setcreate_flag] = useState([])
-  const [create_check_flag, setcreate_check_flag]= useState(0)
+  const [create_check_flag, setcreate_check_flag] = useState(0)
 
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -409,6 +410,7 @@ export default function ClippedDrawer({ children }) {
     const res = await axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
     // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
     setmenuList(res.data);
+    // dispatch(Menuaction.lableselect(res.data[0]?.Label))
     // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
     dispatch(ActionMenu.selectedMenutlist(''))
     dispatch(Menuaction.reloadAction(false))
@@ -469,16 +471,44 @@ export default function ClippedDrawer({ children }) {
 
 
   const onDownload1 = () => {
-    const link = document.createElement("a");
-    link.download = `template.py`;
-    link.href = "./Files/template.py";
-    link.click();
+    // const link = document.createElement("a");
+    // link.download = `template.py`;
+    // link.href = "./Files/template.py";
+    // link.click();
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    // console.log(conf.headers)
+    axios
+      .get(`${config.API_BASE_URL()}/api/templatedownload/`, conf)
+      .then((res) => {
+        fileDownload(res.data, 'template.py');
+        // const content = res.headers['content-type'];
+        // download(res.data, att_name, content)
+      })
+      .catch((err) => { });
   };
   const onDownload2 = () => {
-    const link = document.createElement("a");
-    link.download = `Instructions.pdf`;
-    link.href = "./Files/Instructions.pdf";
-    link.click();
+    // const link = document.createElement("a");
+    // link.download = `Instructions.pdf`;
+    // link.href = "./Files/Instructions.pdf";
+    // link.click();
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    // console.log(conf.headers)
+    axios
+      .get(`${config.API_BASE_URL()}/api/pdfdownload/`, conf)
+      .then((res) => {
+        fileDownload(res.data, 'instructions.pdf');
+        // const content = res.headers['content-type'];
+        // download(res.data, att_name, content)
+      })
+      .catch((err) => { });
   };
 
 
@@ -487,8 +517,8 @@ export default function ClippedDrawer({ children }) {
     dispatch(ActionMenu.selectedMenutlist(data))
     setselectedItems([data])
 
-    create_flag.map((val)=>{
-      if (val.Label===data.Label){
+    create_flag.map((val) => {
+      if (val.Label === data.Label) {
         setcreate_check_flag(val.Create_Flag)
         dispatch(Menuaction.lableselect(data.Label))
         // history.push('/dashboard')
@@ -790,7 +820,7 @@ export default function ClippedDrawer({ children }) {
                         className={classes.inputRoottype}
                         options={menuList}
                         groupBy={""}
-                        defaultValue={{ Label: menuList[0]?.Label }}
+                        defaultValue={{ Label: "Select Object" }}
                         getOptionLabel={(option) => option.Label}
                         style={{ width: 230, height: 50 }}
                         onChange={(e, v) => handlefeature(v)}
@@ -815,7 +845,7 @@ export default function ClippedDrawer({ children }) {
                       menuList={ITEMlIST}
                       dropdown={dropdown}
                       admin={admin}
-                      createflag ={create_check_flag}
+                      createflag={create_check_flag}
                     />
                   </Grid>
 

@@ -218,7 +218,7 @@ export default function AdminAccesslist() {
         let body = {
           "User_Email": localStorage.getItem('uemail'),
           "Migration_TypeId": headerValue?.title,
-          "Object_Type":lable
+          "Object_Type": lable
         };
         let conf = {
           headers: {
@@ -388,33 +388,41 @@ export default function AdminAccesslist() {
 
 
   useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    let body = {
-      "Migration_TypeId": headerValue?.title,
-    };
+    if (headerValue) {
+      if (Object.keys(headerValue).length > 0) {
+        let conf = {
+          headers: {
+            Authorization: "Bearer " + config.ACCESS_TOKEN(),
+          },
+        };
+        let body = {
+          "Migration_TypeId": headerValue?.title,
+          "Object_Type": lable,
+          "User_Email": localStorage.getItem('uemail')
+        };
 
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/objectviewtlist/`, form, conf).then(
-      (res) => {
-        if (res.data.length > 0) {
-          setObjtypeslist(([{ Object_Type: "ALL" }]).concat(res.data))
-          setobjcount(1)
-        }
+        const form = new FormData();
+        Object.keys(body).forEach((key) => {
+          form.append(key, body[key]);
+        });
+        axios.post(`${config.API_BASE_URL()}/api/objectadminviewtlist/`, form, conf).then(
+          (res) => {
+            if (res.data.length > 0) {
+              setObjtypeslist(res.data)
+              setobjcount(1)
+            }
 
 
-      },
-      (error) => {
-        console.log(error);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
       }
-    );
-  }, [headerValue?.title]);
+    }
+
+  }, [headerValue, lable]);
 
 
 

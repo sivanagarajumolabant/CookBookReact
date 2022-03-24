@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     '&:hover': {
-        overflow: 'visible'
+      overflow: 'visible'
     }
   },
 
@@ -125,16 +125,10 @@ export default function AccessReview() {
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
-  const [objtype, setObjtype] = useState()
-  const [fnnames, setFnnames] = useState([])
-  const [data, setData] = useState([])
+  const [selecetd1, setSelected1] = useState(false)
   const [objtypeslist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
   const [useremail, setUseremail] = useState()
-
-
-
-
 
   useEffect(() => {
     let conf = {
@@ -154,29 +148,29 @@ export default function AccessReview() {
     );
   }, []);
 
-  useEffect(()=>{
-    if (headerValue){
+  useEffect(() => {
+    if (headerValue) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
-  
+
       let body = {
         "Migration_TypeId": headerValue?.title,
       };
-  
+
       const form = new FormData();
       Object.keys(body).forEach((key) => {
         form.append(key, body[key]);
       });
       axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
         (res) => {
-  
+
           setObjtypeslist(res.data)
-          if (res.data.length>0){
+          if (res.data.length > 0) {
             setIsData(true)
-          }else{
+          } else {
             setIsData(false)
           }
         },
@@ -185,8 +179,8 @@ export default function AccessReview() {
         }
       );
     }
-    
-  },[headerValue])
+
+  }, [headerValue])
 
   const handleAccessReview = () => {
     let conf = {
@@ -208,12 +202,12 @@ export default function AccessReview() {
       (res) => {
 
         setObjtypeslist(res.data)
-        if (res.data.length>0){
+        if (res.data.length > 0) {
           setIsData(true)
-        }else{
+        } else {
           setIsData(false)
         }
-        
+
 
       },
       (error) => {
@@ -223,6 +217,10 @@ export default function AccessReview() {
     // setIsData(false)
   }
 
+  const handleuseremail = (v) => {
+    setSelected1(true)
+    setUseremail(v?.email)
+  }
 
 
   // console.log(userslist)
@@ -275,7 +273,7 @@ export default function AccessReview() {
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.email}
               style={{ width: 300 }}
-              onChange={(e, v) => setUseremail(v?.email)}
+              onChange={(e, v) => handleuseremail(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -294,6 +292,7 @@ export default function AccessReview() {
           <Grid>
             <Button
               variant="contained"
+              disabled={!selecetd1}
               color="primary"
               component="span"
               style={{ marginTop: 5, marginLeft: 100 }}
