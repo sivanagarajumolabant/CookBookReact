@@ -841,7 +841,7 @@ export default function ClippedDrawer({ children }) {
                         className={classes.inputRoottype}
                         options={menuList}
                         groupBy={""}
-                        defaultValue={{ Label: "Select Object" }}
+                        defaultValue={{ Label: "Select Object Type" }}
                         getOptionLabel={(option) => option.Label}
                         style={{ width: 230, height: 50 }}
                         onChange={(e, v) => handlefeature(v)}
