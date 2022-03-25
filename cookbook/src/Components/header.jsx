@@ -280,7 +280,7 @@ const StyledAutocompletesidebar = styled(Autocomplete)({
 
 export default function ClippedDrawer({ children }) {
   const classes = useStyles();
-  const IsSuperAdmin = localStorage.getItem('isSuperAdmin')
+  const IsSuperAdmin = sessionStorage.getItem('isSuperAdmin')
   const [opens, setOpens] = useState(false);
   //   const classes = useStyles();
   const theme = useTheme();
@@ -316,7 +316,7 @@ export default function ClippedDrawer({ children }) {
       },
     };
     let body = {
-      'email': localStorage.getItem('uemail')
+      'email': sessionStorage.getItem('uemail')
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {
@@ -353,7 +353,7 @@ export default function ClippedDrawer({ children }) {
           },
         };
         let body = {
-          'User_Email': localStorage.getItem('uemail'),
+          'User_Email': sessionStorage.getItem('uemail'),
           "Migration_Type": headerValue?.title
         }
         const form = new FormData();
@@ -380,13 +380,13 @@ export default function ClippedDrawer({ children }) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    //  localStorage.clear()
+    //  sessionStorage.clear()
     //  history.push('/')
   };
 
   const handleroute = () => {
     setAnchorEl(null);
-    localStorage.clear();
+    sessionStorage.clear();
     history.push("/");
   };
 
@@ -397,7 +397,7 @@ export default function ClippedDrawer({ children }) {
       }
     }
     let body = {
-      "User_Email": localStorage.getItem('uemail'),
+      "User_Email": sessionStorage.getItem('uemail'),
       Migration_TypeId: value,
     };
 
@@ -544,7 +544,7 @@ export default function ClippedDrawer({ children }) {
 
 
 
-  // localStorage.setItem('quser', user.username)
+  // sessionStorage.setItem('quser', user.username)
 
 
   // React.useEffect(()=>{
@@ -673,7 +673,7 @@ export default function ClippedDrawer({ children }) {
             </Grid>
             {/* <Grid >
               <div style={{ marginTop: '42px', fontSize: 16, marginLeft: 25 }}>
-                <center>{localStorage.getItem('quser')}</center>
+                <center>{sessionStorage.getItem('quser')}</center>
               </div>
 
             </Grid> */}
@@ -692,8 +692,8 @@ export default function ClippedDrawer({ children }) {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <div style={{ fontSize: 14, marginTop: 5 }}>{localStorage.getItem('quser')}</div>
-                  {/* <AccountCircle>{localStorage.getItem('quser')}</AccountCircle> */}
+                  <div style={{ fontSize: 14, marginTop: 5 }}>{sessionStorage.getItem('quser')}</div>
+                  {/* <AccountCircle>{sessionStorage.getItem('quser')}</AccountCircle> */}
                 </IconButton>
                 {/* <div style={{ paddingBottom:20, fontSize: 16 }}> */}
                 {/*  */}

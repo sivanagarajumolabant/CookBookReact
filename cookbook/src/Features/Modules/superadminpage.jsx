@@ -266,7 +266,7 @@ export default function SuperadminFunction() {
       },
     };
     let body = {
-      'email': localStorage.getItem('uemail')
+      'email': sessionStorage.getItem('uemail')
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {

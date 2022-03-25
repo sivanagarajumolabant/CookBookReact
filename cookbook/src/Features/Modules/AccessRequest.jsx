@@ -247,7 +247,7 @@ export default function Request() {
       }
     }
     let body = {
-      'User_Email': localStorage.getItem('uemail'),
+      'User_Email': sessionStorage.getItem('uemail'),
       "Migration_Type": headerValue?.title,
       "Object_Type": objtype,
       "Feature_Name": v?.Feature_Name,
@@ -283,7 +283,7 @@ export default function Request() {
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue?.title,
-      "User_Email": localStorage.getItem('uemail'),
+      "User_Email": sessionStorage.getItem('uemail'),
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
       "Access_Type": access,

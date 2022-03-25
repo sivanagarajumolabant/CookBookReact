@@ -27,7 +27,7 @@ import { useHistory } from 'react-router-dom';
 
 const Routing = () => {
     const history = useHistory()
-    let isAuth = localStorage.getItem('isAuth')
+    let isAuth = sessionStorage.getItem('isAuth')
     React.useEffect(() => {
         if (isAuth) {
             // history.push('/dashboard')

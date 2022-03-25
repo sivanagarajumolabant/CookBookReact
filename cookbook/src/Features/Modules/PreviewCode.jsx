@@ -154,7 +154,7 @@ export default function PreviewCode(props) {
       };
 
       let body = {
-        'User_Email': localStorage.getItem('uemail')
+        'User_Email': sessionStorage.getItem('uemail')
       }
       const form = new FormData();
       Object.keys(body).forEach((key) => {
@@ -372,7 +372,7 @@ export default function PreviewCode(props) {
     let body = {
       "Object_Type": objtype,
       "Migration_TypeId": headerValue?.title,
-      "User_Email": localStorage.getItem('uemail'),
+      "User_Email": sessionStorage.getItem('uemail'),
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
       "Access_Type": 'Edit'

@@ -68,18 +68,18 @@ function SignIn() {
 
   const login = (user) => {
     // history.push("/dashboard");
-    // localStorage.setItem('isAuth', true)
+    // sessionStorage.setItem('isAuth', true)
     // history.push("/dashboard");
     let loginurl = config.API_BASE_URL() + '/login/'
     // console.log(loginurl)
     axios.post(loginurl, user)
       .then((res) => {
         if (res.status === 200 && res.data.access !== null) {
-          localStorage.setItem('isAuth', true)
-          localStorage.setItem('isSuperAdmin', res.data.superadmin)
-          localStorage.setItem('quadranttoken', res.data.access)
-          localStorage.setItem('quser', user.username)
-          localStorage.setItem('uemail', res.data.email)
+          sessionStorage.setItem('isAuth', true)
+          sessionStorage.setItem('isSuperAdmin', res.data.superadmin)
+          sessionStorage.setItem('quadranttoken', res.data.access)
+          sessionStorage.setItem('quser', user.username)
+          sessionStorage.setItem('uemail', res.data.email)
           history.push("/dashboard");
         }
       })
@@ -116,7 +116,7 @@ function SignIn() {
   if (msg.length > 0) {
     display_msg = <Alert variant="filled" severity="error">{msg}</Alert>
   }
-  let isAuth=localStorage.getItem('isAuth')
+  let isAuth=sessionStorage.getItem('isAuth')
   React.useEffect(()=>{
        if(isAuth){
          debugger

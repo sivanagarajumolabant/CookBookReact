@@ -549,7 +549,7 @@ export default function CreateFeature(props) {
       },
     };
     let body = {
-      'User_Email': localStorage.getItem('uemail')
+      'User_Email': sessionStorage.getItem('uemail')
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {

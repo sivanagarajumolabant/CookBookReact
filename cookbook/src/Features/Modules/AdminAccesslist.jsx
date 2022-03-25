@@ -216,7 +216,7 @@ export default function AdminAccesslist() {
     if (headerValue) {
       if (Object.keys(headerValue).length > 0) {
         let body = {
-          "User_Email": localStorage.getItem('uemail'),
+          "User_Email": sessionStorage.getItem('uemail'),
           "Migration_TypeId": headerValue?.title,
           "Object_Type": lable
         };
@@ -398,7 +398,7 @@ export default function AdminAccesslist() {
         let body = {
           "Migration_TypeId": headerValue?.title,
           "Object_Type": lable,
-          "User_Email": localStorage.getItem('uemail')
+          "User_Email": sessionStorage.getItem('uemail')
         };
 
         const form = new FormData();
@@ -446,7 +446,7 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
       "Approval_Status": action,
-      "Approved_by": localStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail')
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -502,7 +502,7 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       'Expiry_date': item.Expiry_date,
       "Approval_Status": action,
-      "Approved_by": localStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail')
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -564,7 +564,7 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       "Approval_Status": action,
       "id": item.id,
-      "Approved_by": localStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail')
     }
 
     Object.keys(body).forEach((key) => {
@@ -610,7 +610,7 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
       "Approval_Status": action,
-      "Approved_by": localStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail')
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -662,7 +662,7 @@ export default function AdminAccesslist() {
       "Approval_Status": 'Approved',
       "Access_Type": grant_access_type,
       "Expiry_date": moment(selectedDate).format('YYYY-MM-DD'),
-      "Approved_by": localStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail')
     };
     let conf = {
       headers: {

@@ -156,7 +156,7 @@ export default function EditFeature(props) {
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
   const [fupdate, setFupdate] = useState(false);
-  const IsSuperAdmin = localStorage.getItem('isSuperAdmin')
+  const IsSuperAdmin = sessionStorage.getItem('isSuperAdmin')
 
   const dispatch = useDispatch();
 
@@ -807,7 +807,7 @@ export default function EditFeature(props) {
                 multiline
                 rows={1}
                 onChange={(e) => handleChange(e)}
-                label="Migration Type"
+                // label="Migration Type"
                 // defaultValue="Default Value"
                 value={editdata?.detaildata?.Migration_TypeId}
                 variant="outlined"
@@ -1182,7 +1182,7 @@ export default function EditFeature(props) {
                       startIcon={<CloudUploadIcon />}
                       color="primary"
                       component="span"
-                      startIcon={<CloudUploadIcon />}
+                      // startIcon={<CloudUploadIcon />}
                       style={{ marginTop: 8 }}
                     >
                       Upload
