@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from  "react";
+import React, { useReducer } from  "react";
 import clsx from "clsx";
 import fileDownload from "js-file-download";
 import Avatar from "@material-ui/core/Avatar";
