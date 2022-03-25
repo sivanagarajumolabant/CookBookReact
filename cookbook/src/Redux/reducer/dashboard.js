@@ -83,7 +83,7 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         DropDownValues: action.payload,
         headerValue: action.payload[0],
-        admin: action.payload[0].admin
+        // admin: action.payload[0].admin
       };
 
 

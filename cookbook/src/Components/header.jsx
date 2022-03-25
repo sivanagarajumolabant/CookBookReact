@@ -396,10 +396,12 @@ export default function ClippedDrawer({ children }) {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
       }
     }
+
     let body = {
       "User_Email": sessionStorage.getItem('uemail'),
       Migration_TypeId: value,
     };
+
 
     const form = new FormData();
     Object.keys(body).forEach((key) => {
@@ -407,21 +409,38 @@ export default function ClippedDrawer({ children }) {
     });
 
 
-    const res = await axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
-    // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
-    setmenuList(res.data);
-    // dispatch(Menuaction.lableselect(res.data[0]?.Label))
-    // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
-    dispatch(ActionMenu.selectedMenutlist(''))
-    dispatch(Menuaction.reloadAction(false))
-    dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
+
+    // const res = await 
+    axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
+    .then((res) => {
+      // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
+      setmenuList(res.data);
+      // dispatch(Menuaction.lableselect(res.data[0]?.Label))
+      // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
+      dispatch(ActionMenu.selectedMenutlist(''))
+      dispatch(Menuaction.reloadAction(false))
+      dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
+    },(error)=>{
+      setmenuList([]);
+      // dispatch(Menuaction.lableselect(res.data[0]?.Label))
+      // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
+      dispatch(ActionMenu.selectedMenutlist(''))
+      dispatch(Menuaction.reloadAction(false))
+      dispatch(Menuaction.admin(0))
+    }
+    )
+
 
   };
 
 
   React.useEffect(() => {
-    getmenus(headerValue?.title);
-  }, []);
+    if (headerValue) {
+      if (Object.keys(headerValue).length > 0) {
+        getmenus(headerValue?.title);
+      }
+    }
+  }, [headerValue]);
   React.useEffect(() => {
     if (updatedValue) {
       getmenus(headerValue?.title);
@@ -756,11 +775,23 @@ export default function ClippedDrawer({ children }) {
 
             <div className={classes.drawerContainer}>
               {/* {(IsSuperAdmin === "true" || admin===1) && */}
+            
+
+              <Typography
+                variant="body2"
+                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+
+                onClick={handlerequestMenus}
+              >
+                Feature Catalog
+              </Typography>
+              <Divider />
+
               {admin === 1 &&
                 <>
                   <Typography
                     variant="body2"
-                    style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                     onClick={handleAdminMenus}
                   >
@@ -772,17 +803,7 @@ export default function ClippedDrawer({ children }) {
               }
 
 
-
-              <Typography
-                variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
-
-                onClick={handlerequestMenus}
-              >
-                Feature Catalog
-              </Typography>
-
-              <Divider />
+              {/* <Divider /> */}
               {/* {(IsSuperAdmin === "true" || admin===1) && */}
               {admin === 1 &&
                 <>
