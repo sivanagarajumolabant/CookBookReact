@@ -53,6 +53,44 @@ import Qmig from '../Images/Qmig.png'
 const drawerWidth = 375;
 
 const useStyles = makeStyles((theme) => ({
+   // ############################
+   
+  drawer: {
+    // position: "static",
+    transition: "width .7s",
+  },
+  closed: {
+    width: "0px",
+    
+  },
+  opened: {
+    width: "240px",
+  },
+  drawer1: {
+    transition: "marginLeft .7s",
+  },
+  closed1: {
+    // marginLeft:80,
+    // marginRight:0,
+    width:"100%",
+    flex:1,
+  },
+  opened1: {
+    marginLeft: 260,
+    width:"83%",
+    
+  },
+ 
+  // ##########################
+
+
+  sidebarbody:{
+    // background:"fff",
+    // color:"fff",
+    // backgroundColor:"red",
+  },
+
+
   downloadbutton: {
     position: 'fixed',
     bottom: 0
@@ -100,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('md')]: {
       marginTop: 20,
-      width: 240,
+      width: 40,
       background: "#3f51b5",
     },
     [theme.breakpoints.up('lg')]: {
@@ -139,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('lg')]: {
       flexGrow: 1,
-      marginLeft: 260,
+      marginLeft: 60,
       padding: theme.spacing(1),
       width: "78%",
     },
@@ -285,7 +323,7 @@ export default function ClippedDrawer({ children }) {
   //   const classes = useStyles();
   const theme = useTheme();
 
-  const [isOpened, setIsOpened] = React.useState(true);
+  const [isOpened, setIsOpened] = useState(true);
   const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable } = useSelector(state => state.dashboardReducer);
   // console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
@@ -597,7 +635,7 @@ export default function ClippedDrawer({ children }) {
             <Grid item
               xm={12} sm={12} md={3} lg={1}>
               <div>
-                <img src={Qmig} className={classes.title} />
+                <img src={Qmig} className={classes.title} onClick={() => setIsOpened(!isOpened)}/>
               </div>
             </Grid>
 
@@ -758,16 +796,17 @@ export default function ClippedDrawer({ children }) {
 
       {/* Side bar */}
 
-      <Grid container>
+      <Grid container className={classes.sidebarbody}>
         <Grid item>
-          <Drawer
-            open={opens} onClose={() => setOpens(false)}
-            // className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
+        <Drawer
+              variant="permanent"
+              classes={{
+                paper: clsx(classes.drawer, {
+                  [classes.closed]: !isOpened,
+                  [classes.opened]: isOpened,
+                }),
+              }}
+            >
 
             <Toolbar />
 
@@ -898,12 +937,18 @@ export default function ClippedDrawer({ children }) {
         </Grid>
 
         <Grid item xs={12}>
-          <main
-            className={classes.content}
-          >
+        <Drawer
+              variant="permanent"
+              classes={{
+                paper: clsx(classes.drawer1, {
+                  [classes.closed1]: !isOpened,
+                  [classes.opened1]: isOpened,
+                }),
+              }}
+            >
             <Toolbar />
             {children}
-          </main>
+          </Drawer>
         </Grid>
 
       </Grid>
