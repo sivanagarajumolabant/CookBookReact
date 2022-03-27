@@ -450,12 +450,12 @@ export default function CreateFeature(props) {
         ...edithandle,
         Sequence: e.target.value
       })
-    }else if (e.target.name === "Keywords"){
+    } else if (e.target.name === "Keywords") {
       setEdithandle({
         ...edithandle,
         'Keywords': e.target.value
       })
-    }else if(e.target.name === "Estimations"){
+    } else if (e.target.name === "Estimations") {
       setEdithandle({
         ...edithandle,
         'Estimations': e.target.value
@@ -489,7 +489,7 @@ export default function CreateFeature(props) {
 
   const handleEditmodal = (featuredata) => {
     // console.log(featuredata)
-   
+
     let formData = {
       ...formValues,
       Migration_TypeId: featuredata.Migration_TypeId,
@@ -503,8 +503,8 @@ export default function CreateFeature(props) {
       "Target_ActualCode": featuredata.Target_ActualCode,
       "Source_Code": featuredata.Source_Code,
       "Conversion_Code": featuredata.Conversion_Code,
-      "Keywords":featuredata.Keywords,
-      "Estimations":featuredata.Estimations,
+      "Keywords": featuredata.Keywords,
+      "Estimations": featuredata.Estimations,
     }
     setEdithandle(formData)
     const form = new FormData();
@@ -572,7 +572,7 @@ export default function CreateFeature(props) {
 
 
   return (
-    <>
+    <Box style={{ width:'97%', marginLeft:13}}>
       <Box py={4}>
         <Grid container direction="row" justifyContent="center">
           <Grid item>
@@ -744,17 +744,20 @@ export default function CreateFeature(props) {
           />
         </Grid>
 
-        <Grid item xs={6} sm={1} md={1} xl={1}>
+        <Grid container direction="row" justifyContent="center"
+        >
           <Button
             size="small"
             type="submit"
             // fullWidth
             variant="contained"
             color="primary"
+            // align='center'
             // className={classes.submit}
             onClick={handleSubmit}
             startIcon={<SaveIcon />}
-            style={{ marginTop: 12, marginLeft: 450 }}
+            // justifyContent='center'
+            style={{ marginBottom:20 }}
           >
             Save
           </Button>
@@ -1003,6 +1006,6 @@ export default function CreateFeature(props) {
         </Modal>
 
       </Grid>
-    </>
+    </Box>
   );
 }

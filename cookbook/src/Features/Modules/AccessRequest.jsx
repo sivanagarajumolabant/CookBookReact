@@ -495,9 +495,8 @@ export default function Request() {
         </Grid>
       </Box>
       <Box className={classes.root}>
-        <Grid container spacing={3} justifyContent="center"
-          alignItems="center">
-          <Grid item xs={7}>
+        <Grid container direction="row" justifyContent="center">
+          <Grid item direction="row" justifyContent="center" spacing={1}>
 
 
             {flag === 1 ?

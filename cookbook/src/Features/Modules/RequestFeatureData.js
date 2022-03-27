@@ -1079,9 +1079,9 @@ export default function RequestFeatureData(props) {
     }
 
     return (
-        <>
+        <Box style={{ width: '97%', marginLeft: 15 }}>
             {data}
             <Notification notify={notify} setNotify={setNotify} />
-        </>
+        </Box>
     );
 }

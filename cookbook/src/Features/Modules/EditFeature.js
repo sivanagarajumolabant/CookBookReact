@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     '&:hover': {
-        overflow: 'visible'
+      overflow: 'visible'
     }
   },
   convertbutton: {
@@ -784,7 +784,7 @@ export default function EditFeature(props) {
   }))(TableRow);
 
   return (
-    <>
+    <Box style={{ width:'95%', marginLeft:40}}>
       {Object.keys(editdata).length > 0 && (
         <>
           <Box py={2}>
@@ -1673,6 +1673,6 @@ export default function EditFeature(props) {
           />
         </>
       )}
-    </>
+    </Box>
   );
 }

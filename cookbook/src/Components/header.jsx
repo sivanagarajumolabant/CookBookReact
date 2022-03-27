@@ -76,8 +76,8 @@ const useStyles = makeStyles((theme) => ({
     flex:1,
   },
   opened1: {
-    marginLeft: 260,
-    width:"83%",
+    marginLeft: 240,
+    width:"82%",
     
   },
  
@@ -818,7 +818,7 @@ export default function ClippedDrawer({ children }) {
 
               <Typography
                 variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 0, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                style={{ color: "white", marginBottom: 10, paddingTop: 8, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                 onClick={handlerequestMenus}
               >
