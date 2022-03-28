@@ -114,6 +114,7 @@ export default function RequestFeatureData(props) {
     var previewdata  = props.location.data?.data
 
     
+
     const classes = useStyles();
     const classestable = useStylestable();
     const [detaildata, setDetaildata] = useState();
@@ -456,7 +457,7 @@ export default function RequestFeatureData(props) {
                             {/* {detaildata[0].Feature_Name.split("\n").map((i, key) => {
                 return <div key={key}>{i}</div>;
               })} */}
-                            {detaildata.Feature_Name.substr(5)}
+                            {detaildata.Feature_Name}
                             {/* </Typography> */}
                         </div>
                     </Grid>

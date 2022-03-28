@@ -508,7 +508,7 @@ export default function PreviewCode(props) {
               {/* {detaildata[0].Feature_Name.split("\n").map((i, key) => {
                 return <div key={key}>{i}</div>;
               })} */}
-              {detaildata.Feature_Name.substr(5)}
+              {detaildata.Feature_Name}
               {/* </Typography> */}
             </div>
           </Grid>

@@ -14,7 +14,8 @@ const initialState = {
   ITEMlIST: [],
   DropDownValues: [],
   admin :0,
-  lable:null
+  lable:null,
+  major_version :null
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -109,6 +110,12 @@ const dashboardReducer = (state = initialState, action) => {
       return {
         ...state,
         lable: action.payload
+      };
+
+    case "MAJOR_VERSION":
+      return {
+        ...state,
+        major_version: action.payload
       };
   
     default:

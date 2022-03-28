@@ -196,8 +196,11 @@ export default function CreateFeature(props) {
     editpreview,
     editPreviewdetails,
     headerValue,
-    ITEMlIST
+    ITEMlIST,
+    major_version,
   } = useSelector((state) => state.dashboardReducer);
+
+  // console.log(major_version, "===================")
 
   var obj_type = props.location?.state?.data?.Label;
   // console.log("obj type ", obj_type);
@@ -354,6 +357,8 @@ export default function CreateFeature(props) {
       Target_FeatureDescription: "",
       Target_Expected_Output: "",
       Target_ActualCode: "",
+      Project_Version_Id:major_version,
+      Feature_Version_Id:0
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -425,7 +430,7 @@ export default function CreateFeature(props) {
       if (fnlist.length > 0) {
         // let fnvalue = fnlist.Feature_Name.substr(5)
         for (var counter = 0; counter < fnlist.length; counter++) {
-          let val_mod = String(fnlist[counter].Feature_Name).substr(5);
+          let val_mod = String(fnlist[counter].Feature_Name)
           if (e.target.value === "") {
             setFeaturenamemsg("Please Enter feature Name");
             break;
@@ -494,7 +499,7 @@ export default function CreateFeature(props) {
       ...formValues,
       Migration_TypeId: featuredata.Migration_TypeId,
       Object_Type: featuredata.Object_Type,
-      Feature_Name: String(featuredata.Feature_Name).substr(5),
+      Feature_Name: String(featuredata.Feature_Name),
       // Source_FeatureDescription, Target_FeatureDescription,
       "Sequence": featuredata.Sequence,
       "Source_FeatureDescription": featuredata.Source_FeatureDescription,
@@ -694,7 +699,7 @@ export default function CreateFeature(props) {
               {prerunval.map((item, ind) => {
                 return (
                   <option value={item.Feature_Name}>
-                    {item.Feature_Name.substr(5)}
+                    {item.Feature_Name}
                   </option>
                 );
               })}
@@ -818,7 +823,7 @@ export default function CreateFeature(props) {
                     <StyledTableRow container>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Feature_Name.substr(5)}
+                          {row.Feature_Name}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
@@ -934,7 +939,7 @@ export default function CreateFeature(props) {
                   {prerunval.map((item, ind) => {
                     return (
                       <option value={item.Feature_Name}>
-                        {item.Feature_Name.substr(5)}
+                        {item.Feature_Name}
                       </option>
                     );
                   })}
