@@ -53,15 +53,15 @@ import Qmig from '../Images/Qmig.png'
 const drawerWidth = 375;
 
 const useStyles = makeStyles((theme) => ({
-   // ############################
-   
+  // ############################
+
   drawer: {
     // position: "static",
     transition: "width .7s",
   },
   closed: {
     width: "0px",
-    
+
   },
   opened: {
     width: "240px",
@@ -72,19 +72,19 @@ const useStyles = makeStyles((theme) => ({
   closed1: {
     // marginLeft:80,
     // marginRight:0,
-    width:"100%",
-    flex:1,
+    width: "100%",
+    flex: 1,
   },
   opened1: {
     marginLeft: 240,
-    width:"82%",
-    
+    width: "82%",
+
   },
- 
+
   // ##########################
 
 
-  sidebarbody:{
+  sidebarbody: {
     // background:"fff",
     // color:"fff",
     // backgroundColor:"red",
@@ -347,6 +347,10 @@ export default function ClippedDrawer({ children }) {
     setAuth(event.target.checked);
   };
 
+  useEffect(() => {
+    history.push("/dashboard");
+  },[]);
+
   React.useEffect(() => {
     let conf = {
       headers: {
@@ -450,23 +454,23 @@ export default function ClippedDrawer({ children }) {
 
     // const res = await 
     axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
-    .then((res) => {
-      // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
-      setmenuList(res.data);
-      // dispatch(Menuaction.lableselect(res.data[0]?.Label))
-      // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
-      dispatch(ActionMenu.selectedMenutlist(''))
-      dispatch(Menuaction.reloadAction(false))
-      dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
-    },(error)=>{
-      setmenuList([]);
-      // dispatch(Menuaction.lableselect(res.data[0]?.Label))
-      // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
-      dispatch(ActionMenu.selectedMenutlist(''))
-      dispatch(Menuaction.reloadAction(false))
-      dispatch(Menuaction.admin(0))
-    }
-    )
+      .then((res) => {
+        // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
+        setmenuList(res.data);
+        // dispatch(Menuaction.lableselect(res.data[0]?.Label))
+        // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
+        dispatch(ActionMenu.selectedMenutlist(''))
+        dispatch(Menuaction.reloadAction(false))
+        dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
+      }, (error) => {
+        setmenuList([]);
+        // dispatch(Menuaction.lableselect(res.data[0]?.Label))
+        // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
+        dispatch(ActionMenu.selectedMenutlist(''))
+        dispatch(Menuaction.reloadAction(false))
+        dispatch(Menuaction.admin(0))
+      }
+      )
 
 
   };
@@ -635,7 +639,7 @@ export default function ClippedDrawer({ children }) {
             <Grid item
               xm={12} sm={12} md={3} lg={1}>
               <div>
-                <img src={Qmig} className={classes.title} onClick={() => setIsOpened(!isOpened)}/>
+                <img src={Qmig} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
               </div>
             </Grid>
 
@@ -798,15 +802,15 @@ export default function ClippedDrawer({ children }) {
 
       <Grid container className={classes.sidebarbody}>
         <Grid item>
-        <Drawer
-              variant="permanent"
-              classes={{
-                paper: clsx(classes.drawer, {
-                  [classes.closed]: !isOpened,
-                  [classes.opened]: isOpened,
-                }),
-              }}
-            >
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: clsx(classes.drawer, {
+                [classes.closed]: !isOpened,
+                [classes.opened]: isOpened,
+              }),
+            }}
+          >
 
             <Toolbar />
 
@@ -814,7 +818,7 @@ export default function ClippedDrawer({ children }) {
 
             <div className={classes.drawerContainer}>
               {/* {(IsSuperAdmin === "true" || admin===1) && */}
-            
+
 
               <Typography
                 variant="body2"
@@ -937,15 +941,15 @@ export default function ClippedDrawer({ children }) {
         </Grid>
 
         <Grid item xs={12}>
-        <Drawer
-              variant="permanent"
-              classes={{
-                paper: clsx(classes.drawer1, {
-                  [classes.closed1]: !isOpened,
-                  [classes.opened1]: isOpened,
-                }),
-              }}
-            >
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: clsx(classes.drawer1, {
+                [classes.closed1]: !isOpened,
+                [classes.opened1]: isOpened,
+              }),
+            }}
+          >
             <Toolbar />
             {children}
           </Drawer>
