@@ -124,7 +124,7 @@ export default function AccessReview() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, label } = useSelector(state => state.dashboardReducer);
   const [selecetd1, setSelected1] = useState(false)
   const [objtypeslist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
@@ -150,37 +150,54 @@ export default function AccessReview() {
 
   useEffect(() => {
     if (headerValue) {
-      let conf = {
-        headers: {
-          Authorization: "Bearer " + config.ACCESS_TOKEN(),
-        },
-      };
+      if (Object.keys(headerValue).length > 0) {
+        let conf = {
+          headers: {
+            Authorization: "Bearer " + config.ACCESS_TOKEN(),
+          },
+        };
 
-      let body = {
-        "Migration_TypeId": headerValue?.title,
-      };
-
-      const form = new FormData();
-      Object.keys(body).forEach((key) => {
-        form.append(key, body[key]);
-      });
-      axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
-        (res) => {
-
-          setObjtypeslist(res.data)
-          if (res.data.length > 0) {
-            setIsData(true)
-          } else {
-            setIsData(false)
-          }
-        },
-        (error) => {
-          console.log(error);
+        let body;
+        if ((label === undefined || label === null) && useremail === undefined) {
+          body = {
+            "Migration_TypeId": headerValue?.title,
+          };
         }
-      );
+        else if (label === undefined || label === null) {
+          body = {
+            "Migration_TypeId": headerValue?.title,
+            "User_Email": useremail
+          };
+        } else {
+          body = {
+            "Migration_TypeId": headerValue?.title,
+            "User_Email": useremail,
+            "Object_Type": label
+          };
+        }
+
+        const form = new FormData();
+        Object.keys(body).forEach((key) => {
+          form.append(key, body[key]);
+        });
+        axios.post(`${config.API_BASE_URL()}/api/permissionslist/`, form, conf).then(
+          (res) => {
+
+            setObjtypeslist(res.data)
+            if (res.data.length > 0) {
+              setIsData(true)
+            } else {
+              setIsData(false)
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     }
 
-  }, [headerValue])
+  }, [headerValue, label])
 
   const handleAccessReview = () => {
     let conf = {
@@ -188,12 +205,19 @@ export default function AccessReview() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-
-    let body = {
-      "Migration_TypeId": headerValue?.title,
-      "User_Email": useremail
-    };
-
+    let body;
+    if (label === undefined || label === null) {
+      body = {
+        "Migration_TypeId": headerValue?.title,
+        "User_Email": useremail
+      };
+    } else {
+      body = {
+        "Migration_TypeId": headerValue?.title,
+        "User_Email": useremail,
+        "Object_Type": label
+      };
+    }
     const form = new FormData();
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
