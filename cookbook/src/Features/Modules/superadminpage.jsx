@@ -221,42 +221,42 @@ export default function SuperadminFunction() {
   let history = useHistory();
 
 
-  useEffect(() => {
-    // let sval = 0;
-    // if (headerValue) {
-    //   if (headerValue.title === "Oracle TO Postgres") {
-    //     sval = 1;
-    //   } else if (headerValue.title === "SQLServer TO Postgres") {
-    //     sval = 2;
-    //   } else if (headerValue.title === "MYSQL TO Postgres") {
-    //     sval = 3;
-    //   }
-    // }
+  // useEffect(() => {
+  //   // let sval = 0;
+  //   // if (headerValue) {
+  //   //   if (headerValue.title === "Oracle TO Postgres") {
+  //   //     sval = 1;
+  //   //   } else if (headerValue.title === "SQLServer TO Postgres") {
+  //   //     sval = 2;
+  //   //   } else if (headerValue.title === "MYSQL TO Postgres") {
+  //   //     sval = 3;
+  //   //   }
+  //   // }
 
-    let body = {
-      "Object_Type": objtype,
-      "Migration_TypeId": headerValue?.title,
-      "Feature_Name": ''
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
-      (res) => {
-        setFnnames(res.data)
-        console.log(res.data)
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [objtype]);
+  //   let body = {
+  //     "Object_Type": objtype,
+  //     "Migration_TypeId": headerValue?.title,
+  //     "Feature_Name": ''
+  //   };
+  //   let conf = {
+  //     headers: {
+  //       Authorization: "Bearer " + config.ACCESS_TOKEN(),
+  //     },
+  //   };
+  //   const form = new FormData();
+  //   Object.keys(body).forEach((key) => {
+  //     form.append(key, body[key]);
+  //   });
+  //   axios.post(`${config.API_BASE_URL()}/api/requestfndata/`, form, conf).then(
+  //     (res) => {
+  //       setFnnames(res.data)
+  //       console.log(res.data)
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }, [objtype]);
 
 
   useEffect(() => {

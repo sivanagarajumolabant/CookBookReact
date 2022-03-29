@@ -231,7 +231,7 @@ export default function CreateFeature(props) {
   const [fnlist, setFnlist] = useState([]);
   const [tableinfo, setTableinfo] = useState([]);
   const [istdata, setIstdata] = useState(false);
-  const [featurenamemsg, setFeaturenamemsg] = useState();
+  // const [featurenamemsg, setFeaturenamemsg] = useState();
   const [fid, setFid] = useState()
   const [modalupdate, setModalupdate] = useState(false)
   // const [migtypeid, setMigtypeid] = useState()
@@ -250,8 +250,8 @@ export default function CreateFeature(props) {
 
   useEffect(() => {
     let body = {
-      Object_Type: obj_type,
-      Migration_TypeId: formValues.Migration_TypeId,
+      Object_Type: lable,
+      Migration_TypeId: headerValue?.title,
     };
     let conf = {
       headers: {
@@ -269,7 +269,7 @@ export default function CreateFeature(props) {
         console.log(error);
       }
     );
-  }, [obj_type, headerValue?.title]);
+  }, [obj_type, headerValue?.title, lable]);
 
   useEffect(() => {
     let body = {
@@ -431,25 +431,25 @@ export default function CreateFeature(props) {
       [e.target.name]: e.target.value,
     });
     // console.log("fn list", fnlist);
-    if (e.target.name === "Feature_Name") {
-      if (fnlist.length > 0) {
-        // let fnvalue = fnlist.Feature_Name.substr(5)
-        for (var counter = 0; counter < fnlist.length; counter++) {
-          let val_mod = String(fnlist[counter].Feature_Name)
-          if (e.target.value === "") {
-            setFeaturenamemsg("Please Enter feature Name");
-            break;
-          } else if (val_mod === e.target.value) {
-            setFeaturenamemsg("Feature Already Exist!");
-            break;
-          } else if (val_mod !== e.target.value) {
-            setFeaturenamemsg("Feature Avaialable to Create");
-          }
-        }
-      } else {
-        setFeaturenamemsg("Feature Avaialable to Create");
-      }
-    }
+    // if (e.target.name === "Feature_Name") {
+    //   if (fnlist.length > 0) {
+    //     // let fnvalue = fnlist.Feature_Name.substr(5)
+    //     for (var counter = 0; counter < fnlist.length; counter++) {
+    //       let val_mod = String(fnlist[counter].Feature_Name)
+    //       if (e.target.value === "") {
+    //         setFeaturenamemsg("Please Enter feature Name");
+    //         break;
+    //       } else if (val_mod === e.target.value) {
+    //         setFeaturenamemsg("Feature Already Exist!");
+    //         break;
+    //       } else if (val_mod !== e.target.value) {
+    //         setFeaturenamemsg("Feature Avaialable to Create");
+    //       }
+    //     }
+    //   } else {
+    //     setFeaturenamemsg("Feature Avaialable to Create");
+    //   }
+    // }
   };
 
   const handleEditchangetext = (e) => {
@@ -653,7 +653,7 @@ export default function CreateFeature(props) {
             onChange={(e) => handleChange(e)}
             name="Feature_Name"
             // defaultValue="Default Value"
-            helperText={featurenamemsg}
+            // helperText={featurenamemsg}
             className={classes.textField}
             // helperText="Some important text"
             variant="outlined"

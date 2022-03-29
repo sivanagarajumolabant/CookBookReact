@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   opened1: {
     marginLeft: 240,
-    
+
     [theme.breakpoints.down('xs')]: {
       width: "85%",
     },
@@ -362,7 +362,7 @@ export default function ClippedDrawer({ children }) {
 
   useEffect(() => {
     history.push("/dashboard");
-  },[]);
+  }, []);
 
   React.useEffect(() => {
     let conf = {
@@ -468,13 +468,17 @@ export default function ClippedDrawer({ children }) {
     // const res = await 
     axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
       .then((res) => {
-        // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
-        setmenuList(res.data);
-        // dispatch(Menuaction.lableselect(res.data[0]?.Label))
-        // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
-        dispatch(ActionMenu.selectedMenutlist(''))
-        dispatch(Menuaction.reloadAction(false))
-        dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
+        if (res.data.length>0) {
+          // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
+          setmenuList(res.data);
+          dispatch(Menuaction.lableselect(res.data[0].Label))
+          // dispatch(Menuaction.lableselect(res.data[0]?.Label))
+          // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
+          dispatch(ActionMenu.selectedMenutlist(''))
+          dispatch(Menuaction.reloadAction(false))
+          dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
+        }
+
       }, (error) => {
         setmenuList([]);
         // dispatch(Menuaction.lableselect(res.data[0]?.Label))
@@ -897,7 +901,7 @@ export default function ClippedDrawer({ children }) {
                         className={classes.inputRoottype}
                         options={menuList}
                         groupBy={""}
-                        defaultValue={{ Label: "Select Object Type" }}
+                        defaultValue={{ Label: menuList[0].Label }}
                         getOptionLabel={(option) => option.Label}
                         style={{ width: 230, height: 50 }}
                         onChange={(e, v) => handlefeature(v)}
