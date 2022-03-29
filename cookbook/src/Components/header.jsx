@@ -77,7 +77,20 @@ const useStyles = makeStyles((theme) => ({
   },
   opened1: {
     marginLeft: 240,
-    width: "82%",
+    
+    [theme.breakpoints.down('xs')]: {
+      width: "85%",
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: "85%",
+    },
+    [theme.breakpoints.up('md')]: {
+      width: "82%",
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: "84%",
+    },
+
 
   },
 
