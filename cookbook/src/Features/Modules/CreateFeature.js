@@ -273,7 +273,7 @@ export default function CreateFeature(props) {
 
   useEffect(() => {
     let body = {
-      Object_Type: obj_type,
+      Object_Type: lable,
       Migration_TypeId: headerValue?.title,
     };
     let conf = {
@@ -294,30 +294,30 @@ export default function CreateFeature(props) {
         console.log(error);
       }
     );
-  }, [modalupdate, headerValue?.title]);
+  }, [modalupdate, headerValue?.title, lable]);
 
   useEffect(() => { }, [formValues]);
 
-  useEffect(() => {
-    let body = {
-      Object_Type: obj_type,
-      Migration_TypeId: formValues.Migration_TypeId,
-    };
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.post(`${config.API_BASE_URL()}/api/fnlist`, body, conf).then(
-      (res) => {
-        console.log("fn list", res.data);
-        setFnlist(res.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [formValues]);
+  // useEffect(() => {
+  //   let body = {
+  //     Object_Type: obj_type,
+  //     Migration_TypeId: formValues.Migration_TypeId,
+  //   };
+  //   let conf = {
+  //     headers: {
+  //       Authorization: "Bearer " + config.ACCESS_TOKEN(),
+  //     },
+  //   };
+  //   axios.post(`${config.API_BASE_URL()}/api/fnlist`, body, conf).then(
+  //     (res) => {
+  //       console.log("fn list", res.data);
+  //       setFnlist(res.data);
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }, [formValues]);
 
   const dispatach = useDispatch();
   // console.log(props.location.state?.data?.type)
@@ -591,7 +591,7 @@ export default function CreateFeature(props) {
 
   }
 
-
+// console.log(tableinfo,"============table")
   return (
     <Box style={{ width: '97%', marginLeft: 13 }}>
       <Box py={4}>
@@ -839,22 +839,22 @@ export default function CreateFeature(props) {
                     <StyledTableRow container>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Feature_Name}
+                          {row[0].Feature_Name}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Sequence === 'No Predecessor' ? row.Sequence : row.Sequence.substr(5)}
+                          {row[0].Sequence === 'No Predecessor' ? row[0].Sequence : row[0].Sequence?.substr(5)}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Keywords}
+                          {row[0].Keywords}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Estimations}
+                          {row[0].Estimations}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
@@ -867,7 +867,7 @@ export default function CreateFeature(props) {
                         <Tooltip
                           title="Edit"
                           aria-label="Edit"
-                          onClick={() => handleEditchange(row.Feature_Name)}
+                          onClick={() => handleEditchange(row[0].Feature_Name)}
                         >
                           <EditSharpIcon style={{ color: "blue" }} />
                         </Tooltip>
