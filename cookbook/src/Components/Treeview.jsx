@@ -253,7 +253,7 @@ export default function GmailTreeView({
                             history.push("/PreviewCode");
                           }}
                           nodeId={"S" + Index + index}
-                          labelText={data.Feature_Name}
+                          labelText={data.Feature_Name.substr(5)}
                           labelIcon={ViewModuleIcon}
                           deleteitem={deleteitem}
                           datavalue={data}

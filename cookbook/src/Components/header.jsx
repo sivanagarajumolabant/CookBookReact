@@ -502,10 +502,6 @@ export default function ClippedDrawer({ children }) {
     history.push('/dashboard');
   };
 
-  const handleMajor_version = (v) => {
-    dispatch(Menuaction.major_version(v?.code))
-  };
-
   // const deleteitem = async (data) => {
 
   //   let conf = {
@@ -718,7 +714,7 @@ export default function ClippedDrawer({ children }) {
                 getOptionLabel={(option) => option.title}
                 defaultValue={{ title: "v1", code: 1 }}
                 style={{ width: 110 }}
-                onChange={(e, v) => handleMajor_version(v)}
+
                 renderInput={(params) => (
                   <TextField
                     {...params}

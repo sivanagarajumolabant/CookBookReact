@@ -48,19 +48,6 @@ const dropdown = (value) => {
 
 
 }
-const major_version = (value) => {
-   return dispatch => {
-
-      dispatch({
-         type: "MAJOR_VERSION",
-         payload: value
-      })
-   }
-
-
-
-
-}
 
 const reloadAction = (value) => {
    return dispatch => {
@@ -170,4 +157,4 @@ const lableselect = (value) => {
 
 
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect,major_version}
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect}
