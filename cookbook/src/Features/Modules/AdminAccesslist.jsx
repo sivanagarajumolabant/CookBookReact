@@ -363,25 +363,25 @@ export default function AdminAccesslist() {
 
   const handledropdown = (e, v) => {
     setGrant_featurename(v?.Feature_Name)
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
+    // let conf = {
+    //   headers: {
+    //     Authorization: "Bearer " + config.ACCESS_TOKEN(),
+    //   },
+    // };
 
-    axios
-      .get(
-        `${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`,
-        conf
-      )
-      .then(
-        (res) => {
-          setData(res.data);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    // axios
+    //   .get(
+    //     `${config.API_BASE_URL()}/api/fdetail/${v?.Feature_Id || null}`,
+    //     conf
+    //   )
+    //   .then(
+    //     (res) => {
+    //       setData(res.data);
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   );
 
   };
 

@@ -111,9 +111,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RequestFeatureData(props) {
-    var previewdata  = props.location.data?.data
+    var previewdata = props.location.data?.data
 
-    
+
     const classes = useStyles();
     const classestable = useStylestable();
     const [detaildata, setDetaildata] = useState();
@@ -143,35 +143,40 @@ export default function RequestFeatureData(props) {
     const [att_update, setAtt_update] = useState(false);
     useEffect((e) => {
         if (previewdata) {
-          
+
         } else {
-          history.push({
-            pathname: "/request",
-          });
+            history.push({
+                pathname: "/request",
+            });
         }
-      }, []);
-    
+    }, []);
+
     useEffect(() => {
-        if (previewdata?.Feature_Id) {
+        if (previewdata?.Feature_Name) {
             let conf = {
                 headers: {
                     Authorization: "Bearer " + config.ACCESS_TOKEN(),
                 },
             };
             let body = {
-                'User_Email': sessionStorage.getItem('uemail')
-              }
-              const form = new FormData();
-              Object.keys(body).forEach((key) => {
+                'User_Email': sessionStorage.getItem('uemail'),
+                "Migration_Type": previewdata.Migration_TypeId,
+                "Object_Type": previewdata.Object_Type
+            }
+            const form = new FormData();
+            Object.keys(body).forEach((key) => {
                 form.append(key, body[key]);
-              });
+            });
             axios
-                .post(`${config.API_BASE_URL()}/api/fdetail/${previewdata?.Feature_Id || null}`,form, conf)
+                .post(`${config.API_BASE_URL()}/api/fdetail/${previewdata?.Feature_Name || null}`, form, conf)
                 .then(
                     (res) => {
-                        console.log(res);
-                        setDetaildata(res.data?.serializer);
-                        setIsdata(true);
+                        Object.keys(res.data).forEach((val) => {
+                            if (res.data[val]?.Max_Flag === 1) {
+                                setDetaildata(res.data[val]?.serializer);
+                                setIsdata(true);
+                            }
+                        })
                     },
                     (error) => {
                         console.log(error);
@@ -456,7 +461,7 @@ export default function RequestFeatureData(props) {
                             {/* {detaildata[0].Feature_Name.split("\n").map((i, key) => {
                 return <div key={key}>{i}</div>;
               })} */}
-                            {detaildata.Feature_Name.substr(5)}
+                            {detaildata.Feature_Name}
                             {/* </Typography> */}
                         </div>
                     </Grid>

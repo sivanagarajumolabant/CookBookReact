@@ -306,7 +306,7 @@ export default function EditFeature(props) {
     }
   }, [fupdate]);
 
-  var handle_featurename = editdata?.detaildata?.Feature_Name?.substr(5);
+  var handle_featurename = editdata?.detaildata?.Feature_Name
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -327,7 +327,7 @@ export default function EditFeature(props) {
       ...formValues,
       Migration_TypeId: editdata.detaildata?.Migration_TypeId,
       Object_Type: editdata.detaildata.Object_Type,
-      Feature_Name: editdata.detaildata.Feature_Name.substr(5),
+      Feature_Name: editdata.detaildata.Feature_Name,
       // Source_FeatureDescription, Target_FeatureDescription,
       Sequence: editdata.detaildata.Sequence,
       Source_FeatureDescription: Source_FeatureDescription,
@@ -506,7 +506,7 @@ export default function EditFeature(props) {
       // console.log(formValues.Conversion_Code)
       // console.log(formValues.Source_Code)
       // console.log(formValues.Feature_Name)
-      let wout_prefix = editdata.detaildata.Feature_Name.substr(5);
+      let wout_prefix = editdata.detaildata.Feature_Name;
       // "convcode": "r@rawstringstart'"+formValues.Conversion_Code+"'@rawstringend",
       let body = {
         sourcecode: Source_Code,

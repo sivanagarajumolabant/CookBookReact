@@ -248,12 +248,12 @@ export default function GmailTreeView({
                           sub={true}
                           onClick={() => {
                             // dispatch(ActionMenu.PreviewFeature())
-                            MenuSelected(data.Feature_Id);
+                            MenuSelected(data.Feature_Name);
 
                             history.push("/PreviewCode");
                           }}
                           nodeId={"S" + Index + index}
-                          labelText={data.Feature_Name.substr(5)}
+                          labelText={data.Feature_Name}
                           labelIcon={ViewModuleIcon}
                           deleteitem={deleteitem}
                           datavalue={data}

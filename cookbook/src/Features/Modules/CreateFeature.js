@@ -196,7 +196,7 @@ export default function CreateFeature(props) {
     editpreview,
     editPreviewdetails,
     headerValue,
-    ITEMlIST
+    ITEMlIST,lable
   } = useSelector((state) => state.dashboardReducer);
 
   var obj_type = props.location?.state?.data?.Label;
@@ -354,6 +354,8 @@ export default function CreateFeature(props) {
       Target_FeatureDescription: "",
       Target_Expected_Output: "",
       Target_ActualCode: "",
+      Project_Version_Id: 1,
+      Feature_Version_Id: 0
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -367,29 +369,37 @@ export default function CreateFeature(props) {
 
     axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf).then(
       (res) => {
-        // setCreatedata(res)
-        console.log("createdata", res);
-        setNotify({
-          isOpen: true,
-          message: "Feature Created Successfully",
-          type: "success",
-        });
-        dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
-        // let UpdateItem = {
-        //   Label: ITEMlIST[0]?.Label,
-        //   subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
-        // }
-        // dispatach(Menuaction.UpdateMenutlist(UpdateItem))
+        if (res.data === 'Feature already present with this version.Kindly request access for it') {
+          setNotify({
+            isOpen: true,
+            message: res.data,
+            type: "error",
+          });
+        } else {
 
-        history.push("/EditFeature");
+          setNotify({
+            isOpen: true,
+            message: "Feature Created Successfully",
+            type: "success",
+          });
+
+          dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
+          // let UpdateItem = {
+          //   Label: ITEMlIST[0]?.Label,
+          //   subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
+          // }
+          // dispatach(Menuaction.UpdateMenutlist(UpdateItem))
+
+          history.push("/EditFeature");
+        }
       },
       (error) => {
         console.log(error);
-        setNotify({
-          isOpen: true,
-          message: "Something Went Wrong Please Try Again!",
-          type: "error",
-        });
+        // setNotify({
+        //   isOpen: true,
+        //   message: error.response.data,
+        //   type: "error",
+        // });
       }
     );
     // .then(()=>{
@@ -425,7 +435,7 @@ export default function CreateFeature(props) {
       if (fnlist.length > 0) {
         // let fnvalue = fnlist.Feature_Name.substr(5)
         for (var counter = 0; counter < fnlist.length; counter++) {
-          let val_mod = String(fnlist[counter].Feature_Name).substr(5);
+          let val_mod = String(fnlist[counter].Feature_Name)
           if (e.target.value === "") {
             setFeaturenamemsg("Please Enter feature Name");
             break;
@@ -494,7 +504,7 @@ export default function CreateFeature(props) {
       ...formValues,
       Migration_TypeId: featuredata.Migration_TypeId,
       Object_Type: featuredata.Object_Type,
-      Feature_Name: String(featuredata.Feature_Name).substr(5),
+      Feature_Name: String(featuredata.Feature_Name),
       // Source_FeatureDescription, Target_FeatureDescription,
       "Sequence": featuredata.Sequence,
       "Source_FeatureDescription": featuredata.Source_FeatureDescription,
@@ -540,7 +550,7 @@ export default function CreateFeature(props) {
     setModalupdate(false)
     // setOpen(false);
   }
-  const handleEditchange = (Feature_Id) => {
+  const handleEditchange = (Feature_Name) => {
     setOpen(true);
     // setFid(Feature_Id);
     let conf = {
@@ -549,19 +559,30 @@ export default function CreateFeature(props) {
       },
     };
     let body = {
-      'User_Email': sessionStorage.getItem('uemail')
+      'User_Email': sessionStorage.getItem('uemail'),
+      "Migration_Type": headerValue?.title,
+      "Object_Type": lable
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
     axios
-      .post(`${config.API_BASE_URL()}/api/fdetail/${Feature_Id}`, form, conf)
+      .post(`${config.API_BASE_URL()}/api/fdetail/${Feature_Name}`, form, conf)
       .then(
         (res) => {
-          console.log(res);
-          setEdithandle(res.data?.serializer)
-          setOpen(true);
+          Object.keys(res.data).forEach((val) => {
+            if (res.data[val]?.Max_Flag === 1) {
+              // setDetaildata(res.data[val].serializer);
+              // setFnname(res.data[val]?.serializer?.Feature_Name)
+              // setObjtype(res.data[val]?.serializer?.Object_Type)
+              // setIsdata(true);
+              // setCheckIsEdit(res.data[val]?.edit)
+              // setLatest_flag(res.data[val].Latest_Flag)
+              setEdithandle(res.data[val]?.serializer)
+              setOpen(true);
+            }
+          })
         },
         (error) => {
           console.log(error);
@@ -572,7 +593,7 @@ export default function CreateFeature(props) {
 
 
   return (
-    <Box style={{ width:'97%', marginLeft:13}}>
+    <Box style={{ width: '97%', marginLeft: 13 }}>
       <Box py={4}>
         <Grid container direction="row" justifyContent="center">
           <Grid item>
@@ -694,7 +715,7 @@ export default function CreateFeature(props) {
               {prerunval.map((item, ind) => {
                 return (
                   <option value={item.Feature_Name}>
-                    {item.Feature_Name.substr(5)}
+                    {item.Feature_Name}
                   </option>
                 );
               })}
@@ -757,7 +778,7 @@ export default function CreateFeature(props) {
             onClick={handleSubmit}
             startIcon={<SaveIcon />}
             // justifyContent='center'
-            style={{ marginBottom:20 }}
+            style={{ marginBottom: 20 }}
           >
             Save
           </Button>
@@ -818,7 +839,7 @@ export default function CreateFeature(props) {
                     <StyledTableRow container>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row.Feature_Name.substr(5)}
+                          {row.Feature_Name}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
@@ -846,7 +867,7 @@ export default function CreateFeature(props) {
                         <Tooltip
                           title="Edit"
                           aria-label="Edit"
-                          onClick={() => handleEditchange(row.Feature_Id)}
+                          onClick={() => handleEditchange(row.Feature_Name)}
                         >
                           <EditSharpIcon style={{ color: "blue" }} />
                         </Tooltip>
@@ -934,7 +955,7 @@ export default function CreateFeature(props) {
                   {prerunval.map((item, ind) => {
                     return (
                       <option value={item.Feature_Name}>
-                        {item.Feature_Name.substr(5)}
+                        {item.Feature_Name}
                       </option>
                     );
                   })}

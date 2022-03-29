@@ -15,10 +15,11 @@ import TableRow from "@material-ui/core/TableRow";
 
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { Box, Grid, Paper, TextField, Button } from "@material-ui/core";
+import { Box, Grid, Paper, TextField, Button, styled } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Container from "@material-ui/core/Container";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 import { useHistory, Link } from "react-router-dom";
@@ -28,6 +29,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import config from "../../Config/config";
 import ActionMenu from "../../../src/Redux/actions/Menuaction";
+import { Label } from "@material-ui/icons";
 
 const useStylestable = makeStyles({
   table: {
@@ -109,6 +111,35 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: "#E7EBF0",
   },
 }));
+const StyledAutocomplete = styled(Autocomplete)({
+  "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+    // Default transform is "translate(14px, 20px) scale(1)""
+    // This lines up the label with the initial cursor position in the input
+    // after changing its padding-left.
+    transform: "translate(34px, 20px) scale(1);",
+  },
+  "& .MuiAutocomplete-inputRoot": {
+    color: "black",
+    // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
+    '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+      // Default left padding is 6px
+      paddingLeft: 26,
+      // height: '1rem'
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "blue",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "black",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#3f51b5",
+    },
+  },
+});
+
+
+
 
 export default function PreviewCode(props) {
   const classes = useStyles();
@@ -132,18 +163,23 @@ export default function PreviewCode(props) {
   const [isscattdata, setIsscattdata] = useState(false);
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
   const [fnname, setFnname] = useState()
   const [checkIsEdit, setCheckIsEdit] = useState(0)
+  const [versionSelect, setVersionSelect] = useState()
+  const [fversionslist, setFversionslist] = useState([])
+  const [latest_flag, setLatest_flag] = useState(0)
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
     type: "",
   });
   const [att_update, setAtt_update] = useState(false);
+
+
 
   useEffect(() => {
     if (menuitem) {
@@ -154,22 +190,66 @@ export default function PreviewCode(props) {
       };
 
       let body = {
-        'User_Email': sessionStorage.getItem('uemail')
+        "Migration_Type": headerValue?.title,
+        "Object_Type": lable,
+        'Feature_Name': menuitem
       }
       const form = new FormData();
       Object.keys(body).forEach((key) => {
         form.append(key, body[key]);
       });
+
+      axios
+        .post(`${config.API_BASE_URL()}/api/fversions/`, form, conf)
+        .then(
+          (res) => {
+            setFversionslist(res.data)
+            setVersionSelect(res.data[res.data.length - 1])
+
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } else {
+      setDetaildata();
+    }
+  }, [menuitem]);
+
+  useEffect(() => {
+    if (menuitem) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+
+      let body = {
+        'User_Email': sessionStorage.getItem('uemail'),
+        "Migration_Type": headerValue?.title,
+        "Object_Type": lable
+      }
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
+
       axios
         .post(`${config.API_BASE_URL()}/api/fdetail/${menuitem || null}`, form, conf)
         .then(
           (res) => {
-            console.log(res);
-            setDetaildata(res.data.serializer);
-            setFnname(res.data?.serializer?.Feature_Name)
-            setObjtype(res.data?.serializer?.Object_Type)
-            setIsdata(true);
-            setCheckIsEdit(res.data?.edit)
+            console.log(res.data);
+            Object.keys(res.data).forEach((val) => {
+              if (res.data[val].Max_Flag === 1) {
+                setDetaildata(res.data[val].serializer);
+                setFnname(res.data[val]?.serializer?.Feature_Name)
+                setObjtype(res.data[val]?.serializer?.Object_Type)
+                setIsdata(true);
+                setCheckIsEdit(res.data[val]?.edit)
+                setLatest_flag(res.data[val].Latest_Flag)
+              }
+            })
+
           },
           (error) => {
             console.log(error);
@@ -185,80 +265,88 @@ export default function PreviewCode(props) {
   // }
 
   useEffect(() => {
-    console.log("menus ", menuitem);
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${menuitem}`, conf).then(
-      (res) => {
-        setSource_att(res.data);
-        if (res.data.length > 0) {
-          setIssattdata(true);
+    // console.log("menus ", menuitem);
+    if (menuitem) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${menuitem}`, conf).then(
+        (res) => {
+          setSource_att(res.data);
+          if (res.data.length > 0) {
+            setIssattdata(true);
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
+    }
   }, [menuitem, att_update]);
   useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.get(`${config.API_BASE_URL()}/api/targetdesc/${menuitem}`, conf).then(
-      (res) => {
-        setTarget_att(res.data);
-        if (res.data.length > 0) {
-          setIstattdata(true);
+    if (menuitem) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.get(`${config.API_BASE_URL()}/api/targetdesc/${menuitem}`, conf).then(
+        (res) => {
+          setTarget_att(res.data);
+          if (res.data.length > 0) {
+            setIstattdata(true);
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, [menuitem, att_update]);
-
-  useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.get(`${config.API_BASE_URL()}/api/convatt/${menuitem}`, conf).then(
-      (res) => {
-        setConv_att(res.data);
-        if (res.data.length > 0) {
-          setIscattdata(true);
-        }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
+    }
   }, [menuitem, att_update]);
 
   useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.get(`${config.API_BASE_URL()}/api/codefiles/${menuitem}`, conf).then(
-      (res) => {
-        setSource_codeatt(res.data);
-        console.log(res.data);
-        if (res.data.length > 0) {
-          setIsscattdata(true);
+    if (menuitem) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.get(`${config.API_BASE_URL()}/api/convatt/${menuitem}`, conf).then(
+        (res) => {
+          setConv_att(res.data);
+          if (res.data.length > 0) {
+            setIscattdata(true);
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
+    }
+  }, [menuitem, att_update]);
+
+  useEffect(() => {
+    if (menuitem) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      axios.get(`${config.API_BASE_URL()}/api/codefiles/${menuitem}`, conf).then(
+        (res) => {
+          setSource_codeatt(res.data);
+          console.log(res.data);
+          if (res.data.length > 0) {
+            setIsscattdata(true);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }, [menuitem, att_update]);
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name, fid) => {
@@ -414,6 +502,48 @@ export default function PreviewCode(props) {
     );
   }
 
+  const handleFeatureversion = (versionnumber) => {
+
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+
+    let body = {
+      'User_Email': sessionStorage.getItem('uemail'),
+      "Migration_Type": headerValue?.title,
+      "Object_Type": lable
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+
+    axios
+      .post(`${config.API_BASE_URL()}/api/fdetail/${menuitem}`, form, conf)
+      .then(
+        (res) => {
+          console.log(res.data);
+          Object.keys(res.data).forEach((val) => {
+            if (res.data[val].serializer.Feature_Version_Id === versionnumber) {
+              setDetaildata(res.data[val].serializer);
+              setFnname(res.data[val]?.serializer?.Feature_Name)
+              setObjtype(res.data[val]?.serializer?.Object_Type)
+              setIsdata(true);
+              setCheckIsEdit(res.data[val]?.edit)
+              setLatest_flag(res.data[val].Latest_Flag)
+            }
+          })
+
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    setVersionSelect(versionnumber)
+  }
+
   var data = null;
   let seq = null;
   if (detaildata) {
@@ -426,52 +556,140 @@ export default function PreviewCode(props) {
       <>
         <Grid container>
           <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }} spacing={2}>
-            {checkIsEdit === 0 ?
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  component="span"
-                  // startIcon={<EditSharpIcon />}
-                  // onClick={
-                  //   () => {
-                  //     dispatch(
-                  //       ActionMenu.EditPreviewFeature({ data: detaildata })
-                  //     );
+            <Grid item>
+              <StyledAutocomplete
+                size="small"
+                id="grouped-demo"
+                className={classes.inputRoottype}
+                options={fversionslist}
+                groupBy={""}
+                defaultValue={{ title: fversionslist[fversionslist.length - 1]?.title }}
+                getOptionLabel={(option) => option?.title}
+                style={{ width: 110 }}
+                onChange={(e, v) => handleFeatureversion(v?.code)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Versions"
+                    variant="outlined"
+                    InputLabelProps={{
+                      className: classes.floatingLabelFocusStyle,
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            </Grid>
+            {checkIsEdit === 0 ? <>
+              {
+                latest_flag === 0 ?
 
-                  //     history.push("/EditFeature");
-                  //   }
-                  // }
-                  onClick={(e) => { handleRequestAccess('Edit') }}>
+                  <Grid item>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component="span"
+                      // startIcon={<EditSharpIcon />}
+                      // onClick={
+                      //   () => {
+                      //     dispatch(
+                      //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                      //     );
 
-                  Request Edit Access
-                </Button>
-              </Grid>
+                      //     history.push("/EditFeature");
+                      //   }
+                      // }
+                      onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                      Request Edit Access
+                    </Button>
+                  </Grid>
+                  : <Grid item>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component="span"
+                      disabled
+                      // startIcon={<EditSharpIcon />}
+                      // onClick={
+                      //   () => {
+                      //     dispatch(
+                      //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                      //     );
+
+                      //     history.push("/EditFeature");
+                      //   }
+                      // }
+                      onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                      Request Edit Access
+                    </Button>
+                  </Grid>
+              }
+            </>
+
               :
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component="span"
-                  startIcon={<EditSharpIcon />}
-                  onClick={
-                    () => {
-                      dispatch(
-                        ActionMenu.EditPreviewFeature({ data: detaildata })
-                      );
+              <>
 
-                      history.push("/EditFeature");
-                    }
-                    // history.push({
-                    //   pathname: `/edit/${detaildata.Feature_Id}`,
-                    //   data: { detaildata },
+                {
+                  latest_flag === 0 ?
+                    <>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          component="span"
+                          startIcon={<EditSharpIcon />}
+                          disabled
+                          onClick={
+                            () => {
+                              dispatch(
+                                ActionMenu.EditPreviewFeature({ data: detaildata })
+                              );
 
-                    // })
-                  }
-                >
-                  Edit
-                </Button>
-              </Grid>
+                              history.push("/EditFeature");
+                            }
+                            // history.push({
+                            //   pathname: `/edit/${detaildata.Feature_Id}`,
+                            //   data: { detaildata },
+
+                            // })
+                          }
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                    </>
+                    :
+                    <>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          component="span"
+                          startIcon={<EditSharpIcon />}
+                          onClick={
+                            () => {
+                              dispatch(
+                                ActionMenu.EditPreviewFeature({ data: detaildata })
+                              );
+
+                              history.push("/EditFeature");
+                            }
+                            // history.push({
+                            //   pathname: `/edit/${detaildata.Feature_Id}`,
+                            //   data: { detaildata },
+
+                            // })
+                          }
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                    </>
+
+                }
+              </>
             }
           </Grid>
 
@@ -508,7 +726,7 @@ export default function PreviewCode(props) {
               {/* {detaildata[0].Feature_Name.split("\n").map((i, key) => {
                 return <div key={key}>{i}</div>;
               })} */}
-              {detaildata.Feature_Name.substr(5)}
+              {detaildata.Feature_Name}
               {/* </Typography> */}
             </div>
           </Grid>
