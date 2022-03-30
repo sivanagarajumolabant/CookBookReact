@@ -155,6 +155,17 @@ const lableselect = (value) => {
    }
 }
 
+const project_version = (value) => {
+   
+   return dispatch => {
+
+      dispatch({
+         type:"PROJECT_VERSION",
+         payload:value
+      })
+   }
+}
 
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect}
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect,project_version}

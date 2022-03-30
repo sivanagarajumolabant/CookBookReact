@@ -337,7 +337,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = useState(true);
-  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable, project_version } = useSelector(state => state.dashboardReducer);
   // console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -350,6 +350,7 @@ export default function ClippedDrawer({ children }) {
   const [migtypelist, setMigtypeslist] = useState([])
   const [create_flag, setcreate_flag] = useState([])
   const [create_check_flag, setcreate_check_flag] = useState(0)
+  
 
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -620,6 +621,9 @@ export default function ClippedDrawer({ children }) {
     history.push('/Request')
   }
 
+  const handleProject_Version=(v)=>{
+    dispatch(Menuaction.project_version(v?.code))
+  }
 
 
   // sessionStorage.setItem('quser', user.username)
@@ -722,14 +726,15 @@ export default function ClippedDrawer({ children }) {
                 id="grouped-demo"
                 options={[
                   { title: "v1", code: 1 },
-                  { title: "v2", code: 2 },
-                  { title: "v3", code: 3 },
+                  // { title: "v2", code: 2 },
+                  // { title: "v3", code: 3 },
                 ]}
                 className={classes.inputRootversion}
                 groupBy={""}
                 // defaultValue={{ title: "Oracle To Postgres" }}
                 getOptionLabel={(option) => option.title}
                 defaultValue={{ title: "v1", code: 1 }}
+                onChange={(e, v) => handleProject_Version(v)}
                 style={{ width: 110 }}
 
                 renderInput={(params) => (
