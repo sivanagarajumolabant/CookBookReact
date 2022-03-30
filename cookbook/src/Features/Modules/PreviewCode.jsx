@@ -169,8 +169,8 @@ export default function PreviewCode(props) {
   const [fnnames, setFnnames] = useState([])
   const [fnname, setFnname] = useState()
   const [checkIsEdit, setCheckIsEdit] = useState(0)
-  const [versionSelect, setVersionSelect] = useState()
-  const [fversionslist, setFversionslist] = useState([''])
+  const [versionSelect, setVersionSelect] = useState('')
+  const [fversionslist, setFversionslist] = useState([])
   const [latest_flag, setLatest_flag] = useState(0)
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -182,7 +182,7 @@ export default function PreviewCode(props) {
 
 
   useEffect(() => {
-    
+
     if (menuitem) {
       let conf = {
         headers: {
@@ -206,10 +206,10 @@ export default function PreviewCode(props) {
           (res) => {
             setFversionslist(res.data)
             if (res.data.length > 1) {
-             
-              setVersionSelect(res.data.length)
+
+              setVersionSelect(String(res.data.length))
             } else {
-              setVersionSelect(1)
+              setVersionSelect(String(1))
             }
 
           },
@@ -545,7 +545,7 @@ export default function PreviewCode(props) {
               setCheckIsEdit(res.data[val]?.edit)
               setLatest_flag(res.data[val]?.Latest_Flag)
               // setVersionSelect(res.data[val]?.Feature_Version_Id)
-              
+
             }
           })
 
@@ -554,17 +554,15 @@ export default function PreviewCode(props) {
           console.log(error);
         }
       );
-      
+
   }
 
   var data = null;
   let seq = null;
   if (detaildata) {
-    if (detaildata.Sequence !== "No Predecessor") {
-      seq = detaildata.Sequence.substr(5);
-    } else {
-      seq = detaildata.Sequence;
-    }
+
+    seq = detaildata.Sequence;
+
     data = (
       <>
         <Grid container>
@@ -578,9 +576,9 @@ export default function PreviewCode(props) {
                 // renderTags={() => null}
                 // freeSolo
                 // displayEmpty
-                
+
                 groupBy={""}
-                defaultValue={{ title: versionSelect }}
+                defaultValue={{ title: String(versionSelect) }}
                 getOptionLabel={(option) => option?.title}
                 style={{ width: 110 }}
                 onChange={(e, v) => handleFeatureversion(v?.code)}
@@ -593,7 +591,7 @@ export default function PreviewCode(props) {
                       className: classes.floatingLabelFocusStyle,
                       shrink: true,
                     }}
-                    placeholder={versionSelect}
+                    placeholder={String(versionSelect)}
                   />
                 )}
               />
@@ -607,6 +605,7 @@ export default function PreviewCode(props) {
                       variant="outlined"
                       color="primary"
                       component="span"
+                      disabled
                       // startIcon={<EditSharpIcon />}
                       // onClick={
                       //   () => {
@@ -627,7 +626,7 @@ export default function PreviewCode(props) {
                       variant="outlined"
                       color="primary"
                       component="span"
-                      disabled
+
                       // startIcon={<EditSharpIcon />}
                       // onClick={
                       //   () => {
@@ -1340,7 +1339,7 @@ export default function PreviewCode(props) {
         <Grid container justifyContent="center" spacing={1}>
           <Grid item style={{ marginTop: "10px" }}>
 
-            {checkIsEdit === 1 ?
+            {/* {checkIsEdit === 1 ?
               <Button
                 variant="contained"
                 color="primary"
@@ -1362,6 +1361,119 @@ export default function PreviewCode(props) {
               >
                 Edit
               </Button> : null
+            } */}
+
+
+            {checkIsEdit === 0 ? <>
+              {
+                latest_flag === 0 ?
+
+                  <Grid item>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component="span"
+                      // startIcon={<EditSharpIcon />}
+                      // onClick={
+                      //   () => {
+                      //     dispatch(
+                      //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                      //     );
+
+                      //     history.push("/EditFeature");
+                      //   }
+                      // }
+                      onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                      Request Edit Access
+                    </Button>
+                  </Grid>
+                  : <Grid item>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component="span"
+                      disabled
+                      // startIcon={<EditSharpIcon />}
+                      // onClick={
+                      //   () => {
+                      //     dispatch(
+                      //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                      //     );
+
+                      //     history.push("/EditFeature");
+                      //   }
+                      // }
+                      onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                      Request Edit Access
+                    </Button>
+                  </Grid>
+              }
+            </>
+
+              :
+              <>
+
+                {
+                  latest_flag === 0 ?
+                    <>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          component="span"
+                          startIcon={<EditSharpIcon />}
+                          disabled
+                          onClick={
+                            () => {
+                              dispatch(
+                                ActionMenu.EditPreviewFeature({ data: detaildata })
+                              );
+
+                              history.push("/EditFeature");
+                            }
+                            // history.push({
+                            //   pathname: `/edit/${detaildata.Feature_Id}`,
+                            //   data: { detaildata },
+
+                            // })
+                          }
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                    </>
+                    :
+                    <>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          component="span"
+                          startIcon={<EditSharpIcon />}
+                          onClick={
+                            () => {
+                              dispatch(
+                                ActionMenu.EditPreviewFeature({ data: detaildata })
+                              );
+
+                              history.push("/EditFeature");
+                            }
+                            // history.push({
+                            //   pathname: `/edit/${detaildata.Feature_Id}`,
+                            //   data: { detaildata },
+
+                            // })
+                          }
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                    </>
+
+                }
+              </>
             }
           </Grid>
         </Grid>

@@ -196,7 +196,7 @@ export default function CreateFeature(props) {
     editpreview,
     editPreviewdetails,
     headerValue,
-    ITEMlIST,lable
+    ITEMlIST,lable,admin
   } = useSelector((state) => state.dashboardReducer);
 
   var obj_type = props.location?.state?.data?.Label;
@@ -366,6 +366,8 @@ export default function CreateFeature(props) {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
+
+
 
     axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf).then(
       (res) => {

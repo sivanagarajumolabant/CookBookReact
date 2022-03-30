@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import moment from 'moment';
 // import download from 'downloadjs'
 import SaveIcon from "@material-ui/icons/Save";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -90,7 +91,7 @@ export default function EditFeature(props) {
     preview,
     editpreview,
     editPreviewdetails,
-    headerValue,
+    headerValue, admin
   } = useSelector((state) => state.dashboardReducer);
 
   // console.log(props)
@@ -592,11 +593,7 @@ export default function EditFeature(props) {
   };
 
   var seq = null;
-  if (Sequence !== "No Predecessor") {
-    seq = String(Sequence).substr(5);
-  } else {
-    seq = Sequence;
-  }
+  seq = Sequence;
   // console.log(props.location.state)
 
   // console.log(AttachmentList)
@@ -782,6 +779,107 @@ export default function EditFeature(props) {
       height: 10,
     },
   }))(TableRow);
+
+  const handleFeatureStatus = (e, status) => {
+    e.preventDefault();
+    let mod_status;
+    if (status === 'Approved') {
+      mod_status = status
+    }
+    else if (status === 'Awaiting Approval') {
+      mod_status = status
+    }
+    else {
+      mod_status = 'In Progress'
+    }
+
+    let formData = {
+      ...formValues,
+      Migration_TypeId: editdata.detaildata?.Migration_TypeId,
+      Object_Type: editdata.detaildata.Object_Type,
+      Feature_Name: editdata.detaildata.Feature_Name,
+      // Source_FeatureDescription, Target_FeatureDescription,
+      Sequence: editdata.detaildata.Sequence,
+      Source_FeatureDescription: Source_FeatureDescription,
+      Target_FeatureDescription: Target_FeatureDescription,
+      Target_Expected_Output: Target_Expected_Output,
+      Target_ActualCode: Target_ActualCode,
+      Source_Code: Source_Code,
+      Conversion_Code: Conversion_Code,
+      "Project_Version_Id": editdata.detaildata?.Project_Version_Id,
+      "Feature_Version_Id": editdata.detaildata?.Feature_Version_Id,
+      "Feature_version_approval_status": status,
+      "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
+    };
+    const form = new FormData();
+    Object.keys(formData).forEach((key) => {
+      form.append(key, formData[key]);
+    });
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios
+      .put(
+        `${config.API_BASE_URL()}/api/fupdate/${editdata.detaildata.Feature_Id
+        }`,
+        form,
+        conf
+      )
+      .then(
+        (res) => {
+          if (mod_status === 'Approved') {
+            // console.log(res.data);
+            setNotify({
+              isOpen: true,
+              message: "Feature Approved and Redirecting To Preview",
+              type: "success",
+            });
+            setTimeout(
+              () => history.push({
+                pathname: `/PreviewCode`,
+              }),
+              3000
+            );
+
+          } else if (mod_status === 'Awaiting Approval') {
+            setNotify({
+              isOpen: true,
+              message: "Feature Requested For the Admin Approval",
+              type: "success",
+            });
+          }
+
+          else {
+            setNotify({
+              isOpen: true,
+              message: "Feature Denied and Redirecting To Preview",
+              type: "success",
+            });
+            setTimeout(
+              () => history.push({
+                pathname: `/PreviewCode`,
+              }),
+              3000
+            );
+          }
+        },
+        (error) => {
+          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: "No Feature",
+            type: "error",
+          });
+        }
+      );
+
+    // dispatch(Menuaction.reloadAction(true));
+  };
+
+
+
 
   return (
     <Box style={{ width: '95%', marginLeft: 40 }}>
@@ -1635,7 +1733,7 @@ export default function EditFeature(props) {
                 </Button>
               </Grid> */}
               <Grid item>
-                {IsSuperAdmin == "true" &&
+                {admin === 1 &&
                   <>
                     <Button
                       // type="submit"
@@ -1663,28 +1761,62 @@ export default function EditFeature(props) {
                 }
               </Grid>
 
-              <Grid item>
-                {/* {IsSuperAdmin == "true" && */}
+
+              {admin === 0 ?
                 <>
-                  <Button
-                    // type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    style={{  color: "white" }}
-                    // className={classes.submit}
-                    // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
-                    startIcon={<DeleteIcon />}
-                    // onClick={() => }
-                  >
-                    Request For Approval
-                  </Button>
+                  <Grid item>
+                    <Button
+                      // type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      style={{ color: "white" }}
+                      // className={classes.submit}
+                      // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                      // startIcon={<DeleteIcon />}
+                      onClick={(e) => handleFeatureStatus(e, 'Awaiting Approval')}
+                    >
+                      Request For Approval
+                    </Button>
+                  </Grid>
+                </> :
+                <>
+                  <Grid item>
+                    <Button
+                      // type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      style={{ color: "white" }}
+                      // className={classes.submit}
+                      // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                      // startIcon={<DeleteIcon />}
+                      onClick={(e) => handleFeatureStatus(e, 'Approved')}
+                    >
+                      Approve
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      // type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      style={{ color: "white" }}
+                      // className={classes.submit}
+                      // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                      // startIcon={<DeleteIcon />}
+                      onClick={(e) => handleFeatureStatus(e, 'In Progress')}
+                    >
+                      Deny
+                    </Button>
+                  </Grid>
                 </>
 
-                {/* } */}
-              </Grid>
-
+              }
             </Grid>
+
+
           </Box>
           {/* </form> */}
 

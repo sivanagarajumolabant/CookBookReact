@@ -1,5 +1,6 @@
 import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
+import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -9,6 +10,10 @@ import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { TableContainer } from "@material-ui/core";
+import axios from "axios";
+import config from "../../Config/config";
+import Notification from "../Notifications/Notification";
+import { useSelector } from "react-redux";
 
 
 const useStylestable = makeStyles((theme) => ({
@@ -62,6 +67,16 @@ const useStyles = makeStyles((theme) => ({
         //     overflow: 'visible'
         // }
     },
+    actions: {
+        overflowX: 'hidden',
+        whiteSpace: "nowrap",
+        width: "230px",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        '&:hover': {
+            overflow: 'visible'
+        }
+    },
 
     table: {
         // minWidth: 150,
@@ -112,11 +127,146 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 
+
+
 export default function FeatureApprovals() {
     const classes = useStyles();
     const classestable = useStylestable();
+    const { headerValue, lable } = useSelector(state => state.dashboardReducer);
+    const [approvalslist, setApprovallist] = useState([])
+    const [data, isData] = useState(false)
+    const [notify, setNotify] = useState({
+        isOpen: false,
+        message: "",
+        type: "",
+    });
+    const [tableupdate, settableupdate] = useState(false)
+
+    useEffect(() => {
+        if (headerValue) {
+            if (Object.keys(headerValue).length > 0) {
+                let body = {
+                    "Migration_TypeId": headerValue?.title,
+                    "Object_Type": lable,
+                    "Project_Version_Id": 1
+                };
+                let conf = {
+                    headers: {
+                        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+                    },
+                };
+                const form = new FormData();
+                Object.keys(body).forEach((key) => {
+                    form.append(key, body[key]);
+                });
+                axios.post(`${config.API_BASE_URL()}/api/featureapprovalslist/`, form, conf).then(
+                    (res) => {
+                        setApprovallist(res.data)
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            }
+        }
+    }, [headerValue, lable, tableupdate]);
 
 
+    const handlestatus = (item, status) => {
+
+        if (status === 'In Progress') {
+            status = 'In Progress'
+        } else {
+            status = 'Approved'
+        }
+        let body = {
+            "Migration_TypeId": item.Migration_TypeId,
+            "Object_Type": item.Object_Type,
+            "Project_Version_Id": item.Project_Version_Id,
+            "Feature_Name": item.Feature_Name,
+            Source_FeatureDescription: "",
+            Source_Code: "",
+            Conversion_Code: "",
+            Target_FeatureDescription: "",
+            Target_Expected_Output: "",
+            Target_ActualCode: "",
+            Keywords: item.Keywords,
+            Level: item.Level,
+            Estimations: item.Estimations,
+            Sequence: item.Sequence
+
+        };
+
+        const form = new FormData();
+        Object.keys(body).forEach((key) => {
+            form.append(key, body[key]);
+        });
+        let fupdatebody = {
+            Migration_TypeId: item?.Migration_TypeId,
+            Object_Type: item.Object_Type,
+            Feature_Name: item.Feature_Name,
+            // Source_FeatureDescription, Target_FeatureDescription,
+            Sequence: item.Sequence,
+            Source_FeatureDescription: item.Source_FeatureDescription,
+            Target_FeatureDescription: item.Target_FeatureDescription,
+            Target_Expected_Output: item.Target_Expected_Output,
+            Target_ActualCode: item.Target_ActualCode,
+            Source_Code: item.Source_Code,
+            Conversion_Code: item.Conversion_Code,
+            "Feature_version_approval_status": status,
+            "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
+        }
+        let conf = {
+            headers: {
+                Authorization: "Bearer " + config.ACCESS_TOKEN(),
+            },
+        };
+
+
+        const formfupdate = new FormData();
+        Object.keys(fupdatebody).forEach((key) => {
+            formfupdate.append(key, fupdatebody[key]);
+        });
+
+        axios.put(`${config.API_BASE_URL()}/api/fupdate/${item.Feature_Id}`, formfupdate, conf).then(
+            (res) => {
+                // console.log(res)
+
+                if (status !== 'In Progress') {
+                    axios.post(`${config.API_BASE_URL()}/api/featureapprovalcreate/`, form, conf).then(
+                        (res) => {
+                            if (res.data === "New versions won't be created until it has a previous version approved") {
+                                setNotify({
+                                    isOpen: true,
+                                    message: res.data,
+                                    type: "error",
+                                });
+                                settableupdate(true)
+                            } else {
+                                setNotify({
+                                    isOpen: true,
+                                    message: "Feature Approved and New Version Created",
+                                    type: "success",
+                                });
+                                settableupdate(true)
+                            }
+
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                }else{
+                    settableupdate(true)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+        settableupdate(false)
+
+    }
 
     return (
         <>
@@ -137,95 +287,135 @@ export default function FeatureApprovals() {
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead className={classes.primary}>
                                     <TableRow>
-                                        <StyledTableCell align="left">Project Version Id</StyledTableCell>
-                                        <StyledTableCell align="left">Migration Type</StyledTableCell>
-                                        <StyledTableCell align="left">Object Type</StyledTableCell>
-                                        <StyledTableCell align="left">Feature Name</StyledTableCell>
-                                        <StyledTableCell align="left">Feature Version Id</StyledTableCell>
-                                        <StyledTableCell align="left">Approved Status</StyledTableCell>
-                                        <StyledTableCell align="left">Request Created Date</StyledTableCell>
-                                        <StyledTableCell align="left">Request Modified date</StyledTableCell>
+                                        {/* <StyledTableCell align="left">Project Version Id</StyledTableCell> */}
+                                        <StyledTableCell align="center">Migration Type</StyledTableCell>
+                                        <StyledTableCell align="center">Object Type</StyledTableCell>
+                                        <StyledTableCell align="center">Feature Name</StyledTableCell>
+                                        <StyledTableCell align="center">Feature Version Id</StyledTableCell>
+                                        <StyledTableCell align="center">Approved Status</StyledTableCell>
+                                        {/* <StyledTableCell align="left">Request Created Date</StyledTableCell> */}
+                                        <StyledTableCell align="center">Date</StyledTableCell>
+                                        <StyledTableCell align="center">Actions</StyledTableCell>
 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {'1'}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {'Oracle to Postgres'}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {'Procedure'}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {'Xml'}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {'Version 1'}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <StyledTableCell item xl={8}>
-                                            <Button
-                                                type="button"
-                                                size="small"
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.submit}
-                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                            // onClick={() => handledeletesuperadmin(item.Email)}
-                                            >
-                                                Approve
-                                            </Button>
-                                        </StyledTableCell>
-                                        <StyledTableCell item xl={4}>
-                                            <Button
-                                                type="button"
-                                                size="small"
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.submit}
-                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                            // onClick={() => handledeletesuperadmin(item.Email)}
-                                            >
-                                                Deny
-                                            </Button>
-                                        </StyledTableCell>
-                                        <StyledTableCell item xl={4}>
-                                            <Button
-                                                type="button"
-                                                size="small"
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.submit}
-                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                            // onClick={() => handledeletesuperadmin(item.Email)}
-                                            >
-                                                Review
-                                            </Button>
-                                        </StyledTableCell>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={4}>
-                                        <div className={classes.texttablecell}>
-                                            {'30-02-2022'}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {'05-04-2022'}
-                                        </div>
-                                    </StyledTableCell>
+                                    {isData ? (
+                                        <>
+                                            {approvalslist.map((item) =>
+
+                                                <StyledTableRow container>
+                                                    {/* <StyledTableCell item xl={10}>
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Project_Version_Id}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    */}
+                                                    <StyledTableCell item xl={6}>
+                                                        <div className={classes.texttablecell}>
+
+                                                            {item.Migration_TypeId}
+
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell item xl={5}>
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Object_Type}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell item xl={6}>
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Feature_Name}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell item xl={6}>
+                                                        <div className={classes.texttablecell}>
+                                                            {/* {"SivaNagaraju"} */}
+                                                            {item.Feature_Version_Id}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell item xl={6}>
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Feature_version_approval_status}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell item xl={6}>
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Feature_Approval_Date}
+                                                        </div>
+                                                    </StyledTableCell>
+
+
+                                                    <StyledTableCell item align="center" xl={10}>
+                                                        {item.Feature_version_approval_status === "Awaiting Approval" ? (
+                                                            <div className={classes.actions}>
+                                                                <Button
+                                                                    type="button"
+                                                                    size="small"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    className={classes.submit}
+                                                                    style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                    onClick={(e) => { handlestatus(item, 'Approved') }}
+                                                                >
+                                                                    APPROVE
+                                                                </Button>
+                                                                {' '}
+                                                                <Button
+                                                                    type="button"
+                                                                    size="small"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    className={classes.submit}
+                                                                    style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                    // onClick={(e) => { handleRequestAccessDeny(item, "Denied") }}
+                                                                    onClick={(e) => { handlestatus(item, 'In Progress') }}
+
+                                                                >
+                                                                    Deny
+
+                                                                </Button>
+                                                                {' '}
+                                                                <Button
+                                                                    type="button"
+                                                                    size="small"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    className={classes.submit}
+                                                                    style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                    onClick={(e) => { }}
+                                                                >
+                                                                    Review
+                                                                </Button>
+
+                                                            </div>
+                                                        ) : <div className={classes.texttablecell}>
+                                                            {"No Actions"}
+                                                        </div>
+                                                        }
+                                                    </StyledTableCell>
+                                                </StyledTableRow>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <StyledTableRow container>
+                                                <StyledTableCell align="center"></StyledTableCell>
+                                                <StyledTableCell align="center"></StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">No Requests</StyledTableCell>
+                                                <StyledTableCell align="center"></StyledTableCell>
+                                                <StyledTableCell align="center"></StyledTableCell>
+                                                <StyledTableCell align="center"></StyledTableCell>
+                                            </StyledTableRow>
+                                        </>
+
+                                    )
+
+                                    }
                                 </TableBody>
+
                             </Table>
                             {/* <>
                                 <StyledTableRow container>
@@ -241,7 +431,8 @@ export default function FeatureApprovals() {
                     </Grid>
                 </Grid>
             </Box>
-            <Box py={1} px={1}>
+            <Notification notify={notify} setNotify={setNotify} />
+            {/* <Box py={1} px={1}>
                 <Grid container direction='row' justifyContent='center'>
                     <Button
                         variant="contained"
@@ -253,7 +444,7 @@ export default function FeatureApprovals() {
                         Delete Records
                     </Button>
                 </Grid>
-            </Box>
+            </Box> */}
 
         </>
     )
