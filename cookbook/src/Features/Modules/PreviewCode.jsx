@@ -170,7 +170,7 @@ export default function PreviewCode(props) {
   const [fnname, setFnname] = useState()
   const [checkIsEdit, setCheckIsEdit] = useState(0)
   const [versionSelect, setVersionSelect] = useState()
-  const [fversionslist, setFversionslist] = useState([])
+  const [fversionslist, setFversionslist] = useState([''])
   const [latest_flag, setLatest_flag] = useState(0)
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -182,6 +182,7 @@ export default function PreviewCode(props) {
 
 
   useEffect(() => {
+    
     if (menuitem) {
       let conf = {
         headers: {
@@ -204,7 +205,12 @@ export default function PreviewCode(props) {
         .then(
           (res) => {
             setFversionslist(res.data)
-            setVersionSelect(res.data[res.data.length - 1])
+            if (res.data.length > 1) {
+             
+              setVersionSelect(res.data.length)
+            } else {
+              setVersionSelect(1)
+            }
 
           },
           (error) => {
@@ -240,14 +246,19 @@ export default function PreviewCode(props) {
           (res) => {
             console.log(res.data);
             Object.keys(res.data).forEach((val) => {
-              if (res.data[val].Max_Flag === 1) {
-                setDetaildata(res.data[val].serializer);
+              if (res.data[val]?.Max_Flag === 1) {
+                setDetaildata(res.data[val]?.serializer);
                 setFnname(res.data[val]?.serializer?.Feature_Name)
                 setObjtype(res.data[val]?.serializer?.Object_Type)
                 setIsdata(true);
                 setCheckIsEdit(res.data[val]?.edit)
-                setLatest_flag(res.data[val].Latest_Flag)
+                setLatest_flag(res.data[val]?.Latest_Flag)
+                setVersionSelect(res.data[val]?.Feature_Version_Id)
               }
+              // else{
+              //   setCheckIsEdit(0)
+              //   setLatest_flag(0)
+              // }
             })
 
           },
@@ -532,7 +543,9 @@ export default function PreviewCode(props) {
               setObjtype(res.data[val]?.serializer?.Object_Type)
               setIsdata(true);
               setCheckIsEdit(res.data[val]?.edit)
-              setLatest_flag(res.data[val].Latest_Flag)
+              setLatest_flag(res.data[val]?.Latest_Flag)
+              setVersionSelect(res.data[val]?.Feature_Version_Id)
+              
             }
           })
 
@@ -541,7 +554,7 @@ export default function PreviewCode(props) {
           console.log(error);
         }
       );
-    setVersionSelect(versionnumber)
+      
   }
 
   var data = null;
@@ -562,8 +575,12 @@ export default function PreviewCode(props) {
                 id="grouped-demo"
                 className={classes.inputRoottype}
                 options={fversionslist}
+                // renderTags={() => null}
+                // freeSolo
+                // displayEmpty
+                
                 groupBy={""}
-                defaultValue={{ title: fversionslist[fversionslist.length - 1]?.title }}
+                defaultValue={{ title: versionSelect }}
                 getOptionLabel={(option) => option?.title}
                 style={{ width: 110 }}
                 onChange={(e, v) => handleFeatureversion(v?.code)}
@@ -576,6 +593,7 @@ export default function PreviewCode(props) {
                       className: classes.floatingLabelFocusStyle,
                       shrink: true,
                     }}
+                    placeholder={versionSelect}
                   />
                 )}
               />
