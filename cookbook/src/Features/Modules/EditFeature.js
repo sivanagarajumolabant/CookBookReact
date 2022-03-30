@@ -784,7 +784,7 @@ export default function EditFeature(props) {
   }))(TableRow);
 
   return (
-    <Box style={{ width:'95%', marginLeft:40}}>
+    <Box style={{ width: '95%', marginLeft: 40 }}>
       {Object.keys(editdata).length > 0 && (
         <>
           <Box py={2}>
@@ -1659,8 +1659,31 @@ export default function EditFeature(props) {
                       Delete
                     </Button>
                   </>
+
                 }
               </Grid>
+
+              <Grid item>
+                {/* {IsSuperAdmin == "true" && */}
+                <>
+                  <Button
+                    // type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    style={{  color: "white" }}
+                    // className={classes.submit}
+                    // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
+                    startIcon={<DeleteIcon />}
+                    // onClick={() => }
+                  >
+                    Request For Approval
+                  </Button>
+                </>
+
+                {/* } */}
+              </Grid>
+
             </Grid>
           </Box>
           {/* </form> */}
@@ -1672,7 +1695,8 @@ export default function EditFeature(props) {
             setConfirmDialog={setConfirmDialog}
           />
         </>
-      )}
-    </Box>
+      )
+      }
+    </Box >
   );
 }
