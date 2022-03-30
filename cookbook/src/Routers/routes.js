@@ -22,6 +22,7 @@ import ResendEmail from '../Auth/resendemail';
 import SuperadminFunction from '../Features/Modules/superadminpage';
 import ResetPasword from '../Auth/ResetPassword';
 import { useHistory } from 'react-router-dom';
+import FeatureApprovals from '../Features/Modules/FeatureApprovals'
 
 
 
@@ -59,6 +60,7 @@ const Routing = () => {
                     <ProtectedRoute path="/Request" component={Request} />
                     <ProtectedRoute path="/superadmin" component={SuperadminFunction} />
                     <ProtectedRoute path="/AdminAccesslist" component={AdminAccesslist} />
+                    <ProtectedRoute path="/FeatureApprovals" component={FeatureApprovals} />
                     
                 </MenuAppBar>
 

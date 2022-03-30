@@ -614,7 +614,11 @@ export default function ClippedDrawer({ children }) {
   const handleSuperadmin = () => {
     history.push('/superadmin')
   }
+  const handlefeatureapprovals = () => {
 
+    history.push('/FeatureApprovals')
+
+  }
 
 
   const handlerequestMenus = () => {
@@ -867,7 +871,8 @@ export default function ClippedDrawer({ children }) {
                     variant="body2"
                     style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                    // onClick={}
+                    onClick={()=>handlefeatureapprovals()}
+                    
                   >
                     Feature Approvals
                   </Typography>

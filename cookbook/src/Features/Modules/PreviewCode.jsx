@@ -253,7 +253,7 @@ export default function PreviewCode(props) {
                 setIsdata(true);
                 setCheckIsEdit(res.data[val]?.edit)
                 setLatest_flag(res.data[val]?.Latest_Flag)
-                setVersionSelect(res.data[val]?.Feature_Version_Id)
+                // setVersionSelect(res.data[val]?.Feature_Version_Id)
               }
               // else{
               //   setCheckIsEdit(0)
@@ -544,7 +544,7 @@ export default function PreviewCode(props) {
               setIsdata(true);
               setCheckIsEdit(res.data[val]?.edit)
               setLatest_flag(res.data[val]?.Latest_Flag)
-              setVersionSelect(res.data[val]?.Feature_Version_Id)
+              // setVersionSelect(res.data[val]?.Feature_Version_Id)
               
             }
           })
