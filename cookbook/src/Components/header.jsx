@@ -863,6 +863,15 @@ export default function ClippedDrawer({ children }) {
                     Admin Approvals
                   </Typography>
                   <Divider />
+                  <Typography
+                    variant="body2"
+                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+
+                    // onClick={}
+                  >
+                    Feature Approvals
+                  </Typography>
+                  <Divider />
                 </>
 
               }
