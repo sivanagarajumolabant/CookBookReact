@@ -770,8 +770,8 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' spacing={2}>
-          <Grid item xs={4} >
+        <Grid container direction='row'  justifyContent='center' spacing={1}>
+          <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -886,8 +886,8 @@ export default function SuperadminFunction() {
         </Grid>
 
       </Box>
-      <Box py={2} px={2}>
-        <Grid container direction='row' spacing={2}>
+      <Box py={2} px={2} >
+        <Grid container direction='row'  spacing={2}>
 
           <Grid item xs={4} >
             <StyledAutocomplete

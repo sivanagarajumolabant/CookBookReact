@@ -261,10 +261,10 @@ export default function AccessReview() {
           </Grid>
         </Grid>
       </Box>
-      <Box py={2} px={2}>
-        <Grid container direction='row' spacing={1}>
+      <Box py={2}>
+        <Grid container direction='row' justifyContent='space-around' spacing={1}>
 
-          <Grid item xs={5}>
+          <Grid item >
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -286,7 +286,7 @@ export default function AccessReview() {
 
             />
           </Grid>
-          <Grid item xs={4} >
+          <Grid item  >
 
             <StyledAutocomplete
               size="small"
@@ -296,7 +296,7 @@ export default function AccessReview() {
               groupBy={""}
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300 }}
+              style={{ width: 300,marginRight:200 }}
               onChange={(e, v) => handleuseremail(v)}
               renderInput={(params) => (
                 <TextField
@@ -313,13 +313,13 @@ export default function AccessReview() {
             />
           </Grid>
 
-          <Grid>
+          <Grid item>
             <Button
               variant="contained"
               disabled={!selecetd1}
               color="primary"
               component="span"
-              style={{ marginTop: 5, marginLeft: 100 }}
+              // style={{ marginTop: 5, marginLeft: 100 }}
               onClick={() => handleAccessReview()}
             >
               {" "}

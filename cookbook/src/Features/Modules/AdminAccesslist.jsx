@@ -728,8 +728,8 @@ export default function AdminAccesslist() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction="row" spacing={1}>
-          <Grid item xs={12} sm={4} md={4} xl={4}>
+        <Grid container direction='row' justifyContent='space-around' spacing={1}>
+          <Grid item >
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -750,7 +750,7 @@ export default function AdminAccesslist() {
               style={{ width: 300 }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} xl={4}>
+          <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -776,7 +776,7 @@ export default function AdminAccesslist() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={4} md={4} xl={4}>
+          <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -801,7 +801,9 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} xl={4}>
+          </Grid>
+          <Grid container direction='row' justifyContent='space-around' spacing={1}>
+          <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -829,7 +831,7 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} xl={4}>
+          <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -853,7 +855,7 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} xl={4}>
+          <Grid item >
 
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
 
