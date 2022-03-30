@@ -337,10 +337,10 @@ export default function Request() {
         </Grid>
 
       </Box>
-      <Box py={2} px={2}>
-        <Grid container direction='row' spacing={1}>
+      <Box py={2} px={2} >
+        <Grid container direction='row' justifyContent='space-between' spacing={1}>
 
-          <Grid item xs={4}>
+          <Grid item >
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -362,7 +362,7 @@ export default function Request() {
 
             />
           </Grid>
-          <Grid item xs={4} >
+          <Grid item  >
 
             <StyledAutocomplete
               size="small"
@@ -389,7 +389,7 @@ export default function Request() {
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item >
 
             <StyledAutocomplete
               size="small"
