@@ -352,7 +352,7 @@ export default function ClippedDrawer({ children }) {
   const [migtypelist, setMigtypeslist] = useState([])
   const [create_flag, setcreate_flag] = useState([])
   const [create_check_flag, setcreate_check_flag] = useState(0)
-  
+
 
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -471,7 +471,7 @@ export default function ClippedDrawer({ children }) {
     // const res = await 
     axios.post(`${config.API_BASE_URL()}/api/usersfeaturelist/`, form, conf)
       .then((res) => {
-        if (res.data.length>0) {
+        if (res.data.length > 0) {
           // const res = await axios.get(`${config.API_BASE_URL()}/api/miglevelobjects/${value}`, conf);
           setmenuList(res.data);
           dispatch(Menuaction.lableselect(res.data[0].Label))
@@ -480,6 +480,14 @@ export default function ClippedDrawer({ children }) {
           dispatch(ActionMenu.selectedMenutlist(''))
           dispatch(Menuaction.reloadAction(false))
           dispatch(Menuaction.admin(res.data[0]?.Admin_Flag))
+        }
+        else if (res.data.length === 0) {
+          setmenuList([]);
+          // dispatch(Menuaction.lableselect(res.data[0]?.Label))
+          // dispatch(Menuaction.admin(res.data[0].Admin_Flag))
+          dispatch(ActionMenu.selectedMenutlist(''))
+          dispatch(Menuaction.reloadAction(false))
+          dispatch(Menuaction.admin(0))
         }
 
       }, (error) => {
@@ -627,7 +635,7 @@ export default function ClippedDrawer({ children }) {
     history.push('/Request')
   }
 
-  const handleProject_Version=(v)=>{
+  const handleProject_Version = (v) => {
     dispatch(Menuaction.project_version(v?.code))
   }
 
@@ -666,7 +674,7 @@ export default function ClippedDrawer({ children }) {
             <Grid item
               xm={12} sm={12} md={3} lg={1}>
               <div>
-                <img src={QCookBook3}  style={{width:150}} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
+                <img src={QCookBook3} style={{ width: 150 }} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
               </div>
             </Grid>
 
@@ -873,8 +881,8 @@ export default function ClippedDrawer({ children }) {
                     variant="body2"
                     style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
-                    onClick={()=>handlefeatureapprovals()}
-                    
+                    onClick={() => handlefeatureapprovals()}
+
                   >
                     Feature Approvals
                   </Typography>
@@ -898,7 +906,7 @@ export default function ClippedDrawer({ children }) {
                   </Typography>
 
                   {/* <Divider /> */}
-                  </>}
+                </>}
 
 
               <Box py={1}>

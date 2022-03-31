@@ -488,9 +488,10 @@ export default function SuperadminFunction() {
         // dispatch(Menuaction.getdropdownlist(res.data))
         axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
           (res) => {
-            // setUpdatemiglist(true)
+            setUpdatemiglist(true)
             setMigtypeslist(res.data)
             dispatch(Menuaction.getdropdownlist(res.data))
+            
           },
           (error) => {
             console.log(error);
