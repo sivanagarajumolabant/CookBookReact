@@ -810,11 +810,44 @@ export default function EditFeature(props) {
       "Feature_Version_Id": editdata.detaildata?.Feature_Version_Id,
       "Feature_version_approval_status": status,
       "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
+      "Level": editdata.detaildata?.Level,
+      'Keywords': editdata.detaildata.Keywords,
+      'Estimations': editdata.detaildata.Estimations
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
       form.append(key, formData[key]);
     });
+
+
+    // feature create 
+    let formDatacreate = {
+      ...formValues,
+      Migration_TypeId: editdata.detaildata?.Migration_TypeId,
+      Object_Type: editdata.detaildata.Object_Type,
+      Feature_Name: editdata.detaildata.Feature_Name,
+      // Source_FeatureDescription, Target_FeatureDescription,
+      Sequence: editdata.detaildata.Sequence,
+      Source_FeatureDescription: Source_FeatureDescription,
+      Target_FeatureDescription: Target_FeatureDescription,
+      Target_Expected_Output: Target_Expected_Output,
+      Target_ActualCode: Target_ActualCode,
+      Source_Code: Source_Code,
+      Conversion_Code: Conversion_Code,
+      "Project_Version_Id": editdata.detaildata?.Project_Version_Id,
+      "Feature_Version_Id": editdata.detaildata?.Feature_Version_Id,
+      "Feature_version_approval_status": 'In Progress',
+      "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
+      "Level": editdata.detaildata?.Level,
+      'Keywords': editdata.detaildata.Keywords,
+      'Estimations': editdata.detaildata.Estimations
+    };
+    const formcreate = new FormData();
+    Object.keys(formDatacreate).forEach((key) => {
+      formcreate.append(key, formDatacreate[key]);
+    });
+
+
     let conf = {
       headers: {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
@@ -830,18 +863,44 @@ export default function EditFeature(props) {
       .then(
         (res) => {
           if (mod_status === 'Approved') {
-            // console.log(res.data);
-            setNotify({
-              isOpen: true,
-              message: "Feature Approved and Redirecting To Preview",
-              type: "success",
-            });
-            setTimeout(
-              () => history.push({
-                pathname: `/PreviewCode`,
-              }),
-              3000
+
+            axios.post(`${config.API_BASE_URL()}/api/featureapprovalcreate/`, formcreate, conf).then(
+              (res) => {
+                if (res.data === "New versions won't be created until it has a previous version approved") {
+                  setNotify({
+                    isOpen: true,
+                    message: res.data,
+                    type: "error",
+                  });
+                  // settableupdate(true)
+                } else {
+                  setNotify({
+                    isOpen: true,
+                    message: "Feature Approved! New Version Created and Redirecting To Preview",
+                    type: "success",
+                  });
+                  setTimeout(
+                    () => history.push({
+                      pathname: `/PreviewCode`,
+                    }),
+                    3000
+                  );
+                  // settableupdate(true)
+                }
+
+              },
+              (error) => {
+                console.log(error);
+              }
             );
+
+            // // console.log(res.data);
+            // setNotify({
+            //   isOpen: true,
+            //   message: "Feature Approved and Redirecting To Preview",
+            //   type: "success",
+            // });
+
 
           } else if (mod_status === 'Awaiting Approval') {
             setNotify({
