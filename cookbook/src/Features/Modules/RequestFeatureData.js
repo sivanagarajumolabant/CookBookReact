@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 400,
         lineHeight: 1.334,
         letterSpacing: "0em",
-        paddingLeft: 5,
+        paddingLeft: 3,
     },
 
     SourceDescription: {
@@ -428,7 +428,7 @@ export default function RequestFeatureData(props) {
                         </Grid> */}
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={2}>
                         <Typography
                             gutterBottom
                             variant="h5"
@@ -447,7 +447,7 @@ export default function RequestFeatureData(props) {
                         </div>
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={2}>
                         <Typography
                             gutterBottom
                             variant="h5"
@@ -465,7 +465,7 @@ export default function RequestFeatureData(props) {
                             {/* </Typography> */}
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={2}>
                         <Typography
                             gutterBottom
                             variant="h5"
@@ -475,10 +475,10 @@ export default function RequestFeatureData(props) {
                             Level
                         </Typography>
                         {/* <Typography component="h2"> */}
-                        <div className={classes.Description}>{detaildata.Level}</div>
+                        <div className={classes.Descripti2n}>{detaildata.Level}</div>
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={2}>
                         <Typography
                             gutterBottom
                             variant="h5"
@@ -489,6 +489,35 @@ export default function RequestFeatureData(props) {
                         </Typography>
                         {/* <Typography component="h2"> */}
                         <div className={classes.Description}>{seq}</div>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={2}>
+                        <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="h2"
+                            className={classes.Object_Type}
+                        >
+                            Keywords
+                        </Typography>
+                        {/* <Typography component="h2"> */}
+                        <div className={classes.Description}>{detaildata.Keywords}</div>
+
+
+                    </Grid>
+
+
+                    <Grid item xs={12} sm={6} md={6} lg={2} >
+
+                        <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="h2"
+                            className={classes.Object_Type}
+                        >
+                            Estimation
+                        </Typography>
+                        {/* <Typography component="h2"> */}
+                        <div className={classes.Description}>{detaildata.Estimations}</div>
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={4} lg={12}>
@@ -985,7 +1014,7 @@ export default function RequestFeatureData(props) {
                             component="h2"
                             className={classes.Object_Type}
                         >
-                            Conversion Description
+                            Conversion Module
                         </Typography>
                         <Table className={classestable.table} aria-label="customized table">
                             <TableHead className={classes.primary}>

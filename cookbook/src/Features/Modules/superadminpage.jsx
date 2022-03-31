@@ -132,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     borderRadius: 15,
     width: 450,
-    height: 380,
+    height: 300,
     backgroundColor: "white",
     position: "absolute",
     top: 0,
@@ -178,7 +178,7 @@ export default function SuperadminFunction() {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [isData, setIsData] = useState(true);
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, project_version } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState('Procedure')
   const [Migtype, setMigtype] = useState('')
@@ -468,6 +468,7 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": '',
       "Migration_TypeId": migtype_create || null,
+      "Project_Version_Id": project_version
     };
 
     const form = new FormData();
@@ -484,29 +485,26 @@ export default function SuperadminFunction() {
         });
         setUpdatemiglist(true)
         setOpen1(false)
+        // dispatch(Menuaction.getdropdownlist(res.data))
+        axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+          (res) => {
+            // setUpdatemiglist(true)
+            setMigtypeslist(res.data)
+            dispatch(Menuaction.getdropdownlist(res.data))
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         console.log(error.response.data);
         // setNotify("Migration Types Already Exist!")
       }
     );
-    // setUpdatemiglist(false)
+    setUpdatemiglist(false)
 
-    let conf1 = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf1).then(
-      (res) => {
-
-        setMigtypeslist(res.data)
-        dispatch(Menuaction.getdropdownlist(res.data))
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    
   }
 
 
@@ -519,6 +517,7 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": objtype_create,
       "Migration_TypeId": migtype_create,
+      "Project_Version_Id": project_version
     };
 
     const form = new FormData();
@@ -770,7 +769,7 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row'  justifyContent='center' spacing={1}>
+        <Grid container direction='row' justifyContent='center' spacing={1}>
           <Grid item >
             <StyledAutocomplete
               size="small"
@@ -887,7 +886,7 @@ export default function SuperadminFunction() {
 
       </Box>
       <Box py={2} px={2} >
-        <Grid container direction='row'  spacing={2}>
+        <Grid container direction='row' spacing={2}>
 
           <Grid item xs={4} >
             <StyledAutocomplete
@@ -1182,8 +1181,8 @@ export default function SuperadminFunction() {
 
                             {
                               item.Object_types.map((value, index, array) => {
-                                if (array.length-1===index) {
-                                  return value 
+                                if (array.length - 1 === index) {
+                                  return value
                                 } else {
                                   return value + ','
                                 }

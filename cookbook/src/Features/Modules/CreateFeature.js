@@ -841,22 +841,22 @@ export default function CreateFeature(props) {
                     <StyledTableRow container>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row[0].Feature_Name}
+                          {row[0]?.Feature_Name}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row[0].Sequence === 'No Predecessor' ? row[0].Sequence : row[0].Sequence}
+                          {row[0]?.Sequence === 'No Predecessor' ? row[0]?.Sequence : row[0]?.Sequence}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row[0].Keywords}
+                          {row[0]?.Keywords}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row[0].Estimations}
+                          {row[0]?.Estimations}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
@@ -869,7 +869,7 @@ export default function CreateFeature(props) {
                         <Tooltip
                           title="Edit"
                           aria-label="Edit"
-                          onClick={() => handleEditchange(row[0].Feature_Name)}
+                          onClick={() => handleEditchange(row[0]?.Feature_Name)}
                         >
                           <EditSharpIcon style={{ color: "blue" }} />
                         </Tooltip>

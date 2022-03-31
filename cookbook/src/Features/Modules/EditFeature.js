@@ -91,7 +91,7 @@ export default function EditFeature(props) {
     preview,
     editpreview,
     editPreviewdetails,
-    headerValue, admin
+    headerValue, admin, project_version
   } = useSelector((state) => state.dashboardReducer);
 
   // console.log(props)
@@ -158,6 +158,8 @@ export default function EditFeature(props) {
   const [istettdata, setIstettdata] = useState(false);
   const [fupdate, setFupdate] = useState(false);
   const IsSuperAdmin = sessionStorage.getItem('isSuperAdmin')
+  const [keywords, setkeyowrds] = useState("");
+  const [estimation, setestimation] = useState("");
 
   const dispatch = useDispatch();
 
@@ -175,6 +177,8 @@ export default function EditFeature(props) {
       setConversion_Code(editdata.detaildata.Conversion_Code);
       setSequence(editdata.detaildata.Sequence);
       setLevel(editdata.detaildata.Level);
+      setkeyowrds(editdata.detaildata.Keywords);
+      setestimation(editdata.detaildata.Estimations);
     } else {
       history.push({
         pathname: "/dashboard",
@@ -338,6 +342,8 @@ export default function EditFeature(props) {
       Source_Code: Source_Code,
       Conversion_Code: Conversion_Code,
       "Feature_version_approval_status": editdata.detaildata.Feature_version_approval_status,
+      "Keywords": keywords,
+      "Estimations": estimation
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -528,6 +534,8 @@ export default function EditFeature(props) {
         featurename: wout_prefix,
         migration_typeid: editdata.detaildata.Migration_TypeId,
         object_type: editdata.detaildata.Object_Type,
+        Feature_Version_Id: editdata.detaildata.Feature_Version_Id,
+        Project_Version_Id: editdata.detaildata.Project_Version_Id
       };
       let conf = {
         headers: {
@@ -958,7 +966,13 @@ export default function EditFeature(props) {
     // dispatch(Menuaction.reloadAction(true));
   };
 
+  // const handleChangevalue = (event) => {
+  //   setkeyowrds(event.target.Keywords);
+  // };
 
+  // const handleChangeesti = (event) => {
+  //   setestimation(event.target.Estimations);
+  // };
 
 
   return (
@@ -1074,6 +1088,48 @@ export default function EditFeature(props) {
                 disabled
               />
             </Grid>
+
+
+            <Grid item xs={6}>
+              <TextField
+                id="outlined-multiline-static"
+                label="keywords"
+                multiline
+                fullWidth
+                rows={1}
+                name="keywords"
+                value={keywords}
+                onChange={(e)=> setkeyowrds(e.target.value)}
+                variant="outlined"
+                required
+                disable
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+
+
+            <Grid item xs={6}>
+              <TextField
+                id="outlined-multiline-static"
+                label="Estimation"
+                multiline
+                fullWidth
+                rows={1}
+                name="Estimations"
+                value={estimation}
+                onChange={(e)=> setestimation(e.target.value)}
+                variant="outlined"
+                required
+                disable
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+
+
             <Grid item xs={12}>
               <div className="App">
                 <p>{"Source Description"}</p>
@@ -1719,7 +1775,7 @@ export default function EditFeature(props) {
                 component="h2"
                 className={classes.Object_Type}
               >
-                Conversion Description
+                Conversion Module
               </Typography>
               <Table
                 className={classestable.table}

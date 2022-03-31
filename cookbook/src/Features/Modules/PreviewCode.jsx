@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 400,
     lineHeight: 1.334,
     letterSpacing: "0em",
-    paddingLeft: 5,
+    paddingLeft: 3,
   },
 
   SourceDescription: {
@@ -277,13 +277,13 @@ export default function PreviewCode(props) {
 
   useEffect(() => {
     // console.log("menus ", menuitem);
-    if (menuitem) {
+    if (detaildata) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
-      axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${menuitem}`, conf).then(
+      axios.get(`${config.API_BASE_URL()}/api/sourcedesc/${detaildata.Feature_Id}`, conf).then(
         (res) => {
           setSource_att(res.data);
           if (res.data.length > 0) {
@@ -295,15 +295,15 @@ export default function PreviewCode(props) {
         }
       );
     }
-  }, [menuitem, att_update]);
+  }, [detaildata, att_update]);
   useEffect(() => {
-    if (menuitem) {
+    if (detaildata) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
-      axios.get(`${config.API_BASE_URL()}/api/targetdesc/${menuitem}`, conf).then(
+      axios.get(`${config.API_BASE_URL()}/api/targetdesc/${detaildata.Feature_Id}`, conf).then(
         (res) => {
           setTarget_att(res.data);
           if (res.data.length > 0) {
@@ -315,16 +315,16 @@ export default function PreviewCode(props) {
         }
       );
     }
-  }, [menuitem, att_update]);
+  }, [detaildata, att_update]);
 
   useEffect(() => {
-    if (menuitem) {
+    if (detaildata) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
-      axios.get(`${config.API_BASE_URL()}/api/convatt/${menuitem}`, conf).then(
+      axios.get(`${config.API_BASE_URL()}/api/convatt/${detaildata.Feature_Id}`, conf).then(
         (res) => {
           setConv_att(res.data);
           if (res.data.length > 0) {
@@ -336,16 +336,16 @@ export default function PreviewCode(props) {
         }
       );
     }
-  }, [menuitem, att_update]);
+  }, [detaildata, att_update]);
 
   useEffect(() => {
-    if (menuitem) {
+    if (detaildata) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
-      axios.get(`${config.API_BASE_URL()}/api/codefiles/${menuitem}`, conf).then(
+      axios.get(`${config.API_BASE_URL()}/api/codefiles/${detaildata.Feature_Id}`, conf).then(
         (res) => {
           setSource_codeatt(res.data);
           console.log(res.data);
@@ -358,7 +358,7 @@ export default function PreviewCode(props) {
         }
       );
     }
-  }, [menuitem, att_update]);
+  }, [detaildata, att_update]);
 
   const handleDownload = (att_Type, migtypeid, id, obj_type, att_name, fid) => {
     // if (migtypeid === "1") {
@@ -578,7 +578,7 @@ export default function PreviewCode(props) {
                 // displayEmpty
 
                 groupBy={""}
-                defaultValue={{ title: String(versionSelect) }}
+                defaultValue={{ title: String(fversionslist.length) }}
                 getOptionLabel={(option) => option?.title}
                 style={{ width: 110 }}
                 onChange={(e, v) => handleFeatureversion(v?.code)}
@@ -591,7 +591,7 @@ export default function PreviewCode(props) {
                       className: classes.floatingLabelFocusStyle,
                       shrink: true,
                     }}
-                    placeholder={String(versionSelect)}
+                    placeholder={String(fversionslist.length)}
                   />
                 )}
               />
@@ -710,10 +710,11 @@ export default function PreviewCode(props) {
             }
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={2}>
             <Typography
               gutterBottom
               variant="h5"
+              // align="center"
               component="h2"
               className={classes.Object_Type}
             >
@@ -729,7 +730,7 @@ export default function PreviewCode(props) {
             </div>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={2}>
             <Typography
               gutterBottom
               variant="h5"
@@ -747,11 +748,12 @@ export default function PreviewCode(props) {
               {/* </Typography> */}
             </div>
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={2}>
             <Typography
               gutterBottom
               variant="h5"
               component="h2"
+              // align="center"
               className={classes.Object_Type}
             >
               Level
@@ -760,7 +762,7 @@ export default function PreviewCode(props) {
             <div className={classes.Description}>{detaildata.Level}</div>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={2}>
             <Typography
               gutterBottom
               variant="h5"
@@ -771,6 +773,36 @@ export default function PreviewCode(props) {
             </Typography>
             {/* <Typography component="h2"> */}
             <div className={classes.Description}>{seq}</div>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={6} lg={2}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Keywords
+            </Typography>
+            {/* <Typography component="h2"> */}
+            <div className={classes.Description}>{detaildata.Keywords}</div>
+
+
+          </Grid>
+
+
+          <Grid item xs={12} sm={6} md={6} lg={2} >
+
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Estimation
+            </Typography>
+            {/* <Typography component="h2"> */}
+            <div className={classes.Description}>{detaildata.Estimations}</div>
           </Grid>
 
           <Grid item xs={12} sm={12} md={4} lg={12}>
@@ -1267,7 +1299,7 @@ export default function PreviewCode(props) {
               component="h2"
               className={classes.Object_Type}
             >
-              Conversion Description
+              Conversion Module
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
