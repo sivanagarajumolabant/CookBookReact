@@ -846,7 +846,7 @@ export default function CreateFeature(props) {
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">
                         <div className={classes.texttablecell}>
-                          {row[0].Sequence === 'No Predecessor' ? row[0].Sequence : row[0].Sequence?.substr(5)}
+                          {row[0].Sequence === 'No Predecessor' ? row[0].Sequence : row[0].Sequence}
                         </div>
                       </StyledTableCell>
                       <StyledTableCell item xl={10} align="center">

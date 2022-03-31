@@ -373,11 +373,11 @@ export default function RequestFeatureData(props) {
     var data = null;
     let seq = null;
     if (detaildata) {
-        if (detaildata.Sequence !== "No Predecessor") {
-            seq = detaildata.Sequence.substr(5);
-        } else {
-            seq = detaildata.Sequence;
-        }
+        // if (detaildata.Sequence !== "No Predecessor") {
+        //     seq = detaildata.Sequence.substr(5);
+        // } else {
+        seq = detaildata.Sequence;
+        // }
         data = (
             <>
                 <Grid container>

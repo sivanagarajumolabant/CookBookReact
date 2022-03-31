@@ -10,10 +10,12 @@ import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { TableContainer } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import config from "../../Config/config";
 import Notification from "../Notifications/Notification";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Menuaction from "../../Redux/actions/Menuaction";
 
 
 const useStylestable = makeStyles((theme) => ({
@@ -141,6 +143,8 @@ export default function FeatureApprovals() {
         type: "",
     });
     const [tableupdate, settableupdate] = useState(false)
+    const dispatach = useDispatch();
+    const history = useHistory();
 
     useEffect(() => {
         if (headerValue) {
@@ -256,7 +260,7 @@ export default function FeatureApprovals() {
                             console.log(error);
                         }
                     );
-                }else{
+                } else {
                     settableupdate(true)
                 }
             },
@@ -383,7 +387,12 @@ export default function FeatureApprovals() {
                                                                     color="primary"
                                                                     className={classes.submit}
                                                                     style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                                                    onClick={(e) => { }}
+                                                                    onClick={(e) => {
+                                                                        dispatach(Menuaction.EditPreviewFeature({ data: item }));
+
+                                                                        history.push("/EditFeature");
+                                                                    }
+                                                                    }
                                                                 >
                                                                     Review
                                                                 </Button>

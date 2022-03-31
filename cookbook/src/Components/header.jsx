@@ -854,7 +854,7 @@ export default function ClippedDrawer({ children }) {
               >
                 Feature Catalog
               </Typography>
-              <Divider />
+              {/* <Divider /> */}
 
               {admin === 1 &&
                 <>
@@ -866,7 +866,7 @@ export default function ClippedDrawer({ children }) {
                   >
                     Admin Approvals
                   </Typography>
-                  <Divider />
+                  {/* <Divider /> */}
                   <Typography
                     variant="body2"
                     style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
@@ -876,7 +876,7 @@ export default function ClippedDrawer({ children }) {
                   >
                     Feature Approvals
                   </Typography>
-                  <Divider />
+                  {/* <Divider /> */}
                 </>
 
               }
@@ -895,7 +895,8 @@ export default function ClippedDrawer({ children }) {
                     Access Review
                   </Typography>
 
-                  <Divider /></>}
+                  {/* <Divider /> */}
+                  </>}
 
 
               <Box py={1}>
