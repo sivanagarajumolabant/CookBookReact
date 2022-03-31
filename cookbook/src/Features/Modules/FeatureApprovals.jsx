@@ -236,7 +236,15 @@ export default function FeatureApprovals() {
             (res) => {
                 // console.log(res)
 
-                if (status !== 'In Progress') {
+                if (res.data === 'Request for approval already present.Please wait for admin to approve it') {
+                    setNotify({
+                        isOpen: true,
+                        message: res.data,
+                        type: "error",
+                    });
+                }
+
+                else if (status !== 'In Progress') {
                     axios.post(`${config.API_BASE_URL()}/api/featureapprovalcreate/`, form, conf).then(
                         (res) => {
                             if (res.data === "New versions won't be created until it has a previous version approved") {

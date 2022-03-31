@@ -337,6 +337,7 @@ export default function EditFeature(props) {
       Target_ActualCode: Target_ActualCode,
       Source_Code: Source_Code,
       Conversion_Code: Conversion_Code,
+      "Feature_version_approval_status": editdata.detaildata.Feature_version_approval_status,
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -356,12 +357,23 @@ export default function EditFeature(props) {
       )
       .then(
         (res) => {
-          console.log(res.data);
-          setNotify({
-            isOpen: true,
-            message: "Feature Updated Successfully",
-            type: "success",
-          });
+
+          if (res.data === 'Request for approval already present.Please wait for admin to approve it') {
+            console.log(res.data);
+            setNotify({
+              isOpen: true,
+              message: "res.data",
+              type: "error",
+            });
+          } else {
+            console.log(res.data);
+            setNotify({
+              isOpen: true,
+              message: "Feature Updated Successfully",
+              type: "success",
+            });
+          }
+
         },
         (error) => {
           console.log(error);
@@ -903,11 +915,20 @@ export default function EditFeature(props) {
 
 
           } else if (mod_status === 'Awaiting Approval') {
-            setNotify({
-              isOpen: true,
-              message: "Feature Requested For the Admin Approval",
-              type: "success",
-            });
+            if (res.data === 'Request for approval already present.Please wait for admin to approve it') {
+              setNotify({
+                isOpen: true,
+                message: res.data,
+                type: "error",
+              });
+            } else {
+              setNotify({
+                isOpen: true,
+                message: "Feature Requested For the Admin Approval",
+                type: "success",
+              });
+            }
+
           }
 
           else {
