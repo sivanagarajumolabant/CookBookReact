@@ -491,7 +491,6 @@ export default function SuperadminFunction() {
             setUpdatemiglist(true)
             setMigtypeslist(res.data)
             dispatch(Menuaction.getdropdownlist(res.data))
-            
           },
           (error) => {
             console.log(error);
