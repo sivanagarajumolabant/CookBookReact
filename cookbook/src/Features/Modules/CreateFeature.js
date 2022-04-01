@@ -196,7 +196,7 @@ export default function CreateFeature(props) {
     editpreview,
     editPreviewdetails,
     headerValue,
-    ITEMlIST,lable,admin
+    ITEMlIST, lable, admin
   } = useSelector((state) => state.dashboardReducer);
 
   var obj_type = props.location?.state?.data?.Label;
@@ -325,6 +325,8 @@ export default function CreateFeature(props) {
   console.log(props.location?.state?.data);
 
   const handleSubmit = (e) => {
+
+
     let typeval = details?.data?.type;
     // console.log("type data ", details?.data)
     // console.log("type ", typeval)
@@ -368,54 +370,50 @@ export default function CreateFeature(props) {
     };
 
 
+    if (formValues.Sequence === undefined) {
+      setNotify({
+        isOpen: true,
+        message: 'Please Select Predessor Before Creating Feature',
+        type: "error",
+      });
+    } else {
+      axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf).then(
+        (res) => {
+          if (res.data === 'Feature already present with this version.Kindly request access for it') {
+            setNotify({
+              isOpen: true,
+              message: res.data,
+              type: "error",
+            });
+          } else {
 
-    axios.post(`${config.API_BASE_URL()}/api/fcreate`, form, conf).then(
-      (res) => {
-        if (res.data === 'Feature already present with this version.Kindly request access for it') {
-          setNotify({
-            isOpen: true,
-            message: res.data,
-            type: "error",
-          });
-        } else {
+            setNotify({
+              isOpen: true,
+              message: "Feature Created Successfully",
+              type: "success",
+            });
 
-          setNotify({
-            isOpen: true,
-            message: "Feature Created Successfully",
-            type: "success",
-          });
+            dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
+            dispatach(Menuaction.reloadAction(true));
+            // let UpdateItem = {
+            //   Label: ITEMlIST[0]?.Label,
+            //   subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
+            // }
+            // dispatach(Menuaction.UpdateMenutlist(UpdateItem))
 
-          dispatach(Menuaction.EditPreviewFeature({ data: res.data }));
-          // let UpdateItem = {
-          //   Label: ITEMlIST[0]?.Label,
-          //   subMenu: ITEMlIST[0]?.subMenu.concat({ Feature_Id: res.data?.Feature_Id, Feature_Name: res.data?.Feature_Name })
-          // }
-          // dispatach(Menuaction.UpdateMenutlist(UpdateItem))
+            history.push("/EditFeature");
+          }
+        },
+        (error) => {
+          console.log(error);
 
-          history.push("/EditFeature");
         }
-      },
-      (error) => {
-        console.log(error);
-        // setNotify({
-        //   isOpen: true,
-        //   message: error.response.data,
-        //   type: "error",
-        // });
-      }
-    );
-    // .then(()=>{
-    //     if (createdata.length > 0) {
-    //         history.push({
-    //             pathname: `/edit/${createdata.data.Feature_Id}`,
-    //             data: { createdata },
+      );
 
-    //         })
 
-    //     }
-    // })
+      
+    }
 
-    dispatach(Menuaction.reloadAction(true));
   };
 
   //Pop up window
@@ -593,7 +591,7 @@ export default function CreateFeature(props) {
 
   }
 
-// console.log(tableinfo,"============table")
+  // console.log(tableinfo,"============table")
   return (
     <Box style={{ width: '97%', marginLeft: 13 }}>
       <Box py={4}>
