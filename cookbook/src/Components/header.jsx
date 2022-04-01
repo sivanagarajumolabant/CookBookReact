@@ -48,7 +48,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DehazeSharpIcon from '@material-ui/icons/DehazeSharp';
 import { useState } from "react";
 import Qmig from '../Images/Qmig.png'
-import QCookBook3 from '../Images/QCookBook3.png'
+import qbook from '../Images/qbook1.jpg'
 
 // import config from "../../src/Config/config";
 
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginLeft: 18,
-    marginTop: 3
+    marginTop: 5
   },
   floatingLabelFocusStyle: {
     color: "white",
@@ -674,7 +674,7 @@ export default function ClippedDrawer({ children }) {
             <Grid item
               xm={12} sm={12} md={3} lg={1}>
               <div>
-                <img src={QCookBook3} style={{ width: 150 }} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
+                <img src={qbook} style={{ width: 135, height:40 }} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
               </div>
             </Grid>
 
