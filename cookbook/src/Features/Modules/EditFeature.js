@@ -368,7 +368,7 @@ export default function EditFeature(props) {
             console.log(res.data);
             setNotify({
               isOpen: true,
-              message: "res.data",
+              message: res.data,
               type: "error",
             });
           } else {
