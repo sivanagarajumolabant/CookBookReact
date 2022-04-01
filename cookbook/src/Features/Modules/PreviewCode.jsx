@@ -578,7 +578,8 @@ export default function PreviewCode(props) {
                 // displayEmpty
 
                 groupBy={""}
-                defaultValue={{ title: String(fversionslist.length) }}
+                defaultValue={{ title: String(versionSelect) }}
+                value={versionSelect}
                 getOptionLabel={(option) => option?.title}
                 style={{ width: 110 }}
                 onChange={(e, v) => handleFeatureversion(v?.code)}
@@ -591,7 +592,7 @@ export default function PreviewCode(props) {
                       className: classes.floatingLabelFocusStyle,
                       shrink: true,
                     }}
-                    placeholder={String(fversionslist.length)}
+                    placeholder={String(versionSelect)}
                   />
                 )}
               />
