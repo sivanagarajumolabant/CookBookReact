@@ -664,6 +664,7 @@ export default function SuperadminFunction() {
           type: "success",
         });
         setUpdatermSuperAdminTable(true)
+        // sessionStorage.setItem("isSuperAdmin", false);
 
       },
       (error) => {
