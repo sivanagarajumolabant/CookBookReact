@@ -514,6 +514,7 @@ export default function CreateFeature(props) {
       "Source_Code": featuredata.Source_Code,
       "Conversion_Code": featuredata.Conversion_Code,
       "Keywords": featuredata.Keywords,
+      "Feature_version_approval_status": 'In Progress',
       "Estimations": featuredata.Estimations,
     }
     setEdithandle(formData)

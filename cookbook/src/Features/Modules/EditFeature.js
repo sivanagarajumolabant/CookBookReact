@@ -1385,7 +1385,7 @@ export default function EditFeature(props) {
                   options={[
                     { title: "Source Description", code: "Sourcedescription" },
                     { title: "Target Description", code: "Targetdescription" },
-                    { title: "Conversion Code", code: "Conversion" },
+                    { title: "Conversion Module", code: "Conversion" },
                     // { title: "Actual Target Code", code: 'Actualtargetcode' },
                     {
                       title: "Expected Target Code",

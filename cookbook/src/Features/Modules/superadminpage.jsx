@@ -132,6 +132,19 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     borderRadius: 15,
     width: 450,
+    height: 350,
+    backgroundColor: "white",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: "auto",
+  },
+  container2: {
+    border: "none",
+    borderRadius: 15,
+    width: 450,
     height: 300,
     backgroundColor: "white",
     position: "absolute",
@@ -1040,7 +1053,7 @@ export default function SuperadminFunction() {
           >
           </Snackbar>
           <Modal open={open}>
-            <Container className={classes.container1} style={{ marginBottom: 100 }}>
+            <Container className={classes.container2} style={{ marginBottom: 100 }}>
               <Typography
                 gutterBottom
                 align="center"

@@ -151,7 +151,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AdminAccesslist() {
   const classes = useStyles();
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable,project_version } = useSelector(state => state.dashboardReducer);
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
@@ -446,7 +446,8 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
       "Approval_Status": action,
-      "Approved_by": sessionStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail'),
+      "Project_Version_Id":1,
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -564,7 +565,8 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       "Approval_Status": action,
       "id": item.id,
-      "Approved_by": sessionStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail'),
+      "Project_Version_Id":1,
     }
 
     Object.keys(body).forEach((key) => {
@@ -610,7 +612,8 @@ export default function AdminAccesslist() {
       'Created_at': item.Created_at,
       'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
       "Approval_Status": action,
-      "Approved_by": sessionStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail'),
+      "Project_Version_Id":1,
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -662,7 +665,8 @@ export default function AdminAccesslist() {
       "Approval_Status": 'Approved',
       "Access_Type": grant_access_type,
       "Expiry_date": moment(selectedDate).format('YYYY-MM-DD'),
-      "Approved_by": sessionStorage.getItem('uemail')
+      "Approved_by": sessionStorage.getItem('uemail'),
+      "Project_Version_Id":1,
     };
     let conf = {
       headers: {

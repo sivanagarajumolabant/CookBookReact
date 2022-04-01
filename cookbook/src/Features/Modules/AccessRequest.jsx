@@ -126,7 +126,7 @@ export default function Request() {
   const classes = useStyles();
   const classestable = useStylestable();
   const [isData, setIsData] = useState(false);
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, project_version } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
@@ -169,7 +169,7 @@ export default function Request() {
       let body = {
         "Object_Type": objtype,
         "Migration_TypeId": headerValue?.title,
-        "Feature_Name": fnname
+        "Feature_Name": fnname,
       };
       let conf = {
         headers: {
@@ -288,6 +288,7 @@ export default function Request() {
       "Approval_Status": 'Pending',
       "Access_Type": access,
       "Expiry_date": moment(new Date()).format('YYYY-MM-DD'),
+      "Project_Version_Id": project_version
     };
     let conf = {
       headers: {
