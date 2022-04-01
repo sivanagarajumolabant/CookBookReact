@@ -470,12 +470,16 @@ export default function EditFeature(props) {
   };
 
   const handleConvertFiles = () => {
+    // console.log('trigger convert files')
     let body = {
       Feature_Id: editdata.detaildata.Feature_Id,
       AttachmentType: "Sourcecode",
       Feature_Name: editdata.detaildata.Feature_Name,
       Migration_TypeId: editdata.detaildata.Migration_TypeId,
       Object_Type: editdata.detaildata.Object_Type,
+      convcode: "r@rawstringstart'" + Conversion_Code + "'@rawstringend",
+      "Project_Version_Id": editdata.detaildata.Project_Version_Id,
+      "Feature_Version_Id": editdata.detaildata.Feature_Version_Id
     };
     let conf = {
       headers: {
@@ -484,12 +488,21 @@ export default function EditFeature(props) {
     };
     axios.post(`${config.API_BASE_URL()}/api/convertfiles`, body, conf).then(
       (res) => {
-        setNotify({
-          isOpen: true,
-          message: "Converted Files Please check",
-          type: "success",
-        });
-        setFupdate(true);
+        if (res.data === 'Please Add Source Code Attachment') {
+          setNotify({
+            isOpen: true,
+            message: res.data,
+            type: "error",
+          });
+        } else {
+          setNotify({
+            isOpen: true,
+            message: "Converted Files Please check",
+            type: "success",
+          });
+          setFupdate(true);
+        }
+
       },
       (error) => {
         console.log(error);
@@ -1099,7 +1112,7 @@ export default function EditFeature(props) {
                 rows={1}
                 name="keywords"
                 value={keywords}
-                onChange={(e)=> setkeyowrds(e.target.value)}
+                onChange={(e) => setkeyowrds(e.target.value)}
                 variant="outlined"
                 required
                 disable
@@ -1119,7 +1132,7 @@ export default function EditFeature(props) {
                 rows={1}
                 name="Estimations"
                 value={estimation}
-                onChange={(e)=> setestimation(e.target.value)}
+                onChange={(e) => setestimation(e.target.value)}
                 variant="outlined"
                 required
                 disable
