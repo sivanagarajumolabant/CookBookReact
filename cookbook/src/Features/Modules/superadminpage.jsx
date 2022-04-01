@@ -770,7 +770,7 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row'  justifyContent='center' spacing={1}>
+        <Grid container direction='row' justifyContent='space-evenly'  spacing={1}>
           <Grid item >
             <StyledAutocomplete
               size="small"
@@ -779,7 +779,7 @@ export default function SuperadminFunction() {
               options={userslist}
               groupBy={""}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300, marginLeft: 100 }}
+              style={{ width: 300, marginLeft: 10 }}
               onChange={(e, v) => handleuseremail(v)}
               renderInput={(params) => (
                 <TextField
@@ -794,13 +794,13 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid>
+          <Grid item>
             <Button
               variant="contained"
               disabled={!selecetd1}
               color="primary"
               component="span"
-              style={{ marginTop: 10, marginLeft: 240 }}
+              style={{ marginTop: 10, marginRight:"100px" }}
               onClick={() => handlesuperadmincreation()}
             >
               {" "}
@@ -887,7 +887,7 @@ export default function SuperadminFunction() {
 
       </Box>
       <Box py={2} px={2} >
-        <Grid container direction='row'  spacing={2}>
+        <Grid container direction='row' justifyContent='space-evenly'  spacing={2} >
 
           <Grid item xs={4} >
             <StyledAutocomplete
@@ -898,7 +898,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.title}
-              style={{ width: 300, marginLeft: 100 }}
+              style={{ width: 300 }}
               onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
                 <TextField
@@ -914,7 +914,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1} style={{ marginLeft: 100 }}>
+          <Grid item xs={1} style={{  }}>
             <Avatar className={classes.avatar} onClick={() => setOpen1(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -964,7 +964,7 @@ export default function SuperadminFunction() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  style={{ marginRight: 20, marginLeft: 100 }}
+                  style={{ marginRight: 20 }}
                   onClick={() => handleMigrationCreate()}
                 >
                   Create
@@ -1004,7 +1004,9 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={4} >
+          </Grid>
+          <Grid container direction='row' justifyContent='space-evenly'  spacing={2} >
+          <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -1014,7 +1016,7 @@ export default function SuperadminFunction() {
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.Object_Type}
               onChange={(e, v) => handleobjecttype(v)}
-              style={{ width: 300, marginLeft: 100 }}
+              style={{ width: 300}}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -1028,7 +1030,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1} style={{ marginLeft: 100 }}>
+          <Grid item xs={1} style={{}}>
             <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -1054,7 +1056,7 @@ export default function SuperadminFunction() {
               </Typography>
               {/* <form className={classes.form} autoComplete="off"> */}
 
-              <Grid item xs={4} >
+              <Grid item >
                 <StyledAutocomplete
                   size="small"
                   id="grouped-demo"
@@ -1107,7 +1109,7 @@ export default function SuperadminFunction() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  style={{ marginRight: 20, marginLeft: 100 }}
+                  style={{}}
                   onClick={() => handleObjectypeCreate()}
                 >
                   Create
@@ -1129,7 +1131,7 @@ export default function SuperadminFunction() {
               disabled={!selecetd}
               color="primary"
               component="span"
-              style={{ marginTop: 9, marginLeft: 60 }}
+              style={{ marginTop: 9 }}
               onClick={() => { handlecreateadmin() }}
             >
               {" "}
@@ -1307,7 +1309,7 @@ export default function SuperadminFunction() {
                   <Button
                     variant="outlined"
                     color="primary"
-                    style={{ marginRight: 20, marginLeft: 100 }}
+                    style={{ marginRight: 20}}
                     onClick={() => handleremoveadminaccess()}
                   >
                     Remove
