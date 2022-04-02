@@ -900,7 +900,7 @@ export default function SuperadminFunction() {
 
       </Box>
       <Box py={2} px={2} >
-        <Grid container direction='row' spacing={2}>
+        <Grid container direction='row' style={{marginLeft:80, position:'relative'}} spacing={2}>
 
           <Grid item xs={4} >
             <StyledAutocomplete
@@ -1001,7 +1001,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Select Email" }}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300 }}
+              style={{ width: 300 ,marginLeft:90}}
               onChange={(e, v) => setuseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
@@ -1142,7 +1142,7 @@ export default function SuperadminFunction() {
               disabled={!selecetd}
               color="primary"
               component="span"
-              style={{ marginTop: 9, marginLeft: 60 }}
+              style={{ marginTop: 9, marginLeft: 180 }}
               onClick={() => { handlecreateadmin() }}
             >
               {" "}
