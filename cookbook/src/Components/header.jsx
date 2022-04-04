@@ -362,9 +362,41 @@ export default function ClippedDrawer({ children }) {
   const handleChange = (event) => {
     setAuth(event.target.checked);
   };
+  const [proj_vers_list, setProj_vers_list] = useState([])
+  const [select_pr_v, setSelect_pr_v] = useState()
 
   useEffect(() => {
     history.push("/dashboard");
+  }, []);
+
+  React.useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+
+    axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
+      (res) => {
+        setProj_vers_list(res.data)
+        let prv = 0
+        let tit ;
+        Object.keys(res.data).forEach((key) => {
+          if (prv <= res.data[key]?.code) {
+            prv = res.data[key]?.code
+            tit = res.data[key]?.title
+          }
+
+        });
+        setSelect_pr_v(tit)
+        dispatch(Menuaction.project_version(prv))
+
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }, []);
 
   React.useEffect(() => {
@@ -674,7 +706,7 @@ export default function ClippedDrawer({ children }) {
             <Grid item
               xm={12} sm={12} md={3} lg={1}>
               <div>
-                <img src={qbook} style={{ width: 135, height:40 }} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
+                <img src={qbook} style={{ width: 135, height: 40 }} className={classes.title} onClick={() => setIsOpened(!isOpened)} />
               </div>
             </Grid>
 
@@ -735,39 +767,33 @@ export default function ClippedDrawer({ children }) {
               }
             </Grid>
             <Grid item xm={12} sm={5} md={1} lg={2}>
+            {
+                proj_vers_list.length > 0 &&
               <StyledAutocomplete
                 size="small"
                 id="grouped-demo"
-                options={[
-                  { title: "v1", code: 1 },
-                  // { title: "v2", code: 2 },
-                  // { title: "v3", code: 3 },
-                ]}
-                className={classes.inputRootversion}
+                className={classes.inputRoottype}
+                options={proj_vers_list}
                 groupBy={""}
-                // value ={1}
-                // defaultValue={{ title: "Oracle To Postgres" }}
+                // value ={select_pr_v}
+                defaultValue={{ title: proj_vers_list.slice(-1)[0] ?.title }}
                 getOptionLabel={(option) => option.title}
-                defaultValue={{ title: "v1", code: 1 }}
-                onChange={(e, v) => handleProject_Version(v)}
                 style={{ width: 110 }}
-
+                onChange={(e, v) => handleProject_Version(v)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Versions"
                     variant="outlined"
-                    // borderColor = 'text.primary'
                     InputLabelProps={{
                       className: classes.floatingLabelFocusStyle,
                       shrink: true,
                     }}
-
-
-
+                    // placeholder={String(select_pr_v)}
                   />
                 )}
               />
+                  }
             </Grid>
             {/* <Grid >
               <div style={{ marginTop: '42px', fontSize: 16, marginLeft: 25 }}>
