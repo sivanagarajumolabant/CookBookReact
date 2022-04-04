@@ -168,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerContainer: {
     overflow: "auto",
-    height: '84vh',
+    height: '83vh',
     background: "#3f51b5",
 
   },
@@ -379,19 +379,18 @@ export default function ClippedDrawer({ children }) {
     axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
       (res) => {
         setProj_vers_list(res.data)
-        let prv = 0
-        let tit ;
-        Object.keys(res.data).forEach((key) => {
-          if (prv <= res.data[key]?.code) {
-            prv = res.data[key]?.code
-            tit = res.data[key]?.title
-          }
+        // let prv = 0
+        // let tit ;
+        // Object.keys(res.data).forEach((key) => {
+        //   if (prv <= res.data[key]?.code) {
+        //     prv = res.data[key]?.code
+        //     tit = res.data[key]?.title
+        //   }
 
-        });
-        setSelect_pr_v(tit)
-        dispatch(Menuaction.project_version(prv))
-
-
+        // });
+        // setSelect_pr_v(tit)
+        // dispatch(Menuaction.project_version(prv))
+        dispatch(Menuaction.project_version(res.data.slice(-1)[0] ?.code))
       },
       (error) => {
         console.log(error);
