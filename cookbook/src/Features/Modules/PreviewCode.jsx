@@ -389,7 +389,7 @@ export default function PreviewCode(props) {
         "Content-Type": "application/json",
       },
     };
-    console.log(conf.headers);
+    // console.log(conf.headers);
     axios
       .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
       .then((res) => {
