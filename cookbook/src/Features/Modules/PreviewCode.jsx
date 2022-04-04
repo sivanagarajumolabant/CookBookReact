@@ -206,8 +206,10 @@ export default function PreviewCode(props) {
           (res) => {
             setFversionslist(res.data)
             if (res.data.length > 1) {
-
-              setVersionSelect(String(res.data.length))
+              Object.keys(res.data).forEach((key) => {
+                setVersionSelect(String(res.data[key]?.title))
+              });
+              // setVersionSelect(String(res.data.length))
             } else {
               setVersionSelect(String(1))
             }
@@ -514,7 +516,7 @@ export default function PreviewCode(props) {
   }
 
   const handleFeatureversion = (versionnumber) => {
-
+    setVersionSelect(String(versionnumber))
     let conf = {
       headers: {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
@@ -544,7 +546,8 @@ export default function PreviewCode(props) {
               setIsdata(true);
               setCheckIsEdit(res.data[val]?.edit)
               setLatest_flag(res.data[val]?.Latest_Flag)
-              // setVersionSelect(res.data[val]?.Feature_Version_Id)
+              
+              
 
             }
           })
