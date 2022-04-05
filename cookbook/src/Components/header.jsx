@@ -752,10 +752,10 @@ export default function ClippedDrawer({ children }) {
                   <Button
                     type="button"
                     size="small"
-                    variant="contained"
-                    color="orange"
+                    // variant="contained"
+                    // color="orange"
                     onClick={handleSuperadmin}
-                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px' }}
+                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color:'white' }}
                   >
                     Super Admin
                   </Button>
