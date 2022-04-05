@@ -393,7 +393,13 @@ export default function PreviewCode(props) {
     axios
       .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
       .then((res) => {
-        fileDownload(res.data, att_name);
+        // fileDownload(res.data, att_name);
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+         const link = document.createElement('a');
+         link.href = url;
+         link.setAttribute('download', att_name); //or any other extension
+         document.body.appendChild(link);
+         link.click();
       })
       .catch((err) => { });
   };
