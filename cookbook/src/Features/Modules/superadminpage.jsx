@@ -230,6 +230,7 @@ export default function SuperadminFunction() {
   const [objectTypeAdmin, setObjectTypeAdmin] = useState()
   const [rm_objectslist, setrm_objectslist] = useState([])
   const [objecttype_rm, setObjecttype_rm] = useState()
+  const [proj_vers_list, setProj_vers_list] = useState([])
 
   let history = useHistory();
 
@@ -270,6 +271,36 @@ export default function SuperadminFunction() {
   //     }
   //   );
   // }, [objtype]);
+
+
+  React.useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+
+    axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
+      (res) => {
+        setProj_vers_list(res.data)
+        // let prv = 0
+        // let tit ;
+        // Object.keys(res.data).forEach((key) => {
+        //   if (prv <= res.data[key]?.code) {
+        //     prv = res.data[key]?.code
+        //     tit = res.data[key]?.title
+        //   }
+
+        // });
+        // setSelect_pr_v(tit)
+        // dispatch(Menuaction.project_version(prv))
+        dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
 
 
   useEffect(() => {
@@ -517,7 +548,7 @@ export default function SuperadminFunction() {
     );
     setUpdatemiglist(false)
 
-    
+
   }
 
 
@@ -768,6 +799,10 @@ export default function SuperadminFunction() {
     setupdateaccessAdminTable(false)
   }
 
+  const handleProject_Version = (v) => {
+    dispatch(Menuaction.project_version(v?.code))
+  }
+
 
   return (
     <>
@@ -900,7 +935,7 @@ export default function SuperadminFunction() {
 
       </Box>
       <Box py={2} px={2} >
-        <Grid container direction='row' style={{marginLeft:80, position:'relative'}} spacing={2}>
+        <Grid container direction='row' style={{ marginLeft: 80, position: 'relative' }} spacing={2}>
 
           <Grid item xs={4} >
             <StyledAutocomplete
@@ -1001,7 +1036,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Select Email" }}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300 ,marginLeft:90}}
+              style={{ width: 300, marginLeft: 90 }}
               onChange={(e, v) => setuseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
@@ -1338,6 +1373,58 @@ export default function SuperadminFunction() {
 
           </Grid>
 
+        </Grid>
+      </Box>
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Version Creation
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center' spacing={1}>
+          <Grid item >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={proj_vers_list}
+              groupBy={""}
+              // value ={select_pr_v}
+              defaultValue={{ title: proj_vers_list.slice(-1)[0]?.title }}
+              getOptionLabel={(option) => option.title}
+              style={{ width: 300 ,marginLeft: 100 }}
+              onChange={(e, v) => handleProject_Version(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Versions"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                // placeholder={String(select_pr_v)}
+                />
+              )}
+            />
+          </Grid>
+          <Grid>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+              style={{ marginTop: 10, marginLeft: 240 }}
+              // onClick={() => handlesuperadmincreation()}
+            >
+              {" "}
+              Create New Version
+            </Button>
+          </Grid>
         </Grid>
       </Box>
       <Notification notify={notify} setNotify={setNotify} />
