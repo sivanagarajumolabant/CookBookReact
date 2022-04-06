@@ -381,7 +381,7 @@ export default function PreviewCode(props) {
       id: id,
       fname: detaildata.Feature_Name,
       feature_id: fid,
-      responseType: "blob",
+      responseType: 'blob',
     };
     let conf = {
       headers: {
@@ -393,13 +393,19 @@ export default function PreviewCode(props) {
     axios
       .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
       .then((res) => {
+        
         fileDownload(res.data, att_name);
-        // const url = window.URL.createObjectURL(new Blob([res.data]));
-        //  const link = document.createElement('a');
-        //  link.href = url;
-        //  link.setAttribute('download', att_name); //or any other extension
-        //  document.body.appendChild(link);
-        //  link.click();
+        // const blob = new Blob([res], { type: 'application/msword' });                   // Step 3
+    // const fileDownloadUrl = URL.createObjectURL(blob);
+        // let blob = new Blob([res.data], { type: 'application/msword' })
+
+        // const downloadUrl = URL.createObjectURL(blob)
+        // let a = document.createElement("a");
+        // a.href = fileDownloadUrl;
+        // a.download = att_name;
+        // document.body.appendChild(a);
+        // a.click();
+
       })
       .catch((err) => { });
   };
@@ -552,8 +558,8 @@ export default function PreviewCode(props) {
               setIsdata(true);
               setCheckIsEdit(res.data[val]?.edit)
               setLatest_flag(res.data[val]?.Latest_Flag)
-              
-              
+
+
 
             }
           })
