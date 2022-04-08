@@ -40,7 +40,10 @@ import { LocalActivity } from "@material-ui/icons";
 
 const useStylestable = makeStyles((theme) => ({
   table: {
-    minWidth: 650
+    // minWidth: 650
+    width: '95%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   formControl: {
     margin: theme.spacing(0),
@@ -151,7 +154,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AdminAccesslist() {
   const classes = useStyles();
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable,project_version } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable, project_version } = useSelector(state => state.dashboardReducer);
   const classestable = useStylestable();
   const [isData, setIsData] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
@@ -447,7 +450,7 @@ export default function AdminAccesslist() {
       'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
       "Approval_Status": action,
       "Approved_by": sessionStorage.getItem('uemail'),
-      "Project_Version_Id":1,
+      "Project_Version_Id": 1,
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -566,7 +569,7 @@ export default function AdminAccesslist() {
       "Approval_Status": action,
       "id": item.id,
       "Approved_by": sessionStorage.getItem('uemail'),
-      "Project_Version_Id":1,
+      "Project_Version_Id": 1,
     }
 
     Object.keys(body).forEach((key) => {
@@ -613,7 +616,7 @@ export default function AdminAccesslist() {
       'Expiry_date': moment(item.Expiry_date).format('YYYY-MM-DD'),
       "Approval_Status": action,
       "Approved_by": sessionStorage.getItem('uemail'),
-      "Project_Version_Id":1,
+      "Project_Version_Id": 1,
     };
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
@@ -666,7 +669,7 @@ export default function AdminAccesslist() {
       "Access_Type": grant_access_type,
       "Expiry_date": moment(selectedDate).format('YYYY-MM-DD'),
       "Approved_by": sessionStorage.getItem('uemail'),
-      "Project_Version_Id":1,
+      "Project_Version_Id": 1,
     };
     let conf = {
       headers: {
@@ -805,8 +808,8 @@ export default function AdminAccesslist() {
               )}
             />
           </Grid>
-          </Grid>
-          <Grid container direction='row' justifyContent='space-around' spacing={1}>
+        </Grid>
+        <Grid container direction='row' justifyContent='space-around' spacing={1}>
           <Grid item >
             <StyledAutocomplete
               size="small"

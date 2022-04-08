@@ -22,6 +22,9 @@ const useStylestable = makeStyles((theme) => ({
     table: {
         minWidth: 100,
         // width:10
+        width: '95%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     formControl: {
         margin: theme.spacing(0),

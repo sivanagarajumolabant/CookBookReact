@@ -109,7 +109,10 @@ const StyledTableRow = withStyles((theme) => ({
 const useStylestable = makeStyles((theme) => ({
   table: {
     minWidth: 100,
-    // width:10
+    // width:10,
+    width: '95%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   formControl: {
     margin: theme.spacing(0),
@@ -262,9 +265,9 @@ export default function AccessReview() {
         </Grid>
       </Box>
       <Box py={2}>
-        <Grid container direction='row' justifyContent='space-around' spacing={1}>
+        <Grid container xl={12} direction='row' justifyContent='center' spacing={1}>
 
-          <Grid item >
+          <Grid item xs={4}>
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -286,7 +289,7 @@ export default function AccessReview() {
 
             />
           </Grid>
-          <Grid item  >
+          <Grid item  xs={4}>
 
             <StyledAutocomplete
               size="small"
@@ -313,7 +316,7 @@ export default function AccessReview() {
             />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={3}>
             <Button
               variant="contained"
               disabled={!selecetd1}

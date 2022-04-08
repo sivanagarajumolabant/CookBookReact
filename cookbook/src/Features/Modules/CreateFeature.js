@@ -64,6 +64,9 @@ const useStylestable = makeStyles({
   table: {
     minWidth: 100,
     // width:10
+    width: '98%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
   },
 });
 
@@ -604,8 +607,8 @@ export default function CreateFeature(props) {
       </Box>
 
       {/* <form autoComplete="off"> */}
-      <Grid container direction="row" spacing={4}>
-        <Grid item xs={12} sm={3} md={3} xl={3}>
+      <Grid container direction="row" spacing={3}>
+        <Grid item xs={12} sm={3} md={3} xl={2}>
           <TextField
             id="outlined-multiline-static"
             // label="Migration Type"
@@ -622,9 +625,10 @@ export default function CreateFeature(props) {
               shrink: true,
             }}
             fullWidth
+            
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={3} xl={3}>
+        <Grid item xs={12} sm={3} md={3} xl={2}>
           <TextField
             id="outlined-multiline-static"
             name="Object_Type"
@@ -645,7 +649,7 @@ export default function CreateFeature(props) {
           />
         </Grid>
 
-        <Grid item xs={12} sm={3} md={3} xl={3}>
+        <Grid item xs={12} sm={3} md={3} xl={2}>
           <TextField
             id="outlined-multiline-static"
             label="Feature Name"
@@ -666,7 +670,7 @@ export default function CreateFeature(props) {
           />
         </Grid>
 
-        <Grid item xs={12} sm={3} md={3} xl={3}>
+        <Grid item xs={12} sm={3} md={3} xl={2}>
           <Autocomplete
             fullWidth
             id="grouped-demo"
@@ -694,12 +698,13 @@ export default function CreateFeature(props) {
             required
           />
         </Grid>
-        <Grid item xs={6} sm={3} md={3} xl={3}>
+        <Grid item xs={12} sm={3} md={3} xl={3}>
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel>Predecessor</InputLabel>
             <Select
               native
               // value={state.age}
+              id="grouped-demo"
               onChange={handleChange}
               label="Predecessor"
               name="Sequence"
@@ -707,6 +712,7 @@ export default function CreateFeature(props) {
               InputLabelProps={{
                 shrink: true,
               }}
+              style={{ width: 240 }}
             >
               {" "}
               <option value="Select Predecessor" selected>

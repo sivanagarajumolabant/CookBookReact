@@ -35,8 +35,10 @@ import {
 
 const useStylestable = makeStyles((theme) => ({
     table: {
-        minWidth: 100,
-        // width:10
+        // minWidth: 50,
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     formControl: {
         margin: theme.spacing(0),
@@ -250,7 +252,7 @@ export default function UseradminFunction() {
                 <Grid container direction='row' justifyContent='center'>
                     <Grid item>
                         <Typography variant='h6'>
-                            User Lobby
+                            Add Migration
                         </Typography>
                     </Grid>
                 </Grid>
@@ -290,7 +292,7 @@ export default function UseradminFunction() {
                             groupBy={""}
                             defaultValue={{ title: DropDownValues[0]?.title }}
                             getOptionLabel={(option) => option.title}
-                            style={{ width: 300,marginLeft: 100 }}
+                            style={{ width: 300, marginLeft: 100 }}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -304,13 +306,13 @@ export default function UseradminFunction() {
                             )}
                         />
                     </Grid>
-                    <Grid>
+                    <Grid item >
                         <Button
                             variant="contained"
                             // disabled={!selecetd1}
                             color="primary"
                             component="span"
-                            style={{ marginTop: 5, marginLeft: 120 }}
+                        // style={{ marginTop: 5, marginLeft: 120 }}
                         // onClick={() => handlesuperadmincreation()}
                         >
                             {" "}
@@ -320,7 +322,7 @@ export default function UseradminFunction() {
                 </Grid>
             </Box>
             <Box py={2} px={2}>
-                <Grid container xl={12} justifyContent="space-between" spacing={3}>
+                <Grid container xl={12} justifyContent="center" spacing={3}>
                     <Grid item xs={12}>
                         <Typography
                             gutterBottom
@@ -329,56 +331,58 @@ export default function UseradminFunction() {
                             component="h2"
                             className={classes.Object_Type}
                         >
-                            Lobby List
+                            Users Waiting List
                         </Typography>
-                        <Table className={classestable.table} aria-label="customized table">
-                            <TableHead className={classes.primary}>
-                                <TableRow>
-                                    <StyledTableCell align="left">User Email</StyledTableCell>
-                                    <StyledTableCell align="left">Migration Type</StyledTableCell>
-                                    <StyledTableCell align="left">Actions</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <StyledTableRow container>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {"quadrant"}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <div className={classes.texttablecell}>
-                                            {"Oracle to POstgres"}
-                                        </div>
-                                    </StyledTableCell>
-                                    <StyledTableCell item xl={8}>
-                                        <Button
-                                            type="button"
-                                            size="small"
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}
-                                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                        // onClick={() => handledeletesuperadmin(item.Email)}
-                                        >
-                                            Confirm
-                                        </Button>
-                                        {" "}
-                                        <Button
-                                            type="button"
-                                            size="small"
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}
-                                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                        // onClick={() => handledeletesuperadmin(item.Email)}
-                                        >
-                                            Deny
-                                        </Button>
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            </TableBody>
-                        </Table>
+                        <Grid item xs={12}>
+                            <Table className={classestable.table} >
+                                <TableHead className={classes.primary}>
+                                    <TableRow>
+                                        <StyledTableCell align="left">User Email</StyledTableCell>
+                                        <StyledTableCell align="left">Migration Type</StyledTableCell>
+                                        <StyledTableCell align="left">Actions</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <StyledTableRow container>
+                                        <StyledTableCell item xl={8}>
+                                            <div className={classes.texttablecell}>
+                                                {"quadrant"}
+                                            </div>
+                                        </StyledTableCell>
+                                        <StyledTableCell item xl={8}>
+                                            <div className={classes.texttablecell}>
+                                                {"Oracle to POstgres"}
+                                            </div>
+                                        </StyledTableCell>
+                                        <StyledTableCell item xl={8}>
+                                            <Button
+                                                type="button"
+                                                size="small"
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.submit}
+                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                            // onClick={() => handledeletesuperadmin(item.Email)}
+                                            >
+                                                Confirm
+                                            </Button>
+                                            {" "}
+                                            <Button
+                                                type="button"
+                                                size="small"
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.submit}
+                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                            // onClick={() => handledeletesuperadmin(item.Email)}
+                                            >
+                                                Deny
+                                            </Button>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                </TableBody>
+                            </Table>
+                        </Grid>
                     </Grid>
 
                 </Grid>

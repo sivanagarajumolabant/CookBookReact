@@ -338,8 +338,8 @@ export default function Request() {
         </Grid>
 
       </Box>
-      <Box py={2} px={2} >
-        <Grid container direction='row' justifyContent='space-between' spacing={1}>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='space-around' spacing={1}>
 
           <Grid item >
             <TextField
