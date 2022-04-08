@@ -860,7 +860,7 @@ export default function SuperadminFunction() {
   }
 
   return (
-    <Box style={{ width: '90%', marginLeft: 10 }}>
+    <Box style={{ width: '100%'}}>
 
 
       <Box py={1} px={1}>
