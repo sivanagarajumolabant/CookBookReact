@@ -199,7 +199,7 @@ export default function CreateFeature(props) {
     editpreview,
     editPreviewdetails,
     headerValue,
-    ITEMlIST, lable, admin
+    ITEMlIST, lable, admin, project_version
   } = useSelector((state) => state.dashboardReducer);
 
   var obj_type = props.location?.state?.data?.Label;
@@ -255,6 +255,8 @@ export default function CreateFeature(props) {
     let body = {
       Object_Type: lable,
       Migration_TypeId: headerValue?.title,
+      "Project_Version_Id": project_version
+
     };
     let conf = {
       headers: {
@@ -272,12 +274,13 @@ export default function CreateFeature(props) {
         console.log(error);
       }
     );
-  }, [obj_type, headerValue?.title, lable]);
+  }, [obj_type, headerValue?.title, lable,project_version]);
 
   useEffect(() => {
     let body = {
       Object_Type: lable,
       Migration_TypeId: headerValue?.title,
+      "Project_Version_Id": project_version
     };
     let conf = {
       headers: {
@@ -297,7 +300,7 @@ export default function CreateFeature(props) {
         console.log(error);
       }
     );
-  }, [modalupdate, headerValue?.title, lable]);
+  }, [modalupdate, headerValue?.title, lable,  project_version]);
 
   useEffect(() => { }, [formValues]);
 
@@ -565,7 +568,8 @@ export default function CreateFeature(props) {
     let body = {
       'User_Email': sessionStorage.getItem('uemail'),
       "Migration_Type": headerValue?.title,
-      "Object_Type": lable
+      "Object_Type": lable,
+      "Project_Version_Id": project_version
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {

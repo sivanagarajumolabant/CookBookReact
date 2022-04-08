@@ -303,7 +303,8 @@ export default function AdminAccesslist() {
       let body = {
         Object_Type: objtype,
         Migration_TypeId: headerValue?.title,
-        "Feature_Name": grant_featurename
+        "Feature_Name": grant_featurename,
+        "Project_Version_Id": project_version
       };
       let conf = {
         headers: {
@@ -334,6 +335,7 @@ export default function AdminAccesslist() {
     let body = {
       Object_Type: v?.Object_Type,
       Migration_TypeId: headerValue?.title,
+      "Project_Version_Id": project_version
     };
     let conf = {
       headers: {

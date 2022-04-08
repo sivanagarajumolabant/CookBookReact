@@ -222,6 +222,7 @@ export default function FeatureApprovals() {
             Conversion_Code: item.Conversion_Code,
             "Feature_version_approval_status": status,
             "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
+            'Project_Version_Id': item.Project_Version_Id
         }
         let conf = {
             headers: {

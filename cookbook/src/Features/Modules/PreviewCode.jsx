@@ -163,7 +163,7 @@ export default function PreviewCode(props) {
   const [isscattdata, setIsscattdata] = useState(false);
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable,project_version } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
@@ -235,7 +235,8 @@ export default function PreviewCode(props) {
       let body = {
         'User_Email': sessionStorage.getItem('uemail'),
         "Migration_Type": headerValue?.title,
-        "Object_Type": lable
+        "Object_Type": lable,
+        "Project_Version_Id": project_version
       }
       const form = new FormData();
       Object.keys(body).forEach((key) => {
@@ -489,6 +490,7 @@ export default function PreviewCode(props) {
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
       "Access_Type": 'Edit'
+      
     };
     let conf = {
       headers: {
@@ -538,7 +540,8 @@ export default function PreviewCode(props) {
     let body = {
       'User_Email': sessionStorage.getItem('uemail'),
       "Migration_Type": headerValue?.title,
-      "Object_Type": lable
+      "Object_Type": lable,
+      "Project_Version_Id": project_version
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {

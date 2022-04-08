@@ -124,7 +124,7 @@ export default function RequestFeatureData(props) {
     const [source_att, setSource_att] = useState([]);
     const [target_att, setTarget_att] = useState([]);
     const [conv_att, setConv_att] = useState([]);
-    //   const { menuitem } = useSelector((state) => state.dashboardReducer);
+    const { project_version } = useSelector((state) => state.dashboardReducer);
     const [issattdata, setIssattdata] = useState(false);
     const [iscattdata, setIscattdata] = useState(false);
     const [istattdata, setIstattdata] = useState(false);
@@ -161,7 +161,8 @@ export default function RequestFeatureData(props) {
             let body = {
                 'User_Email': sessionStorage.getItem('uemail'),
                 "Migration_Type": previewdata.Migration_TypeId,
-                "Object_Type": previewdata.Object_Type
+                "Object_Type": previewdata.Object_Type,
+                "Project_Version_Id": project_version
             }
             const form = new FormData();
             Object.keys(body).forEach((key) => {

@@ -405,7 +405,8 @@ export default function ClippedDrawer({ children }) {
       },
     };
     let body = {
-      'email': sessionStorage.getItem('uemail')
+      'email': sessionStorage.getItem('uemail'),
+      "Project_Version_Id": project_version
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {
@@ -429,7 +430,7 @@ export default function ClippedDrawer({ children }) {
         console.log(error);
       }
     );
-  }, []);
+  }, [project_version]);
 
 
   useEffect(() => {
@@ -443,7 +444,8 @@ export default function ClippedDrawer({ children }) {
         };
         let body = {
           'User_Email': sessionStorage.getItem('uemail'),
-          "Migration_Type": headerValue?.title
+          "Migration_Type": headerValue?.title,
+          "Project_Version_Id": project_version
         }
         const form = new FormData();
         Object.keys(body).forEach((key) => {

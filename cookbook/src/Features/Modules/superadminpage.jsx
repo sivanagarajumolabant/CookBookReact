@@ -233,6 +233,8 @@ export default function SuperadminFunction() {
   const [rm_objectslist, setrm_objectslist] = useState([])
   const [objecttype_rm, setObjecttype_rm] = useState()
   const [proj_vers_list, setProj_vers_list] = useState([])
+  const [project_max_limit, setProject_max_limit] = useState()
+  const [feature_max_limit, setFeautre_max_limit] = useState()
 
   let history = useHistory();
 
@@ -312,7 +314,8 @@ export default function SuperadminFunction() {
       },
     };
     let body = {
-      'email': sessionStorage.getItem('uemail')
+      'email': sessionStorage.getItem('uemail'),
+      "Project_Version_Id": project_version
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {
@@ -337,7 +340,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  }, [updatemiglist]);
+  }, [updatemiglist, project_version]);
 
 
   useEffect(() => {
@@ -367,6 +370,7 @@ export default function SuperadminFunction() {
     };
     let body = {
       "Migration_TypeId": migtype_create,
+      "Project_Version_Id": project_version
     };
 
     const form = new FormData();
@@ -465,6 +469,7 @@ export default function SuperadminFunction() {
     let body = {
 
       "Migration_TypeId": v?.title,
+      "Project_Version_Id": project_version
     };
 
     const form = new FormData();
@@ -518,13 +523,25 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": '',
       "Migration_TypeId": migtype_create || null,
-      "Project_Version_Id": project_version
+      "Project_Version_Id": project_version,
+      'Project_Version_limit': project_max_limit,
+      'Feature_Version_Limit': feature_max_limit
     };
 
     const form = new FormData();
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
+
+
+    let postbody = {
+      "Project_Version_Id": project_version,
+    }
+    const postform = new FormData();
+    Object.keys(postbody).forEach((key) => {
+      postform.append(key, postbody[key]);
+    });
+
     axios.post(`${config.API_BASE_URL()}/api/migrationsscreate/`, form, conf).then(
       (res) => {
         // setNotify("Created Migration Type")
@@ -536,7 +553,7 @@ export default function SuperadminFunction() {
         setUpdatemiglist(true)
         setOpen1(false)
         // dispatch(Menuaction.getdropdownlist(res.data))
-        axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+        axios.post(`${config.API_BASE_URL()}/api/migrationviewlist/`, postform, conf).then(
           (res) => {
             setUpdatemiglist(true)
             setMigtypeslist(res.data)
@@ -567,7 +584,9 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": objtype_create,
       "Migration_TypeId": migtype_create,
-      "Project_Version_Id": project_version
+      "Project_Version_Id": project_version,
+      'Project_Version_limit': '',
+      'Feature_Version_Limit': ''
     };
 
     const form = new FormData();
@@ -809,9 +828,39 @@ export default function SuperadminFunction() {
     dispatch(Menuaction.project_version(v?.code))
   }
 
+  const handleCreateNewVersion = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      'Project_Version_Id': project_version
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/create_project_version/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+        setupdateaccessAdminTable(true)
+        setOpen2(false)
+        // dispatch(Menuaction.reloadAction(true));
+
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+  }
 
   return (
-    <>
+    <Box style={{ width: '90%', marginLeft: 10 }}>
 
 
       <Box py={1} px={1}>
@@ -1124,7 +1173,7 @@ export default function SuperadminFunction() {
                   style={{ width: 410, marginBottom: '20px' }}
                   multiline
                   rows={1}
-                  onChange={(e) => setMigtype_create(e.target.value)}
+                  onChange={(e) => setProject_max_limit(e.target.value)}
                   name="Major Version"
                   className={classes.textField}
                   variant="outlined"
@@ -1140,7 +1189,7 @@ export default function SuperadminFunction() {
                   style={{ width: 410, marginBottom: '10px' }}
                   multiline
                   rows={1}
-                  onChange={(e) => setMigtype_create(e.target.value)}
+                  onChange={(e) => setFeautre_max_limit(e.target.value)}
                   name="Minor Version"
                   className={classes.textField}
                   variant="outlined"
@@ -1528,7 +1577,7 @@ export default function SuperadminFunction() {
       </Box>
       <Box py={2} px={2}>
         <Grid container direction='row' justifyContent='center' spacing={1}>
-          <Grid item >
+          {/* <Grid item >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -1553,15 +1602,15 @@ export default function SuperadminFunction() {
                 />
               )}
             />
-          </Grid>
-          <Grid>
+          </Grid> */}
+          <Grid item>
             <Button
               variant="contained"
               // disabled={!selecetd1}
               color="primary"
               component="span"
-              style={{ marginTop: 10, marginLeft: 240 }}
-            // onClick={() => handlesuperadmincreation()}
+              // style={{ marginTop: 10, marginLeft: 240 }}
+              onClick={() => handleCreateNewVersion()}
             >
               {" "}
               Create New Version
@@ -1570,6 +1619,6 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Notification notify={notify} setNotify={setNotify} />
-    </>
+    </Box>
   )
 }

@@ -170,6 +170,7 @@ export default function Request() {
         "Object_Type": objtype,
         "Migration_TypeId": headerValue?.title,
         "Feature_Name": fnname,
+        "Project_Version_Id": project_version
       };
       let conf = {
         headers: {
@@ -204,6 +205,7 @@ export default function Request() {
 
     let body = {
       "Migration_TypeId": headerValue?.title,
+      "Project_Version_Id": project_version
     };
 
     const form = new FormData();
@@ -222,7 +224,7 @@ export default function Request() {
         console.log(error);
       }
     );
-  }, [headerValue?.title]);
+  }, [headerValue?.title, project_version]);
 
 
   // console.log(headerValue.title)
@@ -251,6 +253,7 @@ export default function Request() {
       "Migration_Type": headerValue?.title,
       "Object_Type": objtype,
       "Feature_Name": v?.Feature_Name,
+      "Project_Version_Id": project_version
     }
     const form = new FormData();
     Object.keys(body).forEach((key) => {
