@@ -36,7 +36,7 @@ import {
 const useStylestable = makeStyles((theme) => ({
     table: {
         // minWidth: 50,
-        width: '90%',
+        width: '96%',
         marginLeft: 'auto',
         marginRight: 'auto'
     },

@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
   table: {
     // minWidth: 150,
-    width: '60%',
+    width: '90%',
     height: '10%',
     border: '1px black'
   },
@@ -110,7 +110,7 @@ const useStylestable = makeStyles((theme) => ({
   table: {
     minWidth: 100,
     // width:10,
-    width: '95%',
+    width: '98%',
     marginLeft: 'auto',
     marginRight: 'auto'
   },
@@ -254,7 +254,7 @@ export default function AccessReview() {
 
 
   return (
-    <>
+    <Box style={{ width: '97%', marginLeft: 10 }}>
       <Box py={1} px={1}>
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
@@ -428,6 +428,6 @@ export default function AccessReview() {
 
         </Grid>
       </Box>
-    </>
+    </Box>
   )
 }
