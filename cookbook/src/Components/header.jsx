@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
   // style={{  }}
   navbarcom: {
     [theme.breakpoints.up('lg')]: {
-      marginLeft: "210px"
+      marginLeft: "180px"
       // height:'100vh'
     },
   },
@@ -390,7 +390,7 @@ export default function ClippedDrawer({ children }) {
         // });
         // setSelect_pr_v(tit)
         // dispatch(Menuaction.project_version(prv))
-        dispatch(Menuaction.project_version(res.data.slice(-1)[0] ?.code))
+        dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
       },
       (error) => {
         console.log(error);
@@ -655,10 +655,13 @@ export default function ClippedDrawer({ children }) {
   const handleSuperadmin = () => {
     history.push('/superadmin')
   }
+
+  const handleUseradmin = () => {
+    history.push('/useradmin')
+  }
+
   const handlefeatureapprovals = () => {
-
     history.push('/FeatureApprovals')
-
   }
 
 
@@ -711,7 +714,7 @@ export default function ClippedDrawer({ children }) {
 
 
             <Grid item
-              xm={12} sm={6} md={5} lg={2}
+              xm={12} sm={6} md={5} lg={1}
               className={classes.navbarcom}
             >
               {/* {IsSuperAdmin !== 'true' ? <> */}
@@ -744,6 +747,29 @@ export default function ClippedDrawer({ children }) {
             </Grid>
 
             <Grid item
+              xm={12} sm={6} md={5} lg={1}
+              className={classes.navbarcom}
+            >
+              {IsSuperAdmin == "true" &&
+                <>
+                  <Button
+                    type="button"
+                    size="small"
+                    // variant="contained"
+                    // color="orange"
+                    onClick={handleUseradmin}
+                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color: 'white',marginLeft:'70px' }}
+                  >
+                    User Admin
+                  </Button>
+                  {"   "}
+
+                  {/* <NotificationsSharpIcon style={{marginTop:15}}/> */}
+                </>
+              }
+            </Grid>
+
+            <Grid item
               xm={12} sm={6} md={5} lg={2}
               className={classes.navbarcom}
             >
@@ -755,7 +781,7 @@ export default function ClippedDrawer({ children }) {
                     // variant="contained"
                     // color="orange"
                     onClick={handleSuperadmin}
-                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color:'white' }}
+                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color: 'white'}}
                   >
                     Super Admin
                   </Button>
@@ -766,33 +792,33 @@ export default function ClippedDrawer({ children }) {
               }
             </Grid>
             <Grid item xm={12} sm={5} md={1} lg={2}>
-            {
+              {
                 proj_vers_list.length > 0 &&
-              <StyledAutocomplete
-                size="small"
-                id="grouped-demo"
-                className={classes.inputRoottype}
-                options={proj_vers_list}
-                groupBy={""}
-                // value ={select_pr_v}
-                defaultValue={{ title: proj_vers_list.slice(-1)[0] ?.title }}
-                getOptionLabel={(option) => option.title}
-                style={{ width: 110 }}
-                onChange={(e, v) => handleProject_Version(v)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Versions"
-                    variant="outlined"
-                    InputLabelProps={{
-                      className: classes.floatingLabelFocusStyle,
-                      shrink: true,
-                    }}
+                <StyledAutocomplete
+                  size="small"
+                  id="grouped-demo"
+                  className={classes.inputRoottype}
+                  options={proj_vers_list}
+                  groupBy={""}
+                  // value ={select_pr_v}
+                  defaultValue={{ title: proj_vers_list.slice(-1)[0]?.title }}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 110 }}
+                  onChange={(e, v) => handleProject_Version(v)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Versions"
+                      variant="outlined"
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                        shrink: true,
+                      }}
                     // placeholder={String(select_pr_v)}
-                  />
-                )}
-              />
-                  }
+                    />
+                  )}
+                />
+              }
             </Grid>
             {/* <Grid >
               <div style={{ marginTop: '42px', fontSize: 16, marginLeft: 25 }}>

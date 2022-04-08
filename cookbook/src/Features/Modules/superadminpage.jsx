@@ -118,8 +118,8 @@ const useStyles = makeStyles((theme) => ({
   container: {
     border: "none",
     borderRadius: 15,
-    width: 450,
-    height: 200,
+    width: 460,
+    height: 390,
     backgroundColor: "white",
     position: "absolute",
     top: 0,
@@ -428,6 +428,10 @@ export default function SuperadminFunction() {
   // console.log(headerValue.title)
   const handleuseremail = (v) => {
     setSelected1(true)
+    setuseremail(v?.email)
+  }
+
+  const handleuseremail1 = (v) => {
     setuseremail(v?.email)
   }
 
@@ -812,7 +816,7 @@ export default function SuperadminFunction() {
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
             <Typography variant='h6'>
-              Super User Creation
+              Super Admin Creation
             </Typography>
           </Grid>
         </Grid>
@@ -867,7 +871,7 @@ export default function SuperadminFunction() {
               component="h2"
               className={classes.Object_Type}
             >
-              Super Users
+              Super Admin List
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
@@ -928,7 +932,110 @@ export default function SuperadminFunction() {
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
             <Typography variant='h6'>
-              Admin Creation
+              User Admin Creation
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center' spacing={1}>
+          <Grid item >
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={userslist}
+              groupBy={""}
+              getOptionLabel={(option) => option.email}
+              style={{ width: 300, marginLeft: 100 }}
+              onChange={(e, v) => handleuseremail1(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="username/email"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+              style={{ marginTop: 10, marginLeft: 240 }}
+            // onClick={() => handlesuperadmincreation()}
+            >
+              {" "}
+              Create User Admin
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box py={2} px={2}>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              User Admin List
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="left">User Name</StyledTableCell>
+                  <StyledTableCell align="left">User Email</StyledTableCell>
+                  <StyledTableCell align="left">Actions</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <StyledTableRow container>
+                  <StyledTableCell item xl={8}>
+                    <div className={classes.texttablecell}>
+                      {"quadrant"}
+                    </div>
+                  </StyledTableCell>
+                  <StyledTableCell item xl={8}>
+                    <div className={classes.texttablecell}>
+                      {"quadrant@gmail.com"}
+                    </div>
+                  </StyledTableCell>
+                  <StyledTableCell item xl={8}>
+                    <Button
+                      type="button"
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                      style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                    // onClick={() => handledeletesuperadmin(item.Email)}
+                    >
+                      Delete
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              </TableBody>
+            </Table>
+          </Grid>
+
+        </Grid>
+      </Box>
+
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Migration Admin Creation
             </Typography>
           </Grid>
         </Grid>
@@ -991,7 +1098,7 @@ export default function SuperadminFunction() {
                 <TextField
                   id="outlined-multiline-static"
                   label="Migration Type"
-                  style={{ width: 400, marginBottom: '20px' }}
+                  style={{ width: 410, marginBottom: '20px' }}
                   multiline
                   rows={1}
                   // value ={row.Keywords}
@@ -1008,6 +1115,39 @@ export default function SuperadminFunction() {
                   }}
                 />
               </div>
+              <div className={classes.item}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Major Version"
+                  style={{ width: 410, marginBottom: '20px' }}
+                  multiline
+                  rows={1}
+                  onChange={(e) => setMigtype_create(e.target.value)}
+                  name="Major Version"
+                  className={classes.textField}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </div>
+              <div className={classes.item}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Minor Version"
+                  style={{ width: 410, marginBottom: '10px' }}
+                  multiline
+                  rows={1}
+                  onChange={(e) => setMigtype_create(e.target.value)}
+                  name="Minor Version"
+                  className={classes.textField}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </div>
+              <h4>Note:Major version and Minor version should not be 0 and 1</h4>
               <div className={classes.item} >
                 <Button
                   variant="outlined"
@@ -1196,7 +1336,7 @@ export default function SuperadminFunction() {
               component="h2"
               className={classes.Object_Type}
             >
-              Admin Users
+              Migration Admin List
             </Typography>
             <Table className={classestable.table} aria-label="customized table">
               <TableHead className={classes.primary}>
@@ -1396,7 +1536,7 @@ export default function SuperadminFunction() {
               // value ={select_pr_v}
               defaultValue={{ title: proj_vers_list.slice(-1)[0]?.title }}
               getOptionLabel={(option) => option.title}
-              style={{ width: 300 ,marginLeft: 100 }}
+              style={{ width: 300, marginLeft: 100 }}
               onChange={(e, v) => handleProject_Version(v)}
               renderInput={(params) => (
                 <TextField
@@ -1419,7 +1559,7 @@ export default function SuperadminFunction() {
               color="primary"
               component="span"
               style={{ marginTop: 10, marginLeft: 240 }}
-              // onClick={() => handlesuperadmincreation()}
+            // onClick={() => handlesuperadmincreation()}
             >
               {" "}
               Create New Version
