@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
   // style={{  }}
   navbarcom: {
     [theme.breakpoints.up('lg')]: {
-      marginLeft: "180px"
+      marginLeft: "160px"
       // height:'100vh'
     },
   },
@@ -791,7 +791,7 @@ export default function ClippedDrawer({ children }) {
                 </>
               }
             </Grid>
-            <Grid item xm={12} sm={5} md={1} lg={2}>
+            <Grid item xs={6} sm={1} md={1} lg={1} >
               {
                 proj_vers_list.length > 0 &&
                 <StyledAutocomplete
