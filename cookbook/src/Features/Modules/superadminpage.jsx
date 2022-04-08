@@ -848,8 +848,8 @@ export default function SuperadminFunction() {
           message: res.data,
           type: "success",
         });
-        setupdateaccessAdminTable(true)
-        setOpen2(false)
+        // setupdateaccessAdminTable(true)
+        // setOpen2(false)
         // dispatch(Menuaction.reloadAction(true));
 
       },
