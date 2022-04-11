@@ -339,7 +339,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = useState(true);
-  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable, project_version } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable, project_version,project_header_dropdown } = useSelector(state => state.dashboardReducer);
   // console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -378,18 +378,10 @@ export default function ClippedDrawer({ children }) {
 
     axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
       (res) => {
-        setProj_vers_list(res.data)
-        // let prv = 0
-        // let tit ;
-        // Object.keys(res.data).forEach((key) => {
-        //   if (prv <= res.data[key]?.code) {
-        //     prv = res.data[key]?.code
-        //     tit = res.data[key]?.title
-        //   }
+        // setProj_vers_list(res.data)
 
-        // });
-        // setSelect_pr_v(tit)
-        // dispatch(Menuaction.project_version(prv))
+        dispatch(Menuaction.getproj_header_dropdownlist(res.data))
+        
         dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
       },
       (error) => {
@@ -397,6 +389,8 @@ export default function ClippedDrawer({ children }) {
       }
     );
   }, []);
+
+  
 
   React.useEffect(() => {
     let conf = {
@@ -491,6 +485,7 @@ export default function ClippedDrawer({ children }) {
     let body = {
       "User_Email": sessionStorage.getItem('uemail'),
       Migration_TypeId: value,
+      'Project_Version_Id': project_version
     };
 
 
@@ -673,6 +668,8 @@ export default function ClippedDrawer({ children }) {
 
   const handleProject_Version = (v) => {
     dispatch(Menuaction.project_version(v?.code))
+
+    history.push('/dashboard')
   }
 
 
@@ -760,7 +757,7 @@ export default function ClippedDrawer({ children }) {
                     // variant="contained"
                     // color="orange"
                     onClick={handleUseradmin}
-                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color: 'white',marginLeft:'70px' }}
+                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color: 'white', marginLeft: '70px' }}
                   >
                     User Admin
                   </Button>
@@ -783,7 +780,7 @@ export default function ClippedDrawer({ children }) {
                     // variant="contained"
                     // color="orange"
                     onClick={handleSuperadmin}
-                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color: 'white'}}
+                    style={{ marginTop: '10px', fontSize: '14px', marginBottom: '8px', width: '130px', color: 'white' }}
                   >
                     Super Admin
                   </Button>
@@ -795,15 +792,15 @@ export default function ClippedDrawer({ children }) {
             </Grid>
             <Grid item xs={6} sm={1} md={1} lg={1} >
               {
-                proj_vers_list.length > 0 &&
+                project_header_dropdown.length > 0 &&
                 <StyledAutocomplete
                   size="small"
                   id="grouped-demo"
                   className={classes.inputRoottype}
-                  options={proj_vers_list}
+                  options={project_header_dropdown}
                   groupBy={""}
                   // value ={select_pr_v}
-                  defaultValue={{ title: proj_vers_list.slice(-1)[0]?.title }}
+                  defaultValue={{ title: project_header_dropdown.slice(-1)[0]?.title }}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 110 }}
                   onChange={(e, v) => handleProject_Version(v)}

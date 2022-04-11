@@ -13,9 +13,11 @@ const initialState = {
   editPreviewdetails: {},
   ITEMlIST: [],
   DropDownValues: [],
-  admin :0,
-  lable:null,
-  project_version: 0
+  admin: 0,
+  lable: null,
+  project_version: 0,
+  project_header_dropdown: [],
+  proje_version_reload: false
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -100,7 +102,7 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         ITEMlIST: action.payload
       };
-      
+
     case "ADMIN_USER":
       return {
         ...state,
@@ -111,13 +113,25 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         lable: action.payload
       };
-    
+
     case "PROJECT_VERSION":
       return {
         ...state,
         project_version: action.payload
       };
-  
+
+    case "PROJECT_HEADER_VERSION":
+      return {
+        ...state,
+        project_header_dropdown: action.payload,
+      }
+
+    case "PROJECT_VERSION_RELOAD":
+      return {
+        ...state,
+        project_header_reload: action.payload,
+      }
+
     default:
       return state;
   }

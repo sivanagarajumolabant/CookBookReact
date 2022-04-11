@@ -167,5 +167,24 @@ const project_version = (value) => {
 }
 
 
+const getproj_header_dropdownlist = (value) => {
+   return dispatch => {
 
-export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect,project_version}
+      dispatch({
+         type: "PROJECT_HEADER_VERSION",
+         payload: value
+      })
+   }
+}
+
+const project_reloadAction = (value) => {
+   return dispatch => {
+
+      dispatch({
+         type: "PROJECT_VERSION_RELOAD",
+         payload: value
+      })
+   }
+}
+
+export default { ActionMenu, dropdown, reloadAction, CreateFeature, Createremoved, EditPreviewFeature, PreviewFeature, selectedMenutlist ,UpdateMenutlist, DeleteMenutlist, getdropdownlist,admin,lableselect,project_version,getproj_header_dropdownlist,project_reloadAction}

@@ -249,8 +249,13 @@ export default function GmailTreeView({
                           onClick={() => {
                             // dispatch(ActionMenu.PreviewFeature())
                             MenuSelected(data.Feature_Name);
-
+                            
                             history.push("/PreviewCode");
+                            // history.push({
+                            //   pathname: `/edit/${detaildata.Feature_Id}`,
+                            //   data: { detaildata },
+
+                            // })
                           }}
                           nodeId={"S" + Index + index}
                           labelText={data.Feature_Name}

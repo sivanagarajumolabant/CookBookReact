@@ -232,9 +232,10 @@ export default function SuperadminFunction() {
   const [objectTypeAdmin, setObjectTypeAdmin] = useState()
   const [rm_objectslist, setrm_objectslist] = useState([])
   const [objecttype_rm, setObjecttype_rm] = useState()
-  const [proj_vers_list, setProj_vers_list] = useState([])
+  // const [proj_vers_list, setProj_vers_list] = useState([])
   const [project_max_limit, setProject_max_limit] = useState()
   const [feature_max_limit, setFeautre_max_limit] = useState()
+  const [proj_vers_list, setProj_vers_list] = useState([])
 
   let history = useHistory();
 
@@ -843,14 +844,25 @@ export default function SuperadminFunction() {
     });
     axios.post(`${config.API_BASE_URL()}/api/create_project_version/`, form, conf).then(
       (res) => {
+        // dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
         setNotify({
           isOpen: true,
           message: res.data,
           type: "success",
         });
-        // setupdateaccessAdminTable(true)
-        // setOpen2(false)
-        // dispatch(Menuaction.reloadAction(true));
+
+        axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
+          (res) => {
+            dispatch(Menuaction.getproj_header_dropdownlist(res.data))
+            dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
+            // dispatch(Menuaction.project_reloadAction(true))
+            
+            // history.push('/')
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
 
       },
       (error) => {

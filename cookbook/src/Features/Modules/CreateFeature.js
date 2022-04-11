@@ -362,7 +362,7 @@ export default function CreateFeature(props) {
       Target_FeatureDescription: "",
       Target_Expected_Output: "",
       Target_ActualCode: "",
-      Project_Version_Id: 1,
+      Project_Version_Id: project_version,
       Feature_Version_Id: 0
     };
     const form = new FormData();
