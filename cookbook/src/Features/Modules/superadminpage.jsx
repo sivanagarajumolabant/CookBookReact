@@ -236,6 +236,10 @@ export default function SuperadminFunction() {
   const [project_max_limit, setProject_max_limit] = useState()
   const [feature_max_limit, setFeautre_max_limit] = useState()
   const [proj_vers_list, setProj_vers_list] = useState([])
+  const [useradmin_list, setUseradmin_list] = useState([])
+  const [useradmin_tableupdate, setuseradmin_tableupdate] = useState(false)
+  const [isUserAdminData, setIsUserAdminData] = useState(false)
+
 
   let history = useHistory();
 
@@ -314,33 +318,52 @@ export default function SuperadminFunction() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
-    let body = {
-      'email': sessionStorage.getItem('uemail'),
-      "Project_Version_Id": project_version
-    }
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
+    axios.get(`${config.API_BASE_URL()}/api/migtypes_useradmin/`, conf).then(
       (res) => {
-        // console.log("mig list ", res.data)
         setMigtypeslist(res.data)
-        res.data.map((key) => {
-          console.log(headerValue?.title)
-          if (key.Migration_TypeId === headerValue?.title) {
-            console.log("============ ", key.Migration_TypeId === headerValue?.title)
-            dispatch(Menuaction.getdropdownlist(key))
-            dispatch(Menuaction.admin(key.admin))
-          }
-        })
-        // dispatch(Menuaction.getdropdownlist(res.data))
-        // dispatch(Menuaction.admin(res.data[0].admin))
       },
       (error) => {
         console.log(error);
       }
     );
+  }, []);
+
+  useEffect(() => {
+    if (project_version) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      let body = {
+        'email': sessionStorage.getItem('uemail'),
+        "Project_Version_Id": project_version
+      }
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
+      axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
+        (res) => {
+          // console.log("mig list ", res.data)
+          // setMigtypeslist(res.data)
+          res.data.map((key) => {
+            console.log(headerValue?.title)
+            if (key.Migration_TypeId === headerValue?.title) {
+              console.log("============ ", key.Migration_TypeId === headerValue?.title)
+              dispatch(Menuaction.getdropdownlist(key))
+              // dispatch(Menuaction.admin(key?.admin))
+            }
+          })
+          // dispatch(Menuaction.getdropdownlist(res.data))
+          // dispatch(Menuaction.admin(res.data[0].admin))
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+
   }, [updatemiglist, project_version]);
 
 
@@ -429,6 +452,22 @@ export default function SuperadminFunction() {
   }, [updateSuperAdminTable, updatermSuperAdminTable]);
 
 
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/useradminlist/`, conf).then(
+      (res) => {
+        setUseradmin_list(res.data)
+        setIsUserAdminData(true)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, [useradmin_tableupdate])
 
 
 
@@ -460,7 +499,7 @@ export default function SuperadminFunction() {
   };
 
   const handleObjectviewslist = (v) => {
-    setMigtype_create(v?.title)
+    setMigtype_create(v?.Migration_TypeId)
 
     let conf = {
       headers: {
@@ -469,7 +508,7 @@ export default function SuperadminFunction() {
     };
     let body = {
 
-      "Migration_TypeId": v?.title,
+      "Migration_TypeId": v?.Migration_TypeId,
       "Project_Version_Id": project_version
     };
 
@@ -815,7 +854,7 @@ export default function SuperadminFunction() {
         });
         setupdateaccessAdminTable(true)
         setOpen2(false)
-        // dispatch(Menuaction.reloadAction(true));
+        dispatch(Menuaction.reloadAction(true));
 
       },
       (error) => {
@@ -856,7 +895,7 @@ export default function SuperadminFunction() {
             dispatch(Menuaction.getproj_header_dropdownlist(res.data))
             dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
             // dispatch(Menuaction.project_reloadAction(true))
-            
+
             // history.push('/')
           },
           (error) => {
@@ -871,8 +910,83 @@ export default function SuperadminFunction() {
     );
   }
 
+  const handleuseradmincreation = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      'email': useremail
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/createuseradmin/`, form, conf).then(
+      (res) => {
+
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+        setuseradmin_tableupdate(true)
+
+
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+    setuseradmin_tableupdate(false)
+    // setIsUserAdminData(false)
+  }
+
+
+  const handledeleteuseradmin = (email) => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      'email': email
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/removeuseradmin/`, form, conf).then(
+      (res) => {
+
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+        setuseradmin_tableupdate(true)
+        // setIsUserAdminData(true)
+
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+    setuseradmin_tableupdate(false)
+    // setIsUserAdminData(false)
+  }
+
   return (
-    <Box style={{ width: '100%'}}>
+    <Box style={{ width: '100%' }}>
 
 
       <Box py={1} px={1}>
@@ -1032,7 +1146,7 @@ export default function SuperadminFunction() {
               color="primary"
               component="span"
               style={{ marginTop: 10, marginLeft: 240 }}
-            // onClick={() => handlesuperadmincreation()}
+              onClick={() => handleuseradmincreation()}
             >
               {" "}
               Create User Admin
@@ -1062,31 +1176,45 @@ export default function SuperadminFunction() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <StyledTableRow container>
-                  <StyledTableCell item xl={8}>
-                    <div className={classes.texttablecell}>
-                      {"quadrant"}
-                    </div>
-                  </StyledTableCell>
-                  <StyledTableCell item xl={8}>
-                    <div className={classes.texttablecell}>
-                      {"quadrant@gmail.com"}
-                    </div>
-                  </StyledTableCell>
-                  <StyledTableCell item xl={8}>
-                    <Button
-                      type="button"
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                    // onClick={() => handledeletesuperadmin(item.Email)}
-                    >
-                      Delete
-                    </Button>
-                  </StyledTableCell>
-                </StyledTableRow>
+                {isUserAdminData ? (
+                  <>
+                    {useradmin_list.map((item) =>
+                      <StyledTableRow container>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.username}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.email}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <Button
+                            type="button"
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                            onClick={() => handledeleteuseradmin(item.email)}
+                          >
+                            Delete
+                          </Button>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
+                  </>
+                )
+                  : <>
+                    <StyledTableRow container>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                    </StyledTableRow>
+                  </>
+                }
               </TableBody>
             </Table>
           </Grid>
@@ -1115,7 +1243,7 @@ export default function SuperadminFunction() {
               options={migtypelist}
               groupBy={""}
               // defaultValue={{ title: "Oracle TO Postgres" }}
-              getOptionLabel={(option) => option.title}
+              getOptionLabel={(option) => option.Migration_TypeId}
               style={{ width: 300, marginLeft: 100 }}
               onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
@@ -1313,9 +1441,9 @@ export default function SuperadminFunction() {
                   options={migtypelist}
                   groupBy={""}
                   // defaultValue={{ title: "Oracle TO Postgres" }}
-                  getOptionLabel={(option) => option.title}
+                  getOptionLabel={(option) => option.Migration_TypeId}
                   style={{ width: 400, marginBottom: '20px', height: '60px' }}
-                  onChange={(e, v) => setMigtype_create(v.title)}
+                  onChange={(e, v) => setMigtype_create(v?.Migration_TypeId)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -1631,6 +1759,6 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Notification notify={notify} setNotify={setNotify} />
-    </Box>
+    </Box >
   )
 }

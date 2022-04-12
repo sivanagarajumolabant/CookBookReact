@@ -110,12 +110,12 @@ export default function SignUp(props) {
           setIsloading(false)
           setNotify({
             isOpen: true,
-            message: 'User registered Please Check And Confirm Your Email Before Login',
+            message: 'User registered Please Wait for Email after Admin Approval',
             type: 'Success'
           })
           setTimeout(() => {
             history.push('/')
-          }, 2000);
+          }, 3000);
         })
         .catch((error) => {
           setIsloading(false)

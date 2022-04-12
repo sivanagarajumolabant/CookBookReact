@@ -339,7 +339,7 @@ export default function ClippedDrawer({ children }) {
   const theme = useTheme();
 
   const [isOpened, setIsOpened] = useState(true);
-  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable, project_version,project_header_dropdown } = useSelector(state => state.dashboardReducer);
+  const { updatedValue, headerValue, ITEMlIST, DropDownValues, admin, lable, project_version, project_header_dropdown } = useSelector(state => state.dashboardReducer);
   // console.log("admin flag ", admin)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -381,7 +381,7 @@ export default function ClippedDrawer({ children }) {
         // setProj_vers_list(res.data)
 
         dispatch(Menuaction.getproj_header_dropdownlist(res.data))
-        
+
         dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
       },
       (error) => {
@@ -390,40 +390,43 @@ export default function ClippedDrawer({ children }) {
     );
   }, []);
 
-  
+
 
   React.useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-    let body = {
-      'email': sessionStorage.getItem('uemail'),
-      "Project_Version_Id": project_version
-    }
-    const form = new FormData();
-    Object.keys(body).forEach((key) => {
-      form.append(key, body[key]);
-    });
-
-    // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
-    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
-      (res) => {
-
-        setMigtypeslist(res.data)
-        dispatch(Menuaction.getdropdownlist(res.data))
-        if (res.data.length > 0) {
-          getmenus(res.data[0].title);
-          // dispatch(Menuaction.admin(res.data[0].admin))
-        }
-
-
-      },
-      (error) => {
-        console.log(error);
+    if (project_version) {
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      let body = {
+        'email': sessionStorage.getItem('uemail'),
+        "Project_Version_Id": project_version
       }
-    );
+      const form = new FormData();
+      Object.keys(body).forEach((key) => {
+        form.append(key, body[key]);
+      });
+
+      // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+      axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
+        (res) => {
+
+          setMigtypeslist(res.data)
+          dispatch(Menuaction.getdropdownlist(res.data))
+          if (res.data.length > 0) {
+            getmenus(res.data[0].title);
+            // dispatch(Menuaction.admin(res.data[0].admin))
+          }
+
+
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+
   }, [project_version]);
 
 

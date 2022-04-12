@@ -15,7 +15,7 @@ const initialState = {
   DropDownValues: [],
   admin: 0,
   lable: null,
-  project_version: 0,
+  project_version: null,
   project_header_dropdown: [],
   proje_version_reload: false
 };

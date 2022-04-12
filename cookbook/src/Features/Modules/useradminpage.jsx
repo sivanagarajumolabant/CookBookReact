@@ -1,6 +1,7 @@
 import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
 import Button from '@material-ui/core/Button';
+import Menuaction from '../../Redux/actions/Menuaction';
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { useEffect, useState } from 'react';
@@ -36,7 +37,7 @@ import {
 const useStylestable = makeStyles((theme) => ({
     table: {
         // minWidth: 50,
-        width: '96%',
+        width: '92%',
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -166,10 +167,46 @@ export default function UseradminFunction() {
     const [useremail, setuseremail] = useState()
     const [updateSuperAdminTable, setUpdateSuperAdminTable] = useState(false)
     const [updatermSuperAdminTable, setUpdatermSuperAdminTable] = useState(false)
+    const [migrat_add, setMigrat_add] = useState()
+    const [waiting_list, setWaiting_list] = useState([])
+    const [waiting_update, setWaiting_update] = useState(false)
     // const [cnfmvalues, setcnfmvalues] = useState(['orcale to postgres','db to postgres'])
-
+    const [migtypes, setMigtypes] = useState([])
+    const [users, setUsers] = useState([])
 
     let history = useHistory();
+
+    useEffect(() => {
+        let conf = {
+            headers: {
+                Authorization: "Bearer " + config.ACCESS_TOKEN(),
+            },
+        };
+        axios.get(`${config.API_BASE_URL()}/api/userslist_useradmin/`, conf).then(
+            (res) => {
+                setUsers(res.data)
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, []);
+    useEffect(() => {
+        let conf = {
+            headers: {
+                Authorization: "Bearer " + config.ACCESS_TOKEN(),
+            },
+        };
+        axios.get(`${config.API_BASE_URL()}/api/migtypes_useradmin/`, conf).then(
+            (res) => {
+                setMigtypes(res.data)
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }, []);
+
 
 
     useEffect(() => {
@@ -194,19 +231,37 @@ export default function UseradminFunction() {
                 Authorization: "Bearer " + config.ACCESS_TOKEN(),
             },
         };
-        axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
+        axios.get(`${config.API_BASE_URL()}/api/userwaiting_list/`, conf).then(
             (res) => {
-
-                setUserslist(res.data)
-
+                setWaiting_list(res.data)
             },
             (error) => {
                 console.log(error);
             }
         );
-    }, []);
+    }, [waiting_update]);
 
-    const handlesuperadmincreation = () => {
+
+    // useEffect(() => {
+    //     let conf = {
+    //         headers: {
+    //             Authorization: "Bearer " + config.ACCESS_TOKEN(),
+    //         },
+    //     };
+    //     axios.get(`${config.API_BASE_URL()}/api/userslist/`, conf).then(
+    //         (res) => {
+
+    //             setUserslist(res.data)
+
+    //         },
+    //         (error) => {
+    //             console.log(error);
+    //         }
+    //     );
+    // }, []);
+
+
+    const handleAddMigration = () => {
         let conf = {
             headers: {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -214,37 +269,56 @@ export default function UseradminFunction() {
         }
         let body = {
             "email": useremail,
+            'mig_type': migrat_add
         }; const form = new FormData();
         Object.keys(body).forEach((key) => {
             form.append(key, body[key]);
         });
-        axios.post(`${config.API_BASE_URL()}/api/createsuperadmin/`, form, conf).then(
+        axios.post(`${config.API_BASE_URL()}/api/user_admin_permissions/`, form, conf).then(
             (res) => {
                 setNotify({
                     isOpen: true,
-                    message: "super admin created successfully",
+                    message: res.data,
                     type: "success",
                 });
-                // setOpen(false)
-                // dispatch(Menuaction.reloadAction(true));
-                setUpdateSuperAdminTable(true)
+                setWaiting_update(true)
 
-            },
-            (error) => {
-                console.log(error.response.data);
+                let postbody = {
+                    "Project_Version_Id": project_version,
+                }
+                const postform = new FormData();
+                Object.keys(postbody).forEach((key) => {
+                    postform.append(key, postbody[key]);
+                });
+
+
+                axios.post(`${config.API_BASE_URL()}/api/migrationviewlist/`, postform, conf).then(
+                    (res) => {
+                        // setUpdatemiglist(true)
+                        // setMigtypeslist(res.data)
+                        dispatch(Menuaction.getdropdownlist(res.data))
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
             }
+
         );
-        setUpdateSuperAdminTable(false)
+        setWaiting_update(false)
     }
 
     const handleuseremail = (v) => {
         // setSelected1(true)
         setuseremail(v?.email)
     }
+    const handle_add_mig_type = (v) => {
+        setMigrat_add(v?.Migration_TypeId)
+    }
 
-    // const handleconfirm = (event) => {
-    //     setcnfmvalues(event.target.value);
-    // };
+    const handledWiating = (data) => {
+
+    }
 
     return (
         <>
@@ -264,7 +338,7 @@ export default function UseradminFunction() {
                             size="small"
                             id="grouped-demo"
                             className={classes.inputRoottype}
-                            options={userslist}
+                            options={users}
                             groupBy={""}
                             getOptionLabel={(option) => option.email}
                             style={{ width: 300, marginLeft: 40 }}
@@ -288,11 +362,12 @@ export default function UseradminFunction() {
                             id="grouped-demo"
                             // multiple
                             className={classes.inputRoottype}
-                            options={DropDownValues}
+                            options={migtypes}
                             groupBy={""}
-                            defaultValue={{ title: DropDownValues[0]?.title }}
-                            getOptionLabel={(option) => option.title}
+                            // defaultValue={{ title: DropDownValues[0]?.title }}
+                            getOptionLabel={(option) => option.Migration_TypeId}
                             style={{ width: 300, marginLeft: 100 }}
+                            onChange={(e, v) => handle_add_mig_type(v)}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -311,9 +386,10 @@ export default function UseradminFunction() {
                             variant="contained"
                             // disabled={!selecetd1}
                             color="primary"
+                            size='small'
                             component="span"
-                        // style={{ marginTop: 5, marginLeft: 120 }}
-                        // onClick={() => handlesuperadmincreation()}
+                            // style={{ marginTop: 5, marginLeft: 120 }}
+                            onClick={() => handleAddMigration()}
                         >
                             {" "}
                             Add Migration
@@ -338,48 +414,53 @@ export default function UseradminFunction() {
                                 <TableHead className={classes.primary}>
                                     <TableRow>
                                         <StyledTableCell align="left">User Email</StyledTableCell>
-                                        <StyledTableCell align="left">Migration Type</StyledTableCell>
-                                        <StyledTableCell align="left">Actions</StyledTableCell>
+                                        <StyledTableCell align="center">Migration Type</StyledTableCell>
+                                        <StyledTableCell align="center">Actions</StyledTableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <StyledTableRow container>
-                                        <StyledTableCell item xl={8}>
-                                            <div className={classes.texttablecell}>
-                                                {"quadrant"}
-                                            </div>
-                                        </StyledTableCell>
-                                        <StyledTableCell item xl={8}>
-                                            <div className={classes.texttablecell}>
-                                                {"Oracle to POstgres"}
-                                            </div>
-                                        </StyledTableCell>
-                                        <StyledTableCell item xl={8}>
-                                            <Button
-                                                type="button"
-                                                size="small"
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.submit}
-                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                            // onClick={() => handledeletesuperadmin(item.Email)}
-                                            >
-                                                Confirm
-                                            </Button>
-                                            {" "}
-                                            <Button
-                                                type="button"
-                                                size="small"
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.submit}
-                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                            // onClick={() => handledeletesuperadmin(item.Email)}
-                                            >
-                                                Deny
-                                            </Button>
-                                        </StyledTableCell>
-                                    </StyledTableRow>
+                                    {
+                                        waiting_list.map((item) => {
+                                            return <StyledTableRow container>
+                                                <StyledTableCell item xl={8} >
+                                                    <div className={classes.texttablecell}>
+                                                        {item.Email}
+                                                    </div>
+                                                </StyledTableCell>
+                                                <StyledTableCell item xl={8}>
+                                                    <div className={classes.texttablecell}>
+                                                        {item.MigrationTypes}
+                                                    </div>
+                                                </StyledTableCell>
+                                                <StyledTableCell item xl={8} align='center'>
+                                                    <Button
+                                                        type="button"
+                                                        size="small"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        className={classes.submit}
+                                                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                        onClick={() => handledWiating(item.Email)}
+                                                    >
+                                                        Confirm
+                                                    </Button>
+                                                    {" "}
+                                                    <Button
+                                                        type="button"
+                                                        size="small"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        className={classes.submit}
+                                                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                        onClick={() => handledWiating(item.Email)}
+                                                    >
+                                                        Deny
+                                                    </Button>
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+
+                                        })
+                                    }
                                 </TableBody>
                             </Table>
                         </Grid>

@@ -411,8 +411,8 @@ export default function AccessReview() {
                         <StyledTableCell align="center"></StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
+                        <StyledTableCell align="right">No Requests</StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
-                        <StyledTableCell align="left">No Requests</StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
                         <StyledTableCell align="center"></StyledTableCell>
