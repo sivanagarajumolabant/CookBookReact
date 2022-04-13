@@ -1,5 +1,6 @@
 import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Menuaction from '../../Redux/actions/Menuaction';
 import FormControl from '@material-ui/core/FormControl'
@@ -173,6 +174,7 @@ export default function UseradminFunction() {
     // const [cnfmvalues, setcnfmvalues] = useState(['orcale to postgres','db to postgres'])
     const [migtypes, setMigtypes] = useState([])
     const [users, setUsers] = useState([])
+    const [isloading, setIsloading] = useState(false)
 
     let history = useHistory();
 
@@ -317,6 +319,8 @@ export default function UseradminFunction() {
     }
 
     const handledWiating = (email, status) => {
+        setIsloading(true)
+        // setWaiting_update(true)
         let postbody = {
             "email": email,
             "user_registration_status": status
@@ -340,12 +344,14 @@ export default function UseradminFunction() {
                     type: "success",
                 });
                 setWaiting_update(true)
+                setIsloading(false)
             },
             (error) => {
                 console.log(error);
             }
         );
         setWaiting_update(false)
+        
     }
 
     return (
@@ -457,8 +463,8 @@ export default function UseradminFunction() {
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={8}>
                                                     <div className={classes.texttablecell}>
-                                                        {item.MigrationTypes}
-{/* 
+                                                        {item.MigrationTypes?.substring(0, item.MigrationTypes.length - 1)}
+                                                        {/* 
                                                         {
                                                             item.MigrationTypes.map((value, index, array) => {
                                                                 if (array.length - 1 === index) {
@@ -474,29 +480,34 @@ export default function UseradminFunction() {
                                                 <StyledTableCell item xl={8} align='center'>
                                                     {item.Status === "Awaiting for admin approval" ? (
                                                         <>
-                                                            <Button
-                                                                type="button"
-                                                                size="small"
-                                                                variant="contained"
-                                                                color="primary"
-                                                                className={classes.submit}
-                                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                                                onClick={() => handledWiating(item.Email, 'Confirmed')}
-                                                            >
-                                                                Confirm
-                                                            </Button>
-                                                            {" "}
-                                                            <Button
-                                                                type="button"
-                                                                size="small"
-                                                                variant="contained"
-                                                                color="primary"
-                                                                className={classes.submit}
-                                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                                                onClick={() => handledWiating(item.Email, 'Rejected')}
-                                                            >
-                                                                Deny
-                                                            </Button>
+                                                            {
+                                                                isloading ? <>
+                                                                    <CircularProgress />
+                                                                </> : <><Button
+                                                                    type="button"
+                                                                    size="small"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    className={classes.submit}
+                                                                    style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                    onClick={() => handledWiating(item.Email, 'Confirmed')}
+                                                                >
+                                                                    Confirm
+                                                                </Button>
+                                                                    {" "}
+                                                                    <Button
+                                                                        type="button"
+                                                                        size="small"
+                                                                        variant="contained"
+                                                                        color="primary"
+                                                                        className={classes.submit}
+                                                                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                        onClick={() => handledWiating(item.Email, 'Rejected')}
+                                                                    >
+                                                                        Deny
+                                                                    </Button></>
+                                                            }
+
                                                         </>
                                                     ) : <>
                                                         {item.Status}
