@@ -634,6 +634,7 @@ export default function ClippedDrawer({ children }) {
 
 
   const handlefeature = (data) => {
+    history.push('/dashboard')
     dispatch(Menuaction.admin(data.Admin_Flag))
     dispatch(ActionMenu.selectedMenutlist(data))
     setselectedItems([data])

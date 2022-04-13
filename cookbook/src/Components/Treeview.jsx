@@ -20,6 +20,7 @@ import { useHistory } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 import Delete from "@material-ui/icons/Delete";
 import ConfirmDialog from "../Features/Notifications/ConfirmDialog";
+import { drop } from "lodash";
 
 const useTreeItemStyles = makeStyles((theme) => ({
   root: {
@@ -206,10 +207,14 @@ export default function GmailTreeView({
   const classes = useStyles();
   // const [lable_dropdown, setLabledropdown] = useState('')
   // const [lable_dropdownid, setLabledropdownid] = useState('')
+  console.log('menulist', menuList)
+  console.log('dropdown', dropdown)
   const dispatch = useDispatch();
   let history = useHistory();
   const MenuSelected = (value, lable) => {
       dispatch(ActionMenu.ActionMenu(value));
+      dispatch(ActionMenu.lableselect(lable));
+      
       // dispatch(ActionMenu.ActionObjectMenu(value));
    
   };
@@ -255,7 +260,7 @@ export default function GmailTreeView({
                             // lable_dropdownid(data.Feature_Id);
                             // setLabledropdown(Data?.Label);
                             // setLabledropdownid(data.Feature_Name);
-                            MenuSelected(data.Feature_Name, Data?.Label);
+                            MenuSelected(data?.Feature_Name, Data?.Label);
 
 
                             history.push("/PreviewCode");
@@ -267,7 +272,7 @@ export default function GmailTreeView({
 
                           }}
                           nodeId={"S" + Index + index}
-                          labelText={data.Feature_Name}
+                          labelText={data?.Feature_Name}
                           labelIcon={ViewModuleIcon}
                           deleteitem={deleteitem}
                           datavalue={data}
