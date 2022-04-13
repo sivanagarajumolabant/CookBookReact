@@ -116,7 +116,7 @@ function StyledTreeItem(props) {
               {labelInfo}
             </Typography>
             {/* {IsSuperAdmin == "true" && */}
-            {( admin===1 || createflag===1) && 
+            {(admin === 1 || createflag === 1) &&
               <>
                 {mainheader && (
                   <AddIcon
@@ -204,14 +204,17 @@ export default function GmailTreeView({
   createflag,
 }) {
   const classes = useStyles();
+  // const [lable_dropdown, setLabledropdown] = useState('')
+  // const [lable_dropdownid, setLabledropdownid] = useState('')
   const dispatch = useDispatch();
   let history = useHistory();
-  const MenuSelected = (value) => {
-    dispatch(ActionMenu.ActionMenu(value));
-    // history.push("/dashboard");
+  const MenuSelected = (value, lable) => {
+      dispatch(ActionMenu.ActionMenu(value));
+      // dispatch(ActionMenu.ActionObjectMenu(value));
+   
   };
 
-  console.log(menuList, "frdtdrtt")
+  // console.log(menuList, "frdtdrtt")
   return (
     <TreeView
       className={classes.root}
@@ -226,8 +229,6 @@ export default function GmailTreeView({
           <>
             {menuList?.map((Data, Index) => {
               if (Data) {
-
-
                 return (
                   <StyledTreeItem
                     nodeId={Index}
@@ -239,23 +240,31 @@ export default function GmailTreeView({
                     style={{ color: "white" }}
                     mainheader={true}
                     admin={admin}
-                    createflag= {createflag}
+                    createflag={createflag}
                   >
                     {Data?.SubMenu?.map((data, index) => {
+
                       return (
                         <StyledTreeItem
                           style={{ color: "white" }}
                           sub={true}
                           onClick={() => {
                             // dispatch(ActionMenu.PreviewFeature())
-                            MenuSelected(data.Feature_Name);
-                            
+                            // history.push("/dashboard");
+                            // lable_dropdown(Data?.Label);
+                            // lable_dropdownid(data.Feature_Id);
+                            // setLabledropdown(Data?.Label);
+                            // setLabledropdownid(data.Feature_Name);
+                            MenuSelected(data.Feature_Name, Data?.Label);
+
+
                             history.push("/PreviewCode");
                             // history.push({
                             //   pathname: `/edit/${detaildata.Feature_Id}`,
                             //   data: { detaildata },
 
                             // })
+
                           }}
                           nodeId={"S" + Index + index}
                           labelText={data.Feature_Name}
