@@ -77,6 +77,7 @@ function SignIn() {
         if (res.status === 200 && res.data.access !== null) {
           sessionStorage.setItem('isAuth', true)
           sessionStorage.setItem('isSuperAdmin', res.data.superadmin)
+          sessionStorage.setItem('isUserAdmin', res.data.useradmin)
           sessionStorage.setItem('quadranttoken', res.data.access)
           sessionStorage.setItem('quser', user.username)
           sessionStorage.setItem('uemail', res.data.email)

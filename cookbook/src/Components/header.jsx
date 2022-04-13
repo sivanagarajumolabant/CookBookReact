@@ -334,6 +334,7 @@ const StyledAutocompletesidebar = styled(Autocomplete)({
 export default function ClippedDrawer({ children }) {
   const classes = useStyles();
   const IsSuperAdmin = sessionStorage.getItem('isSuperAdmin')
+  const isUserAdmin = sessionStorage.getItem('isSuperAdmin')
   const [opens, setOpens] = useState(false);
   //   const classes = useStyles();
   const theme = useTheme();
@@ -752,7 +753,7 @@ export default function ClippedDrawer({ children }) {
               xm={12} sm={6} md={5} lg={1}
               className={classes.navbarcom}
             >
-              {IsSuperAdmin == "true" &&
+              {isUserAdmin == "true" &&
                 <>
                   <Button
                     type="button"

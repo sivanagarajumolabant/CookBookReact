@@ -316,8 +316,36 @@ export default function UseradminFunction() {
         setMigrat_add(v?.Migration_TypeId)
     }
 
-    const handledWiating = (data) => {
+    const handledWiating = (email, status) => {
+        let postbody = {
+            "email": email,
+            "user_registration_status": status
+        }
+        let conf = {
+            headers: {
+                'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+            }
+        }
+        const postform = new FormData();
+        Object.keys(postbody).forEach((key) => {
+            postform.append(key, postbody[key]);
+        });
 
+
+        axios.post(`${config.API_BASE_URL()}/api/useradminactions/`, postform, conf).then(
+            (res) => {
+                setNotify({
+                    isOpen: true,
+                    message: res.data,
+                    type: "success",
+                });
+                setWaiting_update(true)
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+        setWaiting_update(false)
     }
 
     return (
@@ -415,7 +443,7 @@ export default function UseradminFunction() {
                                     <TableRow>
                                         <StyledTableCell align="left">User Email</StyledTableCell>
                                         <StyledTableCell align="center">Migration Type</StyledTableCell>
-                                        <StyledTableCell align="center">Actions</StyledTableCell>
+                                        <StyledTableCell align="center">Status</StyledTableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -430,32 +458,51 @@ export default function UseradminFunction() {
                                                 <StyledTableCell item xl={8}>
                                                     <div className={classes.texttablecell}>
                                                         {item.MigrationTypes}
+{/* 
+                                                        {
+                                                            item.MigrationTypes.map((value, index, array) => {
+                                                                if (array.length - 1 === index) {
+                                                                    return value
+                                                                } else {
+                                                                    return value + ','
+                                                                }
+
+                                                            })
+                                                        } */}
                                                     </div>
                                                 </StyledTableCell>
                                                 <StyledTableCell item xl={8} align='center'>
-                                                    <Button
-                                                        type="button"
-                                                        size="small"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.submit}
-                                                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                                        onClick={() => handledWiating(item.Email)}
-                                                    >
-                                                        Confirm
-                                                    </Button>
-                                                    {" "}
-                                                    <Button
-                                                        type="button"
-                                                        size="small"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.submit}
-                                                        style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
-                                                        onClick={() => handledWiating(item.Email)}
-                                                    >
-                                                        Deny
-                                                    </Button>
+                                                    {item.Status === "Awaiting for admin approval" ? (
+                                                        <>
+                                                            <Button
+                                                                type="button"
+                                                                size="small"
+                                                                variant="contained"
+                                                                color="primary"
+                                                                className={classes.submit}
+                                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                onClick={() => handledWiating(item.Email, 'Confirmed')}
+                                                            >
+                                                                Confirm
+                                                            </Button>
+                                                            {" "}
+                                                            <Button
+                                                                type="button"
+                                                                size="small"
+                                                                variant="contained"
+                                                                color="primary"
+                                                                className={classes.submit}
+                                                                style={{ marginTop: '9px', fontSize: '9px', marginBottom: '8px' }}
+                                                                onClick={() => handledWiating(item.Email, 'Rejected')}
+                                                            >
+                                                                Deny
+                                                            </Button>
+                                                        </>
+                                                    ) : <>
+                                                        {item.Status}
+                                                    </>
+                                                    }
+
                                                 </StyledTableCell>
                                             </StyledTableRow>
 
