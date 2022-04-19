@@ -370,57 +370,69 @@ export default function ClippedDrawer({ children }) {
     history.push("/dashboard");
   }, []);
 
+
+
   React.useEffect(() => {
+    // if (project_version) {
     let conf = {
       headers: {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
+    let body = {
+      'email': sessionStorage.getItem('uemail'),
+      // "Project_Version_Id": project_version
+    }
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
 
-    axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
+    // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
+    axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
       (res) => {
-        // setProj_vers_list(res.data)
 
-        dispatch(Menuaction.getproj_header_dropdownlist(res.data))
+        setMigtypeslist(res.data)
+        dispatch(Menuaction.getdropdownlist(res.data))
+        if (res.data.length > 0) {
+          getmenus(res.data[0].title);
+          // dispatch(ActionMenu.dropdown(res.data[0].title));
+          // dispatch(Menuaction.admin(res.data[0].admin))
+        }
 
-        dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
+
       },
       (error) => {
         console.log(error);
       }
     );
+    // }
+
   }, []);
 
 
-
   React.useEffect(() => {
-    if (project_version) {
+    if (headerValue?.title) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
         },
       };
       let body = {
-        'email': sessionStorage.getItem('uemail'),
-        "Project_Version_Id": project_version
+        "Migration_TypeId": headerValue?.title
       }
       const form = new FormData();
       Object.keys(body).forEach((key) => {
         form.append(key, body[key]);
       });
 
-      // axios.get(`${config.API_BASE_URL()}/api/migrationviewlist/`, conf).then(
-      axios.post(`${config.API_BASE_URL()}/api/migrationlistperuser/`, form, conf).then(
+      axios.post(`${config.API_BASE_URL()}/api/project_versions_list/`, form, conf).then(
         (res) => {
+          // setProj_vers_list(res.data)
 
-          setMigtypeslist(res.data)
-          dispatch(Menuaction.getdropdownlist(res.data))
-          if (res.data.length > 0) {
-            getmenus(res.data[0].title);
-            // dispatch(Menuaction.admin(res.data[0].admin))
-          }
+          dispatch(Menuaction.getproj_header_dropdownlist(res.data))
 
-
+          dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
         },
         (error) => {
           console.log(error);
@@ -428,7 +440,9 @@ export default function ClippedDrawer({ children }) {
       );
     }
 
-  }, [project_version]);
+  }, [headerValue?.title]);
+
+
 
 
   useEffect(() => {
@@ -542,12 +556,13 @@ export default function ClippedDrawer({ children }) {
         getmenus(headerValue?.title);
       }
     }
-  }, [headerValue]);
+  }, [headerValue, project_version]);
+  
   React.useEffect(() => {
     if (updatedValue) {
       getmenus(headerValue?.title);
     }
-  }, [updatedValue])
+  }, [updatedValue, project_version])
 
 
 

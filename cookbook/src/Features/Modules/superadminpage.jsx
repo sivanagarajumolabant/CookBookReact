@@ -754,13 +754,32 @@ export default function SuperadminFunction() {
     });
     axios.post(`${config.API_BASE_URL()}/api/removesuperadmin/`, form, conf).then(
       (res) => {
-        setNotify({
-          isOpen: true,
-          message: "super admin removed successfully",
-          type: "success",
-        });
-        setUpdatermSuperAdminTable(true)
-        // sessionStorage.setItem("isSuperAdmin", false);
+        if (res.data === 'super admin removed successfully') {
+          setNotify({
+            isOpen: true,
+            message: res.data,
+            type: "success",
+          });
+          setUpdatermSuperAdminTable(true)
+          // sessionStorage.setItem("isSuperAdmin", false);
+
+        } else {
+          setNotify({
+            isOpen: true,
+            message: res.data,
+            type: "error",
+          });
+          // setUpdatermSuperAdminTable(true)
+          // sessionStorage.setItem("isSuperAdmin", false);
+
+        }
+        // setNotify({
+        //   isOpen: true,
+        //   message: res.data,
+        //   type: "success",
+        // });
+        // setUpdatermSuperAdminTable(true)
+        // // sessionStorage.setItem("isSuperAdmin", false);
 
       },
       (error) => {
