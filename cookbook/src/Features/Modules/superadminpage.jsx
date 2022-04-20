@@ -239,6 +239,7 @@ export default function SuperadminFunction() {
   const [useradmin_list, setUseradmin_list] = useState([])
   const [useradmin_tableupdate, setuseradmin_tableupdate] = useState(false)
   const [isUserAdminData, setIsUserAdminData] = useState(false)
+  const [deploymig, setDeploymig] = useState()
 
 
   let history = useHistory();
@@ -1014,6 +1015,43 @@ export default function SuperadminFunction() {
     setuseradmin_tableupdate(false)
     // setIsUserAdminData(false)
   }
+
+  const handleMigDeploytype = (v) => {
+    setDeploymig(v?.Migration_TypeId)
+  }
+
+  const handleDeploy = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      'Migration_TypeId': deploymig
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/deploy/`, form, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+  }
+
+
 
   return (
     <Box style={{ width: '100%' }}>
@@ -1800,7 +1838,7 @@ export default function SuperadminFunction() {
               // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.Migration_TypeId}
               style={{ width: 300 }}
-              onChange={(e, v) => handleObjectviewslist(v)}
+              onChange={(e, v) => handleMigDeploytype(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -1821,8 +1859,8 @@ export default function SuperadminFunction() {
               // disabled={!selecetd1}
               color="primary"
               component="span"
-            // style={{ marginTop: 10, marginLeft: 240 }}
-            // onClick={() => handleCreateNewVersion()}
+              // style={{ marginTop: 10, marginLeft: 240 }}
+              onClick={() => handleDeploy()}
             >
               {" "}
               Deploy
