@@ -326,7 +326,7 @@ export default function SuperadminFunction() {
         console.log(error);
       }
     );
-  }, []);
+  }, [updatemiglist]);
 
   useEffect(() => {
     if (project_version) {
@@ -596,8 +596,8 @@ export default function SuperadminFunction() {
         axios.post(`${config.API_BASE_URL()}/api/migrationviewlist/`, postform, conf).then(
           (res) => {
             setUpdatemiglist(true)
-            setMigtypeslist(res.data)
-            dispatch(Menuaction.getdropdownlist(res.data))
+            // setMigtypeslist(res.data)
+            // dispatch(Menuaction.getdropdownlist(res.data))
           },
           (error) => {
             console.log(error);
