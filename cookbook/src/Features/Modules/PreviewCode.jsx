@@ -206,14 +206,15 @@ export default function PreviewCode(props) {
         .then(
           (res) => {
             setFversionslist(res.data)
-            if (res.data.length > 1) {
+            if (res.data.length > 0) {
               Object.keys(res.data).forEach((key) => {
                 setVersionSelect(String(res.data[key]?.title))
               });
               // setVersionSelect(String(res.data.length))
-            } else {
-              setVersionSelect(String(1))
-            }
+            } 
+            // else {
+            //   setVersionSelect(String(1))
+            // }
 
           },
           (error) => {

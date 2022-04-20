@@ -916,14 +916,18 @@ export default function EditFeature(props) {
                     () => history.push({
                       pathname: `/PreviewCode`,
                     }),
-                    3000
+                    2000
                   );
                   // settableupdate(true)
                 }
 
               },
               (error) => {
-                console.log(error);
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went wrong Please Try Again!',
+                  type: "error",
+                });
               }
             );
 

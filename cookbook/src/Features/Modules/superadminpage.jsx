@@ -900,6 +900,7 @@ export default function SuperadminFunction() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
+
     axios.post(`${config.API_BASE_URL()}/api/create_project_version/`, form, conf).then(
       (res) => {
         // dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
@@ -909,13 +910,23 @@ export default function SuperadminFunction() {
           type: "success",
         });
 
-        axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
+
+        let body_prj = {
+          "Migration_TypeId": headerValue?.title
+        }
+        const form_prj = new FormData();
+        Object.keys(body_prj).forEach((key) => {
+          form_prj.append(key, body_prj[key]);
+        });
+        axios.post(`${config.API_BASE_URL()}/api/project_versions_list/`, form_prj, conf).then(
           (res) => {
             dispatch(Menuaction.getproj_header_dropdownlist(res.data))
             dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
             // dispatch(Menuaction.project_reloadAction(true))
+            setTimeout(() => {
+              history.push('/')
+            }, 2000)
 
-            // history.push('/')
           },
           (error) => {
             console.log(error);
@@ -1729,7 +1740,7 @@ export default function SuperadminFunction() {
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
             <Typography variant='h6'>
-              Version Creation
+              Version Creation & Deployement
             </Typography>
           </Grid>
         </Grid>
@@ -1775,6 +1786,51 @@ export default function SuperadminFunction() {
               Create New Version
             </Button>
           </Grid>
+
+          <Grid item xs={1}>
+
+          </Grid>
+          <Grid item>
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={migtypelist}
+              groupBy={""}
+              // defaultValue={{ title: "Oracle TO Postgres" }}
+              getOptionLabel={(option) => option.Migration_TypeId}
+              style={{ width: 300 }}
+              onChange={(e, v) => handleObjectviewslist(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Migration type"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+
+                />
+              )}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+            // style={{ marginTop: 10, marginLeft: 240 }}
+            // onClick={() => handleCreateNewVersion()}
+            >
+              {" "}
+              Deploy
+            </Button>
+          </Grid>
+          {/* <Grid item >
+
+          </Grid> */}
         </Grid>
       </Box>
       <Notification notify={notify} setNotify={setNotify} />
