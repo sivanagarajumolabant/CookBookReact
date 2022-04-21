@@ -284,33 +284,43 @@ export default function SuperadminFunction() {
 
 
   React.useEffect(() => {
-    let conf = {
-      headers: {
-        Authorization: "Bearer " + config.ACCESS_TOKEN(),
-      },
-    };
-
-    axios.get(`${config.API_BASE_URL()}/api/project_versions_list/`, conf).then(
-      (res) => {
-        setProj_vers_list(res.data)
-        // let prv = 0
-        // let tit ;
-        // Object.keys(res.data).forEach((key) => {
-        //   if (prv <= res.data[key]?.code) {
-        //     prv = res.data[key]?.code
-        //     tit = res.data[key]?.title
-        //   }
-
-        // });
-        // setSelect_pr_v(tit)
-        // dispatch(Menuaction.project_version(prv))
-        dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
-      },
-      (error) => {
-        console.log(error);
+    if(headerValue?.title){
+      let conf = {
+        headers: {
+          Authorization: "Bearer " + config.ACCESS_TOKEN(),
+        },
+      };
+      let body_prj = {
+        "Migration_TypeId": headerValue?.title
       }
-    );
-  }, []);
+      const form_prj = new FormData();
+      Object.keys(body_prj).forEach((key) => {
+        form_prj.append(key, body_prj[key]);
+      });
+  
+      axios.post(`${config.API_BASE_URL()}/api/project_versions_list/`,body_prj, conf).then(
+        (res) => {
+          setProj_vers_list(res.data)
+          // let prv = 0
+          // let tit ;
+          // Object.keys(res.data).forEach((key) => {
+          //   if (prv <= res.data[key]?.code) {
+          //     prv = res.data[key]?.code
+          //     tit = res.data[key]?.title
+          //   }
+  
+          // });
+          // setSelect_pr_v(tit)
+          // dispatch(Menuaction.project_version(prv))
+          dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    
+  }, [headerValue?.title]);
 
 
   useEffect(() => {
@@ -556,6 +566,12 @@ export default function SuperadminFunction() {
   // }
 
   const handleMigrationCreate = () => {
+    let prj_intial_creation;
+    if (project_version===null){
+      prj_intial_creation = 1
+    }else{
+      prj_intial_creation =  project_version
+    }
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -564,7 +580,7 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": '',
       "Migration_TypeId": migtype_create || null,
-      "Project_Version_Id": project_version,
+      "Project_Version_Id": prj_intial_creation,
       'Project_Version_limit': project_max_limit,
       'Feature_Version_Limit': feature_max_limit
     };
@@ -617,6 +633,12 @@ export default function SuperadminFunction() {
 
 
   const handleObjectypeCreate = () => {
+    let prj_intial_creation;
+    if (project_version===null){
+      prj_intial_creation = 1
+    }else{
+      prj_intial_creation = project_version
+    }
     let conf = {
       headers: {
         'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -625,7 +647,7 @@ export default function SuperadminFunction() {
     let body = {
       "Object_Type": objtype_create,
       "Migration_TypeId": migtype_create,
-      "Project_Version_Id": project_version,
+      "Project_Version_Id": prj_intial_creation,
       'Project_Version_limit': '',
       'Feature_Version_Limit': ''
     };
@@ -895,7 +917,8 @@ export default function SuperadminFunction() {
       }
     }
     let body = {
-      'Project_Version_Id': project_version
+      'Project_Version_Id': project_version,
+      'Migration_TypeId': headerValue?.title
     };
     const form = new FormData();
     Object.keys(body).forEach((key) => {

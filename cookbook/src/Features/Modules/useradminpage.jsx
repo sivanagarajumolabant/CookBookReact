@@ -264,6 +264,12 @@ export default function UseradminFunction() {
 
 
     const handleAddMigration = () => {
+        let prj_intial_val ;
+        if (project_version===null){
+            prj_intial_val = 1
+        }else{
+            prj_intial_val = project_version
+        }
         let conf = {
             headers: {
                 'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
@@ -286,7 +292,7 @@ export default function UseradminFunction() {
                 setWaiting_update(true)
 
                 let postbody = {
-                    "Project_Version_Id": project_version,
+                    "Project_Version_Id": prj_intial_val,
                 }
                 const postform = new FormData();
                 Object.keys(postbody).forEach((key) => {
