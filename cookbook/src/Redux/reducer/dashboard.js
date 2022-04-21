@@ -17,7 +17,8 @@ const initialState = {
   lable: null,
   project_version: null,
   project_header_dropdown: [],
-  proje_version_reload: false
+  proje_version_reload: false,
+  // useradmin_check: null
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -131,6 +132,11 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         project_header_reload: action.payload,
       }
+    // case "USERADMIN":
+    //   return {
+    //     ...state,
+    //     useradmin_check: action.payload,
+    //   }
 
     default:
       return state;

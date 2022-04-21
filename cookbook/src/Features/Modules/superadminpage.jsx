@@ -1035,6 +1035,7 @@ export default function SuperadminFunction() {
     });
     axios.post(`${config.API_BASE_URL()}/api/deploy/`, form, conf).then(
       (res) => {
+
         setNotify({
           isOpen: true,
           message: res.data,
