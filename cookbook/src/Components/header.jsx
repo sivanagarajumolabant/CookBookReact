@@ -429,7 +429,7 @@ export default function ClippedDrawer({ children }) {
       axios.post(`${config.API_BASE_URL()}/api/project_versions_list/`, form, conf).then(
         (res) => {
           // setProj_vers_list(res.data)
-
+          setSelect_pr_v(res.data.slice(-1)[0]?.title)
           dispatch(Menuaction.getproj_header_dropdownlist(res.data))
 
           dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
@@ -574,7 +574,7 @@ export default function ClippedDrawer({ children }) {
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
     dispatch(Menuaction.admin(v.admin))
-    history.push('/dashboard');
+    // history.push('/dashboard');
   };
 
   // const deleteitem = async (data) => {
@@ -687,6 +687,7 @@ export default function ClippedDrawer({ children }) {
   }
 
   const handleProject_Version = (v) => {
+    setSelect_pr_v(v?.title)
     dispatch(Menuaction.project_version(v?.code))
 
     history.push('/dashboard')
@@ -821,6 +822,7 @@ export default function ClippedDrawer({ children }) {
                   groupBy={""}
                   // value ={select_pr_v}
                   defaultValue={{ title: project_header_dropdown.slice(-1)[0]?.title }}
+                  inputValue={select_pr_v}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 110 }}
                   onChange={(e, v) => handleProject_Version(v)}
