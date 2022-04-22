@@ -57,6 +57,11 @@ const drawerWidth = 375;
 const useStyles = makeStyles((theme) => ({
   // ############################
 
+  inputplaceholder: {
+    '&::placeholder': {
+      color: 'white',
+    },
+  },
   drawer: {
     // position: "static",
     transition: "width .7s",
@@ -272,6 +277,7 @@ const useStyles = makeStyles((theme) => ({
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "white",
     },
+   
 
 
   }
@@ -301,6 +307,9 @@ const StyledAutocomplete = styled(Autocomplete)({
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "white",
     },
+    '& ::placeholder': {
+      color:'#FFFFFF'
+   }
   },
 });
 
@@ -820,9 +829,9 @@ export default function ClippedDrawer({ children }) {
                   className={classes.inputRoottype}
                   options={project_header_dropdown}
                   groupBy={""}
-                  // value ={select_pr_v}
+                  value ={select_pr_v}
                   defaultValue={{ title: project_header_dropdown.slice(-1)[0]?.title }}
-                  inputValue={select_pr_v}
+                  // inputValue={select_pr_v}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 110 }}
                   onChange={(e, v) => handleProject_Version(v)}
@@ -832,10 +841,12 @@ export default function ClippedDrawer({ children }) {
                       label="Versions"
                       variant="outlined"
                       InputLabelProps={{
-                        className: classes.floatingLabelFocusStyle,
+                        className: [classes.floatingLabelFocusStyle, classes.inputplaceholder],
                         shrink: true,
+
                       }}
-                    // placeholder={String(select_pr_v)}
+                    // defaultValue={String(select_pr_v)}
+                    placeholder={String(select_pr_v)}
                     />
                   )}
                 />
