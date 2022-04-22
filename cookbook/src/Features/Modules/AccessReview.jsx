@@ -2,6 +2,7 @@ import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TableBody from '@material-ui/core/TableBody';
+import Notification from "../Notifications/Notification";
 import TableCell from '@material-ui/core/TableCell';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -132,6 +133,12 @@ export default function AccessReview() {
   const [objtypeslist, setObjtypeslist] = useState([])
   const [userslist, setUserslist] = useState([])
   const [useremail, setUseremail] = useState()
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
 
   useEffect(() => {
     let conf = {
@@ -146,7 +153,11 @@ export default function AccessReview() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, []);
@@ -194,7 +205,11 @@ export default function AccessReview() {
             }
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
       }
@@ -238,7 +253,11 @@ export default function AccessReview() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     // setIsData(false)

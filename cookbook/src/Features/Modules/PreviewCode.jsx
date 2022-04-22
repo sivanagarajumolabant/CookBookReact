@@ -218,7 +218,11 @@ export default function PreviewCode(props) {
 
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
     } else {
@@ -268,7 +272,11 @@ export default function PreviewCode(props) {
 
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
     } else {
@@ -296,7 +304,11 @@ export default function PreviewCode(props) {
           }
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -316,7 +328,11 @@ export default function PreviewCode(props) {
           }
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -337,7 +353,11 @@ export default function PreviewCode(props) {
           }
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -359,7 +379,11 @@ export default function PreviewCode(props) {
           }
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -571,7 +595,11 @@ export default function PreviewCode(props) {
 
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
 

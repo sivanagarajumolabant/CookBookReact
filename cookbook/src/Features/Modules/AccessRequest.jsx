@@ -186,7 +186,11 @@ export default function Request() {
           setFnnames([{ 'Feature_Name': "ALL" }].concat(res.data))
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
       // }
@@ -221,7 +225,11 @@ export default function Request() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [headerValue?.title, project_version]);
@@ -266,7 +274,11 @@ export default function Request() {
         setFlag(res.data?.flag)
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }

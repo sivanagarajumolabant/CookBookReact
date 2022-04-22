@@ -212,7 +212,11 @@ export default function EditFeature(props) {
             }
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
     }
@@ -242,7 +246,11 @@ export default function EditFeature(props) {
             }
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
     }
@@ -273,7 +281,11 @@ export default function EditFeature(props) {
             }
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
     }
@@ -305,7 +317,11 @@ export default function EditFeature(props) {
             }
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
     }

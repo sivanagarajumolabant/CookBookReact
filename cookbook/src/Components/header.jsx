@@ -5,6 +5,8 @@ import Avatar from "@material-ui/core/Avatar";
 import config from '../../src/Config/config'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import GetAppIcon from '@material-ui/icons/GetApp';
+// import ConfirmDialog from "../../Features/Notifications/ConfirmDialog"
+// import Notification from "../../Features/Notifications/Notification";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Button from '@material-ui/core/Button';
@@ -277,7 +279,7 @@ const useStyles = makeStyles((theme) => ({
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "white",
     },
-   
+
 
 
   }
@@ -308,8 +310,8 @@ const StyledAutocomplete = styled(Autocomplete)({
       borderColor: "white",
     },
     '& ::placeholder': {
-      color:'#FFFFFF'
-   }
+      color: '#FFFFFF'
+    }
   },
 });
 
@@ -364,8 +366,9 @@ export default function ClippedDrawer({ children }) {
   const [create_check_flag, setcreate_check_flag] = useState(0)
 
 
+
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-  // const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const dispatch = useDispatch();
   const history = useHistory();
@@ -412,7 +415,11 @@ export default function ClippedDrawer({ children }) {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     // }
@@ -444,7 +451,11 @@ export default function ClippedDrawer({ children }) {
           dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -479,7 +490,11 @@ export default function ClippedDrawer({ children }) {
             setcreate_flag(res.data)
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
       }
@@ -566,7 +581,7 @@ export default function ClippedDrawer({ children }) {
       }
     }
   }, [headerValue, project_version]);
-  
+
   React.useEffect(() => {
     if (updatedValue) {
       getmenus(headerValue?.title);
@@ -583,7 +598,7 @@ export default function ClippedDrawer({ children }) {
     console.log(v)
     dispatch(ActionMenu.dropdown(v));
     dispatch(Menuaction.admin(v.admin))
-    // history.push('/dashboard');
+    history.push('/dashboard');
   };
 
   // const deleteitem = async (data) => {
@@ -633,7 +648,13 @@ export default function ClippedDrawer({ children }) {
         // const content = res.headers['content-type'];
         // download(res.data, att_name, content)
       })
-      .catch((err) => { });
+      .catch((error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      });
   };
   const onDownload2 = () => {
     // const link = document.createElement("a");
@@ -653,7 +674,13 @@ export default function ClippedDrawer({ children }) {
         // const content = res.headers['content-type'];
         // download(res.data, att_name, content)
       })
-      .catch((err) => { });
+      .catch((error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      });
   };
 
 
@@ -829,7 +856,7 @@ export default function ClippedDrawer({ children }) {
                   className={classes.inputRoottype}
                   options={project_header_dropdown}
                   groupBy={""}
-                  value ={select_pr_v}
+                  value={select_pr_v}
                   defaultValue={{ title: project_header_dropdown.slice(-1)[0]?.title }}
                   // inputValue={select_pr_v}
                   getOptionLabel={(option) => option.title}
@@ -845,8 +872,8 @@ export default function ClippedDrawer({ children }) {
                         shrink: true,
 
                       }}
-                    // defaultValue={String(select_pr_v)}
-                    placeholder={String(select_pr_v)}
+                      // defaultValue={String(select_pr_v)}
+                      placeholder={String(select_pr_v)}
                     />
                   )}
                 />
@@ -1088,10 +1115,10 @@ export default function ClippedDrawer({ children }) {
 
       </Grid>
       {/* <Footer /> */}
-      {/* <Notification
+      <Notification
         notify={notify}
         setNotify={setNotify}
-      /> */}
+      />
       {/* <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}

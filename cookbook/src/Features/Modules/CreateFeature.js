@@ -271,7 +271,11 @@ export default function CreateFeature(props) {
         //   setIsdata(true);
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [obj_type, headerValue?.title, lable,project_version]);
@@ -297,7 +301,11 @@ export default function CreateFeature(props) {
         setIstdata(true);
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [modalupdate, headerValue?.title, lable,  project_version]);
@@ -411,8 +419,11 @@ export default function CreateFeature(props) {
           }
         },
         (error) => {
-          console.log(error);
-
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
 
@@ -593,7 +604,11 @@ export default function CreateFeature(props) {
           })
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
 

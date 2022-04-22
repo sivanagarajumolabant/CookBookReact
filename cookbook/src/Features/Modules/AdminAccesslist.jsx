@@ -209,7 +209,11 @@ export default function AdminAccesslist() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, []);
@@ -239,7 +243,11 @@ export default function AdminAccesslist() {
 
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
       }
@@ -322,7 +330,11 @@ export default function AdminAccesslist() {
           setFnnames([{ 'Feature_Name': "ALL" }].concat(res.data))
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -359,7 +371,11 @@ export default function AdminAccesslist() {
           console.log(res.data);
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -420,7 +436,11 @@ export default function AdminAccesslist() {
 
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
 
@@ -486,12 +506,11 @@ export default function AdminAccesslist() {
       },
 
       (error) => {
-        console.log(error);
-        // setNotify({
-        //   isOpen: true,
-        //   message: "Something Went Wrong Please Try Again!",
-        //   type: "error",
-        // });
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }
@@ -653,8 +672,11 @@ export default function AdminAccesslist() {
       },
 
       (error) => {
-        console.log(error);
-
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }
@@ -696,10 +718,9 @@ export default function AdminAccesslist() {
 
       },
       (error) => {
-        console.log(error);
         setNotify({
           isOpen: true,
-          message: "Something Went Wrong Please Try Again!",
+          message: 'Something Went Wrong Please try Again',
           type: "error",
         });
       }

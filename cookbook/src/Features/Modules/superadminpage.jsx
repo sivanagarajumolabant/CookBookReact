@@ -322,7 +322,11 @@ export default function SuperadminFunction() {
           dispatch(Menuaction.project_version(res.data.slice(-1)[0]?.code))
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -341,7 +345,11 @@ export default function SuperadminFunction() {
         setMigtypeslist(res.data)
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [updatemiglist]);
@@ -377,7 +385,11 @@ export default function SuperadminFunction() {
           // dispatch(Menuaction.admin(res.data[0].admin))
         },
         (error) => {
-          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: 'Something Went Wrong Please try Again',
+            type: "error",
+          });
         }
       );
     }
@@ -398,7 +410,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, []);
@@ -431,7 +447,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [updateobjlist]);
@@ -447,7 +467,11 @@ export default function SuperadminFunction() {
         setadminlistdata(res.data)
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [updateAdminTable, updateaccessAdminTable]);
@@ -464,7 +488,11 @@ export default function SuperadminFunction() {
         setsuperadminlist(res.data)
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [updateSuperAdminTable, updatermSuperAdminTable]);
@@ -482,7 +510,11 @@ export default function SuperadminFunction() {
         setIsUserAdminData(true)
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }, [useradmin_tableupdate])
@@ -549,7 +581,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
 
@@ -624,13 +660,20 @@ export default function SuperadminFunction() {
             // dispatch(Menuaction.getdropdownlist(res.data))
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
       },
       (error) => {
-        console.log(error.response.data);
-        // setNotify("Migration Types Already Exist!")
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     setUpdatemiglist(false)
@@ -686,8 +729,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error.response.data);
-        // setNotify("Object Type Exist!")
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     setUpdateobjlist(false)
@@ -725,12 +771,11 @@ export default function SuperadminFunction() {
         dispatch(Menuaction.reloadAction(true));
       },
       (error) => {
-        console.log(error.response.data);
-        // setNotify({
-        //   isOpen: true,
-        //   message: res.data,
-        //   type: "success",
-        // });
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     setUpdateobjlist(false)
@@ -762,7 +807,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error.response.data);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     setUpdateSuperAdminTable(false)
@@ -813,7 +862,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error.response.data);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     setUpdatermSuperAdminTable(false)
@@ -871,7 +924,11 @@ export default function SuperadminFunction() {
         setrm_objectslist(res.data)
       },
       (error) => {
-        console.log(error.response.data);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     // debugger
@@ -907,7 +964,11 @@ export default function SuperadminFunction() {
 
       },
       (error) => {
-        console.log(error.response.data);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
     setupdateaccessAdminTable(false)
@@ -960,13 +1021,21 @@ export default function SuperadminFunction() {
 
           },
           (error) => {
-            console.log(error);
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
           }
         );
 
       },
       (error) => {
-        console.log(error.response.data);
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
       }
     );
   }
@@ -1158,6 +1227,34 @@ export default function SuperadminFunction() {
     axios.post(`${config.API_BASE_URL()}/api/newmigtype_old/`, form, conf).then(
       (res) => {
 
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+  }
+
+  const handleImport_to_prod = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    setConfirmDialog({
+      confirmDialog,
+      isOpen: false
+    })
+    axios.get(`${config.API_BASE_URL()}/api/import_to_prod/`, conf).then(
+      (res) => {
         setNotify({
           isOpen: true,
           message: res.data,
@@ -2140,8 +2237,15 @@ export default function SuperadminFunction() {
               color="primary"
               component="span"
               size="small"
-            // style={{ marginTop: 10, marginLeft: 240 }}
-            // onClick={() => handleDeploy()}
+              // style={{ marginTop: 10, marginLeft: 240 }}
+              onClick={() => handleImport_to_prod()}
+              onClick={() => {
+                setConfirmDialog({
+                  isOpen: true,
+                  title: 'do you want to import Files to Prod?',
+                  onConfirm: () => { handleImport_to_prod() }
+                })
+              }}
             >
               {" "}
               Import

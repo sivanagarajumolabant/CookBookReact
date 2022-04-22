@@ -189,8 +189,12 @@ export default function UseradminFunction() {
                 setUsers(res.data)
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, []);
     useEffect(() => {
@@ -204,8 +208,12 @@ export default function UseradminFunction() {
                 setMigtypes(res.data)
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, []);
 
@@ -222,8 +230,12 @@ export default function UseradminFunction() {
                 setsuperadminlist(res.data)
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, [updateSuperAdminTable, updatermSuperAdminTable]);
 
@@ -238,8 +250,12 @@ export default function UseradminFunction() {
                 setWaiting_list(res.data)
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, [waiting_update]);
 
@@ -307,8 +323,12 @@ export default function UseradminFunction() {
                         dispatch(Menuaction.getdropdownlist(res.data))
                     },
                     (error) => {
-                        console.log(error);
-                    }
+                        setNotify({
+                          isOpen: true,
+                          message: 'Something Went Wrong Please try Again',
+                          type: "error",
+                        });
+                      }
                 );
             }
 
@@ -353,8 +373,12 @@ export default function UseradminFunction() {
                 setIsloading(false)
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
         setWaiting_update(false)
         

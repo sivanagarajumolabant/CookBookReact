@@ -171,8 +171,12 @@ export default function FeatureApprovals() {
                         setApprovallist(res.data)
                     },
                     (error) => {
-                        console.log(error);
-                    }
+                        setNotify({
+                          isOpen: true,
+                          message: 'Something Went Wrong Please try Again',
+                          type: "error",
+                        });
+                      }
                 );
             }
         }
@@ -269,16 +273,24 @@ export default function FeatureApprovals() {
 
                         },
                         (error) => {
-                            console.log(error);
-                        }
+                            setNotify({
+                              isOpen: true,
+                              message: 'Something Went Wrong Please try Again',
+                              type: "error",
+                            });
+                          }
                     );
                 } else {
                     settableupdate(true)
                 }
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
         settableupdate(false)
 

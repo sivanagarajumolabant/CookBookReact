@@ -180,8 +180,12 @@ export default function RequestFeatureData(props) {
                         })
                     },
                     (error) => {
-                        console.log(error);
-                    }
+                        setNotify({
+                          isOpen: true,
+                          message: 'Something Went Wrong Please try Again',
+                          type: "error",
+                        });
+                      }
                 );
         } else {
             setDetaildata();
@@ -203,8 +207,12 @@ export default function RequestFeatureData(props) {
                 }
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, [previewdata?.Feature_Id, att_update]);
     useEffect(() => {
@@ -221,8 +229,12 @@ export default function RequestFeatureData(props) {
                 }
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, [previewdata?.Feature_Id, att_update]);
 
@@ -240,8 +252,12 @@ export default function RequestFeatureData(props) {
                 }
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, [previewdata?.Feature_Id, att_update]);
 
@@ -260,8 +276,12 @@ export default function RequestFeatureData(props) {
                 }
             },
             (error) => {
-                console.log(error);
-            }
+                setNotify({
+                  isOpen: true,
+                  message: 'Something Went Wrong Please try Again',
+                  type: "error",
+                });
+              }
         );
     }, [previewdata?.Feature_Id, att_update]);
 
