@@ -1,5 +1,6 @@
 import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
+import ConfirmDialog from "../../Features/Notifications/ConfirmDialog"
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel';
@@ -240,6 +241,12 @@ export default function SuperadminFunction() {
   const [useradmin_tableupdate, setuseradmin_tableupdate] = useState(false)
   const [isUserAdminData, setIsUserAdminData] = useState(false)
   const [deploymig, setDeploymig] = useState()
+  const [select_prj_versionitem, setSelect_prj_versionitem] = useState()
+  const [new_prj_versionitem, setNew_prj_versionitem] = useState()
+
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+  const [newMigtype, setNewMigtype] = useState()
+
 
 
   let history = useHistory();
@@ -284,7 +291,7 @@ export default function SuperadminFunction() {
 
 
   React.useEffect(() => {
-    if(headerValue?.title){
+    if (headerValue?.title) {
       let conf = {
         headers: {
           Authorization: "Bearer " + config.ACCESS_TOKEN(),
@@ -297,8 +304,8 @@ export default function SuperadminFunction() {
       Object.keys(body_prj).forEach((key) => {
         form_prj.append(key, body_prj[key]);
       });
-  
-      axios.post(`${config.API_BASE_URL()}/api/project_versions_list/`,body_prj, conf).then(
+
+      axios.post(`${config.API_BASE_URL()}/api/project_versions_list/`, body_prj, conf).then(
         (res) => {
           setProj_vers_list(res.data)
           // let prv = 0
@@ -308,7 +315,7 @@ export default function SuperadminFunction() {
           //     prv = res.data[key]?.code
           //     tit = res.data[key]?.title
           //   }
-  
+
           // });
           // setSelect_pr_v(tit)
           // dispatch(Menuaction.project_version(prv))
@@ -319,7 +326,7 @@ export default function SuperadminFunction() {
         }
       );
     }
-    
+
   }, [headerValue?.title]);
 
 
@@ -567,10 +574,10 @@ export default function SuperadminFunction() {
 
   const handleMigrationCreate = () => {
     let prj_intial_creation;
-    if (project_version===null){
+    if (project_version === null) {
       prj_intial_creation = 1
-    }else{
-      prj_intial_creation =  project_version
+    } else {
+      prj_intial_creation = project_version
     }
     let conf = {
       headers: {
@@ -634,9 +641,9 @@ export default function SuperadminFunction() {
 
   const handleObjectypeCreate = () => {
     let prj_intial_creation;
-    if (project_version===null){
+    if (project_version === null) {
       prj_intial_creation = 1
-    }else{
+    } else {
       prj_intial_creation = project_version
     }
     let conf = {
@@ -918,7 +925,7 @@ export default function SuperadminFunction() {
     }
     let body = {
       'Project_Version_Id': project_version,
-      'Migration_TypeId': headerValue?.title
+      'Migration_TypeId': select_prj_versionitem
     };
     const form = new FormData();
     Object.keys(body).forEach((key) => {
@@ -1076,6 +1083,96 @@ export default function SuperadminFunction() {
   }
 
 
+  const delete_from_fileshare = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    setConfirmDialog({
+      confirmDialog,
+      isOpen: false
+    })
+    axios.get(`${config.API_BASE_URL()}/api/deletefromfileshare/`, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+  }
+
+
+  const handleExport_Fileshare = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    setConfirmDialog({
+      confirmDialog,
+      isOpen: false
+    })
+    axios.get(`${config.API_BASE_URL()}/api/export_to_fileshare/`, conf).then(
+      (res) => {
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+  }
+
+
+  const handleNewVersionMigration = () => {
+    let conf = {
+      headers: {
+        'Authorization': 'Bearer ' + config.ACCESS_TOKEN()
+      }
+    }
+    let body = {
+      'Migration_TypeId': new_prj_versionitem,
+      "New_Migration_Type": newMigtype
+    };
+    const form = new FormData();
+    Object.keys(body).forEach((key) => {
+      form.append(key, body[key]);
+    });
+    axios.post(`${config.API_BASE_URL()}/api/newmigtype_old/`, form, conf).then(
+      (res) => {
+
+        setNotify({
+          isOpen: true,
+          message: res.data,
+          type: "success",
+        });
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+  }
 
   return (
     <Box style={{ width: '100%' }}>
@@ -1798,6 +1895,84 @@ export default function SuperadminFunction() {
 
         </Grid>
       </Box>
+
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              New Version Migration
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center' xs={12}>
+          <Grid item xs={5}>
+            <StyledAutocomplete
+              size="small"
+              id="grouped-demo"
+              className={classes.inputRoottype}
+              options={migtypelist}
+              groupBy={""}
+              // defaultValue={{ title: "Oracle TO Postgres" }}
+              getOptionLabel={(option) => option.Migration_TypeId}
+              style={{ width: 300 }}
+              onChange={(e, v) => setNew_prj_versionitem(v?.Migration_TypeId)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Migration type"
+                  variant="outlined"
+                  InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle,
+                    shrink: true,
+                  }}
+
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              id="outlined-multiline-static"
+              label="New Migtype"
+              multiline
+              rows={1}
+              onChange={(e) => setNewMigtype(e.target.value)}
+              name="NewMigType"
+              // defaultValue="Default Value"
+              // helperText={featurenamemsg}
+              // className={classes.textField}
+              // helperText="Some important text"
+              variant="outlined"
+              size='small'
+              InputLabelProps={{
+                shrink: true,
+              }}
+              // multiline
+              fullWidth
+              style={{ width: 300, marginBottom: '20px', height: '50px' }}
+            />
+          </Grid>
+
+          <Grid item xs={2}>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+              size="small"
+              // style={{ marginTop: 10, marginLeft: 240 }}
+              onClick={() => handleNewVersionMigration()}
+            >
+              {" "}
+              Create
+            </Button>
+          </Grid>
+
+        </Grid>
+      </Box>
+
       <Box py={1} px={1}>
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
@@ -1808,51 +1983,64 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' justifyContent='center' spacing={1}>
-          {/* <Grid item >
+        <Grid container direction='row' justifyContent='center' xs={12}>
+          <Grid item style={{ marginTop: 8 }} xs={4}>
+            <Typography variant='h7' >
+              Project Version Creation :
+            </Typography>
+          </Grid>
+
+          <Grid item xs={5}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
-              options={proj_vers_list}
+              options={migtypelist}
               groupBy={""}
-              // value ={select_pr_v}
-              defaultValue={{ title: proj_vers_list.slice(-1)[0]?.title }}
-              getOptionLabel={(option) => option.title}
-              style={{ width: 300, marginLeft: 100 }}
-              onChange={(e, v) => handleProject_Version(v)}
+              // defaultValue={{ title: "Oracle TO Postgres" }}
+              getOptionLabel={(option) => option.Migration_TypeId}
+              style={{ width: 300 }}
+              onChange={(e, v) => setSelect_prj_versionitem(v?.Migration_TypeId)}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Versions"
+                  label="Select Migration type"
                   variant="outlined"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                     shrink: true,
                   }}
-                // placeholder={String(select_pr_v)}
+
                 />
               )}
             />
-          </Grid> */}
-          <Grid item>
+          </Grid>
+
+          <Grid item xs={2}>
             <Button
               variant="contained"
               // disabled={!selecetd1}
               color="primary"
               component="span"
+              size="small"
               // style={{ marginTop: 10, marginLeft: 240 }}
               onClick={() => handleCreateNewVersion()}
             >
               {" "}
-              Create New Version
+              Create
             </Button>
           </Grid>
-
-          <Grid item xs={1}>
-
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item style={{ marginTop: 8 }} xs={4}>
+            <Typography variant='h7' >
+              Deployment (Get Approved Modules):
+            </Typography>
           </Grid>
-          <Grid item>
+
+          <Grid item xs={5}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -1877,12 +2065,13 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={2}>
             <Button
               variant="contained"
               // disabled={!selecetd1}
               color="primary"
               component="span"
+              size="small"
               // style={{ marginTop: 10, marginLeft: 240 }}
               onClick={() => handleDeploy()}
             >
@@ -1894,8 +2083,121 @@ export default function SuperadminFunction() {
 
           </Grid> */}
         </Grid>
+
       </Box>
+
+
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Imports & Exports
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center' xs={12}>
+          <Grid item style={{ marginTop: 8 }} xs={4}>
+            <Typography variant='h7' >
+              Export (copy files to Fileshare):
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+              size="small"
+              // style={{ marginTop: 10, marginLeft: 240 }}
+              // onClick={() => }
+              onClick={() => {
+                setConfirmDialog({
+                  isOpen: true,
+                  title: 'Do You Want Copy Files To FileShare?',
+                  onConfirm: () => { handleExport_Fileshare() }
+                })
+              }}
+            >
+              {" "}
+              Export
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center' xs={12} spacing={2}>
+          <Grid item style={{ marginTop: 8 }} xs={4}>
+            <Typography variant='h7' >
+              Import (Fileshare to Docker) :
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+              size="small"
+            // style={{ marginTop: 10, marginLeft: 240 }}
+            // onClick={() => handleDeploy()}
+            >
+              {" "}
+              Import
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box py={1} px={1}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item>
+            <Typography variant='h6'>
+              Delete            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center' xs={12} spacing={2}>
+          <Grid item style={{ marginTop: 8 }} xs={4}>
+            <Typography variant='h7' >
+              Delete Data From Fileshare:
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Button
+              variant="contained"
+              // disabled={!selecetd1}
+              color="primary"
+              component="span"
+              size="small"
+
+              onClick={() => {
+                setConfirmDialog({
+                  isOpen: true,
+                  title: 'Are you sure to delete Files from Fileshare?',
+                  onConfirm: () => { delete_from_fileshare() }
+                })
+              }}
+            >
+              {" "}
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+
+
+
+      {/* <Box py={2} px={2}>
+        <Grid container direction='row' justifyContent='center'></Grid>
+      </Box> */}
       <Notification notify={notify} setNotify={setNotify} />
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
     </Box >
   )
 }
