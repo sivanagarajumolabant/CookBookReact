@@ -246,7 +246,9 @@ export default function SuperadminFunction() {
 
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const [newMigtype, setNewMigtype] = useState()
-
+  const [isdeployData, setIsDeploydata] = useState(false)
+  const [deployeddata, setDeployeddata] = useState([])
+  const [deploy_update, setDeploy_update] = useState(false)
 
 
   let history = useHistory();
@@ -288,6 +290,7 @@ export default function SuperadminFunction() {
   //     }
   //   );
   // }, [objtype]);
+
 
 
   React.useEffect(() => {
@@ -353,6 +356,35 @@ export default function SuperadminFunction() {
       }
     );
   }, [updatemiglist]);
+
+
+
+
+  useEffect(() => {
+    let conf = {
+      headers: {
+        Authorization: "Bearer " + config.ACCESS_TOKEN(),
+      },
+    };
+    axios.get(`${config.API_BASE_URL()}/api/deploy_status/`, conf).then(
+      (res) => {
+        if (res.data.length > 0) {
+          setDeployeddata(res.data)
+          setIsDeploydata(true)
+        } else {
+          setDeployeddata([])
+        }
+
+      },
+      (error) => {
+        setNotify({
+          isOpen: true,
+          message: 'Something Went Wrong Please try Again',
+          type: "error",
+        });
+      }
+    );
+  }, [deploy_update]);
 
   useEffect(() => {
     if (project_version) {
@@ -1132,14 +1164,29 @@ export default function SuperadminFunction() {
     Object.keys(body).forEach((key) => {
       form.append(key, body[key]);
     });
-    axios.post(`${config.API_BASE_URL()}/api/deploy/`, form, conf).then(
-      (res) => {
 
-        setNotify({
-          isOpen: true,
-          message: res.data,
-          type: "success",
-        });
+    axios.post(`${config.API_BASE_URL()}/api/createdeploystatus/`, form, conf).then(
+      (res) => {
+        setDeploy_update(true)
+        
+        axios.post(`${config.API_BASE_URL()}/api/deploy/`, form, conf).then(
+          (res) => {
+            setDeploy_update(false)
+            setNotify({
+              isOpen: true,
+              message: res.data,
+              type: "success",
+            });
+            setDeploy_update(true)
+          },
+          (error) => {
+            setNotify({
+              isOpen: true,
+              message: 'Something Went Wrong Please try Again',
+              type: "error",
+            });
+          }
+        );
       },
       (error) => {
         setNotify({
@@ -1149,6 +1196,9 @@ export default function SuperadminFunction() {
         });
       }
     );
+
+    // setDeploy_update(true)
+    setDeploy_update(false)
   }
 
 
@@ -2181,6 +2231,74 @@ export default function SuperadminFunction() {
           </Grid> */}
         </Grid>
 
+      </Box>
+
+
+      <Box py={2} px={2}>
+        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+          <Grid item xs={12}>
+            <Typography
+              gutterBottom
+              align='center'
+              variant="h6"
+              component="h2"
+              className={classes.Object_Type}
+            >
+              Deployement Status
+            </Typography>
+            <Table className={classestable.table} aria-label="customized table">
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell align="center">Migration Type</StyledTableCell>
+                  <StyledTableCell align="center">Start Time</StyledTableCell>
+                  <StyledTableCell align="center">End Time</StyledTableCell>
+                  <StyledTableCell align="center">Status</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {isdeployData ? (
+                  <>
+                    {deployeddata.map((item) =>
+                      <StyledTableRow container>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Migration_TypeId}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Deploy_Start_Time}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Deploy_End_Time}
+                          </div>
+                        </StyledTableCell>
+                        <StyledTableCell item xl={8}>
+                          <div className={classes.texttablecell}>
+                            {item.Deployment_Status}
+                          </div>
+                        </StyledTableCell>
+
+                      </StyledTableRow>
+                    )}
+                  </>
+                )
+                  : <>
+                    <StyledTableRow container>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="right">No Requests</StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                      <StyledTableCell align="center"></StyledTableCell>
+                    </StyledTableRow>
+                  </>
+                }
+              </TableBody>
+            </Table>
+          </Grid>
+
+        </Grid>
       </Box>
 
 
