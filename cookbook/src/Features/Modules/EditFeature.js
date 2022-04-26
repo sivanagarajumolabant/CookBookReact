@@ -8,7 +8,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 // import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from "@material-ui/core/Button";
 import TableBody from "@material-ui/core/TableBody";
-import fileDownload from "js-file-download";
+// import fileDownload from "js-file-download";
+import fileSaver from "file-saver";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -471,14 +472,29 @@ export default function EditFeature(props) {
       },
     };
     // console.log(conf.headers)
+    // axios
+    //   .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
+    //   .then((res) => {
+    //     fileDownload(res.data, att_name);
+    //     // const content = res.headers['content-type'];
+    //     // download(res.data, att_name, content)
+    //   })
+    //   .catch((err) => { });
+
     axios
-      .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
+      .post(`${config.API_BASE_URL()}/api/download_att`, body, {
+        responseType: "arraybuffer",
+      })
       .then((res) => {
-        fileDownload(res.data, att_name);
-        // const content = res.headers['content-type'];
-        // download(res.data, att_name, content)
+
+        var blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        fileSaver.saveAs(blob, att_name);
+
       })
       .catch((err) => { });
+
   };
   const handledetale = (value) => {
     const data = file.filter((item) => item.name != value.name);

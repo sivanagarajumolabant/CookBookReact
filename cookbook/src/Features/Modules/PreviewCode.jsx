@@ -23,14 +23,14 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 import { useHistory, Link } from "react-router-dom";
-import fileDownload from "js-file-download";
+// import fileDownload from "js-file-download";
 import API_BASE_URL from "../../Config/config";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import config from "../../Config/config";
 import ActionMenu from "../../../src/Redux/actions/Menuaction";
 import { Label } from "@material-ui/icons";
-
+import fileSaver from "file-saver";
 const useStylestable = makeStyles({
   table: {
     minWidth: 100,
@@ -163,7 +163,7 @@ export default function PreviewCode(props) {
   const [isscattdata, setIsscattdata] = useState(false);
   const [istaattdata, setIstaattdata] = useState(false);
   const [istettdata, setIstettdata] = useState(false);
-  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable,project_version } = useSelector(state => state.dashboardReducer);
+  const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable, project_version } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState()
   const [fnnames, setFnnames] = useState([])
@@ -211,7 +211,7 @@ export default function PreviewCode(props) {
                 setVersionSelect(String(res.data[key]?.title))
               });
               // setVersionSelect(String(res.data.length))
-            } 
+            }
             // else {
             //   setVersionSelect(String(1))
             // }
@@ -407,8 +407,7 @@ export default function PreviewCode(props) {
       AttachmentType: att_Type,
       id: id,
       fname: detaildata.Feature_Name,
-      feature_id: fid,
-      responseType: 'blob',
+      feature_id: fid
     };
     let conf = {
       headers: {
@@ -418,20 +417,15 @@ export default function PreviewCode(props) {
     };
     // console.log(conf.headers);
     axios
-      .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
+      .post(`${config.API_BASE_URL()}/api/download_att`, body, {
+        responseType: "arraybuffer",
+      })
       .then((res) => {
-        
-        fileDownload(res.data, att_name);
-        // const blob = new Blob([res], { type: 'application/msword' });                   // Step 3
-    // const fileDownloadUrl = URL.createObjectURL(blob);
-        // let blob = new Blob([res.data], { type: 'application/msword' })
 
-        // const downloadUrl = URL.createObjectURL(blob)
-        // let a = document.createElement("a");
-        // a.href = fileDownloadUrl;
-        // a.download = att_name;
-        // document.body.appendChild(a);
-        // a.click();
+        var blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        fileSaver.saveAs(blob, att_name);
 
       })
       .catch((err) => { });
@@ -516,7 +510,7 @@ export default function PreviewCode(props) {
       "Feature_Name": fnname,
       "Approval_Status": 'Pending',
       "Access_Type": 'Edit'
-      
+
     };
     let conf = {
       headers: {

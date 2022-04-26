@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from "react";
 import clsx from "clsx";
-import fileDownload from "js-file-download";
+// import fileDownload from "js-file-download";
+import fileSaver from "file-saver";
 import Avatar from "@material-ui/core/Avatar";
 import config from '../../src/Config/config'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -641,20 +642,38 @@ export default function ClippedDrawer({ children }) {
       },
     };
     // console.log(conf.headers)
+    // axios
+    //   .get(`${config.API_BASE_URL()}/api/templatedownload/`, conf)
+    //   .then((res) => {
+    //     fileDownload(res.data, 'template.py');
+    //     // const content = res.headers['content-type'];
+    //     // download(res.data, att_name, content)
+    //   })
+    //   .catch((error) => {
+    //     setNotify({
+    //       isOpen: true,
+    //       message: 'Something Went Wrong Please try Again',
+    //       type: "error",
+    //     });
+    //   });
+
     axios
-      .get(`${config.API_BASE_URL()}/api/templatedownload/`, conf)
-      .then((res) => {
-        fileDownload(res.data, 'template.py');
-        // const content = res.headers['content-type'];
-        // download(res.data, att_name, content)
+      .get(`${config.API_BASE_URL()}/api/templatedownload/`, {
+        responseType: "arraybuffer",
       })
-      .catch((error) => {
-        setNotify({
-          isOpen: true,
-          message: 'Something Went Wrong Please try Again',
-          type: "error",
+      .then((res) => {
+
+        var blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-      });
+        fileSaver.saveAs(blob, 'template.py');
+
+      })
+      .catch((err) => { });
+
+
+
+
   };
   const onDownload2 = () => {
     // const link = document.createElement("a");
@@ -667,20 +686,34 @@ export default function ClippedDrawer({ children }) {
       },
     };
     // console.log(conf.headers)
+    // axios
+    //   .get(`${config.API_BASE_URL()}/api/pdfdownload/`, conf)
+    //   .then((res) => {
+    //     // fileDownload(res.data, 'instructions.pdf');
+    //     // const content = res.headers['content-type'];
+    //     // download(res.data, att_name, content)
+    //   })
+    //   .catch((error) => {
+    //     setNotify({
+    //       isOpen: true,
+    //       message: 'Something Went Wrong Please try Again',
+    //       type: "error",
+    //     });
+    //   });
+
     axios
-      .get(`${config.API_BASE_URL()}/api/pdfdownload/`, conf)
-      .then((res) => {
-        fileDownload(res.data, 'instructions.pdf');
-        // const content = res.headers['content-type'];
-        // download(res.data, att_name, content)
+      .get(`${config.API_BASE_URL()}/api/pdfdownload/`, {
+        responseType: "arraybuffer",
       })
-      .catch((error) => {
-        setNotify({
-          isOpen: true,
-          message: 'Something Went Wrong Please try Again',
-          type: "error",
+      .then((res) => {
+
+        var blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-      });
+        fileSaver.saveAs(blob, 'instructions.pdf');
+
+      })
+      .catch((err) => { });
   };
 
 

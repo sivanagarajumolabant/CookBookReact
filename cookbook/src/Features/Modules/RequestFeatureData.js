@@ -7,6 +7,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import TableBody from "@material-ui/core/TableBody";
 // import fileDownload from "js-file-download";
+import fileSaver from "file-saver";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -22,7 +23,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 import { useHistory, Link } from "react-router-dom";
-import fileDownload from "js-file-download";
+// import fileDownload from "js-file-download";
 import API_BASE_URL from "../../Config/config";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -181,11 +182,11 @@ export default function RequestFeatureData(props) {
                     },
                     (error) => {
                         setNotify({
-                          isOpen: true,
-                          message: 'Something Went Wrong Please try Again',
-                          type: "error",
+                            isOpen: true,
+                            message: 'Something Went Wrong Please try Again',
+                            type: "error",
                         });
-                      }
+                    }
                 );
         } else {
             setDetaildata();
@@ -208,11 +209,11 @@ export default function RequestFeatureData(props) {
             },
             (error) => {
                 setNotify({
-                  isOpen: true,
-                  message: 'Something Went Wrong Please try Again',
-                  type: "error",
+                    isOpen: true,
+                    message: 'Something Went Wrong Please try Again',
+                    type: "error",
                 });
-              }
+            }
         );
     }, [previewdata?.Feature_Id, att_update]);
     useEffect(() => {
@@ -230,11 +231,11 @@ export default function RequestFeatureData(props) {
             },
             (error) => {
                 setNotify({
-                  isOpen: true,
-                  message: 'Something Went Wrong Please try Again',
-                  type: "error",
+                    isOpen: true,
+                    message: 'Something Went Wrong Please try Again',
+                    type: "error",
                 });
-              }
+            }
         );
     }, [previewdata?.Feature_Id, att_update]);
 
@@ -253,11 +254,11 @@ export default function RequestFeatureData(props) {
             },
             (error) => {
                 setNotify({
-                  isOpen: true,
-                  message: 'Something Went Wrong Please try Again',
-                  type: "error",
+                    isOpen: true,
+                    message: 'Something Went Wrong Please try Again',
+                    type: "error",
                 });
-              }
+            }
         );
     }, [previewdata?.Feature_Id, att_update]);
 
@@ -277,11 +278,11 @@ export default function RequestFeatureData(props) {
             },
             (error) => {
                 setNotify({
-                  isOpen: true,
-                  message: 'Something Went Wrong Please try Again',
-                  type: "error",
+                    isOpen: true,
+                    message: 'Something Went Wrong Please try Again',
+                    type: "error",
                 });
-              }
+            }
         );
     }, [previewdata?.Feature_Id, att_update]);
 
@@ -314,11 +315,26 @@ export default function RequestFeatureData(props) {
         };
         console.log(conf.headers);
         axios
-            .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
+            .post(`${config.API_BASE_URL()}/api/download_att`, body, {
+                responseType: "arraybuffer",
+            })
             .then((res) => {
-                fileDownload(res.data, att_name);
+
+                var blob = new Blob([res.data], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                });
+                fileSaver.saveAs(blob, att_name);
+
             })
             .catch((err) => { });
+
+        // axios
+        //     .post(`${config.API_BASE_URL()}/api/download_att`, body, conf)
+        //     .then((res) => {
+        //         fileDownload(res.data, att_name);
+        //     })
+        //     .catch((err) => { });
+
     };
 
     const handleAttachment_delete = (
