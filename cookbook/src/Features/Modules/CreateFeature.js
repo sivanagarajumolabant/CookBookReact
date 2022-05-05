@@ -65,8 +65,8 @@ const useStylestable = makeStyles({
     minWidth: 100,
     // width:10
     width: '98%',
-        marginLeft: 'auto',
-        marginRight: 'auto'
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
 });
 
@@ -278,7 +278,7 @@ export default function CreateFeature(props) {
         });
       }
     );
-  }, [obj_type, headerValue?.title, lable,project_version]);
+  }, [obj_type, headerValue?.title, lable, project_version]);
 
   useEffect(() => {
     let body = {
@@ -308,7 +308,7 @@ export default function CreateFeature(props) {
         });
       }
     );
-  }, [modalupdate, headerValue?.title, lable,  project_version]);
+  }, [modalupdate, headerValue?.title, lable, project_version]);
 
   useEffect(() => { }, [formValues]);
 
@@ -428,7 +428,7 @@ export default function CreateFeature(props) {
       );
 
 
-      
+
     }
 
   };
@@ -471,22 +471,37 @@ export default function CreateFeature(props) {
 
   const handleEditchangetext = (e) => {
     if (e.target.name === "Sequence") {
-
-
       setEdithandle({
         ...edithandle,
         Sequence: e.target.value
       })
     } else if (e.target.name === "Keywords") {
-      setEdithandle({
-        ...edithandle,
-        'Keywords': e.target.value
-      })
+      if (e, target.value === null) {
+        setEdithandle({
+          ...edithandle,
+          'Keywords': ''
+        })
+      } else {
+        setEdithandle({
+          ...edithandle,
+          'Keywords': e.target.value
+        })
+      }
+
     } else if (e.target.name === "Estimations") {
-      setEdithandle({
-        ...edithandle,
-        'Estimations': e.target.value
-      })
+      if (e.target.value === null) {
+        setEdithandle({
+          ...edithandle,
+          'Estimations': ''
+        })
+
+      } else {
+        setEdithandle({
+          ...edithandle,
+          'Estimations': e.target.value
+        })
+      }
+
     }
     setformvalues({
       ...formValues,
@@ -644,7 +659,7 @@ export default function CreateFeature(props) {
               shrink: true,
             }}
             fullWidth
-            
+
           />
         </Grid>
         <Grid item xs={12} sm={3} md={3} xl={2}>
