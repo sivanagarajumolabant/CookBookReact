@@ -476,7 +476,7 @@ export default function CreateFeature(props) {
         Sequence: e.target.value
       })
     } else if (e.target.name === "Keywords") {
-      if (e, target.value === null) {
+      if (e.target.value === null) {
         setEdithandle({
           ...edithandle,
           'Keywords': ''
