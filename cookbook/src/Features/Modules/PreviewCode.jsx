@@ -166,6 +166,7 @@ export default function PreviewCode(props) {
   const { details, createFeature, preview, editpreview, editPreviewdetails, headerValue, lable, project_version } = useSelector(state => state.dashboardReducer);
   const [migtypeid, setMigtypeid] = useState(headerValue?.title)
   const [objtype, setObjtype] = useState()
+  const [max_flag_ver, setMax_flag_ver] = useState()
   const [fnnames, setFnnames] = useState([])
   const [fnname, setFnname] = useState()
   const [checkIsEdit, setCheckIsEdit] = useState(0)
@@ -262,6 +263,8 @@ export default function PreviewCode(props) {
                 setIsdata(true);
                 setCheckIsEdit(res.data[val]?.edit)
                 setLatest_flag(res.data[val]?.Latest_Flag)
+                setMax_flag_ver(res.data[val]?.Max_Project_Flag)
+                // Max_Project_Flag
                 // setVersionSelect(res.data[val]?.Feature_Version_Id)
               }
               // else{
@@ -581,6 +584,7 @@ export default function PreviewCode(props) {
               setIsdata(true);
               setCheckIsEdit(res.data[val]?.edit)
               setLatest_flag(res.data[val]?.Latest_Flag)
+              setMax_flag_ver(res.data[val]?.Max_Project_Flag)
 
 
 
@@ -639,118 +643,241 @@ export default function PreviewCode(props) {
                 )}
               />
             </Grid>
-            {checkIsEdit === 0 ? <>
-              {
-                latest_flag === 0 ?
+            {
+              max_flag_ver === 1 ? <>
+                {checkIsEdit === 0 ? <>
+                  {
+                    latest_flag === 0 ?
 
-                  <Grid item>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      component="span"
-                      disabled
-                      // startIcon={<EditSharpIcon />}
-                      // onClick={
-                      //   () => {
-                      //     dispatch(
-                      //       ActionMenu.EditPreviewFeature({ data: detaildata })
-                      //     );
-
-                      //     history.push("/EditFeature");
-                      //   }
-                      // }
-                      onClick={(e) => { handleRequestAccess('Edit') }}>
-
-                      Request Edit Access
-                    </Button>
-                  </Grid>
-                  : <Grid item>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      component="span"
-
-                      // startIcon={<EditSharpIcon />}
-                      // onClick={
-                      //   () => {
-                      //     dispatch(
-                      //       ActionMenu.EditPreviewFeature({ data: detaildata })
-                      //     );
-
-                      //     history.push("/EditFeature");
-                      //   }
-                      // }
-                      onClick={(e) => { handleRequestAccess('Edit') }}>
-
-                      Request Edit Access
-                    </Button>
-                  </Grid>
-              }
-            </>
-
-              :
-              <>
-
-                {
-                  latest_flag === 0 ?
-                    <>
                       <Grid item>
                         <Button
-                          variant="contained"
+                          variant="outlined"
                           color="primary"
                           component="span"
-                          startIcon={<EditSharpIcon />}
                           disabled
-                          onClick={
-                            () => {
-                              dispatch(
-                                ActionMenu.EditPreviewFeature({ data: detaildata })
-                              );
+                          // startIcon={<EditSharpIcon />}
+                          // onClick={
+                          //   () => {
+                          //     dispatch(
+                          //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                          //     );
 
-                              history.push("/EditFeature");
-                            }
-                            // history.push({
-                            //   pathname: `/edit/${detaildata.Feature_Id}`,
-                            //   data: { detaildata },
+                          //     history.push("/EditFeature");
+                          //   }
+                          // }
+                          onClick={(e) => { handleRequestAccess('Edit') }}>
 
-                            // })
-                          }
-                        >
-                          Edit
+                          Request Edit Access
                         </Button>
                       </Grid>
-                    </>
+                      : <Grid item>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          component="span"
+
+                          // startIcon={<EditSharpIcon />}
+                          // onClick={
+                          //   () => {
+                          //     dispatch(
+                          //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                          //     );
+
+                          //     history.push("/EditFeature");
+                          //   }
+                          // }
+                          onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                          Request Edit Access
+                        </Button>
+                      </Grid>
+                  }
+                </>
+
+                  :
+                  <>
+
+                    {
+                      latest_flag === 0 ?
+                        <>
+                          <Grid item>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              component="span"
+                              startIcon={<EditSharpIcon />}
+                              disabled
+                              onClick={
+                                () => {
+                                  dispatch(
+                                    ActionMenu.EditPreviewFeature({ data: detaildata })
+                                  );
+
+                                  history.push("/EditFeature");
+                                }
+                                // history.push({
+                                //   pathname: `/edit/${detaildata.Feature_Id}`,
+                                //   data: { detaildata },
+
+                                // })
+                              }
+                            >
+                              Edit
+                            </Button>
+                          </Grid>
+                        </>
+                        :
+                        <>
+                          <Grid item>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              component="span"
+                              startIcon={<EditSharpIcon />}
+                              onClick={
+                                () => {
+                                  dispatch(
+                                    ActionMenu.EditPreviewFeature({ data: detaildata })
+                                  );
+
+                                  history.push("/EditFeature");
+                                }
+                                // history.push({
+                                //   pathname: `/edit/${detaildata.Feature_Id}`,
+                                //   data: { detaildata },
+
+                                // })
+                              }
+                            >
+                              Edit
+                            </Button>
+                          </Grid>
+                        </>
+
+                    }
+                  </>
+                }
+
+              </>
+                :
+                <>
+
+                  {checkIsEdit === 0 ? <>
+                    {
+                      latest_flag === 0 ?
+
+                        <Grid item>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            component="span"
+                            disabled
+                            // startIcon={<EditSharpIcon />}
+                            // onClick={
+                            //   () => {
+                            //     dispatch(
+                            //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                            //     );
+
+                            //     history.push("/EditFeature");
+                            //   }
+                            // }
+                            onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                            Request Edit Access
+                          </Button>
+                        </Grid>
+                        : <Grid item>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            component="span"
+                            disabled
+                            // startIcon={<EditSharpIcon />}
+                            // onClick={
+                            //   () => {
+                            //     dispatch(
+                            //       ActionMenu.EditPreviewFeature({ data: detaildata })
+                            //     );
+
+                            //     history.push("/EditFeature");
+                            //   }
+                            // }
+                            onClick={(e) => { handleRequestAccess('Edit') }}>
+
+                            Request Edit Access
+                          </Button>
+                        </Grid>
+                    }
+                  </>
+
                     :
                     <>
-                      <Grid item>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          component="span"
-                          startIcon={<EditSharpIcon />}
-                          onClick={
-                            () => {
-                              dispatch(
-                                ActionMenu.EditPreviewFeature({ data: detaildata })
-                              );
 
-                              history.push("/EditFeature");
-                            }
-                            // history.push({
-                            //   pathname: `/edit/${detaildata.Feature_Id}`,
-                            //   data: { detaildata },
+                      {
+                        latest_flag === 0 ?
+                          <>
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                component="span"
+                                startIcon={<EditSharpIcon />}
+                                disabled
+                                onClick={
+                                  () => {
+                                    dispatch(
+                                      ActionMenu.EditPreviewFeature({ data: detaildata })
+                                    );
 
-                            // })
-                          }
-                        >
-                          Edit
-                        </Button>
-                      </Grid>
+                                    history.push("/EditFeature");
+                                  }
+                                  // history.push({
+                                  //   pathname: `/edit/${detaildata.Feature_Id}`,
+                                  //   data: { detaildata },
+
+                                  // })
+                                }
+                              >
+                                Edit
+                              </Button>
+                            </Grid>
+                          </>
+                          :
+                          <>
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                component="span"
+                                startIcon={<EditSharpIcon />}
+                                disabled
+                                onClick={
+                                  () => {
+                                    dispatch(
+                                      ActionMenu.EditPreviewFeature({ data: detaildata })
+                                    );
+
+                                    history.push("/EditFeature");
+                                  }
+                                  // history.push({
+                                  //   pathname: `/edit/${detaildata.Feature_Id}`,
+                                  //   data: { detaildata },
+
+                                  // })
+                                }
+                              >
+                                Edit
+                              </Button>
+                            </Grid>
+                          </>
+
+                      }
                     </>
-
-                }
-              </>
+                  }
+                </>
             }
+
           </Grid>
 
           <Grid item xs={12} sm={6} md={6} lg={2}>
