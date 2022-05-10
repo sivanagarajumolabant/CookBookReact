@@ -47,6 +47,8 @@
   /* width */
   ::-webkit-scrollbar {
     width: 10px !important;
+    height: 10px;
+  
   }
   
   /* Track */
@@ -66,3 +68,13 @@
     background: #b30000 !important; 
   }
   
+
+  ::-webkit-scrollbar-thumb {
+    width: 10px !important;
+    /* height: 100px; */
+    overflow-x: scroll !important;
+    /* scrollbar-width: thin; */
+    /* background: #673f3f !important;  */
+
+
+  }
