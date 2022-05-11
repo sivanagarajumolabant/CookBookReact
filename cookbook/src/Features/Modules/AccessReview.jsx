@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   texttablecell: {
     overflowX: 'hidden',
     whiteSpace: "nowrap",
-    width: "140px",
+    // width: "140px",
     overflow: "hidden",
     textOverflow: "ellipsis",
     '&:hover': {
