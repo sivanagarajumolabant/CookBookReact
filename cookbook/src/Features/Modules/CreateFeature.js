@@ -495,7 +495,7 @@ export default function CreateFeature(props) {
       if (e.target.value === null) {
         setEdithandle({
           ...edithandle,
-          'Keywords': ''
+          'Keywords': 0
         })
       } else {
         setEdithandle({
@@ -508,7 +508,7 @@ export default function CreateFeature(props) {
       if (e.target.value === null) {
         setEdithandle({
           ...edithandle,
-          'Estimations': ''
+          'Estimations': 0
         })
 
       } else {
