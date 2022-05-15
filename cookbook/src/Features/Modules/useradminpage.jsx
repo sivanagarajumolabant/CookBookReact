@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
+import { Box, Grid, TextField, Typography, styled, TableContainer } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
@@ -36,9 +36,10 @@ import {
 
 
 const useStylestable = makeStyles((theme) => ({
+    
     table: {
         // minWidth: 50,
-        width: '92%',
+        
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -85,6 +86,29 @@ const StyledAutocomplete = styled(Autocomplete)({
 });
 
 const useStyles = makeStyles((theme) => ({
+    Usercontainer: {
+        [theme.breakpoints.down('sm')]: {
+            marginTop: "200px",
+          },
+          [theme.breakpoints.up('sm')]: {
+            marginTop: "120px",
+          },
+          [theme.breakpoints.up('md')]: {
+            marginTop: "50px",
+          },
+          [theme.breakpoints.up('lg')]: {
+            marginTop: "0px",
+          },
+       
+      },
+
+      table:{
+        //   backgroundColor:"red",
+        width:"50px",
+        height:"10px",
+        overflowX:"scroll",
+      },
+      
     texttablecell: {
         // overflowX: 'hidden',
         whiteSpace: "nowrap",
@@ -96,13 +120,13 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 
-    table: {
-        minWidth: 100,
-        // width:10,
-        width: '98%',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    },
+    // table: {
+    //     minWidth: 100,
+    //     // width:10,
+    //     width: '98%',
+    //     marginLeft: 'auto',
+    //     marginRight: 'auto'
+    // },
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -495,7 +519,7 @@ export default function UseradminFunction() {
     }
 
     return (
-        <>
+        <Box container  className={classes.Usercontainer}>
             <Box py={1} px={1}>
                 <Grid container direction='row' justifyContent='center'>
                     <Grid item>
@@ -505,9 +529,9 @@ export default function UseradminFunction() {
                     </Grid>
                 </Grid>
             </Box>
-            <Box py={2} px={2}>
+            <Box py={2} px={2} container>
                 <Grid container direction='row' justifyContent='center' spacing={1}>
-                    <Grid item >
+                    <Grid item xm={12} md={4}>
                         <StyledAutocomplete
                             size="small"
                             id="grouped-demo"
@@ -515,7 +539,7 @@ export default function UseradminFunction() {
                             options={users}
                             groupBy={""}
                             getOptionLabel={(option) => option.email}
-                            style={{ width: 300, marginLeft: 40 }}
+                            style={{ width: 300}}
                             onChange={(e, v) => handleuseremail(v)}
                             renderInput={(params) => (
                                 <TextField
@@ -530,7 +554,7 @@ export default function UseradminFunction() {
                             )}
                         />
                     </Grid>
-                    <Grid item >
+                    <Grid item xm={12} md={4}>
                         <StyledAutocomplete
                             size="small"
                             id="grouped-demo"
@@ -540,7 +564,7 @@ export default function UseradminFunction() {
                             groupBy={""}
                             // defaultValue={{ title: DropDownValues[0]?.title }}
                             getOptionLabel={(option) => option.Migration_TypeId}
-                            style={{ width: 300, marginLeft: 100 }}
+                            style={{ width: 300}}
                             onChange={(e, v) => handle_add_mig_type(v)}
                             renderInput={(params) => (
                                 <TextField
@@ -555,7 +579,7 @@ export default function UseradminFunction() {
                             )}
                         />
                     </Grid>
-                    <Grid item >
+                    <Grid item xm={12} md={4}>
                         <Button
                             variant="contained"
                             // disabled={!selecetd1}
@@ -572,7 +596,7 @@ export default function UseradminFunction() {
                 </Grid>
             </Box>
             <Box py={2} px={2}>
-                <Grid container xl={12} justifyContent="center" spacing={3}>
+                <Grid container justifyContent="center" spacing={3}>
                     <Grid item xs={12}>
                         <Typography
                             gutterBottom
@@ -583,8 +607,9 @@ export default function UseradminFunction() {
                         >
                             Users List
                         </Typography>
-                        <Grid item xs={12}>
-                            <Table className={classestable.table} >
+                        <Grid item >
+                        <TableContainer className={classestable.table}>
+                            <Table stickyHeader aria-label="sticky table" >
                                 <TableHead className={classes.primary}>
                                     <TableRow>
                                         <StyledTableCell align="center">User Email</StyledTableCell>
@@ -597,12 +622,12 @@ export default function UseradminFunction() {
                                     {
                                         waiting_list.map((item) => {
                                             return <StyledTableRow container>
-                                                <StyledTableCell item xl={4} >
+                                                <StyledTableCell item sm={6} xl={10} >
                                                     <div className={classes.texttablecell}>
                                                         {item.Email}
                                                     </div>
                                                 </StyledTableCell>
-                                                <StyledTableCell item xl={12}>
+                                                <StyledTableCell item sm={6} xl={12}>
                                                     <div className={classes.texttablecell}>
                                                         {item.MigrationTypes?.substring(0, item.MigrationTypes.length - 1)}
                                                         {/* 
@@ -618,7 +643,7 @@ export default function UseradminFunction() {
                                                         } */}
                                                     </div>
                                                 </StyledTableCell>
-                                                <StyledTableCell item xl={4} align='center'>
+                                                <StyledTableCell item sm={6} xl={4} align='center'>
                                                     {item.Status === "Awaiting for admin approval" ? (
                                                         <>
                                                             {/* {
@@ -657,7 +682,7 @@ export default function UseradminFunction() {
                                                     }
 
                                                 </StyledTableCell>
-                                                <StyledTableCell item xl={4} align='center'>
+                                                <StyledTableCell item sm={6} xl={6} align='center'>
                                                     {item?.MigrationTypes === null ?
                                                         <>
 
@@ -685,6 +710,7 @@ export default function UseradminFunction() {
                                     }
                                 </TableBody>
                             </Table>
+                            </TableContainer>
                         </Grid>
                     </Grid>
 
@@ -779,6 +805,6 @@ export default function UseradminFunction() {
                 </Modal>
             </Box>
             <Notification notify={notify} setNotify={setNotify} />
-        </>
+        </Box>
     )
 }

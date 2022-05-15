@@ -45,6 +45,24 @@ const StyledAutocomplete = styled(Autocomplete)({
 
 
 const useStyles = makeStyles((theme) => ({
+  Accesslistcontainer: {
+   
+   
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "200px",
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: "120px",
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: "50px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: "0px",
+    },
+  },
+
+
   texttablecell: {
     overflowX: 'hidden',
     whiteSpace: "nowrap",
@@ -108,6 +126,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 
 const useStylestable = makeStyles((theme) => ({
+  
   table: {
     minWidth: 100,
     // width:10,
@@ -273,7 +292,7 @@ export default function AccessReview() {
 
 
   return (
-    <Box style={{ width: '97%', marginLeft: 10 }}>
+    <Box style={{ width: '97%', marginLeft: 10 }} className={classes. Accesslistcontainer}>
       <Box py={1} px={1}>
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
@@ -284,9 +303,9 @@ export default function AccessReview() {
         </Grid>
       </Box>
       <Box py={2}>
-        <Grid container xl={12} direction='row' justifyContent='center' spacing={1}>
+        <Grid container  direction='row' justifyContent='center' spacing={1}>
 
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} md={4} xl={4}>
             <TextField
               id="outlined-multiline-static"
               label="Migration Type"
@@ -308,7 +327,7 @@ export default function AccessReview() {
 
             />
           </Grid>
-          <Grid item  xs={4}>
+          <Grid item  xs={12} sm={6} md={4} xl={4}>
 
             <StyledAutocomplete
               size="small"
@@ -335,7 +354,7 @@ export default function AccessReview() {
             />
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={12} sm={12} md={3} xl={3}>
             <Button
               variant="contained"
               disabled={!selecetd1}
@@ -354,7 +373,7 @@ export default function AccessReview() {
 
 
       <Box py={2} px={2}>
-        <Grid container xl={12} justifyContent="space-between" spacing={3}>
+        <Grid container justifyContent="center" spacing={3}>
           <Grid item xs={12}>
             <TableContainer className={classestable.table}>
               <Table stickyHeader aria-label="sticky table">

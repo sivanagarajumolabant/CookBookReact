@@ -38,6 +38,23 @@ const useStylestable = makeStyles({
   },
 });
 const useStyles = makeStyles((theme) => ({
+  container: {
+   
+   
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "180px",
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: "120px",
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: "40px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: "0px",
+    },
+  },
+
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
@@ -610,7 +627,7 @@ export default function PreviewCode(props) {
     seq = detaildata.Sequence;
 
     data = (
-      <>
+      <div className={classes.container}>
         <Grid container>
           <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }} spacing={2}>
             <Grid item>
@@ -1679,7 +1696,7 @@ export default function PreviewCode(props) {
             }
           </Grid>
         </Grid>
-      </>
+      </div>
     );
   }
 

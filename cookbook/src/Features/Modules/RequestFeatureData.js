@@ -37,6 +37,21 @@ const useStylestable = makeStyles({
     },
 });
 const useStyles = makeStyles((theme) => ({
+    Requestcontainer:{
+        [theme.breakpoints.down('sm')]: {
+          marginTop: "180px",
+        },
+        [theme.breakpoints.up('sm')]: {
+          marginTop: "120px",
+        },
+        [theme.breakpoints.up('md')]: {
+          marginTop: "50px",
+        },
+        [theme.breakpoints.up('lg')]: {
+          marginTop: "0px",
+        },
+      
+       },
     texttablecell: {
         overflowX: "hidden",
         whiteSpace: "nowrap",
@@ -417,7 +432,7 @@ export default function RequestFeatureData(props) {
         // }
         data = (
             <>
-                <Grid container>
+                <Grid container className={classes.Requestcontainer}>
                     <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }} spacing={2}>
                         {/* <Grid item>
                             <Button

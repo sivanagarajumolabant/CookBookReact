@@ -62,6 +62,22 @@ const StyledAutocomplete = styled(Autocomplete)({
 });
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            marginTop: "200px",
+          },
+          [theme.breakpoints.up('sm')]: {
+            marginTop: "120px",
+          },
+          [theme.breakpoints.up('md')]: {
+            marginTop: "50px",
+          },
+          [theme.breakpoints.up('lg')]: {
+            marginTop: "0px",
+          },
+       
+      },
+
     texttablecell: {
         overflowX: 'hidden',
         whiteSpace: "nowrap",
@@ -297,7 +313,7 @@ export default function FeatureApprovals() {
     }
 
     return (
-        <>
+        <div className={classes.container}>
             <Box py={1} px={1}>
                 <Grid container direction='row' justifyContent='center'>
                     <Grid item>
@@ -479,6 +495,6 @@ export default function FeatureApprovals() {
                 </Grid>
             </Box> */}
 
-        </>
+        </div>
     )
 }

@@ -79,6 +79,25 @@ const StyledAutocomplete = styled(Autocomplete)({
 });
 
 const useStyles = makeStyles((theme) => ({
+  Accesslistcontainer: {
+   
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "200px",
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: "120px",
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: "50px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: "0px",
+    },
+
+
+   
+  },
+
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
@@ -749,7 +768,7 @@ export default function AdminAccesslist() {
   }
   console.log(objtypelist)
   return (
-    <>
+    <div className={classes.Accesslistcontainer}>
       <Box py={1} px={1}>
         <Grid container direction="row" justifyContent="center">
           <Grid item>
@@ -1193,6 +1212,6 @@ export default function AdminAccesslist() {
         </Grid>
       </Box>
       <Notification notify={notify} setNotify={setNotify} />
-    </>
+    </div>
   );
 }

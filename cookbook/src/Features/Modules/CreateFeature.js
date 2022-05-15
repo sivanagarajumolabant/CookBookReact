@@ -81,6 +81,22 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
+ Createcontainer:{
+  [theme.breakpoints.down('sm')]: {
+    marginTop: "180px",
+  },
+  [theme.breakpoints.up('sm')]: {
+    marginTop: "120px",
+  },
+  [theme.breakpoints.up('md')]: {
+    marginTop: "50px",
+  },
+  [theme.breakpoints.up('lg')]: {
+    marginTop: "0px",
+  },
+
+ },
+  
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
@@ -631,7 +647,7 @@ export default function CreateFeature(props) {
 
   // console.log(tableinfo,"============table")
   return (
-    <Box style={{ width: '97%', marginLeft: 13 }}>
+    <Box style={{ width: '97%', marginLeft: 13 }} className={classes.Createcontainer}>
       <Box py={4}>
         <Grid container direction="row" justifyContent="center">
           <Grid item>

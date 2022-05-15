@@ -178,6 +178,24 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     height: '83vh',
     background: "#3f51b5",
+   
+    [theme.breakpoints.down('xs')]: {
+      marginTop: "380px",
+      
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "200px",
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: "130px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: "0px",
+    },
+    
+
+
+
 
   },
   content: {

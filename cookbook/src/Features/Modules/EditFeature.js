@@ -42,6 +42,22 @@ const useStylestable = makeStyles({
   },
 });
 const useStyles = makeStyles((theme) => ({
+
+  EditFeatureContainer:{
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "180px",
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: "120px",
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: "50px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: "0px",
+    },
+  
+   },
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
@@ -1025,7 +1041,7 @@ export default function EditFeature(props) {
 
 
   return (
-    <Box style={{ width: '95%', marginLeft: 40 }}>
+    <Box style={{ width: '95%', marginLeft: 40 }} className={classes.EditFeatureContainer}>
       {Object.keys(editdata).length > 0 && (
         <>
           <Box py={2}>

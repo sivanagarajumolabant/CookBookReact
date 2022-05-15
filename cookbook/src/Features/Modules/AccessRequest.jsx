@@ -23,6 +23,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 
 const useStylestable = makeStyles((theme) => ({
+
+  
   table: {
     minWidth: 100,
     // width:10
@@ -63,6 +65,22 @@ const StyledAutocomplete = styled(Autocomplete)({
 });
 
 const useStyles = makeStyles((theme) => ({
+  requestcontainer: {
+
+   
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "200px",
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: "120px",
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: "50px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: "0px",
+    },
+  },
   texttablecell: {
     overflowX: 'hidden',
     whiteSpace: "nowrap",
@@ -342,7 +360,7 @@ export default function Request() {
     );
   }
   return (
-    <>
+    <div  className={classes.requestcontainer}>
       <Box py={1} px={1}>
         <Grid container direction='row' justifyContent='center'>
           <Grid item>
@@ -435,7 +453,7 @@ export default function Request() {
           </Grid>
 
           {fnname !== 'ALL' ? <>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
 
 
               <div className="App">
@@ -470,7 +488,7 @@ export default function Request() {
             </Grid>
 
 
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
 
 
               <div className="App">
@@ -601,6 +619,6 @@ export default function Request() {
           </Button>
         </Grid>
       </Box> */}
-    </>
+    </div>
   )
 }
