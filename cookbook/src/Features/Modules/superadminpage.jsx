@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography, styled } from '@material-ui/core'
+import { Box, Grid, TextField, Typography, styled ,TableContainer} from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
 import ConfirmDialog from "../../Features/Notifications/ConfirmDialog"
 import Button from '@material-ui/core/Button';
@@ -34,6 +34,7 @@ import {
 
 
 const useStylestable = makeStyles((theme) => ({
+
   table: {
     width: '96%',
     // width:10
@@ -83,6 +84,81 @@ const StyledAutocomplete = styled(Autocomplete)({
 });
 
 const useStyles = makeStyles((theme) => ({
+  Supercontainer: {
+    [theme.breakpoints.down('sm')]: {
+        marginTop: "200px",
+      },
+      [theme.breakpoints.up('sm')]: {
+        marginTop: "120px",
+      },
+      [theme.breakpoints.up('md')]: {
+        marginTop: "50px",
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginTop: "0px",
+      },
+   
+  },
+
+  createAdmin: {
+    [theme.breakpoints.up('md')]: {
+      marginTop: 9, 
+      marginLeft: 180
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: 9, 
+      marginLeft: 180
+    },
+   
+  },
+
+  AvatarIcon:{
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 100
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: 100
+    },
+   
+  },
+
+  MigrationType:{
+    [theme.breakpoints.up('md')]: {
+      width: 300,
+      marginLeft: 100
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 300,
+      marginLeft: 100
+    },
+   
+  
+  },
+
+  MigrationTypeGrid:{
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 80, 
+      position: 'relative'
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: 80, 
+      position: 'relative'
+    },
+   
+    
+  },
+  userNameEmail:{
+    [theme.breakpoints.up('md')]: {
+      width: 300, 
+      marginLeft: 90
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 300, 
+      marginLeft: 90
+    },
+    
+  },
+
   texttablecell: {
     // overflowX: 'hidden',
     whiteSpace: "nowrap",
@@ -1322,7 +1398,7 @@ export default function SuperadminFunction() {
   }
 
   return (
-    <Box style={{ width: '100%' }}>
+    <Box style={{ width: '100%' }} className={classes.Supercontainer}>
 
 
       <Box py={1} px={1}>
@@ -1336,7 +1412,7 @@ export default function SuperadminFunction() {
       </Box>
       <Box py={2} px={2}>
         <Grid container direction='row' justifyContent='center' spacing={1}>
-          <Grid item >
+          <Grid item xs={12} sm={5} md={4}  >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -1344,7 +1420,7 @@ export default function SuperadminFunction() {
               options={userslist}
               groupBy={""}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300, marginLeft: 100 }}
+              style={{ width: 300}}
               onChange={(e, v) => handleuseremail(v)}
               renderInput={(params) => (
                 <TextField
@@ -1359,13 +1435,13 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid>
+          <Grid item xs={12} sm={5} md={3}>
             <Button
               variant="contained"
               disabled={!selecetd1}
               color="primary"
               component="span"
-              style={{ marginTop: 10, marginLeft: 240 }}
+              // style={{ marginTop: 10, marginLeft: 240 }}
               onClick={() => handlesuperadmincreation()}
             >
               {" "}
@@ -1386,7 +1462,8 @@ export default function SuperadminFunction() {
             >
               Super Admin List
             </Typography>
-            <Table className={classestable.table} aria-label="customized table">
+            <TableContainer className={classestable.table}>
+            <Table aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Name</StyledTableCell>
@@ -1436,6 +1513,7 @@ export default function SuperadminFunction() {
                 }
               </TableBody>
             </Table>
+            </TableContainer>
           </Grid>
 
         </Grid>
@@ -1443,7 +1521,7 @@ export default function SuperadminFunction() {
 
       <Box py={1} px={1}>
         <Grid container direction='row' justifyContent='center'>
-          <Grid item>
+          <Grid item >
             <Typography variant='h6'>
               User Admin Creation
             </Typography>
@@ -1452,7 +1530,7 @@ export default function SuperadminFunction() {
       </Box>
       <Box py={2} px={2}>
         <Grid container direction='row' justifyContent='center' spacing={1}>
-          <Grid item >
+          <Grid item xs={12} sm={5} md={4}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -1460,7 +1538,7 @@ export default function SuperadminFunction() {
               options={userslist}
               groupBy={""}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300, marginLeft: 100 }}
+              style={{ width: 300 }}
               onChange={(e, v) => handleuseremail1(v)}
               renderInput={(params) => (
                 <TextField
@@ -1475,13 +1553,13 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid>
+          <Grid item xs={12} sm={5} md={3}>
             <Button
               variant="contained"
               // disabled={!selecetd1}
               color="primary"
               component="span"
-              style={{ marginTop: 10, marginLeft: 240 }}
+              // style={{ marginTop: 10, marginLeft: 240 }}
               onClick={() => handleuseradmincreation()}
             >
               {" "}
@@ -1503,7 +1581,8 @@ export default function SuperadminFunction() {
             >
               User Admin List
             </Typography>
-            <Table className={classestable.table} aria-label="customized table">
+            <TableContainer className={classestable.table}>
+            <Table  aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Name</StyledTableCell>
@@ -1553,6 +1632,7 @@ export default function SuperadminFunction() {
                 }
               </TableBody>
             </Table>
+            </TableContainer>
           </Grid>
 
         </Grid>
@@ -1568,19 +1648,20 @@ export default function SuperadminFunction() {
         </Grid>
 
       </Box>
-      <Box py={2} px={2} >
-        <Grid container direction='row' style={{ marginLeft: 80, position: 'relative' }} spacing={2}>
+      <Box py={2} px={2}>
+        <Grid container direction='row' className={classes.MigrationTypeGrid}  spacing={2}>
 
-          <Grid item xs={4} >
+          <Grid item xs={12} sm={5} md={4} >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
               options={migtypelist}
               groupBy={""}
+              class={classes.MigrationType}
               // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.Migration_TypeId}
-              style={{ width: 300, marginLeft: 100 }}
+              // style={{ width: 300, marginLeft: 100 }}
               onChange={(e, v) => handleObjectviewslist(v)}
               renderInput={(params) => (
                 <TextField
@@ -1596,7 +1677,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1} style={{ marginLeft: 100 }}>
+          <Grid item xs={12} sm={1} md={1} className={classes.AvatarIcon}>
             <Avatar className={classes.avatar} onClick={() => setOpen1(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -1694,16 +1775,17 @@ export default function SuperadminFunction() {
               </div>
             </Container>
           </Modal>
-          <Grid item xs={4} >
+          <Grid item xs={12} sm={5} md={4}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
               className={classes.inputRoottype}
+              class={classes.userNameEmail}
               options={userslist}
               groupBy={""}
               // defaultValue={{ title: "Select Email" }}
               getOptionLabel={(option) => option.email}
-              style={{ width: 300, marginLeft: 90 }}
+              // style={{ width: 300, marginLeft: 90 }}
               onChange={(e, v) => setuseremail(v?.email)}
               renderInput={(params) => (
                 <TextField
@@ -1719,7 +1801,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={4} >
+          <Grid item xs={12} md={4} >
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -1729,7 +1811,8 @@ export default function SuperadminFunction() {
               // defaultValue={{ title: "Procedure" }}
               getOptionLabel={(option) => option.Object_Type}
               onChange={(e, v) => handleobjecttype(v)}
-              style={{ width: 300, marginLeft: 100 }}
+              class={classes.MigrationType}
+              // style={{ width: 300, marginLeft: 100 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -1743,7 +1826,8 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={1} style={{ marginLeft: 100 }}>
+          <Grid item xs={12} md={1} className={classes.AvatarIcon} >
+          {/* style={{ marginLeft: 100 }} */}
             <Avatar className={classes.avatar} onClick={() => setOpen(true)}>
               <AddIcon style={{ color: 'green' }} />
             </Avatar>
@@ -1838,13 +1922,14 @@ export default function SuperadminFunction() {
               {/* </form> */}
             </Container>
           </Modal>
-          <Grid>
+          <Grid item xs={12} md={4}>
             <Button
               variant="contained"
               disabled={!selecetd}
               color="primary"
               component="span"
-              style={{ marginTop: 9, marginLeft: 180 }}
+              className={classes.createAdmin}
+              // style={{ marginTop: 9, marginLeft: 180 }}
               onClick={() => { handlecreateadmin() }}
             >
               {" "}
@@ -1865,7 +1950,8 @@ export default function SuperadminFunction() {
             >
               Migration Admin List
             </Typography>
-            <Table className={classestable.table} aria-label="customized table">
+            <TableContainer className={classestable.table}>
+            <Table  aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="left">User Email</StyledTableCell>
@@ -1936,7 +2022,7 @@ export default function SuperadminFunction() {
 
               </TableBody>
             </Table>
-
+            </TableContainer>
             <Snackbar
               open={openAlert}
               autoHideDuration={4000}
@@ -2053,8 +2139,8 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' justifyContent='center' xs={12}>
-          <Grid item xs={5}>
+        <Grid container direction='row' justifyContent='center'>
+          <Grid item xs={12} sm={5} md={5}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -2063,7 +2149,7 @@ export default function SuperadminFunction() {
               groupBy={""}
               // defaultValue={{ title: "Oracle TO Postgres" }}
               getOptionLabel={(option) => option.Migration_TypeId}
-              style={{ width: 300 }}
+              style={{ width: 300, marginBottom: '20px' }}
               onChange={(e, v) => setNew_prj_versionitem(v?.Migration_TypeId)}
               renderInput={(params) => (
                 <TextField
@@ -2079,7 +2165,7 @@ export default function SuperadminFunction() {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4} md={4} >
             <TextField
               id="outlined-multiline-static"
               label="New Migtype"
@@ -2102,7 +2188,7 @@ export default function SuperadminFunction() {
             />
           </Grid>
 
-          <Grid item xs={2}>
+          <Grid item xs={12} sm={2} md={2}>
             <Button
               variant="contained"
               // disabled={!selecetd1}
@@ -2130,14 +2216,14 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' justifyContent='center' xs={12}>
-          <Grid item style={{ marginTop: 8 }} xs={4}>
+        <Grid container direction='row' justifyContent='center' spacing={2}>
+          <Grid item style={{ marginTop: 8 }} xs={12} sm={4} md={4}>
             <Typography variant='h7' >
               Project Version Creation :
             </Typography>
           </Grid>
 
-          <Grid item xs={5}>
+          <Grid item xs={12} sm={5} md={5}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -2180,14 +2266,14 @@ export default function SuperadminFunction() {
         </Grid>
       </Box>
       <Box py={2} px={2}>
-        <Grid container direction='row' justifyContent='center'>
-          <Grid item style={{ marginTop: 8 }} xs={4}>
+        <Grid container direction='row' justifyContent='center' spacing={2}>
+          <Grid item style={{ marginTop: 8 }} xs={12} sm={4} md={4}>
             <Typography variant='h7' >
               Deployment (Get Approved Modules):
             </Typography>
           </Grid>
 
-          <Grid item xs={5}>
+          <Grid item xs={12} sm={5} md={5}>
             <StyledAutocomplete
               size="small"
               id="grouped-demo"
@@ -2246,7 +2332,8 @@ export default function SuperadminFunction() {
             >
               Deployement Status
             </Typography>
-            <Table className={classestable.table} aria-label="customized table">
+            <TableContainer className={classestable.table}>
+            <Table  aria-label="customized table">
               <TableHead className={classes.primary}>
                 <TableRow>
                   <StyledTableCell align="center">Migration Type</StyledTableCell>
@@ -2296,6 +2383,7 @@ export default function SuperadminFunction() {
                 }
               </TableBody>
             </Table>
+            </TableContainer>
           </Grid>
 
         </Grid>

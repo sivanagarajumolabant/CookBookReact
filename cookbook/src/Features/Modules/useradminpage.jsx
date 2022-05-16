@@ -609,7 +609,7 @@ export default function UseradminFunction() {
                         </Typography>
                         <Grid item >
                         <TableContainer className={classestable.table}>
-                            <Table stickyHeader aria-label="sticky table" >
+                            <Table stickyHeader aria-label="customized table" >
                                 <TableHead className={classes.primary}>
                                     <TableRow>
                                         <StyledTableCell align="center">User Email</StyledTableCell>
