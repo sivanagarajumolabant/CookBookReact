@@ -65,18 +65,18 @@ const useStyles = makeStyles((theme) => ({
     container: {
         [theme.breakpoints.down('sm')]: {
             marginTop: "200px",
-          },
-          [theme.breakpoints.up('sm')]: {
+        },
+        [theme.breakpoints.up('sm')]: {
             marginTop: "120px",
-          },
-          [theme.breakpoints.up('md')]: {
+        },
+        [theme.breakpoints.up('md')]: {
             marginTop: "50px",
-          },
-          [theme.breakpoints.up('lg')]: {
+        },
+        [theme.breakpoints.up('lg')]: {
             marginTop: "0px",
-          },
-       
-      },
+        },
+
+    },
 
     texttablecell: {
         overflowX: 'hidden',
@@ -153,7 +153,7 @@ const StyledTableRow = withStyles((theme) => ({
 export default function FeatureApprovals() {
     const classes = useStyles();
     const classestable = useStylestable();
-    const { headerValue, lable } = useSelector(state => state.dashboardReducer);
+    const { headerValue, lable, project_version } = useSelector(state => state.dashboardReducer);
     const [approvalslist, setApprovallist] = useState([])
     const [data, isData] = useState(false)
     const [notify, setNotify] = useState({
@@ -171,7 +171,7 @@ export default function FeatureApprovals() {
                 let body = {
                     "Migration_TypeId": headerValue?.title,
                     "Object_Type": lable,
-                    "Project_Version_Id": 1
+                    "Project_Version_Id": project_version
                 };
                 let conf = {
                     headers: {
@@ -188,11 +188,11 @@ export default function FeatureApprovals() {
                     },
                     (error) => {
                         setNotify({
-                          isOpen: true,
-                          message: 'Something Went Wrong Please try Again',
-                          type: "error",
+                            isOpen: true,
+                            message: 'Something Went Wrong Please try Again',
+                            type: "error",
                         });
-                      }
+                    }
                 );
             }
         }
@@ -242,7 +242,8 @@ export default function FeatureApprovals() {
             Conversion_Code: item.Conversion_Code,
             "Feature_version_approval_status": status,
             "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
-            'Project_Version_Id': item.Project_Version_Id
+            'Project_Version_Id': item.Project_Version_Id,
+            
         }
         let conf = {
             headers: {
@@ -290,11 +291,11 @@ export default function FeatureApprovals() {
                         },
                         (error) => {
                             setNotify({
-                              isOpen: true,
-                              message: 'Something Went Wrong Please try Again',
-                              type: "error",
+                                isOpen: true,
+                                message: 'Something Went Wrong Please try Again',
+                                type: "error",
                             });
-                          }
+                        }
                     );
                 } else {
                     settableupdate(true)
@@ -302,11 +303,11 @@ export default function FeatureApprovals() {
             },
             (error) => {
                 setNotify({
-                  isOpen: true,
-                  message: 'Something Went Wrong Please try Again',
-                  type: "error",
+                    isOpen: true,
+                    message: 'Something Went Wrong Please try Again',
+                    type: "error",
                 });
-              }
+            }
         );
         settableupdate(false)
 
@@ -336,6 +337,8 @@ export default function FeatureApprovals() {
                                         <StyledTableCell align="center">Object Type</StyledTableCell>
                                         <StyledTableCell align="center">Feature Name</StyledTableCell>
                                         <StyledTableCell align="center">Feature Version Id</StyledTableCell>
+                                        <StyledTableCell align="center">Approval Requested By</StyledTableCell>
+                                        <StyledTableCell align="center">Approval Requested Date</StyledTableCell>
                                         <StyledTableCell align="center">Approved Status</StyledTableCell>
                                         {/* <StyledTableCell align="left">Request Created Date</StyledTableCell> */}
                                         <StyledTableCell align="center">Date</StyledTableCell>
@@ -348,49 +351,66 @@ export default function FeatureApprovals() {
                                         <>
                                             {approvalslist.map((item) =>
 
-                                                <StyledTableRow container>
+                                                <StyledTableRow container align="center">
                                                     {/* <StyledTableCell item xl={10}>
                                                         <div className={classes.texttablecell}>
                                                             {item.Project_Version_Id}
                                                         </div>
                                                     </StyledTableCell>
                                                     */}
-                                                    <StyledTableCell item xl={6}>
+                                                    <StyledTableCell item xl={6} align="center">
                                                         <div className={classes.texttablecell}>
 
                                                             {item.Migration_TypeId}
 
                                                         </div>
                                                     </StyledTableCell>
-                                                    <StyledTableCell item xl={5}>
+                                                    <StyledTableCell item xl={5}  align="center">
                                                         <div className={classes.texttablecell}>
                                                             {item.Object_Type}
                                                         </div>
                                                     </StyledTableCell>
-                                                    <StyledTableCell item xl={6}>
+                                                    <StyledTableCell item xl={6} align="center">
                                                         <div className={classes.texttablecell}>
                                                             {item.Feature_Name}
                                                         </div>
                                                     </StyledTableCell>
-                                                    <StyledTableCell item xl={6}>
+                                                    <StyledTableCell item xl={6} align="center">
                                                         <div className={classes.texttablecell}>
                                                             {/* {"SivaNagaraju"} */}
                                                             {item.Feature_Version_Id}
                                                         </div>
                                                     </StyledTableCell>
-                                                    <StyledTableCell item xl={6}>
+
+
+
+                                                    <StyledTableCell item xl={6} align="center">
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Feature_Requested_By}
+                                                        </div>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell item xl={6} align="center">
+                                                        <div className={classes.texttablecell}>
+                                                            {item.Feature_Requested_Date}
+                                                        </div>
+                                                    </StyledTableCell>
+
+                                                    <StyledTableCell item xl={6} align="center">
                                                         <div className={classes.texttablecell}>
                                                             {item.Feature_version_approval_status}
                                                         </div>
                                                     </StyledTableCell>
-                                                    <StyledTableCell item xl={6}>
+                                                    <StyledTableCell item xl={6} align="center">
                                                         <div className={classes.texttablecell}>
                                                             {item.Feature_Approval_Date}
                                                         </div>
                                                     </StyledTableCell>
 
 
-                                                    <StyledTableCell item align="center" xl={10}>
+
+
+
+                                                    <StyledTableCell item align="center" xl={10} align="center">
                                                         {item.Feature_version_approval_status === "Awaiting Approval" ? (
                                                             <div className={classes.actions}>
                                                                 <Button

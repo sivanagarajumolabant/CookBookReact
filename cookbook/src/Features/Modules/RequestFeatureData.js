@@ -37,21 +37,21 @@ const useStylestable = makeStyles({
     },
 });
 const useStyles = makeStyles((theme) => ({
-    Requestcontainer:{
+    Requestcontainer: {
         [theme.breakpoints.down('sm')]: {
-          marginTop: "180px",
+            marginTop: "180px",
         },
         [theme.breakpoints.up('sm')]: {
-          marginTop: "120px",
+            marginTop: "120px",
         },
         [theme.breakpoints.up('md')]: {
-          marginTop: "50px",
+            marginTop: "50px",
         },
         [theme.breakpoints.up('lg')]: {
-          marginTop: "0px",
+            marginTop: "0px",
         },
-      
-       },
+
+    },
     texttablecell: {
         overflowX: "hidden",
         whiteSpace: "nowrap",
@@ -432,7 +432,35 @@ export default function RequestFeatureData(props) {
         // }
         data = (
             <>
+
+                <Box py={1} px={1}>
+                    <Grid container direction='row' justifyContent='center'>
+                        <Grid item xs={3}>
+                            <Typography variant='h7' component="h7">
+                                <strong>Created By :</strong> {detaildata?.Feature_Created_by}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography variant='h7'>
+                                <strong> Created Date :</strong> {detaildata?.Feature_Created_at}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <Typography variant='h7'>
+                                <strong>Modified By :</strong> {detaildata?.Last_Modified_by}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography variant='h7'>
+                                <strong>Modified Date :</strong> {detaildata?.Last_Modified_at}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Box>
                 <Grid container className={classes.Requestcontainer}>
+
+
                     <Grid container justifyContent="flex-end" style={{ paddingTop: 30 }} spacing={2}>
                         {/* <Grid item>
                             <Button

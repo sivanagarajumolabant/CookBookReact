@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import moment from 'moment';
 import EditSharpIcon from "@material-ui/icons/EditSharp";
 import FormControl from "@material-ui/core/FormControl";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -387,7 +388,8 @@ export default function CreateFeature(props) {
       Target_Expected_Output: "",
       Target_ActualCode: "",
       Project_Version_Id: project_version,
-      Feature_Version_Id: 0
+      Feature_Version_Id: 0,
+      Feature_Created_by: sessionStorage.getItem('uemail')
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -564,6 +566,8 @@ export default function CreateFeature(props) {
       "Keywords": featuredata.Keywords,
       "Feature_version_approval_status": 'In Progress',
       "Estimations": featuredata.Estimations,
+      "Last_Modified_by":sessionStorage.getItem('uemail'),
+      "Last_Modified_at": moment(new Date()).format('YYYY-MM-DD')
     }
     setEdithandle(formData)
     const form = new FormData();

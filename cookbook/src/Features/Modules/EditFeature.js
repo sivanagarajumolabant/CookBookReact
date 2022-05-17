@@ -43,7 +43,7 @@ const useStylestable = makeStyles({
 });
 const useStyles = makeStyles((theme) => ({
 
-  EditFeatureContainer:{
+  EditFeatureContainer: {
     [theme.breakpoints.down('sm')]: {
       marginTop: "180px",
     },
@@ -56,8 +56,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('lg')]: {
       marginTop: "0px",
     },
-  
-   },
+
+  },
   texttablecell: {
     overflowX: "hidden",
     whiteSpace: "nowrap",
@@ -376,7 +376,9 @@ export default function EditFeature(props) {
       Conversion_Code: Conversion_Code,
       "Feature_version_approval_status": editdata.detaildata.Feature_version_approval_status,
       "Keywords": keywords,
-      "Estimations": estimation
+      "Estimations": estimation,
+      "Last_Modified_by":sessionStorage.getItem('uemail'),
+      "Last_Modified_at": moment(new Date()).format('YYYY-MM-DD')
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -864,11 +866,13 @@ export default function EditFeature(props) {
   const handleFeatureStatus = (e, status) => {
     e.preventDefault();
     let mod_status;
+    
     if (status === 'Approved') {
       mod_status = status
     }
     else if (status === 'Awaiting Approval') {
       mod_status = status
+      
     }
     else {
       mod_status = 'In Progress'
@@ -893,12 +897,30 @@ export default function EditFeature(props) {
       "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
       "Level": editdata.detaildata?.Level,
       'Keywords': editdata.detaildata.Keywords,
-      'Estimations': editdata.detaildata.Estimations
+      'Estimations': editdata.detaildata.Estimations,
+      
     };
+    
+
+
+    
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
       form.append(key, formData[key]);
     });
+    if (status === 'Approved') {
+      mod_status = status
+    }
+    else if (status === 'Awaiting Approval') {
+      mod_status = status
+      // FormData["Feature_Requested_By"] = sessionStorage.getItem('uemail');
+      // FormData["Feature_Requested_Date"] =moment(new Date()).format('YYYY-MM-DD');
+      form.append('Feature_Requested_By', sessionStorage.getItem('uemail'));
+      form.append('Feature_Requested_Date', moment(new Date()).format('YYYY-MM-DD'));
+    }
+    else {
+      mod_status = 'In Progress'
+    }
 
 
     // feature create 
@@ -921,7 +943,9 @@ export default function EditFeature(props) {
       "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
       "Level": editdata.detaildata?.Level,
       'Keywords': editdata.detaildata.Keywords,
-      'Estimations': editdata.detaildata.Estimations
+      'Estimations': editdata.detaildata.Estimations,
+      "Feature_Created_by": sessionStorage.getItem('uemail'),
+      "Feature_Created_at": moment(new Date()).format('YYYY-MM-DD')
     };
     const formcreate = new FormData();
     Object.keys(formDatacreate).forEach((key) => {
@@ -963,6 +987,7 @@ export default function EditFeature(props) {
                   setTimeout(
                     () => history.push({
                       pathname: `/PreviewCode`,
+                      
                     }),
                     2000
                   );
@@ -1044,6 +1069,32 @@ export default function EditFeature(props) {
     <Box style={{ width: '95%', marginLeft: 40 }} className={classes.EditFeatureContainer}>
       {Object.keys(editdata).length > 0 && (
         <>
+
+          {/* <Box py={1} px={1}>
+            <Grid container direction='row' justifyContent='center'>
+              <Grid item xs={3}>
+                <Typography variant='h7' component="h7">
+                  <strong>Created By :</strong> {editdata?.detaildata?.Feature_Created_by}
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <Typography variant='h7'>
+                  <strong> Created Date :</strong> {editdata?.detaildata?.Feature_Created_at}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={3}>
+                <Typography variant='h7'>
+                  <strong>Modified By :</strong> {editdata?.detaildata?.Last_Modified_by}
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <Typography variant='h7'>
+                  <strong>Modified Date :</strong> {editdata?.detaildata?.Last_Modified_at}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box> */}
           <Box py={2}>
             {/* <Grid container direction='row' justifyContent='center'>
                     <Grid item>
