@@ -1020,7 +1020,7 @@ export default function ClippedDrawer({ children }) {
 
               <Typography
                 variant="body2"
-                style={{ color: "white", marginBottom: 10, paddingTop: 8, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                style={{ color: "white", marginBottom: 10, paddingTop: 8, paddingLeft: 50, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                 onClick={handlerequestMenus}
               >
@@ -1032,7 +1032,7 @@ export default function ClippedDrawer({ children }) {
                 <>
                   <Typography
                     variant="body2"
-                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 50, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                     onClick={handleAdminMenus}
                   >
@@ -1041,7 +1041,7 @@ export default function ClippedDrawer({ children }) {
                   {/* <Divider /> */}
                   <Typography
                     variant="body2"
-                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 50, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                     onClick={() => handlefeatureapprovals()}
 
@@ -1060,7 +1060,7 @@ export default function ClippedDrawer({ children }) {
                 <>
                   <Typography
                     variant="body2"
-                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 33, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
+                    style={{ color: "white", marginBottom: 10, paddingTop: 10, paddingLeft: 50, marginTop: 0, justifyContent: 'center', cursor: 'pointer' }}
 
                     onClick={handleAcessreview}
                   >

@@ -531,11 +531,11 @@ export default function UseradminFunction() {
             </Box>
             <Box py={2} px={2} container>
                 <Grid container direction='row' justifyContent='center' spacing={1}>
-                    <Grid item xm={12} md={4}>
+                    <Grid item >
                         <StyledAutocomplete
                             size="small"
                             id="grouped-demo"
-                            className={classes.inputRoottype}
+                            // className={classes.inputRoottype}
                             options={users}
                             groupBy={""}
                             getOptionLabel={(option) => option.email}
@@ -554,7 +554,7 @@ export default function UseradminFunction() {
                             )}
                         />
                     </Grid>
-                    <Grid item xm={12} md={4}>
+                    <Grid item>
                         <StyledAutocomplete
                             size="small"
                             id="grouped-demo"
@@ -579,7 +579,7 @@ export default function UseradminFunction() {
                             )}
                         />
                     </Grid>
-                    <Grid item xm={12} md={4}>
+                    <Grid item >
                         <Button
                             variant="contained"
                             // disabled={!selecetd1}
