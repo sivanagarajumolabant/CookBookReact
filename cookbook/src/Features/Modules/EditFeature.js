@@ -910,6 +910,8 @@ export default function EditFeature(props) {
     });
     if (status === 'Approved') {
       mod_status = status
+      form.append('Feature_Requested_By', sessionStorage.getItem('uemail'));
+      form.append('Feature_Requested_Date', moment(new Date()).format('YYYY-MM-DD'));
     }
     else if (status === 'Awaiting Approval') {
       mod_status = status
