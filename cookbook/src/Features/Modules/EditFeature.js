@@ -942,7 +942,7 @@ export default function EditFeature(props) {
       "Project_Version_Id": editdata.detaildata?.Project_Version_Id,
       "Feature_Version_Id": editdata.detaildata?.Feature_Version_Id,
       "Feature_version_approval_status": 'In Progress',
-      "Feature_Approval_Date": moment(new Date()).format('YYYY-MM-DD'),
+      // "Feature_Approval_Date": null,
       "Level": editdata.detaildata?.Level,
       'Keywords': editdata.detaildata.Keywords,
       'Estimations': editdata.detaildata.Estimations,
