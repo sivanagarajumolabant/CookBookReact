@@ -377,7 +377,7 @@ export default function EditFeature(props) {
       "Feature_version_approval_status": editdata.detaildata.Feature_version_approval_status,
       "Keywords": keywords,
       "Estimations": estimation,
-      "Last_Modified_by":sessionStorage.getItem('uemail'),
+      "Last_Modified_by": sessionStorage.getItem('uemail'),
       "Last_Modified_at": moment(new Date()).format('YYYY-MM-DD')
     };
     const form = new FormData();
@@ -569,14 +569,15 @@ export default function EditFeature(props) {
 
   const handleConvert = (e) => {
     e.preventDefault();
-    if (Conversion_Code === '') {
-      setNotify({
-        isOpen: true,
-        message: "No Conversion Module, please add Conversion Module before Convert",
-        type: "error",
-      });
+    // if (Conversion_Code === '') {
+    //   setNotify({
+    //     isOpen: true,
+    //     message: "No Conversion Module, please add Conversion Module before Convert",
+    //     type: "error",
+    //   });
 
-    } else if (Conversion_Code === precon_val && Source_Code === presource_code_val) {
+    // } else 
+    if (Conversion_Code === precon_val && Source_Code === presource_code_val) {
       setNotify({
         isOpen: true,
         message: "Please make change to either Source code or conversion Module before clicking on the Convert button",
@@ -607,14 +608,22 @@ export default function EditFeature(props) {
       };
       axios.post(`${config.API_BASE_URL()}/api/autoconv`, body, conf).then(
         (res) => {
-          // console.log("res",res.data)
-          setTarget_ActualCode(res.data);
+          if (res.data === 'No Conversion Module, please add Conversion Module before Convert') {
+            setNotify({
+              isOpen: true,
+              message: "No Conversion Module, please add Conversion Module before Convert",
+              type: "info",
+            });
+          } else {
+            // console.log("res",res.data)
+            setTarget_ActualCode(res.data);
 
-          setNotify({
-            isOpen: true,
-            message: "Conversion Completed Please Check The Output",
-            type: "success",
-          });
+            setNotify({
+              isOpen: true,
+              message: "Conversion Completed Please Check The Output",
+              type: "success",
+            });
+          }
         },
         (error) => {
           console.log(error);
@@ -789,20 +798,35 @@ export default function EditFeature(props) {
       confirmDialog,
       isOpen: false,
     });
-    const res = await axios.delete(
-      `${config.API_BASE_URL()}/api/fdelete/${data}`,
+
+    let formData = {
+      "Project_Version_Id": project_version,
+      "Migration_TypeId": editdata.detaildata.Migration_TypeId,
+      "Object_Type": editdata.detaildata.Object_Type,
+    };
+    const form = new FormData();
+    Object.keys(formData).forEach((key) => {
+      form.append(key, formData[key]);
+    });
+    const res = await axios.post(
+      `${config.API_BASE_URL()}/api/fdelete/${editdata.detaildata.Feature_Name}`, form,
       conf
     );
     // getmenus(1);
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "success",
-    });
 
-    // dispatch(ActionMenu.ActionMenu(
-    seteditdata({});
-    dispatch(Menuaction.reloadAction(true));
+    if (res.status === 200) {
+
+      setNotify({
+        isOpen: true,
+        message: "Deleted Successfully",
+        type: "success",
+      });
+
+      // dispatch(ActionMenu.ActionMenu(
+      seteditdata({});
+      dispatch(Menuaction.reloadAction(true));
+    }
+
   };
 
   function uploadAdapter(loader) {
@@ -866,13 +890,13 @@ export default function EditFeature(props) {
   const handleFeatureStatus = (e, status) => {
     e.preventDefault();
     let mod_status;
-    
+
     if (status === 'Approved') {
       mod_status = status
     }
     else if (status === 'Awaiting Approval') {
       mod_status = status
-      
+
     }
     else {
       mod_status = 'In Progress'
@@ -898,12 +922,12 @@ export default function EditFeature(props) {
       "Level": editdata.detaildata?.Level,
       'Keywords': editdata.detaildata.Keywords,
       'Estimations': editdata.detaildata.Estimations,
-      
+
     };
-    
 
 
-    
+
+
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
       form.append(key, formData[key]);
@@ -989,7 +1013,7 @@ export default function EditFeature(props) {
                   setTimeout(
                     () => history.push({
                       pathname: `/PreviewCode`,
-                      
+
                     }),
                     2000
                   );
