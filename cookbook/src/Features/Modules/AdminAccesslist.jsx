@@ -358,7 +358,7 @@ export default function AdminAccesslist() {
       );
     }
 
-  }, [objtype]);
+  }, []);
 
   const handleObjecttype = (v) => {
     setObjtype(v?.Object_Type);
