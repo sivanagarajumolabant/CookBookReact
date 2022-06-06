@@ -901,6 +901,10 @@ export default function EditFeature(props) {
     else {
       mod_status = 'In Progress'
     }
+    setConfirmDialog({
+      confirmDialog,
+      isOpen: false
+    })
 
     let formData = {
       ...formValues,
@@ -1015,7 +1019,7 @@ export default function EditFeature(props) {
                       pathname: `/PreviewCode`,
 
                     }),
-                    2000
+                    1000
                   );
                   // settableupdate(true)
                 }
@@ -2052,7 +2056,18 @@ export default function EditFeature(props) {
                       // className={classes.submit}
                       // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
                       // startIcon={<DeleteIcon />}
-                      onClick={(e) => handleFeatureStatus(e, 'Awaiting Approval')}
+                      onClick={(e) =>
+                        setConfirmDialog({
+                          isOpen: true,
+                          title: "Do you want to Request for the Approval?",
+                          // subTitle: "You can't undo this operation",
+                          onConfirm: () => {
+                            handleFeatureStatus(e, 'Awaiting Approval');
+                          },
+                        })
+                      }
+
+
                     >
                       Request For Approval
                     </Button>
@@ -2069,7 +2084,18 @@ export default function EditFeature(props) {
                       // className={classes.submit}
                       // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
                       // startIcon={<DeleteIcon />}
-                      onClick={(e) => handleFeatureStatus(e, 'Approved')}
+                      onClick={(e) =>
+                        setConfirmDialog({
+                          isOpen: true,
+                          title: "Are you sure to Approve the Feature?",
+                          // subTitle: "You can't undo this operation",
+                          onConfirm: () => {
+                            handleFeatureStatus(e, 'Approved')
+                          },
+                        })
+                      }
+
+
                     >
                       Approve
                     </Button>
@@ -2084,7 +2110,16 @@ export default function EditFeature(props) {
                       // className={classes.submit}
                       // onClick={() => deleteitem(editdata.detaildata.Feature_Id)}
                       // startIcon={<DeleteIcon />}
-                      onClick={(e) => handleFeatureStatus(e, 'In Progress')}
+                      onClick={(e) =>
+                        setConfirmDialog({
+                          isOpen: true,
+                          title: "Are you sure to Deny this Feature?",
+                          // subTitle: "You can't undo this operation",
+                          onConfirm: () => {
+                            handleFeatureStatus(e, 'In Progress')
+                          },
+                        })
+                      }
                     >
                       Deny
                     </Button>
