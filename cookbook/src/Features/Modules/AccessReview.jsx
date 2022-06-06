@@ -194,7 +194,7 @@ export default function AccessReview() {
   const [selectedDate, handleDateChange] = useState(new Date());
   const [openAlert, setOpenAlert] = useState(false);
   const [open1, setOpen1] = useState(false);
-  const [newA_type,setNewA_type] = useState('')
+  const [new_type, setNew_type] = useState()
   const [permis_update, setPermis_update] = useState(false)
 
 
@@ -335,6 +335,7 @@ export default function AccessReview() {
         Authorization: "Bearer " + config.ACCESS_TOKEN(),
       },
     };
+    
     if (action === 'Edit') {
       let bodyedit = {
         "Migration_TypeId": data.Migration_TypeId,
@@ -343,7 +344,7 @@ export default function AccessReview() {
         "Action": action,
         "Feature_Name": data.Feature_Name,
         "Access_Type": data.Access_Type,
-        "New_Access_Type": newA_type,
+        "New_Access_Type": new_type,
         "New_Expiry_Date": editData.Expiry_date
 
       };
@@ -366,7 +367,7 @@ export default function AccessReview() {
             ...editData,
             Access_Type: ''
           })
-          setNewA_type('')
+          setNew_type('')
          
           
         },
@@ -424,7 +425,7 @@ export default function AccessReview() {
 
   // console.log(userslist)
   const handleSelectgroup = (value) => {
-    setNewA_type(value)
+    setNew_type(value)
   }
 
   const handleChangeDate = (date) => {
@@ -584,7 +585,7 @@ export default function AccessReview() {
                             <Box flexDirection="row">
                               <div className={classes.texttablecell}>
                                 <IconButton
-                                  onClick={(e) => { setEditData(item); setOpen1(true) }}
+                                  onClick={(e) => { setEditData(item);setNew_type(item.Access_Type); setOpen1(true) }}
 
                                 >
                                   <EditIcon style={{ color: "blue" }} />
